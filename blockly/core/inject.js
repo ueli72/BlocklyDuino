@@ -425,6 +425,45 @@ Blockly.init_ = function(mainWorkspace) {
     // corresponding touch handler that would squeltch the ability to interact
     // with non-Blockly elements.
     document.addEventListener('mouseup', Blockly.onMouseUp_, false);
+    // Add a global mousedown handler to route clicks to flyout in Chrome
+    // Chrome has a bug where clicks on SVG elements don't route to the correct element
+    document.addEventListener('mousedown', function(e) {
+      var ws = Blockly.getMainWorkspace();
+      if (!ws) return;
+      
+      // Check if click is in flyout area
+      var toolbox = ws.toolbox_;
+      if (!toolbox || !toolbox.flyout_) return;
+      
+      var flyout = toolbox.flyout_;
+      var flyoutSvg = flyout.svgGroup_;
+      if (!flyoutSvg) return;
+      
+      var rect = flyoutSvg.getBoundingClientRect();
+      var inFlyout = e.clientX >= rect.left && e.clientX <= rect.right &&
+                     e.clientY >= rect.top && e.clientY <= rect.bottom;
+      
+      if (inFlyout && flyout.isVisible() && rect.width > 0) {
+        // Find which block was clicked
+        var blocks = flyout.workspace_.getTopBlocks(true);
+        for (var i = 0; i < blocks.length; i++) {
+          var block = blocks[i];
+          var svgRoot = block.getSvgRoot();
+          if (svgRoot) {
+            var blockRect = svgRoot.getBoundingClientRect();
+            var inBlock = e.clientX >= blockRect.left && e.clientX <= blockRect.right &&
+                         e.clientY >= blockRect.top && e.clientY <= blockRect.bottom;
+            if (inBlock) {
+              // Create the block
+              var createFunc = flyout.createBlockFunc_(block);
+              createFunc(e);
+              e.stopPropagation();
+              return;
+            }
+          }
+        }
+      }
+    }, true);
     // Some iPad versions don't fire resize after portrait to landscape change.
     if (goog.userAgent.IPAD) {
       Blockly.bindEvent_(window, 'orientationchange', document, function() {

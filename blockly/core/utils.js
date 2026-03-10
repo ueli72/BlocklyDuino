@@ -135,7 +135,8 @@ Blockly.bindEvent_ = function(node, name, thisObject, func) {
  * @type {Object}
  */
 Blockly.bindEvent_.TOUCH_MAP = {};
-if (goog.events.BrowserFeature.TOUCH_ENABLED) {
+var isMobile = goog.userAgent.MOBILE || goog.userAgent.ANDROID || goog.userAgent.IPAD || goog.userAgent.IPHONE;
+if (goog.events.BrowserFeature.TOUCH_ENABLED && isMobile) {
   Blockly.bindEvent_.TOUCH_MAP = {
     'mousedown': ['touchstart'],
     'mousemove': ['touchmove'],

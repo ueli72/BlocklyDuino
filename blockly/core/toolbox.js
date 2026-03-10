@@ -123,7 +123,9 @@ Blockly.Toolbox.prototype.init = function() {
    * @private
    */
   this.flyout_ = new Blockly.Flyout(workspaceOptions);
-  goog.dom.insertSiblingAfter(this.flyout_.createDom(), workspace.svgGroup_);
+  // Insert flyout at the end of the SVG so it's on top of the workspace.
+  // Using appendChild ensures the flyout is the last element and receives clicks.
+  workspace.svgGroup_.parentNode.appendChild(this.flyout_.createDom());
   this.flyout_.init(workspace);
 
   this.CONFIG_['cleardotPath'] = workspace.options.pathToMedia + '1x1.gif';
