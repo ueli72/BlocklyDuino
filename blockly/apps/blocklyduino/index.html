@@ -281,10 +281,11 @@ function addToolboxIcons() {
     var iconText = null;
     if (text === 'Logic') iconClass = 'bi-diagram-3';
     else if (text === 'Constants') iconText = 'π';
-    else if (text === 'Control') iconClass = 'bi-clock';
+    else if (text === 'Loops') iconClass = 'bi-arrow-repeat';
+    else if (text === 'Timed') iconClass = 'bi-clock';
     else if (text === 'Math') iconClass = 'bi-calculator';
     else if (text === 'Text') iconClass = 'bi-type';
-    else if (text === 'Variables') iconText = '(x)';
+    else if (text === 'Variables') iconText = 'x';
     else if (text === 'Functions') iconText = 'f(x)';
     else if (text === 'Input/Output') iconClass = 'bi-arrow-left-right';
     else if (text === 'SG90 Servo') iconClass = 'bi-gear';
@@ -299,8 +300,10 @@ function addToolboxIcons() {
           icon.classList.add('bi', iconClass);
         } else if (iconText) {
           icon.textContent = iconText;
-          icon.style.fontWeight = 'bold';
-          icon.style.fontSize = '12px';
+          icon.style.fontFamily = 'Times New Roman, Times, serif';
+          icon.style.fontStyle = 'italic';
+          icon.style.fontSize = (iconText === 'π' || iconText === 'x') ? '18px' : '12px';
+          icon.style.fontWeight = (iconText === 'π' || iconText === 'x') ? 'normal' : 'bold';
         }
         label.parentNode.insertBefore(icon, label);
       }
@@ -771,14 +774,7 @@ function init() {
       <block type="constants_true"></block>
       <block type="constants_false"></block>
     </category>
-    <category name="Control">
-      <block type="base_delay">
-        <value name="DELAY_TIME">
-          <block type="math_number">
-            <field name="NUM">1000</field>
-          </block>
-        </value>
-      </block>
+    <category name="Loops">
       <block type="controls_for">
         <value name="FROM">
           <block type="math_number">
@@ -792,6 +788,15 @@ function init() {
         </value>
       </block>
       <block type="controls_whileUntil"></block>
+    </category>
+    <category name="Timed">
+      <block type="base_delay">
+        <value name="DELAY_TIME">
+          <block type="math_number">
+            <field name="NUM">1000</field>
+          </block>
+        </value>
+      </block>
     </category>
     <category name="Math">
       <block type="math_number"></block>
