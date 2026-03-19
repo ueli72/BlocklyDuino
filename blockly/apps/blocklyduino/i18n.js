@@ -68,6 +68,9 @@ var i18n = {
       var key = el.getAttribute('data-i18n-title');
       el.title = i18n.t(key);
     });
+    
+    updateToolboxCategories();
+    updateToolboxTree();
   }
 };
 
@@ -84,17 +87,9 @@ function initI18n() {
     targetLang = browserLang;
   }
   
-  if (targetLang !== 'en' && !i18n.translations[targetLang]) {
-    loadLanguageScript(targetLang, function() {
-      i18n.currentLang = targetLang;
-      i18n.updateUI();
-      updateLanguageSelector();
-    });
-  } else {
-    i18n.currentLang = targetLang;
-    i18n.updateUI();
-    updateLanguageSelector();
-  }
+  i18n.currentLang = targetLang;
+  updateToolboxCategories();
+  updateLanguageSelector();
 }
 
 function setLanguage(lang) {
@@ -104,12 +99,25 @@ function setLanguage(lang) {
       localStorage.setItem('blocklyduino_lang', lang);
       i18n.updateUI();
       updateLanguageSelector();
+      // Update toolbox tree after a small delay to ensure DOM is ready
+      setTimeout(function() {
+        updateToolboxTree();
+        if (typeof addToolboxIcons === 'function') {
+          addToolboxIcons();
+        }
+      }, 100);
     });
   } else {
     i18n.currentLang = lang;
     localStorage.setItem('blocklyduino_lang', lang);
     i18n.updateUI();
     updateLanguageSelector();
+    setTimeout(function() {
+      updateToolboxTree();
+      if (typeof addToolboxIcons === 'function') {
+        addToolboxIcons();
+      }
+    }, 100);
   }
 }
 
@@ -130,4 +138,41 @@ function updateLanguageSelector() {
   if (selector) {
     selector.value = i18n.currentLang;
   }
+}
+
+function updateToolboxCategories() {
+  var toolboxXml = document.getElementById('toolbox');
+  if (!toolboxXml) return;
+  
+  var categories = toolboxXml.querySelectorAll('category[data-i18n-name]');
+  categories.forEach(function(category) {
+    var key = category.getAttribute('data-i18n-name');
+    var translation = i18n.t(key);
+    category.setAttribute('name', translation);
+  });
+}
+
+function updateToolboxTree() {
+  // Update the DOM elements directly
+  var labels = document.querySelectorAll('.blocklyTreeLabel');
+  labels.forEach(function(label) {
+    var currentText = label.textContent.trim();
+    var translationKey = findTranslationKey(currentText);
+    if (translationKey) {
+      var translation = i18n.t(translationKey);
+      label.textContent = translation;
+    }
+  });
+}
+
+function findTranslationKey(text) {
+  var categories = i18n.translations['en'] && i18n.translations['en'].categories;
+  if (!categories) return null;
+  
+  for (var key in categories) {
+    if (categories[key] === text) {
+      return 'categories.' + key;
+    }
+  }
+  return null;
 }

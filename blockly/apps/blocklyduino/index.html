@@ -42,6 +42,7 @@
   <script type="text/javascript" src="block_info.js"></script>
   <script type="text/javascript" src="i18n.js"></script>
   <script type="text/javascript" src="lang/en.js"></script>
+  <script type="text/javascript" src="lang/de.js"></script>
   <script type="text/javascript" src="templates.js"></script>
   <script type="text/javascript" src="blockly_helper.js"></script>
   <script type="text/javascript" src="chrome-flyout-fix.js"></script>
@@ -305,8 +306,13 @@ function addToolboxIcons() {
     var text = label.textContent.trim();
     if (!text) return;
     
-    // Check if this is a subcategory (SG90 Servo, Internal LED, or Button)
-    var isSubcategory = text === 'SG90 Servo' || text === 'Internal LED' || text === 'Button';
+    // Check if this is a subcategory using translated names
+    var sg90Text = i18n.t('categories.sg90Servo');
+    var ledText = i18n.t('categories.internalLED');
+    var buttonText = i18n.t('categories.button');
+    var playgroundText = i18n.t('categories.playground');
+    
+    var isSubcategory = text === sg90Text || text === ledText || text === buttonText;
     
     // Add class for subcategories
     if (isSubcategory) {
@@ -314,7 +320,7 @@ function addToolboxIcons() {
     }
     
     // Only Playground has subcategories - add arrow
-    if (text === 'Playground') {
+    if (text === playgroundText) {
       var arrow = row.querySelector('.tree-arrow');
       if (!arrow) {
         var rowContainer = row.parentElement;
@@ -329,18 +335,18 @@ function addToolboxIcons() {
     // Add icons for other categories
     var iconClass = '';
     var iconText = null;
-    if (text === 'Logic') iconClass = 'bi-diagram-3';
-    else if (text === 'Constants') iconText = 'π';
-    else if (text === 'Loops') iconClass = 'bi-arrow-repeat';
-    else if (text === 'Timed') iconClass = 'bi-clock';
-    else if (text === 'Math') iconClass = 'bi-calculator';
-    else if (text === 'Text') iconClass = 'bi-type';
-    else if (text === 'Variables') iconText = 'x';
-    else if (text === 'Functions') iconText = 'f(x)';
-    else if (text === 'Input/Output') iconClass = 'bi-arrow-left-right';
-    else if (text === 'SG90 Servo') iconClass = 'bi-gear';
-    else if (text === 'Internal LED') iconClass = 'bi-lightbulb-fill';
-    else if (text === 'Button') iconClass = 'bi-toggle-off';
+    if (text === i18n.t('categories.logic')) iconClass = 'bi-diagram-3';
+    else if (text === i18n.t('categories.constants')) iconText = 'π';
+    else if (text === i18n.t('categories.loops')) iconClass = 'bi-arrow-repeat';
+    else if (text === i18n.t('categories.timed')) iconClass = 'bi-clock';
+    else if (text === i18n.t('categories.math')) iconClass = 'bi-calculator';
+    else if (text === i18n.t('categories.text')) iconClass = 'bi-type';
+    else if (text === i18n.t('categories.variables')) iconText = 'x';
+    else if (text === i18n.t('categories.functions')) iconText = 'f(x)';
+    else if (text === i18n.t('categories.inputOutput')) iconClass = 'bi-arrow-left-right';
+    else if (text === sg90Text) iconClass = 'bi-gear';
+    else if (text === ledText) iconClass = 'bi-lightbulb-fill';
+    else if (text === buttonText) iconClass = 'bi-toggle-off';
     
     if (iconClass || iconText) {
       var icon = row.querySelector('.toolbox-icon');
@@ -365,12 +371,13 @@ function addToolboxIcons() {
 }
 
 function updateTreeArrows() {
+  var playgroundText = i18n.t('categories.playground');
   var playgroundRow = document.querySelector('.blocklyTreeLabel');
-  if (!playgroundRow || playgroundRow.textContent.trim() !== 'Playground') {
+  if (!playgroundRow || playgroundRow.textContent.trim() !== playgroundText) {
     playgroundRow = null;
     var labels = document.querySelectorAll('.blocklyTreeLabel');
     labels.forEach(function(l) {
-      if (l.textContent.trim() === 'Playground') {
+      if (l.textContent.trim() === playgroundText) {
         playgroundRow = l;
       }
     });
@@ -450,6 +457,9 @@ function initBlockly() {
   };
   window.addEventListener('resize', onresize, false);
 
+  // Translate toolbox categories before injection
+  updateToolboxCategories();
+
   var toolbox = document.getElementById('toolbox');
   Blockly.inject(document.getElementById('content_blocks'),
       {grid:
@@ -462,7 +472,10 @@ function initBlockly() {
        sounds: false});
 
   // Add icons to toolbox categories
-  setTimeout(addToolboxIcons, 200);
+  setTimeout(function() {
+    updateToolboxTree();
+    addToolboxIcons();
+  }, 200);
   
   // Watch for tree changes
   setTimeout(observeTreeChanges, 300);
@@ -702,8 +715,8 @@ function initBlockly() {
       </span>
       <div class="ms-auto d-flex align-items-center gap-2">
         <select class="form-select form-select-sm" id="languageSelector" onchange="setLanguage(this.value)" style="width: auto;">
-          <option value="en">English</option>
-          <option value="de">Deutsch</option>
+          <option value="en">🇬🇧 English</option>
+          <option value="de">🇩🇪 Deutsch</option>
         </select>
       </div>
     </div>
@@ -874,18 +887,18 @@ function initBlockly() {
   </div>
 
   <xml id="toolbox" style="display: none">
-    <category name="Logic">
+    <category name="Logic" data-i18n-name="categories.logic">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
       <block type="logic_negate"></block>
       <block type="logic_null"></block>
     </category>
-    <category name="Constants">
+    <category name="Constants" data-i18n-name="categories.constants">
       <block type="constants_true"></block>
       <block type="constants_false"></block>
     </category>
-    <category name="Loops">
+    <category name="Loops" data-i18n-name="categories.loops">
       <block type="controls_for">
         <value name="FROM">
           <block type="math_number">
@@ -900,7 +913,7 @@ function initBlockly() {
       </block>
       <block type="controls_whileUntil"></block>
     </category>
-    <category name="Timed">
+    <category name="Timed" data-i18n-name="categories.timed">
       <block type="base_delay">
         <value name="DELAY_TIME">
           <block type="math_number">
@@ -909,7 +922,7 @@ function initBlockly() {
         </value>
       </block>
     </category>
-    <category name="Math">
+    <category name="Math" data-i18n-name="categories.math">
       <block type="math_number"></block>
       <block type="math_arithmetic"></block>
       <block type="base_map">
@@ -920,13 +933,13 @@ function initBlockly() {
         </value>
       </block>
     </category>
-    <category name="Text">
+    <category name="Text" data-i18n-name="categories.text">
       <block type="text"></block>
     </category>
-    <category name="Variables" custom="VARIABLE"></category>
-    <category name="Functions" custom="PROCEDURE"></category>
+    <category name="Variables" custom="VARIABLE" data-i18n-name="categories.variables"></category>
+    <category name="Functions" custom="PROCEDURE" data-i18n-name="categories.functions"></category>
     <sep></sep>
-    <category name="Input/Output">
+    <category name="Input/Output" data-i18n-name="categories.inputOutput">
       <block type="inout_highlow"></block>
       <block type="inout_digital_write"></block>
       <block type="inout_digital_read"></block>
@@ -954,8 +967,8 @@ function initBlockly() {
       </block>
       <block type="inout_notone"></block>
     </category>
-    <category name="Playground">
-      <category name="SG90 Servo">
+    <category name="Playground" data-i18n-name="categories.playground">
+      <category name="SG90 Servo" data-i18n-name="categories.sg90Servo">
         <block type="servo_sg90_init"></block>
         <block type="servo_sg90_move">
           <value name="DEGREE">
@@ -966,7 +979,7 @@ function initBlockly() {
         </block>
         <block type="servo_sg90_read_degrees"></block>
       </category>
-      <category name="Internal LED">
+      <category name="Internal LED" data-i18n-name="categories.internalLED">
         <block type="internal_led_init"></block>
         <block type="internal_led_set">
           <value name="RED">
@@ -987,7 +1000,7 @@ function initBlockly() {
         </block>
         <block type="internal_led_off"></block>
       </category>
-      <category name="Button">
+      <category name="Button" data-i18n-name="categories.button">
         <block type="button_init"></block>
         <block type="button_read"></block>
       </category>

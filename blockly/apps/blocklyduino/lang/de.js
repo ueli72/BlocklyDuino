@@ -47,7 +47,7 @@ i18n.registerTranslations('de', {
     "variables": "Variablen",
     "functions": "Funktionen",
     "inputOutput": "Eingabe/Ausgabe",
-    "playground": "Spielwiese",
+    "playground": "Playground",
     "sg90Servo": "SG90 Servo",
     "internalLED": "Interne LED",
     "button": "Taster"
