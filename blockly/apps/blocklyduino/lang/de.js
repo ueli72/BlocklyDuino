@@ -50,7 +50,8 @@ i18n.registerTranslations('de', {
     "playground": "Playground",
     "sg90Servo": "SG90 Servo",
     "internalLED": "Interne LED",
-    "button": "Taster"
+    "button": "Taster",
+    "ledMatrix": "LED Matrix"
   },
   "blocks": {
     "servoInit": "Initialisieren",
@@ -85,6 +86,10 @@ i18n.registerTranslations('de', {
     "servoMove": "Servos müssen initialisiert werden, bevor sie bewegt werden können.",
     "servoRead": "Servos müssen initialisiert werden, bevor sie gelesen werden können.",
     "ledSet": "Die interne LED muss initialisiert werden, bevor die Farbe gesetzt werden kann.",
-    "ledOff": "Die interne LED muss initialisiert werden, bevor sie ausgeschaltet werden kann."
+    "ledOff": "Die interne LED muss initialisiert werden, bevor sie ausgeschaltet werden kann.",
+    "ledMatrixSetPixel": "Die LED Matrix muss initialisiert werden, bevor Pixel gesetzt werden können.",
+    "ledMatrixFill": "Die LED Matrix muss initialisiert werden, bevor sie gefüllt werden kann.",
+    "ledMatrixShow": "Die LED Matrix muss initialisiert werden, bevor sie angezeigt werden kann.",
+    "ledMatrixOff": "Die LED Matrix muss initialisiert werden, bevor sie ausgeschaltet werden kann."
   }
 });

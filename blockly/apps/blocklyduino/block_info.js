@@ -54,6 +54,22 @@ var BLOCK_DEPENDENCIES = {
   'internal_led_off': {
     requires: 'internal_led_init',
     message: 'dependencies.ledOff'
+  },
+  'led_matrix_set_pixel': {
+    requires: 'led_matrix_init',
+    message: 'dependencies.ledMatrixSetPixel'
+  },
+  'led_matrix_fill': {
+    requires: 'led_matrix_init',
+    message: 'dependencies.ledMatrixFill'
+  },
+  'led_matrix_show': {
+    requires: 'led_matrix_init',
+    message: 'dependencies.ledMatrixShow'
+  },
+  'led_matrix_off': {
+    requires: 'led_matrix_init',
+    message: 'dependencies.ledMatrixOff'
   }
 };
 

@@ -113,6 +113,9 @@ async function doSaveProject(fileName) {
   if (arduinoCode.includes('initializeButtons') || arduinoCode.includes('readButton')) {
     newMain += '#include "buttons.h"\n';
   }
+  if (arduinoCode.includes('initializeLEDMatrix') || arduinoCode.includes('setLEDMatrixPixel') || arduinoCode.includes('fillLEDMatrix') || arduinoCode.includes('showLEDMatrix') || arduinoCode.includes('turnOffLEDMatrix')) {
+    newMain += '#include "LEDMatrix.h"\n';
+  }
   newMain += '\n' + arduinoCode;
   zip.file('src/main.cpp', newMain);
 
