@@ -55,83 +55,46 @@ function saveProject() {
 */
 async function doSaveProject(fileName) {
   var boardId = document.getElementById('boardSelector').value;
-  var arduinoCode = Blockly.Arduino.workspaceToCode();
+  var arduinoCode = Blockly.Arduino.workspaceToCode(Blockly.mainWorkspace);
 
   var zip = new JSZip();
 
-  // Fetch template files from server
-  try {
-    var response = await fetch('/template/' + boardId);
-    if (response.ok) {
-      var templateFiles = await response.json();
-      
-      // Add all template files to ZIP
-      for (var filepath in templateFiles) {
-        // Replace main.cpp with generated code
-        if (filepath === 'src/main.cpp') {
-          // Keep the includes from template but replace the rest
-          var templateMain = templateFiles[filepath];
-          var includeSection = templateMain.match(/#include[^\n]+\n/g);
-          var newMain = '#include <Arduino.h>\n';
-          if (includeSection) {
-            newMain = includeSection.join('') + '\n';
-          }
-          newMain += arduinoCode;
-          zip.file(filepath, newMain);
-        } else {
-          zip.file(filepath, templateFiles[filepath]);
+  // Get template from embedded templates
+  var template = BOARD_TEMPLATES[boardId];
+  
+  if (template) {
+    // Add all template files to ZIP
+    for (var filepath in template) {
+      // Replace src/main.cpp with generated code
+      if (filepath === 'src/main.cpp') {
+        var newMain = '#include <Arduino.h>\n';
+        // Add includes for servo and LED if used
+        if (arduinoCode.includes('initializeServos') || arduinoCode.includes('setServoAngle') || arduinoCode.includes('readServoAngle')) {
+          newMain += '#include "servos.h"\n';
         }
+        if (arduinoCode.includes('initializeLED') || arduinoCode.includes('setLED') || arduinoCode.includes('turnOffLED')) {
+          newMain += '#include "internalLED.h"\n';
+        }
+        newMain += '\n' + arduinoCode;
+        zip.file(filepath, newMain);
+      } else {
+        zip.file(filepath, template[filepath]);
       }
-    } else {
-      // Fallback to simple project structure if template not found
-      throw new Error('Template not found');
     }
-  } catch (e) {
-    // Fallback for Arduino Uno or if template fetch fails
+  } else {
+    // Fallback for unknown boards
     var mainCpp = '#include <Arduino.h>\n\n' + arduinoCode;
     zip.file('src/main.cpp', mainCpp);
 
-    var platformioContent = '';
-    if (boardId === 'arduino-uno') {
-      platformioContent = `; PlatformIO Project Configuration File
-; https://docs.platformio.org/page/projectconf.html
-
-[env:uno]
-platform = atmelavr
-board = uno
-framework = arduino
-monitor_speed = 9600
-lib_deps = 
-    arduino-libraries/Servo@^1.1.8
-`;
-    } else {
-      platformioContent = `; PlatformIO Project Configuration File
-; https://docs.platformio.org/page/projectconf.html
-
-[env:esp32-s3-devkitc-1]
-platform = espressif32
-board = esp32-s3-devkitc-1
-framework = arduino
-monitor_speed = 115200
-lib_deps = 
-    arduino-libraries/Servo@^1.1.8
-`;
-    }
+    var platformioContent = '; PlatformIO Project Configuration File\n; https://docs.platformio.org/page/projectconf.html\n\n[env:uno]\nplatform = atmelavr\nboard = uno\nframework = arduino\nmonitor_speed = 9600\n';
     zip.file('platformio.ini', platformioContent);
-
     zip.file('.vscode/settings.json', JSON.stringify({
       "editor.tabSize": 2,
       "files.associations": {
         "*.ino": "cpp"
       }
     }, null, 2));
-
-    zip.file('.gitignore', `.pio
-.vscode/.browse.c_cpp.db*
-.vscode/c_cpp_properties.json
-.vscode/launch.json
-.vscode/ipch
-`);
+    zip.file('.gitignore', '.pio\n.vscode/.browse.c_cpp.db*\n.vscode/c_cpp_properties.json\n.vscode/launch.json\n.vscode/ipch\n');
   }
 
   // Generate ZIP and trigger download
