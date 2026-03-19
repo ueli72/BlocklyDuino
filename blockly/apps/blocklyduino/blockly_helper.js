@@ -65,27 +65,24 @@ async function doSaveProject(fileName) {
   if (template) {
     // Add all template files to ZIP
     for (var filepath in template) {
-      // Replace src/main.cpp with generated code
-      if (filepath === 'src/main.cpp') {
-        var newMain = '#include <Arduino.h>\n';
-        // Add includes for servo and LED if used
-        if (arduinoCode.includes('initializeServos') || arduinoCode.includes('setServoAngle') || arduinoCode.includes('readServoAngle')) {
-          newMain += '#include "servos.h"\n';
-        }
-        if (arduinoCode.includes('initializeLED') || arduinoCode.includes('setLED') || arduinoCode.includes('turnOffLED')) {
-          newMain += '#include "internalLED.h"\n';
-        }
-        newMain += '\n' + arduinoCode;
-        zip.file(filepath, newMain);
-      } else {
-        zip.file(filepath, template[filepath]);
-      }
+      zip.file(filepath, template[filepath]);
     }
-  } else {
-    // Fallback for unknown boards
-    var mainCpp = '#include <Arduino.h>\n\n' + arduinoCode;
-    zip.file('src/main.cpp', mainCpp);
+  }
 
+  // Always add src/main.cpp with generated code
+  var newMain = '#include <Arduino.h>\n';
+  // Add includes for servo and LED if used
+  if (arduinoCode.includes('initializeServos') || arduinoCode.includes('setServoAngle') || arduinoCode.includes('readServoAngle')) {
+    newMain += '#include "servos.h"\n';
+  }
+  if (arduinoCode.includes('initializeLED') || arduinoCode.includes('setLED') || arduinoCode.includes('turnOffLED')) {
+    newMain += '#include "internalLED.h"\n';
+  }
+  newMain += '\n' + arduinoCode;
+  zip.file('src/main.cpp', newMain);
+
+  if (!template) {
+    // Fallback for unknown boards - add platformio.ini and other files
     var platformioContent = '; PlatformIO Project Configuration File\n; https://docs.platformio.org/page/projectconf.html\n\n[env:uno]\nplatform = atmelavr\nboard = uno\nframework = arduino\nmonitor_speed = 9600\n';
     zip.file('platformio.ini', platformioContent);
     zip.file('.vscode/settings.json', JSON.stringify({
