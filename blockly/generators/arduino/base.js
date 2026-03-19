@@ -139,6 +139,29 @@ Blockly.Arduino.servo_read_degrees = function() {
   return code;
 };
 
+Blockly.Arduino.servo_sg90_move = function() {
+  var dropdown_pin = this.getFieldValue('PIN');
+  var value_degree = Blockly.Arduino.valueToCode(this, 'DEGREE', Blockly.Arduino.ORDER_ATOMIC);
+
+  Blockly.Arduino.definitions_['define_servo'] = '#include <Servo.h>\n';
+  Blockly.Arduino.definitions_['var_sg90_servo' + dropdown_pin] = 'Servo sg90_servo_' + dropdown_pin + ';\n';
+  Blockly.Arduino.setups_['setup_sg90_servo_' + dropdown_pin] = 'sg90_servo_' + dropdown_pin + '.attach(' + dropdown_pin + ');\n';
+
+  var code = 'sg90_servo_' + dropdown_pin + '.write(' + value_degree + ');\n';
+  return code;
+};
+
+Blockly.Arduino.servo_sg90_read_degrees = function() {
+  var dropdown_pin = this.getFieldValue('PIN');
+
+  Blockly.Arduino.definitions_['define_servo'] = '#include <Servo.h>\n';
+  Blockly.Arduino.definitions_['var_sg90_servo' + dropdown_pin] = 'Servo sg90_servo_'+dropdown_pin+';\n';
+  Blockly.Arduino.setups_['setup_sg90_servo_' + dropdown_pin] = 'sg90_servo_' + dropdown_pin + '.attach(' + dropdown_pin + ');\n';
+
+  var code = 'sg90_servo_' + dropdown_pin + '.read()';
+  return code;
+};
+
 Blockly.Arduino.serial_print = function() {
   var content = Blockly.Arduino.valueToCode(this, 'CONTENT', Blockly.Arduino.ORDER_ATOMIC) || '0'
   //content = content.replace('(','').replace(')','');

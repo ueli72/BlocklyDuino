@@ -212,6 +212,42 @@ Blockly.Blocks['servo_read_degrees'] = {
   }
 };
 
+Blockly.Blocks['servo_sg90_move'] = {
+  helpUrl: 'http://www.arduino.cc/playground/ComponentLib/servo',
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("SG90 Servo")
+        .appendField(new Blockly.FieldImage("../../media/sg90.jpg", 64, 64))
+        .appendField("PIN#")
+        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+    this.appendValueInput("DEGREE", 'Number')
+        .setCheck('Number')
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Degree (0~180)");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('SG90 servo move between 0~180 degree');
+  }
+};
+
+Blockly.Blocks['servo_sg90_read_degrees'] = {
+  helpUrl: 'http://www.arduino.cc/playground/ComponentLib/servo',
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("SG90 Servo")
+        .appendField(new Blockly.FieldImage("../../media/sg90.jpg", 64, 64))
+        .appendField("PIN#")
+        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Read Degrees")
+    this.setOutput(true, 'Number');
+    this.setTooltip('return that degree with the last SG90 servo move.');
+  }
+};
+
 Blockly.Blocks['serial_print'] = {
   helpUrl: 'http://www.arduino.cc/en/Serial/Print',
   init: function() {
