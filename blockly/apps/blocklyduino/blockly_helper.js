@@ -44,6 +44,74 @@ function saveCode() {
 }
 
 /**
+* Save complete PlatformIO project as ZIP.
+*/
+async function saveProject() {
+  var fileName = window.prompt('What would you like to name your project?', 'MyProject');
+  if (!fileName) {
+    return;
+  }
+
+  var boardId = document.getElementById('boardSelector').value;
+  var arduinoCode = Blockly.Arduino.workspaceToCode();
+
+  var zip = new JSZip();
+
+  // Create src folder with main.cpp
+  var mainCpp = '#include <Arduino.h>\n\n' + arduinoCode;
+  zip.file('src/main.cpp', mainCpp);
+
+  // Create platformio.ini based on board selection
+  var platformioContent = '';
+  if (boardId === 'esp32-s3-devkitc1') {
+    platformioContent = `; PlatformIO Project Configuration File
+; https://docs.platformio.org/page/projectconf.html
+
+[env:esp32-s3-devkitc1]
+platform = espressif32
+board = esp32-s3-devkitc1
+framework = arduino
+monitor_speed = 115200
+lib_deps = 
+    arduino-libraries/Servo@^1.1.8
+`;
+  } else if (boardId === 'arduino-uno') {
+    platformioContent = `; PlatformIO Project Configuration File
+; https://docs.platformio.org/page/projectconf.html
+
+[env:uno]
+platform = atmelavr
+board = uno
+framework = arduino
+monitor_speed = 9600
+lib_deps = 
+    arduino-libraries/Servo@^1.1.8
+`;
+  }
+  zip.file('platformio.ini', platformioContent);
+
+  // Create .vscode folder with settings.json
+  zip.file('.vscode/settings.json', JSON.stringify({
+    "editor.tabSize": 2,
+    "files.associations": {
+      "*.ino": "cpp"
+    }
+  }, null, 2));
+
+  // Create .gitignore
+  zip.file('.gitignore', `.pio
+.vscode/.browse.c_cpp.db*
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.vscode/ipch
+`);
+
+  // Generate ZIP and trigger download
+  var content = await zip.generateAsync({type: 'blob'});
+  saveAs(content, fileName + '.zip');
+}
+
+/**
  * Save blocks to local file.
  * better include Blob and FileSaver for browser compatibility
  */
@@ -124,6 +192,21 @@ function auto_save_and_restore_blocks() {
   document.getElementById('fakeload').onclick = function() {
     loadInput.click();
   };
+
+  // Init board selector event
+  var boardSelector = document.getElementById('boardSelector');
+  if (boardSelector) {
+    boardSelector.addEventListener('change', function() {
+      var boardId = this.value;
+      if (boardId === 'esp32-s3-devkitc1') {
+        profile['default'] = profile['esp32'];
+      } else if (boardId === 'arduino-uno') {
+        profile['default'] = profile['arduino'];
+      }
+    });
+    // Set initial profile based on default selection
+    profile['default'] = profile['esp32'];
+  }
 }
 
 /**
