@@ -16,17 +16,17 @@ var BLOCK_INFO = {
   },
   'servo_sg90_init': {
     title: 'SG90 Servo',
-    message: 'This block initializes all 3 SG90 servos.\n\nPins used:\n• Servo1: GPIO37\n• Servo2: GPIO38\n• Servo3: GPIO45',
+    message: 'The servos only work with an external power-source of 5 to 6 volts.\n\nThis block initializes all 3 SG90 servos.\n\nPins used:\n• Servo1: GPIO37\n• Servo2: GPIO38\n• Servo3: GPIO45',
     includes: ['servos.h']
   },
   'servo_sg90_move': {
     title: 'SG90 Servo',
-    message: 'This block moves a servo to a specific angle (0-180 degrees).',
+    message: 'The servos only work with an external power-source of 5 to 6 volts.\n\nThis block moves a servo to a specific angle (0-180 degrees).',
     includes: ['servos.h']
   },
   'servo_sg90_read_degrees': {
     title: 'SG90 Servo',
-    message: 'This block reads the current angle of a servo.',
+    message: 'The servos only work with an external power-source of 5 to 6 volts.\n\nThis block reads the current angle of a servo.',
     includes: ['servos.h']
   }
 };
