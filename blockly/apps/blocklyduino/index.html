@@ -236,27 +236,134 @@ function renderContent() {
  * Add icons to toolbox categories.
  */
 function addToolboxIcons() {
-  var icons = {
-    'Logic': '\uF3B5',      // bi-diagram-3
-    'Constants': '\uF2D2',  // bi-lightbulb
-    'Control': '\uF298',    // bi-clock
-    'Math': '\uF2C6',       // bi-calculator
-    'Text': '\uF6F7',       // bi-type
-    'Variables': '\uF3A5',  // bi-boxes
-    'Functions': '\uF2D6',  // bi-code-square
-    'Input/Output': '\uF1C4', // bi-cpu
-    'Playground': '\uF52A'  // bi-controller
-  };
+  var toolbox = document.querySelector('.blocklyToolboxDiv');
+  if (!toolbox) {
+    setTimeout(addToolboxIcons, 100);
+    return;
+  }
   
-  setTimeout(function() {
+  var treeRows = document.querySelectorAll('.blocklyTreeRow');
+  if (treeRows.length === 0) {
+    setTimeout(addToolboxIcons, 100);
+    return;
+  }
+  
+  treeRows.forEach(function(row) {
+    var label = row.querySelector('.blocklyTreeLabel');
+    if (!label) return;
+    
+    var text = label.textContent.trim();
+    if (!text) return;
+    
+    // Check if this is a subcategory (SG90 Servo or Internal LED)
+    var isSubcategory = text === 'SG90 Servo' || text === 'Internal LED';
+    
+    // Add indentation for subcategories
+    if (isSubcategory) {
+      row.style.setProperty('padding-left', '24px', 'important');
+      row.style.setProperty('margin-left', '8px', 'important');
+      row.style.setProperty('background-color', '#f8f9fa', 'important');
+    }
+    
+    // Only Playground has subcategories - add arrow
+    if (text === 'Playground') {
+      var arrow = row.querySelector('.tree-arrow');
+      if (!arrow) {
+        var rowContainer = row.parentElement;
+        var isExpanded = rowContainer && rowContainer.getAttribute('aria-expanded') === 'true';
+        arrow = document.createElement('i');
+        arrow.className = 'bi ' + (isExpanded ? 'bi-chevron-down' : 'bi-chevron-right') + ' tree-arrow';
+        arrow.style.display = 'inline-block';
+        arrow.style.marginRight = '8px';
+        label.parentNode.insertBefore(arrow, label);
+      }
+      return; // Skip icon for Playground
+    }
+    
+    // Add icons for other categories
+    var iconClass = '';
+    if (text === 'Logic') iconClass = 'bi-diagram-3';
+    else if (text === 'Constants') iconClass = 'bi-lightbulb';
+    else if (text === 'Control') iconClass = 'bi-clock';
+    else if (text === 'Math') iconClass = 'bi-calculator';
+    else if (text === 'Text') iconClass = 'bi-type';
+    else if (text === 'Variables') iconClass = 'bi-boxes';
+    else if (text === 'Functions') iconClass = 'bi-code-square';
+    else if (text === 'Input/Output') iconClass = 'bi-cpu';
+    else if (text === 'SG90 Servo') iconClass = 'bi-gear';
+    else if (text === 'Internal LED') iconClass = 'bi-lightbulb-fill';
+    
+    if (iconClass) {
+      var icon = row.querySelector('.toolbox-icon');
+      if (!icon) {
+        icon = document.createElement('i');
+        icon.className = 'bi ' + iconClass + ' toolbox-icon';
+        icon.style.display = 'inline-block';
+        icon.style.marginRight = '8px';
+        label.parentNode.insertBefore(icon, label);
+      }
+    }
+  });
+  
+  updateTreeArrows();
+}
+
+function updateTreeArrows() {
+  var playgroundRow = document.querySelector('.blocklyTreeLabel');
+  if (!playgroundRow || playgroundRow.textContent.trim() !== 'Playground') {
+    playgroundRow = null;
     var labels = document.querySelectorAll('.blocklyTreeLabel');
-    labels.forEach(function(label) {
-      var text = label.textContent;
-      if (icons[text]) {
-        label.innerHTML = '<span class="toolbox-icon">' + icons[text] + '</span> ' + text;
+    labels.forEach(function(l) {
+      if (l.textContent.trim() === 'Playground') {
+        playgroundRow = l;
       }
     });
-  }, 100);
+  }
+  
+  if (playgroundRow) {
+    var row = playgroundRow.closest('.blocklyTreeRow');
+    var arrow = row ? row.querySelector('.tree-arrow') : null;
+    if (arrow) {
+      var rowContainer = row.parentElement;
+      var isExpanded = rowContainer && rowContainer.getAttribute('aria-expanded') === 'true';
+      arrow.className = 'bi ' + (isExpanded ? 'bi-chevron-down' : 'bi-chevron-right') + ' tree-arrow';
+    }
+  }
+}
+
+// Watch for tree changes and update arrows
+var toolboxObserverTimeout = null;
+function observeTreeChanges() {
+  var toolbox = document.querySelector('.blocklyToolboxDiv');
+  if (!toolbox) {
+    setTimeout(observeTreeChanges, 100);
+    return;
+  }
+  
+  // Use MutationObserver to watch for DOM changes
+  var observer = new MutationObserver(function(mutations) {
+    // Debounce: only run once after changes stop
+    if (toolboxObserverTimeout) {
+      clearTimeout(toolboxObserverTimeout);
+    }
+    toolboxObserverTimeout = setTimeout(function() {
+      addToolboxIcons();
+    }, 100);
+  });
+  
+  observer.observe(toolbox, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['class']
+  });
+  
+  // Also update arrows on click
+  toolbox.addEventListener('click', function(e) {
+    setTimeout(updateTreeArrows, 50);
+  });
+  
+  updateTreeArrows();
 }
 
 /**
@@ -297,7 +404,10 @@ function init() {
        sounds: false});
 
   // Add icons to toolbox categories
-  addToolboxIcons();
+  setTimeout(addToolboxIcons, 200);
+  
+  // Watch for tree changes
+  setTimeout(observeTreeChanges, 300);
 
   auto_save_and_restore_blocks();
 
@@ -433,12 +543,17 @@ function init() {
     }
     
     .toolbox-icon {
-      font-family: "bootstrap-icons" !important;
       margin-right: 8px;
       font-size: 14px;
       vertical-align: middle;
-      display: inline-block;
-      width: 18px;
+      display: inline-block !important;
+    }
+    
+    .tree-arrow {
+      margin-right: 8px;
+      font-size: 12px;
+      color: #6c757d;
+      display: inline-block !important;
     }
     
     .blocklyFlyoutBackground {
@@ -469,6 +584,35 @@ function init() {
     
     .blocklyTreeSelected .blocklyTreeLabel {
       color: white !important;
+    }
+    
+    .blocklyTreeSelected .tree-arrow {
+      color: white !important;
+    }
+    
+    /* Subcategory styling - nested categories */
+    .blocklyTree .blocklyTree .blocklyTreeRow {
+      padding-left: 24px !important;
+      margin-left: 8px !important;
+      margin-right: 4px !important;
+      background-color: #f8f9fa !important;
+    }
+    
+    .blocklyTree .blocklyTree .blocklyTreeRow:hover {
+      background-color: #e9ecef !important;
+    }
+    
+    .blocklyTree .blocklyTree .blocklyTreeRow.blocklyTreeSelected {
+      background-color: #0d6efd !important;
+    }
+    
+    .blocklyTree .blocklyTree .blocklyTreeLabel {
+      font-size: 12px !important;
+      font-weight: 400 !important;
+    }
+    
+    .blocklyTree .blocklyTree .toolbox-icon {
+      font-size: 13px !important;
     }
     
     /* Flyout styling */
@@ -694,34 +838,38 @@ function init() {
       <block type="inout_notone"></block>
     </category>
     <category name="Playground">
-      <block type="servo_sg90_init"></block>
-      <block type="servo_sg90_move">
-        <value name="DEGREE">
-          <block type="math_number">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-      </block>
-      <block type="servo_sg90_read_degrees"></block>
-      <block type="internal_led_init"></block>
-      <block type="internal_led_set">
-        <value name="RED">
-          <block type="math_number">
-            <field name="NUM">255</field>
-          </block>
-        </value>
-        <value name="GREEN">
-          <block type="math_number">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-        <value name="BLUE">
-          <block type="math_number">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-      </block>
-      <block type="internal_led_off"></block>
+      <category name="SG90 Servo">
+        <block type="servo_sg90_init"></block>
+        <block type="servo_sg90_move">
+          <value name="DEGREE">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+        </block>
+        <block type="servo_sg90_read_degrees"></block>
+      </category>
+      <category name="Internal LED">
+        <block type="internal_led_init"></block>
+        <block type="internal_led_set">
+          <value name="RED">
+            <block type="math_number">
+              <field name="NUM">255</field>
+            </block>
+          </value>
+          <value name="GREEN">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+          <value name="BLUE">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+        </block>
+        <block type="internal_led_off"></block>
+      </category>
     </category>
   </xml>
   <script src="lib/bootstrap.bundle.min.js"></script>

@@ -27,7 +27,7 @@ Blockly.Blocks.program_structure = {};
 
 Blockly.Blocks['arduino_setup'] = {
   init: function() {
-    this.setColour(120);
+    this.setColour(210);
     this.appendDummyInput()
         .appendField("Setup");
     this.appendStatementInput("SETUP_CODE")
