@@ -31,6 +31,29 @@ var BLOCK_INFO = {
   }
 };
 
+var BLOCK_DEPENDENCIES = {
+  'button_read': {
+    requires: 'button_init',
+    message: 'Buttons must be initialized before they can be read.'
+  },
+  'servo_sg90_move': {
+    requires: 'servo_sg90_init',
+    message: 'Servos must be initialized before they can be moved.'
+  },
+  'servo_sg90_read_degrees': {
+    requires: 'servo_sg90_init',
+    message: 'Servos must be initialized before they can be read.'
+  },
+  'internal_led_set': {
+    requires: 'internal_led_init',
+    message: 'Internal LED must be initialized before setting color.'
+  },
+  'internal_led_off': {
+    requires: 'internal_led_init',
+    message: 'Internal LED must be initialized before turning off.'
+  }
+};
+
 var seenBlocks = new Set();
 
 function getBlockInfo(blockType) {
@@ -55,4 +78,45 @@ function getRequiredIncludes() {
   }
   
   return Array.from(includes);
+}
+
+function hasBlockDependency(blockType) {
+  return BLOCK_DEPENDENCIES.hasOwnProperty(blockType);
+}
+
+function getBlockDependency(blockType) {
+  return BLOCK_DEPENDENCIES[blockType] || null;
+}
+
+function checkDependencySatisfied(blockType) {
+  var dep = getBlockDependency(blockType);
+  if (!dep) return { satisfied: true };
+  
+  var blocks = Blockly.mainWorkspace.getAllBlocks();
+  for (var i = 0; i < blocks.length; i++) {
+    if (blocks[i].type === dep.requires) {
+      return { satisfied: true };
+    }
+  }
+  
+  return { satisfied: false, message: dep.message, requires: dep.requires };
+}
+
+function checkAllDependencies() {
+  var unsatisfied = [];
+  var blocks = Blockly.mainWorkspace.getAllBlocks();
+  var checkedBlocks = new Set();
+  
+  for (var i = 0; i < blocks.length; i++) {
+    var blockType = blocks[i].type;
+    if (hasBlockDependency(blockType) && !checkedBlocks.has(blockType)) {
+      checkedBlocks.add(blockType);
+      var result = checkDependencySatisfied(blockType);
+      if (!result.satisfied) {
+        unsatisfied.push(result);
+      }
+    }
+  }
+  
+  return unsatisfied;
 }

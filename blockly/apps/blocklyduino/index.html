@@ -112,6 +112,36 @@ function showBlockInfoModal(title, message) {
   modal.show();
 }
 
+function showBlockWarningModal(message, onContinue) {
+  document.activeElement.blur();
+  var modalEl = document.getElementById('blockWarningModal');
+  var modal = new bootstrap.Modal(modalEl);
+  document.getElementById('blockWarningMessage').textContent = message;
+  
+  var okBtn = document.getElementById('blockWarningOk');
+  
+  var handleOk = function() {
+    document.activeElement.blur();
+    modal.hide();
+    if (onContinue) onContinue();
+    cleanup();
+  };
+  
+  var cleanup = function() {
+    okBtn.removeEventListener('click', handleOk);
+    modalEl.removeEventListener('hidden.bs.modal', cleanup);
+  };
+  
+  modalEl.addEventListener('hide.bs.modal', function() {
+    document.activeElement.blur();
+  }, { once: true });
+  
+  okBtn.addEventListener('click', handleOk);
+  modalEl.addEventListener('hidden.bs.modal', cleanup);
+  
+  modal.show();
+}
+
 /**
  * Show a prompt modal dialog with input field.
  * @param {string} message Message to display.
@@ -796,6 +826,27 @@ function init() {
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Block Warning Modal -->
+  <div class="modal fade" id="blockWarningModal" tabindex="-1" aria-labelledby="blockWarningModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-danger bg-opacity-25">
+          <h5 class="modal-title" id="blockWarningModalLabel">
+            <i class="bi bi-exclamation-circle text-danger me-2"></i><span id="blockWarningTitle">Missing Dependency</span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <pre id="blockWarningMessage" style="white-space: pre-wrap; font-family: inherit; margin: 0;"></pre>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="blockWarningCancel">Cancel</button>
+          <button type="button" class="btn btn-primary" id="blockWarningOk">Continue</button>
         </div>
       </div>
     </div>

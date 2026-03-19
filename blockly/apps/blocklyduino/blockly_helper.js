@@ -45,6 +45,24 @@ function saveCode() {
 * Save complete PlatformIO project as ZIP.
 */
 function saveProject() {
+  // Check for unsatisfied dependencies first
+  var unsatisfied = checkAllDependencies();
+  if (unsatisfied.length > 0) {
+    var warningMessage = 'The following dependencies are missing:\n\n';
+    for (var i = 0; i < unsatisfied.length; i++) {
+      warningMessage += '• ' + unsatisfied[i].message + '\n';
+    }
+    warningMessage += '\nYour code may not work correctly. Continue anyway?';
+    showBlockWarningModal(warningMessage, function() {
+      proceedWithDownload();
+    });
+    return;
+  }
+  
+  proceedWithDownload();
+}
+
+function proceedWithDownload() {
   var includes = getRequiredIncludes();
   if (includes.length > 0) {
     var summaryMessage = 'The following includes will be added to main.cpp:\n\n';
@@ -258,11 +276,22 @@ function setupBlockInfoListener() {
       var block = blocks[i];
       currentBlockIds[block.id] = block.type;
       
-      if (!lastBlockIds[block.id] && hasBlockInfo(block.type) && !seenBlocks.has(block.type)) {
-        seenBlocks.add(block.type);
-        var info = getBlockInfo(block.type);
-        if (info) {
-          showBlockInfoModal(info.title, info.message);
+      if (!lastBlockIds[block.id]) {
+        // Check for block info
+        if (hasBlockInfo(block.type) && !seenBlocks.has(block.type)) {
+          seenBlocks.add(block.type);
+          var info = getBlockInfo(block.type);
+          if (info) {
+            showBlockInfoModal(info.title, info.message);
+          }
+        }
+        
+        // Check for dependency
+        if (hasBlockDependency(block.type)) {
+          var depResult = checkDependencySatisfied(block.type);
+          if (!depResult.satisfied) {
+            showBlockWarningModal(depResult.message);
+          }
         }
       }
     }
