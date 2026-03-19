@@ -1,32 +1,35 @@
 var BLOCK_INFO = {
   'internal_led_init': {
-    title: 'Internal RGB LED',
-    message: 'Be careful. On the DEV-Board there is a solderable jumper that needs to be connected to make the internal RGB-LED work.',
+    title: 'blockInfo.internalLED.title',
+    message: 'blockInfo.internalLED.message',
     includes: ['internalLED.h']
   },
   'internal_led_set': {
-    title: 'Internal RGB LED',
-    message: 'Be careful. On the DEV-Board there is a solderable jumper that needs to be connected to make the internal RGB-LED work.',
+    title: 'blockInfo.internalLED.title',
+    message: 'blockInfo.internalLED.message',
     includes: ['internalLED.h']
   },
   'internal_led_off': {
-    title: 'Internal RGB LED',
-    message: 'Be careful. On the DEV-Board there is a solderable jumper that needs to be connected to make the internal RGB-LED work.',
+    title: 'blockInfo.internalLED.title',
+    message: 'blockInfo.internalLED.message',
     includes: ['internalLED.h']
   },
   'servo_sg90_init': {
-    title: 'SG90 Servo',
-    message: 'The servos only work with an external power-source of 5 to 6 volts.\n\nThis block initializes all 3 SG90 servos.\n\nPins used:\n• Servo1: GPIO37\n• Servo2: GPIO38\n• Servo3: GPIO45',
+    title: 'blockInfo.servo.title',
+    message: 'blockInfo.servo.message',
+    initMessage: 'blockInfo.servo.initMessage',
     includes: ['servos.h']
   },
   'servo_sg90_move': {
-    title: 'SG90 Servo',
-    message: 'The servos only work with an external power-source of 5 to 6 volts.\n\nThis block moves a servo to a specific angle (0-180 degrees).',
+    title: 'blockInfo.servo.title',
+    message: 'blockInfo.servo.message',
+    moveMessage: 'blockInfo.servo.moveMessage',
     includes: ['servos.h']
   },
   'servo_sg90_read_degrees': {
-    title: 'SG90 Servo',
-    message: 'The servos only work with an external power-source of 5 to 6 volts.\n\nThis block reads the current angle of a servo.',
+    title: 'blockInfo.servo.title',
+    message: 'blockInfo.servo.message',
+    readMessage: 'blockInfo.servo.readMessage',
     includes: ['servos.h']
   }
 };
@@ -34,23 +37,23 @@ var BLOCK_INFO = {
 var BLOCK_DEPENDENCIES = {
   'button_read': {
     requires: 'button_init',
-    message: 'Buttons must be initialized before they can be read.'
+    message: 'dependencies.buttonRead'
   },
   'servo_sg90_move': {
     requires: 'servo_sg90_init',
-    message: 'Servos must be initialized before they can be moved.'
+    message: 'dependencies.servoMove'
   },
   'servo_sg90_read_degrees': {
     requires: 'servo_sg90_init',
-    message: 'Servos must be initialized before they can be read.'
+    message: 'dependencies.servoRead'
   },
   'internal_led_set': {
     requires: 'internal_led_init',
-    message: 'Internal LED must be initialized before setting color.'
+    message: 'dependencies.ledSet'
   },
   'internal_led_off': {
     requires: 'internal_led_init',
-    message: 'Internal LED must be initialized before turning off.'
+    message: 'dependencies.ledOff'
   }
 };
 

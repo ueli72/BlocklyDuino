@@ -40,6 +40,8 @@
   <script type="text/javascript" src="FileSaver.min.js"></script>
   <script type="text/javascript" src="jszip.min.js"></script>
   <script type="text/javascript" src="block_info.js"></script>
+  <script type="text/javascript" src="i18n.js"></script>
+  <script type="text/javascript" src="lang/en.js"></script>
   <script type="text/javascript" src="templates.js"></script>
   <script type="text/javascript" src="blockly_helper.js"></script>
   <script type="text/javascript" src="chrome-flyout-fix.js"></script>
@@ -208,7 +210,7 @@ function tabClick(clickedName) {
     try {
       xmlDom = Blockly.Xml.textToDom(xmlText);
     } catch (e) {
-      showConfirmModal('Error parsing XML:\n' + e + '\n\nAbandon changes?', function() {
+      showConfirmModal(i18n.t('messages.errorParsingXML', { error: e }) + '\n\n' + i18n.t('messages.abandonChanges'), function() {
         // User confirmed - abandon changes
         switchTab(clickedName);
       });
@@ -424,10 +426,12 @@ function observeTreeChanges() {
  * Initialize Blockly.  Called on page load.
  */
 function init() {
-  //window.onbeforeunload = function() {
-  //  return 'Leaving this page will result in the loss of your work.';
-  //};
+  // Initialize i18n first
+  initI18n();
+  initBlockly();
+}
 
+function initBlockly() {
   var container = document.querySelector('.main-content');
   var onresize = function(e) {
     var bBox = {
@@ -691,11 +695,17 @@ function init() {
   <nav class="navbar navbar-expand navbar-light bg-white shadow-sm">
     <div class="container-fluid">
       <a class="navbar-brand text-primary" href="https://github.com/gasolin/BlocklyDuino/wiki">
-        <i class="bi bi-cpu"></i> BlocklyDuino
+        <i class="bi bi-cpu"></i> <span data-i18n="app.title">BlocklyDuino</span>
       </a>
-      <span class="navbar-text text-muted small d-none d-md-inline">
+      <span class="navbar-text text-muted small d-none d-md-inline" data-i18n="app.subtitle">
         Visual Programming for Arduino
       </span>
+      <div class="ms-auto d-flex align-items-center gap-2">
+        <select class="form-select form-select-sm" id="languageSelector" onchange="setLanguage(this.value)" style="width: auto;">
+          <option value="en">English</option>
+          <option value="de">Deutsch</option>
+        </select>
+      </div>
     </div>
   </nav>
 
@@ -705,17 +715,17 @@ function init() {
         <ul class="nav nav-tabs border-0" id="mainTabs">
           <li class="nav-item">
             <a class="nav-link active" id="tab_blocks" href="#" onclick="tabClick('blocks'); return false;">
-              <i class="bi bi-grid-3x3-gap"></i> Blocks
+              <i class="bi bi-grid-3x3-gap"></i> <span data-i18n="tabs.blocks">Blocks</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" id="tab_arduino" href="#" onclick="tabClick('arduino'); return false;">
-              <i class="bi bi-code-slash"></i> Arduino
+              <i class="bi bi-code-slash"></i> <span data-i18n="tabs.arduino">Arduino</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" id="tab_xml" href="#" onclick="tabClick('xml'); return false;">
-              <i class="bi bi-file-code"></i> XML
+              <i class="bi bi-file-code"></i> <span data-i18n="tabs.xml">XML</span>
             </a>
           </li>
         </ul>
@@ -725,21 +735,21 @@ function init() {
             <option value="arduino-uno">Arduino Uno</option>
           </select>
           <div class="btn-group btn-group-sm" role="group">
-            <button type="button" class="btn btn-primary" onclick="saveProject()" title="Download project as zip to be used in VSCode with PlatformIO">
-              <i class="bi bi-download"></i> Download
+            <button type="button" class="btn btn-primary" onclick="saveProject()" data-i18n-title="toolbar.download">
+              <i class="bi bi-download"></i> <span data-i18n="toolbar.download">Download</span>
             </button>
           </div>
           <div class="btn-group btn-group-sm" role="group">
-            <button type="button" class="btn btn-outline-secondary" onclick="discard()" title="Discard changes">
+            <button type="button" class="btn btn-outline-secondary" onclick="discard()" data-i18n-title="toolbar.discard">
               <i class="bi bi-trash"></i>
             </button>
           </div>
           <div class="btn-group btn-group-sm" role="group">
-            <button type="button" class="btn btn-outline-primary" onclick="save()" title="Save XML">
-              <i class="bi bi-save"></i> Save
+            <button type="button" class="btn btn-outline-primary" onclick="save()" data-i18n-title="toolbar.save">
+              <i class="bi bi-save"></i> <span data-i18n="toolbar.save">Save</span>
             </button>
-            <button type="button" class="btn btn-outline-primary" id="fakeload" title="Load XML">
-              <i class="bi bi-folder2-open"></i> Load
+            <button type="button" class="btn btn-outline-primary" id="fakeload" data-i18n-title="toolbar.load">
+              <i class="bi bi-folder2-open"></i> <span data-i18n="toolbar.load">Load</span>
             </button>
           </div>
           <input type="file" id="load" style="display: none;"/>
@@ -759,14 +769,14 @@ function init() {
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="confirmModalLabel">Confirm</h5>
+          <h5 class="modal-title" id="confirmModalLabel" data-i18n="modals.confirm">Confirm</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" id="confirmModalBody">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="confirmModalCancel">Cancel</button>
-          <button type="button" class="btn btn-primary" id="confirmModalOk">OK</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="confirmModalCancel" data-i18n="modals.cancel">Cancel</button>
+          <button type="button" class="btn btn-primary" id="confirmModalOk" data-i18n="modals.ok">OK</button>
         </div>
       </div>
     </div>
@@ -778,14 +788,14 @@ function init() {
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="alertModalLabel">
-            <i class="bi bi-info-circle text-primary me-2"></i>Info
+            <i class="bi bi-info-circle text-primary me-2"></i><span data-i18n="modals.info">Info</span>
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" id="alertModalBody">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-i18n="modals.ok">OK</button>
         </div>
       </div>
     </div>
@@ -796,7 +806,7 @@ function init() {
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="promptModalLabel">Input Required</h5>
+          <h5 class="modal-title" id="promptModalLabel" data-i18n="modals.inputRequired">Input Required</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -804,8 +814,8 @@ function init() {
           <input type="text" class="form-control" id="promptModalInput" placeholder="">
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="promptModalCancel">Cancel</button>
-          <button type="button" class="btn btn-primary" id="promptModalOk">OK</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="promptModalCancel" data-i18n="modals.cancel">Cancel</button>
+          <button type="button" class="btn btn-primary" id="promptModalOk" data-i18n="modals.ok">OK</button>
         </div>
       </div>
     </div>
@@ -825,7 +835,7 @@ function init() {
           <pre id="blockInfoMessage" style="white-space: pre-wrap; font-family: inherit; margin: 0;"></pre>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-i18n="modals.ok">OK</button>
         </div>
       </div>
     </div>
@@ -837,9 +847,20 @@ function init() {
       <div class="modal-content">
         <div class="modal-header bg-danger bg-opacity-25">
           <h5 class="modal-title" id="blockWarningModalLabel">
-            <i class="bi bi-exclamation-circle text-danger me-2"></i><span id="blockWarningTitle">Missing Dependency</span>
+            <i class="bi bi-exclamation-circle text-danger me-2"></i><span id="blockWarningTitle" data-i18n="modals.missingDependency">Missing Dependency</span>
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <pre id="blockWarningMessage" style="white-space: pre-wrap; font-family: inherit; margin: 0;"></pre>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="blockWarningCancel" data-i18n="modals.cancel">Cancel</button>
+          <button type="button" class="btn btn-primary" id="blockWarningOk" data-i18n="modals.continue">Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
         </div>
         <div class="modal-body">
           <pre id="blockWarningMessage" style="white-space: pre-wrap; font-family: inherit; margin: 0;"></pre>

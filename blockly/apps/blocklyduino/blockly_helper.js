@@ -7,7 +7,7 @@ function runJS() {
   try {
     eval(code);
   } catch (e) {
-    showAlertModal('Program error:\n' + e);
+    showAlertModal(i18n.t('messages.programError', { error: e }));
   }
 }
 
@@ -48,11 +48,11 @@ function saveProject() {
   // Check for unsatisfied dependencies first
   var unsatisfied = checkAllDependencies();
   if (unsatisfied.length > 0) {
-    var warningMessage = 'The following dependencies are missing:\n\n';
+    var depList = '';
     for (var i = 0; i < unsatisfied.length; i++) {
-      warningMessage += '• ' + unsatisfied[i].message + '\n';
+      depList += '• ' + i18n.t(unsatisfied[i].message) + '\n';
     }
-    warningMessage += '\nYour code may not work correctly. Continue anyway?';
+    var warningMessage = i18n.t('messages.dependencyWarning', { dependencies: depList });
     showBlockWarningModal(warningMessage, function() {
       proceedWithDownload();
     });
@@ -65,18 +65,18 @@ function saveProject() {
 function proceedWithDownload() {
   var includes = getRequiredIncludes();
   if (includes.length > 0) {
-    var summaryMessage = 'The following includes will be added to main.cpp:\n\n';
+    var includeList = '';
     for (var i = 0; i < includes.length; i++) {
-      summaryMessage += '• #include "' + includes[i] + '"\n';
+      includeList += '• #include "' + includes[i] + '"\n';
     }
-    summaryMessage += '\nContinue with download?';
+    var summaryMessage = i18n.t('messages.downloadSummary', { includes: includeList });
     showConfirmModal(summaryMessage, function() {
-      showPromptModal('What would you like to name your project?', 'MyProject', function(fileName) {
+      showPromptModal(i18n.t('messages.projectName'), 'MyProject', function(fileName) {
         doSaveProject(fileName);
       });
     });
   } else {
-    showPromptModal('What would you like to name your project?', 'MyProject', function(fileName) {
+    showPromptModal(i18n.t('messages.projectName'), 'MyProject', function(fileName) {
       doSaveProject(fileName);
     });
   }
@@ -141,7 +141,7 @@ async function doSaveProject(fileName) {
 function save() {
   var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
   var data = Blockly.Xml.domToText(xml);
-  showPromptModal('What would you like to name your file?', 'BlocklyDuino', function(fileName) {
+  showPromptModal(i18n.t('messages.fileName'), 'BlocklyDuino', function(fileName) {
     var blob = new Blob([data], {type: 'text/xml'});
     saveAs(blob, fileName + ".xml");
   });
@@ -166,12 +166,12 @@ function load(event) {
       try {
         var xml = Blockly.Xml.textToDom(target.result);
       } catch (e) {
-        showAlertModal('Error parsing XML:\n' + e);
+        showAlertModal(i18n.t('messages.errorParsingXML', { error: e }));
         return;
       }
       var count = Blockly.mainWorkspace.getAllBlocks().length;
       if (count) {
-        showConfirmModal('Replace existing blocks?\n"Cancel" will merge.', function() {
+        showConfirmModal(i18n.t('messages.replaceBlocks'), function() {
           Blockly.mainWorkspace.clear();
           loadXmlToWorkspace(xml);
         });
@@ -201,7 +201,7 @@ function discard() {
   if (count < 2) {
     clearWorkspace();
   } else {
-    showConfirmModal('Delete all ' + count + ' blocks?', function() {
+    showConfirmModal(i18n.t('messages.deleteAllBlocks', { count: count }), function() {
       clearWorkspace();
     });
   }
@@ -282,7 +282,9 @@ function setupBlockInfoListener() {
           seenBlocks.add(block.type);
           var info = getBlockInfo(block.type);
           if (info) {
-            showBlockInfoModal(info.title, info.message);
+            var title = i18n.t(info.title);
+            var message = i18n.t(info.message);
+            showBlockInfoModal(title, message);
           }
         }
         
@@ -290,7 +292,8 @@ function setupBlockInfoListener() {
         if (hasBlockDependency(block.type)) {
           var depResult = checkDependencySatisfied(block.type);
           if (!depResult.satisfied) {
-            showBlockWarningModal(depResult.message);
+            var message = i18n.t(depResult.message);
+            showBlockWarningModal(message);
           }
         }
       }
@@ -386,12 +389,12 @@ function onSuccess() {
       try {
       var xml = Blockly.Xml.textToDom(ajax.responseText);
       } catch (e) {
-        showAlertModal('Error parsing XML:\n' + e);
+        showAlertModal(i18n.t('messages.errorParsingXML', { error: e }));
         return;
       }
       var count = Blockly.mainWorkspace.getAllBlocks().length;
       if (count) {
-        showConfirmModal('Replace existing blocks?\n"Cancel" will merge.', function() {
+        showConfirmModal(i18n.t('messages.replaceBlocks'), function() {
           Blockly.mainWorkspace.clear();
           Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
         });
@@ -399,7 +402,7 @@ function onSuccess() {
       }
       Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
     } else {
-      showAlertModal("Server error");
+      showAlertModal(i18n.t('messages.serverError'));
     }
   }
 }
@@ -407,7 +410,7 @@ function onSuccess() {
 function load_by_url(uri) {
   ajax = createAJAX();
   if (!ajax) {
-    showAlertModal('Not compatible with XMLHttpRequest');
+    showAlertModal(i18n.t('messages.notCompatible'));
     return 0;
   }
   if (ajax.overrideMimeType) {
