@@ -1,0 +1,62 @@
+/**
+ * @license
+ * Visual Blocks Editor
+ *
+ * Copyright 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @fileoverview SG90 Servo blocks.
+ */
+'use strict';
+
+Blockly.Blocks = Blockly.Blocks || {};
+Blockly.Blocks.sg90 = {};
+
+Blockly.Blocks['servo_sg90_move'] = {
+  helpUrl: 'http://www.arduino.cc/playground/ComponentLib/servo',
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("SG90 Servo")
+        .appendField(new Blockly.FieldImage("../../media/sg90.jpg", 64, 64))
+        .appendField("PIN#")
+        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+    this.appendValueInput("DEGREE", 'Number')
+        .setCheck('Number')
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Degree (0~180)");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('SG90 servo move between 0~180 degree');
+  }
+};
+
+Blockly.Blocks['servo_sg90_read_degrees'] = {
+  helpUrl: 'http://www.arduino.cc/playground/ComponentLib/servo',
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("SG90 Servo")
+        .appendField(new Blockly.FieldImage("../../media/sg90.jpg", 64, 64))
+        .appendField("PIN#")
+        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Read Degrees")
+    this.setOutput(true, 'Number');
+    this.setTooltip('return that degree with the last SG90 servo move.');
+  }
+};
