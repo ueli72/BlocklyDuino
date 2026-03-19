@@ -28,6 +28,12 @@ var sg90_servo_constants = {
   '45': 'SERVO3'
 };
 
+Blockly.Arduino.servo_sg90_init = function() {
+  Blockly.Arduino.definitions_['include_servos_h'] = '#include "servos.h"\n';
+  var code = 'initializeServos();\n';
+  return code;
+};
+
 Blockly.Arduino.servo_sg90_move = function() {
   var dropdown_pin = this.getFieldValue('PIN');
   var value_degree = Blockly.Arduino.valueToCode(this, 'DEGREE', Blockly.Arduino.ORDER_ATOMIC);
@@ -36,14 +42,13 @@ Blockly.Arduino.servo_sg90_move = function() {
   if (servo_constant) {
     // Use existing servos.cpp functions for predefined servos
     Blockly.Arduino.definitions_['include_servos_h'] = '#include "servos.h"\n';
-    Blockly.Arduino.setups_['init_servos'] = 'initializeServos();\n';
     var code = 'setServoAngle(' + servo_constant + ', ' + value_degree + ');\n';
   } else {
     // Fallback for other pins
     Blockly.Arduino.definitions_['define_servo'] = '#include <Servo.h>\n';
     Blockly.Arduino.definitions_['var_sg90_servo' + dropdown_pin] = 'Servo sg90_servo_' + dropdown_pin + ';\n';
-    Blockly.Arduino.setups_['setup_sg90_servo_' + dropdown_pin] = 'sg90_servo_' + dropdown_pin + '.attach(' + dropdown_pin + ');\n';
-    var code = 'sg90_servo_' + dropdown_pin + '.write(' + value_degree + ');\n';
+    var code = 'sg90_servo_' + dropdown_pin + '.attach(' + dropdown_pin + ');\n';
+    code += 'sg90_servo_' + dropdown_pin + '.write(' + value_degree + ');\n';
   }
   return code;
 };
@@ -55,14 +60,12 @@ Blockly.Arduino.servo_sg90_read_degrees = function() {
   if (servo_constant) {
     // Use existing servos.cpp for predefined servos
     Blockly.Arduino.definitions_['include_servos_h'] = '#include "servos.h"\n';
-    Blockly.Arduino.setups_['init_servos'] = 'initializeServos();\n';
     // Note: servos.cpp doesn't have a read function, return servo constant
     var code = servo_constant + ' // Servo' + servo_constant.replace('SERVO', '') + ' - use setServoAngle() to set position';
   } else {
     // Fallback for other pins
     Blockly.Arduino.definitions_['define_servo'] = '#include <Servo.h>\n';
     Blockly.Arduino.definitions_['var_sg90_servo' + dropdown_pin] = 'Servo sg90_servo_' + dropdown_pin + ';\n';
-    Blockly.Arduino.setups_['setup_sg90_servo_' + dropdown_pin] = 'sg90_servo_' + dropdown_pin + '.attach(' + dropdown_pin + ');\n';
     var code = 'sg90_servo_' + dropdown_pin + '.read()';
   }
   return code;

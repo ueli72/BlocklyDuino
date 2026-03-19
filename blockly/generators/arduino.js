@@ -135,10 +135,18 @@ Blockly.Arduino.init = function(workspace) {
  * @return {string} Completed code.
  */
 Blockly.Arduino.finish = function(code) {
-  // Indent every line.
-  code = '  ' + code.replace(/\n/g, '\n  ');
-  code = code.replace(/\n\s+$/, '\n');
-  code = 'void loop() \n{\n' + code + '\n}';
+  // Find setup and loop blocks in the workspace
+  var setupBlock = null;
+  var loopBlock = null;
+  var blocks = Blockly.mainWorkspace.getAllBlocks();
+  for (var i = 0; i < blocks.length; i++) {
+    if (blocks[i].type === 'arduino_setup') {
+      setupBlock = blocks[i];
+    }
+    if (blocks[i].type === 'arduino_loop') {
+      loopBlock = blocks[i];
+    }
+  }
 
   // Convert the definitions dictionary into a list.
   var imports = [];
@@ -152,14 +160,39 @@ Blockly.Arduino.finish = function(code) {
     }
   }
 
-  // Convert the setups dictionary into a list.
+  // Convert the setups dictionary into a list (only if no setup block)
   var setups = [];
-  for (var name in Blockly.Arduino.setups_) {
-    setups.push(Blockly.Arduino.setups_[name]);
+  if (!setupBlock) {
+    for (var name in Blockly.Arduino.setups_) {
+      setups.push(Blockly.Arduino.setups_[name]);
+    }
   }
 
-  var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n') + '\nvoid setup() \n{\n  '+setups.join('\n  ') + '\n}'+ '\n\n';
-  return allDefs.replace(/\n\n+/g, '\n\n').replace(/\n*$/, '\n\n\n') + code;
+  var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n');
+
+  // Generate setup function
+  var setupCode = '';
+  if (setupBlock) {
+    setupCode = Blockly.Arduino.statementToCode(setupBlock, 'SETUP_CODE');
+  } else {
+    setupCode = setups.join('\n  ');
+  }
+
+  // Generate loop function
+  var loopCode = '';
+  if (loopBlock) {
+    loopCode = Blockly.Arduino.statementToCode(loopBlock, 'LOOP_CODE');
+  } else {
+    // Fallback to old behavior if no loop block
+    code = '  ' + code.replace(/\n/g, '\n  ');
+    code = code.replace(/\n\s+$/, '\n');
+    loopCode = code;
+  }
+
+  var setupFunc = 'void setup() \n{\n  ' + setupCode + '\n}\n\n';
+  var loopFunc = 'void loop() \n{\n  ' + loopCode + '\n}\n';
+
+  return allDefs + '\n' + setupFunc + loopFunc;
 };
 
 /**

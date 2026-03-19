@@ -197,6 +197,8 @@ function discard() {
   var count = Blockly.mainWorkspace.getAllBlocks().length;
   if (count < 2 || window.confirm('Delete all ' + count + ' blocks?')) {
     Blockly.mainWorkspace.clear();
+    // Recreate setup and loop blocks
+    window.setTimeout(ensureProgramStructure, 50);
     renderContent();
   }
 }
@@ -232,6 +234,47 @@ function auto_save_and_restore_blocks() {
     });
     // Set initial profile based on default selection
     profile['default'] = profile['esp32'];
+  }
+
+  // Ensure setup and loop blocks exist
+  window.setTimeout(ensureProgramStructure, 100);
+}
+
+/**
+ * Ensure setup and loop blocks are present in the workspace.
+ */
+function ensureProgramStructure() {
+  if (!Blockly.mainWorkspace) {
+    return;
+  }
+
+  var blocks = Blockly.mainWorkspace.getAllBlocks();
+  var hasSetup = false;
+  var hasLoop = false;
+
+  for (var i = 0; i < blocks.length; i++) {
+    if (blocks[i].type === 'arduino_setup') {
+      hasSetup = true;
+    }
+    if (blocks[i].type === 'arduino_loop') {
+      hasLoop = true;
+    }
+  }
+
+  // Create setup block if missing
+  if (!hasSetup) {
+    var setupBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'arduino_setup');
+    setupBlock.initSvg();
+    setupBlock.render();
+    setupBlock.moveBy(20, 20);
+  }
+
+  // Create loop block if missing - positioned horizontally next to setup
+  if (!hasLoop) {
+    var loopBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'arduino_loop');
+    loopBlock.initSvg();
+    loopBlock.render();
+    loopBlock.moveBy(250, 20);
   }
 }
 

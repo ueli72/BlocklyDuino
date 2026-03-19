@@ -37,6 +37,20 @@ function getSg90Pins() {
   return pins;
 }
 
+Blockly.Blocks['servo_sg90_init'] = {
+  helpUrl: 'http://www.arduino.cc/playground/ComponentLib/servo',
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("SG90 Servo")
+        .appendField(new Blockly.FieldImage("../../media/sg90.jpg", 64, 64))
+        .appendField("Initialize");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('Initialize all SG90 servos');
+  }
+};
+
 Blockly.Blocks['servo_sg90_move'] = {
   helpUrl: 'http://www.arduino.cc/playground/ComponentLib/servo',
   init: function() {
