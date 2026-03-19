@@ -25,6 +25,18 @@
 Blockly.Blocks = Blockly.Blocks || {};
 Blockly.Blocks.sg90 = {};
 
+function getSg90Pins() {
+  var pins = [
+    ["Servo1 (GPIO37)", "37"],
+    ["Servo2 (GPIO38)", "38"],
+    ["Servo3 (GPIO45)", "45"]
+  ];
+  if (typeof profile !== 'undefined' && profile.default && profile.default.digital) {
+    pins = pins.concat(profile.default.digital);
+  }
+  return pins;
+}
+
 Blockly.Blocks['servo_sg90_move'] = {
   helpUrl: 'http://www.arduino.cc/playground/ComponentLib/servo',
   init: function() {
@@ -33,7 +45,7 @@ Blockly.Blocks['servo_sg90_move'] = {
         .appendField("SG90 Servo")
         .appendField(new Blockly.FieldImage("../../media/sg90.jpg", 64, 64))
         .appendField("PIN#")
-        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+        .appendField(new Blockly.FieldDropdown(getSg90Pins), "PIN")
     this.appendValueInput("DEGREE", 'Number')
         .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -52,7 +64,7 @@ Blockly.Blocks['servo_sg90_read_degrees'] = {
         .appendField("SG90 Servo")
         .appendField(new Blockly.FieldImage("../../media/sg90.jpg", 64, 64))
         .appendField("PIN#")
-        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        .appendField(new Blockly.FieldDropdown(getSg90Pins), "PIN");
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Read Degrees")
