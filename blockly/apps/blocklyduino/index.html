@@ -14,6 +14,7 @@
   <script type="text/javascript" src="../../blocks/variables.js"></script>
   <script type="text/javascript" src="../../blocks/constants.js"></script>
   <script type="text/javascript" src="../../blocks/playground/sg90.js"></script>
+  <script type="text/javascript" src="../../blocks/playground/internal_led.js"></script>
   <script type="text/javascript" src="../../generators/arduino.js"></script>
   <script type="text/javascript" src="../../generators/arduino/base.js"></script>
   <script type="text/javascript" src="../../generators/arduino/control.js"></script>
@@ -24,6 +25,7 @@
   <script type="text/javascript" src="../../generators/arduino/variables.js"></script>
   <script type="text/javascript" src="../../generators/arduino/constants.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/sg90.js"></script>
+  <script type="text/javascript" src="../../generators/arduino/playground/internal_led.js"></script>
   <script type="text/javascript" src="../../msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
@@ -320,7 +322,7 @@ function init() {
             <td id="tab_xml" class="taboff" onclick="tabClick('xml')">XML</td>
             <td class="tabmax">
               <select id="boardSelector">
-                <option value="esp32-s3-devkitc1">ESP32 S3 DevKit C1</option>
+                <option value="esp32-s3-devkitc1">BWS Playground Master</option>
                 <option value="arduino-uno">Arduino Uno</option>
               </select>
               <button onclick="saveProject()" title="Download project as zip to be used in VSCode with PlatformIO">Download</button>
@@ -432,6 +434,25 @@ function init() {
         </value>
       </block>
       <block type="servo_sg90_read_degrees"></block>
+      <block type="internal_led_init"></block>
+      <block type="internal_led_set">
+        <value name="RED">
+          <block type="math_number">
+            <field name="NUM">255</field>
+          </block>
+        </value>
+        <value name="GREEN">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+        <value name="BLUE">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+      </block>
+      <block type="internal_led_off"></block>
     </category>
   </xml>
 </body>

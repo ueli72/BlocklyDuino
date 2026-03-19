@@ -2,7 +2,7 @@
   "boards": [
     {
       "id": "esp32-s3-devkitc1",
-      "name": "ESP32 S3 DevKit C1",
+      "name": "BWS Playground Master",
       "profile": "esp32",
       "directory": "boards/esp32-s3-devkitc1"
     },
