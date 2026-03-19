@@ -57,26 +57,41 @@ async function saveProject() {
 
   var zip = new JSZip();
 
-  // Create src folder with main.cpp
-  var mainCpp = '#include <Arduino.h>\n\n' + arduinoCode;
-  zip.file('src/main.cpp', mainCpp);
+  // Fetch template files from server
+  try {
+    var response = await fetch('/template/' + boardId);
+    if (response.ok) {
+      var templateFiles = await response.json();
+      
+      // Add all template files to ZIP
+      for (var filepath in templateFiles) {
+        // Replace main.cpp with generated code
+        if (filepath === 'src/main.cpp') {
+          // Keep the includes from template but replace the rest
+          var templateMain = templateFiles[filepath];
+          var includeSection = templateMain.match(/#include[^\n]+\n/g);
+          var newMain = '#include <Arduino.h>\n';
+          if (includeSection) {
+            newMain = includeSection.join('') + '\n';
+          }
+          newMain += arduinoCode;
+          zip.file(filepath, newMain);
+        } else {
+          zip.file(filepath, templateFiles[filepath]);
+        }
+      }
+    } else {
+      // Fallback to simple project structure if template not found
+      throw new Error('Template not found');
+    }
+  } catch (e) {
+    // Fallback for Arduino Uno or if template fetch fails
+    var mainCpp = '#include <Arduino.h>\n\n' + arduinoCode;
+    zip.file('src/main.cpp', mainCpp);
 
-  // Create platformio.ini based on board selection
-  var platformioContent = '';
-  if (boardId === 'esp32-s3-devkitc1') {
-    platformioContent = `; PlatformIO Project Configuration File
-; https://docs.platformio.org/page/projectconf.html
-
-[env:esp32-s3-devkitc1]
-platform = espressif32
-board = esp32-s3-devkitc1
-framework = arduino
-monitor_speed = 115200
-lib_deps = 
-    arduino-libraries/Servo@^1.1.8
-`;
-  } else if (boardId === 'arduino-uno') {
-    platformioContent = `; PlatformIO Project Configuration File
+    var platformioContent = '';
+    if (boardId === 'arduino-uno') {
+      platformioContent = `; PlatformIO Project Configuration File
 ; https://docs.platformio.org/page/projectconf.html
 
 [env:uno]
@@ -87,24 +102,35 @@ monitor_speed = 9600
 lib_deps = 
     arduino-libraries/Servo@^1.1.8
 `;
-  }
-  zip.file('platformio.ini', platformioContent);
+    } else {
+      platformioContent = `; PlatformIO Project Configuration File
+; https://docs.platformio.org/page/projectconf.html
 
-  // Create .vscode folder with settings.json
-  zip.file('.vscode/settings.json', JSON.stringify({
-    "editor.tabSize": 2,
-    "files.associations": {
-      "*.ino": "cpp"
+[env:esp32-s3-devkitc-1]
+platform = espressif32
+board = esp32-s3-devkitc-1
+framework = arduino
+monitor_speed = 115200
+lib_deps = 
+    arduino-libraries/Servo@^1.1.8
+`;
     }
-  }, null, 2));
+    zip.file('platformio.ini', platformioContent);
 
-  // Create .gitignore
-  zip.file('.gitignore', `.pio
+    zip.file('.vscode/settings.json', JSON.stringify({
+      "editor.tabSize": 2,
+      "files.associations": {
+        "*.ino": "cpp"
+      }
+    }, null, 2));
+
+    zip.file('.gitignore', `.pio
 .vscode/.browse.c_cpp.db*
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
 `);
+  }
 
   // Generate ZIP and trigger download
   var content = await zip.generateAsync({type: 'blob'});

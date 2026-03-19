@@ -89,12 +89,42 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
         """Send page text"""
-        if self.path != "/":
-            return http.server.SimpleHTTPRequestHandler.do_GET(self)
-        else:
+        if self.path == "/":
             self.send_response(302)
             self.send_header("Location", "/blockly/apps/blocklyduino/index.html")
             self.end_headers()
+        elif self.path == "/template/esp32-s3-devkitc1":
+            self.serve_template("esp32-s3-devkitc1")
+        elif self.path == "/template/arduino-uno":
+            self.serve_template("arduino-uno")
+        else:
+            return http.server.SimpleHTTPRequestHandler.do_GET(self)
+
+    def serve_template(self, board_id):
+        """Serve template files for a board as JSON"""
+        template_dir = os.path.join(os.path.dirname(__file__), "boards", board_id)
+        if not os.path.exists(template_dir):
+            self.send_response(404)
+            self.end_headers()
+            return
+
+        import json
+        files = {}
+        for root, dirs, filenames in os.walk(template_dir):
+            for filename in filenames:
+                filepath = os.path.join(root, filename)
+                relpath = os.path.relpath(filepath, template_dir)
+                try:
+                    with open(filepath, 'r', encoding='utf-8') as f:
+                        files[relpath] = f.read()
+                except:
+                    pass
+
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.end_headers()
+        self.wfile.write(json.dumps(files).encode('utf-8'))
 
     def do_POST(self):
         """Save new page text and display it"""
