@@ -233,6 +233,33 @@ function renderContent() {
 }
 
 /**
+ * Add icons to toolbox categories.
+ */
+function addToolboxIcons() {
+  var icons = {
+    'Logic': '\uF3B5',      // bi-diagram-3
+    'Constants': '\uF2D2',  // bi-lightbulb
+    'Control': '\uF298',    // bi-clock
+    'Math': '\uF2C6',       // bi-calculator
+    'Text': '\uF6F7',       // bi-type
+    'Variables': '\uF3A5',  // bi-boxes
+    'Functions': '\uF2D6',  // bi-code-square
+    'Input/Output': '\uF1C4', // bi-cpu
+    'Playground': '\uF52A'  // bi-controller
+  };
+  
+  setTimeout(function() {
+    var labels = document.querySelectorAll('.blocklyTreeLabel');
+    labels.forEach(function(label) {
+      var text = label.textContent;
+      if (icons[text]) {
+        label.innerHTML = '<span class="toolbox-icon">' + icons[text] + '</span> ' + text;
+      }
+    });
+  }, 100);
+}
+
+/**
  * Initialize Blockly.  Called on page load.
  */
 function init() {
@@ -268,6 +295,9 @@ function init() {
        media: '../../media/',
        toolbox: toolbox,
        sounds: false});
+
+  // Add icons to toolbox categories
+  addToolboxIcons();
 
   auto_save_and_restore_blocks();
 
@@ -361,6 +391,102 @@ function init() {
     .main-content {
       height: calc(100vh - 120px);
       position: relative;
+    }
+    
+    /* Blockly Toolbox Styling */
+    .blocklyToolboxDiv {
+      background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%) !important;
+      border-right: 1px solid #dee2e6 !important;
+      box-shadow: 2px 0 8px rgba(0,0,0,0.05) !important;
+    }
+    
+    .blocklyTreeRow {
+      padding: 8px 12px !important;
+      margin: 2px 6px !important;
+      border-radius: 6px !important;
+      transition: all 0.2s ease !important;
+      font-weight: 500 !important;
+      line-height: 1.4 !important;
+      height: auto !important;
+    }
+    
+    .blocklyTreeRow:hover {
+      background-color: #e9ecef !important;
+    }
+    
+    .blocklyTreeSelected {
+      background-color: #0d6efd !important;
+      color: white !important;
+      box-shadow: 0 2px 4px rgba(13, 110, 253, 0.3) !important;
+    }
+    
+    .blocklyTreeSelected:hover {
+      background-color: #0b5ed7 !important;
+    }
+    
+    .blocklyTreeIcon {
+      display: none !important;
+    }
+    
+    .blocklyTreeLabel {
+      font-size: 13px !important;
+    }
+    
+    .toolbox-icon {
+      font-family: "bootstrap-icons" !important;
+      margin-right: 8px;
+      font-size: 14px;
+      vertical-align: middle;
+      display: inline-block;
+      width: 18px;
+    }
+    
+    .blocklyFlyoutBackground {
+      fill: #f8f9fa !important;
+      stroke: #dee2e6 !important;
+    }
+    
+    .blocklyScrollbarBackground {
+      fill: #f1f3f5 !important;
+    }
+    
+    .blocklyScrollbarHandle {
+      fill: #adb5bd !important;
+    }
+    
+    .blocklyScrollbarHandle:hover {
+      fill: #868e96 !important;
+    }
+    
+    /* Blockly Block Styling */
+    .blocklyMainBackground {
+      stroke: none !important;
+    }
+    
+    .blocklyWorkspace {
+      background-color: #fafbfc !important;
+    }
+    
+    .blocklyTreeSelected .blocklyTreeLabel {
+      color: white !important;
+    }
+    
+    /* Flyout styling */
+    .blocklyFlyout {
+      box-shadow: 4px 0 12px rgba(0,0,0,0.08) !important;
+    }
+    
+    .blocklyFlyoutButton {
+      fill: #0d6efd !important;
+    }
+    
+    .blocklyFlyoutButton:hover {
+      fill: #0b5ed7 !important;
+    }
+    
+    .blocklyFlyoutLabelText {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+      font-size: 14px !important;
     }
   </style>
 </head>
