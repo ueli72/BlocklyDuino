@@ -258,11 +258,9 @@ function addToolboxIcons() {
     // Check if this is a subcategory (SG90 Servo or Internal LED)
     var isSubcategory = text === 'SG90 Servo' || text === 'Internal LED';
     
-    // Add indentation for subcategories
+    // Add class for subcategories
     if (isSubcategory) {
-      row.style.setProperty('padding-left', '24px', 'important');
-      row.style.setProperty('margin-left', '8px', 'important');
-      row.style.setProperty('background-color', '#f8f9fa', 'important');
+      row.classList.add('subcategory');
     }
     
     // Only Playground has subcategories - add arrow
@@ -273,8 +271,6 @@ function addToolboxIcons() {
         var isExpanded = rowContainer && rowContainer.getAttribute('aria-expanded') === 'true';
         arrow = document.createElement('i');
         arrow.className = 'bi ' + (isExpanded ? 'bi-chevron-down' : 'bi-chevron-right') + ' tree-arrow';
-        arrow.style.display = 'inline-block';
-        arrow.style.marginRight = '8px';
         label.parentNode.insertBefore(arrow, label);
       }
       return; // Skip icon for Playground
@@ -282,24 +278,30 @@ function addToolboxIcons() {
     
     // Add icons for other categories
     var iconClass = '';
+    var iconText = null;
     if (text === 'Logic') iconClass = 'bi-diagram-3';
-    else if (text === 'Constants') iconClass = 'bi-lightbulb';
+    else if (text === 'Constants') iconText = 'π';
     else if (text === 'Control') iconClass = 'bi-clock';
     else if (text === 'Math') iconClass = 'bi-calculator';
     else if (text === 'Text') iconClass = 'bi-type';
-    else if (text === 'Variables') iconClass = 'bi-boxes';
-    else if (text === 'Functions') iconClass = 'bi-code-square';
-    else if (text === 'Input/Output') iconClass = 'bi-cpu';
+    else if (text === 'Variables') iconText = '(x)';
+    else if (text === 'Functions') iconText = 'f(x)';
+    else if (text === 'Input/Output') iconClass = 'bi-arrow-left-right';
     else if (text === 'SG90 Servo') iconClass = 'bi-gear';
     else if (text === 'Internal LED') iconClass = 'bi-lightbulb-fill';
     
-    if (iconClass) {
+    if (iconClass || iconText) {
       var icon = row.querySelector('.toolbox-icon');
       if (!icon) {
-        icon = document.createElement('i');
-        icon.className = 'bi ' + iconClass + ' toolbox-icon';
-        icon.style.display = 'inline-block';
-        icon.style.marginRight = '8px';
+        icon = document.createElement('span');
+        icon.className = 'toolbox-icon';
+        if (iconClass) {
+          icon.classList.add('bi', iconClass);
+        } else if (iconText) {
+          icon.textContent = iconText;
+          icon.style.fontWeight = 'bold';
+          icon.style.fontSize = '12px';
+        }
         label.parentNode.insertBefore(icon, label);
       }
     }
@@ -543,10 +545,10 @@ function init() {
     }
     
     .toolbox-icon {
-      margin-right: 8px;
-      font-size: 14px;
-      vertical-align: middle;
       display: inline-block !important;
+      width: 20px !important;
+      margin-right: 8px !important;
+      text-align: center !important;
     }
     
     .tree-arrow {
@@ -586,32 +588,31 @@ function init() {
       color: white !important;
     }
     
+    /* Expand/collapse arrow for parent categories */
+    .tree-arrow {
+      display: inline-block !important;
+      width: 20px !important;
+      margin-right: 8px !important;
+      text-align: center !important;
+      font-size: 12px;
+      color: #6c757d;
+    }
+    
     .blocklyTreeSelected .tree-arrow {
       color: white !important;
     }
     
-    /* Subcategory styling - nested categories */
-    .blocklyTree .blocklyTree .blocklyTreeRow {
+    /* Subcategory styling */
+    .blocklyTreeRow.subcategory {
       padding-left: 24px !important;
-      margin-left: 8px !important;
-      margin-right: 4px !important;
-      background-color: #f8f9fa !important;
     }
     
-    .blocklyTree .blocklyTree .blocklyTreeRow:hover {
-      background-color: #e9ecef !important;
-    }
-    
-    .blocklyTree .blocklyTree .blocklyTreeRow.blocklyTreeSelected {
-      background-color: #0d6efd !important;
-    }
-    
-    .blocklyTree .blocklyTree .blocklyTreeLabel {
+    .blocklyTreeRow.subcategory .blocklyTreeLabel {
       font-size: 12px !important;
       font-weight: 400 !important;
     }
     
-    .blocklyTree .blocklyTree .toolbox-icon {
+    .blocklyTreeRow.subcategory .toolbox-icon {
       font-size: 13px !important;
     }
     
