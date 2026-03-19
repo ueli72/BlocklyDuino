@@ -20,6 +20,7 @@
   <script type="text/javascript" src="../../blocks/program_structure.js"></script>
   <script type="text/javascript" src="../../blocks/playground/sg90.js"></script>
   <script type="text/javascript" src="../../blocks/playground/internal_led.js"></script>
+  <script type="text/javascript" src="../../blocks/playground/button.js"></script>
   <script type="text/javascript" src="../../generators/arduino.js"></script>
   <script type="text/javascript" src="../../generators/arduino/base.js"></script>
   <script type="text/javascript" src="../../generators/arduino/control.js"></script>
@@ -32,6 +33,7 @@
   <script type="text/javascript" src="../../generators/arduino/program_structure.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/sg90.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/internal_led.js"></script>
+  <script type="text/javascript" src="../../generators/arduino/playground/button.js"></script>
   <script type="text/javascript" src="../../msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
@@ -271,8 +273,8 @@ function addToolboxIcons() {
     var text = label.textContent.trim();
     if (!text) return;
     
-    // Check if this is a subcategory (SG90 Servo or Internal LED)
-    var isSubcategory = text === 'SG90 Servo' || text === 'Internal LED';
+    // Check if this is a subcategory (SG90 Servo, Internal LED, or Button)
+    var isSubcategory = text === 'SG90 Servo' || text === 'Internal LED' || text === 'Button';
     
     // Add class for subcategories
     if (isSubcategory) {
@@ -306,6 +308,7 @@ function addToolboxIcons() {
     else if (text === 'Input/Output') iconClass = 'bi-arrow-left-right';
     else if (text === 'SG90 Servo') iconClass = 'bi-gear';
     else if (text === 'Internal LED') iconClass = 'bi-lightbulb-fill';
+    else if (text === 'Button') iconClass = 'bi-toggle-off';
     
     if (iconClass || iconText) {
       var icon = row.querySelector('.toolbox-icon');
@@ -911,6 +914,10 @@ function init() {
           </value>
         </block>
         <block type="internal_led_off"></block>
+      </category>
+      <category name="Button">
+        <block type="button_init"></block>
+        <block type="button_read"></block>
       </category>
     </category>
   </xml>

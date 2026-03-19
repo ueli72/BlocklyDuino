@@ -92,6 +92,9 @@ async function doSaveProject(fileName) {
   if (arduinoCode.includes('initializeLED') || arduinoCode.includes('setLED') || arduinoCode.includes('turnOffLED')) {
     newMain += '#include "internalLED.h"\n';
   }
+  if (arduinoCode.includes('initializeButtons') || arduinoCode.includes('readButton')) {
+    newMain += '#include "buttons.h"\n';
+  }
   newMain += '\n' + arduinoCode;
   zip.file('src/main.cpp', newMain);
 
