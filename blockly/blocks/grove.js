@@ -27,9 +27,10 @@
  * @author gasolin@gmail.com (Fred Lin)
  */
 
-goog.provide('Blockly.Blocks.grove');
 
-goog.require('Blockly.Blocks');
+'use strict';
+Blockly.Blocks = Blockly.Blocks || {};
+Blockly.Blocks.grove = {};
 
 
 Blockly.Blocks['grove_led'] = {

@@ -26,9 +26,7 @@
  * @author gasolin@gmail.com (Fred Lin)
  */
 
-goog.provide('Blockly.Arduino.grove');
 
-goog.require('Blockly.Arduino');
 
 
 Blockly.Arduino.grove_led = function() {

@@ -23,9 +23,7 @@
  */
 'use strict';
 
-goog.provide('Blockly.Arduino.base');
 
-goog.require('Blockly.Arduino');
 
 
 Blockly.Arduino.base_delay = function() {

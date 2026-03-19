@@ -23,10 +23,10 @@
  * @author q.neutron@gmail.com (Quynh Neutron)
  */
 'use strict';
+Blockly.Blocks = Blockly.Blocks || {};
+Blockly.Blocks.math = {};
 
-goog.provide('Blockly.Blocks.math');
 
-goog.require('Blockly.Blocks');
 
 
 /**

@@ -23,10 +23,10 @@
  * @author fraser@google.com (Neil Fraser)
  */
 'use strict';
+Blockly.Blocks = Blockly.Blocks || {};
+Blockly.Blocks.variables = {};
 
-goog.provide('Blockly.Blocks.variables');
 
-goog.require('Blockly.Blocks');
 
 
 /**

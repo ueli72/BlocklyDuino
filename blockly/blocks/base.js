@@ -24,11 +24,12 @@
  */
 'use strict';
 
+Blockly.Blocks = Blockly.Blocks || {};
+Blockly.Blocks.base = {};
+
 //To support syntax defined in http://arduino.cc/en/Reference/HomePage
 
-goog.provide('Blockly.Blocks.base');
 
-goog.require('Blockly.Blocks');
 
 
 Blockly.Blocks['base_delay'] = {

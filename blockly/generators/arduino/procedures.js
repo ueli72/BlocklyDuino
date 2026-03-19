@@ -23,9 +23,7 @@
  */
 'use strict';
 
-goog.provide('Blockly.Arduino.procedures');
 
-goog.require('Blockly.Arduino');
 
 
 Blockly.Arduino.procedures_defreturn = function() {
