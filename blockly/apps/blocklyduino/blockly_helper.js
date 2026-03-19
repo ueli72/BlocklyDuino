@@ -45,9 +45,23 @@ function saveCode() {
 * Save complete PlatformIO project as ZIP.
 */
 function saveProject() {
-  showPromptModal('What would you like to name your project?', 'MyProject', function(fileName) {
-    doSaveProject(fileName);
-  });
+  var includes = getRequiredIncludes();
+  if (includes.length > 0) {
+    var summaryMessage = 'The following includes will be added to main.cpp:\n\n';
+    for (var i = 0; i < includes.length; i++) {
+      summaryMessage += '• #include "' + includes[i] + '"\n';
+    }
+    summaryMessage += '\nContinue with download?';
+    showConfirmModal(summaryMessage, function() {
+      showPromptModal('What would you like to name your project?', 'MyProject', function(fileName) {
+        doSaveProject(fileName);
+      });
+    });
+  } else {
+    showPromptModal('What would you like to name your project?', 'MyProject', function(fileName) {
+      doSaveProject(fileName);
+    });
+  }
 }
 
 /**
@@ -217,6 +231,47 @@ function auto_save_and_restore_blocks() {
 
   // Ensure setup and loop blocks exist
   window.setTimeout(ensureProgramStructure, 100);
+
+  // Set up block info listener
+  window.setTimeout(setupBlockInfoListener, 150);
+}
+
+function setupBlockInfoListener() {
+  if (!Blockly.mainWorkspace) {
+    window.setTimeout(setupBlockInfoListener, 100);
+    return;
+  }
+
+  var lastBlockCount = 0;
+  var lastBlockIds = {};
+
+  function checkForNewBlocks() {
+    if (!Blockly.mainWorkspace) return;
+    
+    var blocks = Blockly.mainWorkspace.getAllBlocks();
+    var currentBlockIds = {};
+    
+    for (var i = 0; i < blocks.length; i++) {
+      var block = blocks[i];
+      currentBlockIds[block.id] = block.type;
+      
+      if (!lastBlockIds[block.id] && hasBlockInfo(block.type) && !seenBlocks.has(block.type)) {
+        seenBlocks.add(block.type);
+        var info = getBlockInfo(block.type);
+        if (info) {
+          showBlockInfoModal(info.title, info.message);
+        }
+      }
+    }
+    
+    lastBlockIds = currentBlockIds;
+  }
+
+  Blockly.mainWorkspace.addChangeListener(function() {
+    window.setTimeout(checkForNewBlocks, 10);
+  });
+
+  checkForNewBlocks();
 }
 
 /**

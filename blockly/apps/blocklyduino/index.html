@@ -37,6 +37,7 @@
   <script type="text/javascript" src="spin.js"></script>
   <script type="text/javascript" src="FileSaver.min.js"></script>
   <script type="text/javascript" src="jszip.min.js"></script>
+  <script type="text/javascript" src="block_info.js"></script>
   <script type="text/javascript" src="templates.js"></script>
   <script type="text/javascript" src="blockly_helper.js"></script>
   <script type="text/javascript" src="chrome-flyout-fix.js"></script>
@@ -92,6 +93,20 @@ function showConfirmModal(message, onConfirm) {
 function showAlertModal(message) {
   var modal = new bootstrap.Modal(document.getElementById('alertModal'));
   document.getElementById('alertModalBody').textContent = message;
+  modal.show();
+}
+
+function showBlockInfoModal(title, message) {
+  document.activeElement.blur();
+  var modalEl = document.getElementById('blockInfoModal');
+  var modal = new bootstrap.Modal(modalEl);
+  document.getElementById('blockInfoTitle').textContent = title || 'Block Info';
+  document.getElementById('blockInfoMessage').textContent = message;
+  
+  modalEl.addEventListener('hide.bs.modal', function() {
+    document.activeElement.blur();
+  }, { once: true });
+  
   modal.show();
 }
 
@@ -758,6 +773,26 @@ function init() {
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="promptModalCancel">Cancel</button>
           <button type="button" class="btn btn-primary" id="promptModalOk">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Block Info Modal -->
+  <div class="modal fade" id="blockInfoModal" tabindex="-1" aria-labelledby="blockInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-warning bg-opacity-25">
+          <h5 class="modal-title" id="blockInfoModalLabel">
+            <i class="bi bi-exclamation-triangle text-warning me-2"></i><span id="blockInfoTitle"></span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <pre id="blockInfoMessage" style="white-space: pre-wrap; font-family: inherit; margin: 0;"></pre>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
         </div>
       </div>
     </div>
