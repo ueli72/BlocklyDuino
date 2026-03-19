@@ -175,44 +175,6 @@ Blockly.Blocks['inout_highlow'] = {
   }
 };
 
-//servo block
-//http://www.seeedstudio.com/depot/emax-9g-es08a-high-sensitive-mini-servo-p-760.html?cPath=170_171
-Blockly.Blocks['servo_move'] = {
-  helpUrl: 'http://www.arduino.cc/playground/ComponentLib/servo',
-  init: function() {
-    this.setColour(190);
-    this.appendDummyInput()
-        .appendField("Servo")
-        .appendField(new Blockly.FieldImage("https://statics3.seeedstudio.com/images/product/EMAX%20Servo.jpg", 64, 64))
-        .appendField("PIN#")
-        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
-    this.appendValueInput("DEGREE", 'Number')
-        .setCheck('Number')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Degree (0~180)");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setTooltip('move between 0~180 degree');
-  }
-};
-
-Blockly.Blocks['servo_read_degrees'] = {
-  helpUrl: 'http://www.arduino.cc/playground/ComponentLib/servo',
-  init: function() {
-    this.setColour(190);
-    this.appendDummyInput()
-        .appendField("Servo")
-        .appendField(new Blockly.FieldImage("https://statics3.seeedstudio.com/images/product/EMAX%20Servo.jpg", 64, 64))
-        .appendField("PIN#")
-        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Read Degrees")
-    this.setOutput(true, 'Number');
-    this.setTooltip('return that degree with the last servo move.');
-  }
-};
-
 Blockly.Blocks['serial_print'] = {
   helpUrl: 'http://www.arduino.cc/en/Serial/Print',
   init: function() {
