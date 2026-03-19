@@ -12,6 +12,7 @@
   <script type="text/javascript" src="../../blocks/procedures.js"></script>
   <script type="text/javascript" src="../../blocks/text.js"></script>
   <script type="text/javascript" src="../../blocks/variables.js"></script>
+  <script type="text/javascript" src="../../blocks/constants.js"></script>
   <script type="text/javascript" src="../../blocks/playground/sg90.js"></script>
   <script type="text/javascript" src="../../generators/arduino.js"></script>
   <script type="text/javascript" src="../../generators/arduino/base.js"></script>
@@ -21,6 +22,7 @@
   <script type="text/javascript" src="../../generators/arduino/procedures.js"></script>
   <script type="text/javascript" src="../../generators/arduino/text.js"></script>
   <script type="text/javascript" src="../../generators/arduino/variables.js"></script>
+  <script type="text/javascript" src="../../generators/arduino/constants.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/sg90.js"></script>
   <script type="text/javascript" src="../../msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
@@ -112,7 +114,7 @@ function renderContent() {
   } else if (content.id == 'content_arduino') {
     //content.innerHTML = Blockly.Arduino.workspaceToCode();
     var arduinoTextarea = document.getElementById('content_arduino');
-    arduinoTextarea.value = Blockly.Arduino.workspaceToCode();
+    arduinoTextarea.value = Blockly.Arduino.workspaceToCode(Blockly.mainWorkspace);
     arduinoTextarea.focus();
   }
 }
@@ -344,6 +346,10 @@ function init() {
       <block type="logic_operation"></block>
       <block type="logic_negate"></block>
       <block type="logic_null"></block>
+    </category>
+    <category name="Constants">
+      <block type="constants_true"></block>
+      <block type="constants_false"></block>
     </category>
     <category name="Control">
       <block type="base_delay">
