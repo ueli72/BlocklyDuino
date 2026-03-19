@@ -1,7 +1,11 @@
-<html manifest=node.manifest>
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>BlocklyDuino</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BlocklyDuino - Visual Programming for Arduino</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
   <script type="text/javascript" src="../../blockly_compressed.js"></script>
   <script type="text/javascript" src="../../blocks/base.js"></script>
   <script type="text/javascript" src="../../blocks/colour.js"></script>
@@ -46,24 +50,121 @@ var TABS_ = ['blocks', 'arduino', 'xml'];
 var selected = 'blocks';
 
 /**
+ * Show a confirm modal dialog.
+ * @param {string} message Message to display.
+ * @param {function} onConfirm Callback when confirmed.
+ */
+function showConfirmModal(message, onConfirm) {
+  var modalEl = document.getElementById('confirmModal');
+  var modal = new bootstrap.Modal(modalEl);
+  document.getElementById('confirmModalBody').textContent = message;
+  
+  var okBtn = document.getElementById('confirmModalOk');
+  
+  var handleOk = function() {
+    // Blur focused element before hiding
+    document.activeElement.blur();
+    modal.hide();
+    if (onConfirm) onConfirm();
+    cleanup();
+  };
+  
+  var cleanup = function() {
+    okBtn.removeEventListener('click', handleOk);
+    modalEl.removeEventListener('hidden.bs.modal', cleanup);
+  };
+  
+  // Blur focused element when modal is about to hide
+  modalEl.addEventListener('hide.bs.modal', function() {
+    document.activeElement.blur();
+  }, { once: true });
+  
+  okBtn.addEventListener('click', handleOk);
+  modalEl.addEventListener('hidden.bs.modal', cleanup);
+  modal.show();
+}
+
+/**
+ * Show an alert modal dialog.
+ * @param {string} message Message to display.
+ */
+function showAlertModal(message) {
+  var modal = new bootstrap.Modal(document.getElementById('alertModal'));
+  document.getElementById('alertModalBody').textContent = message;
+  modal.show();
+}
+
+/**
+ * Show a prompt modal dialog with input field.
+ * @param {string} message Message to display.
+ * @param {string} defaultValue Default value for input.
+ * @param {function} onConfirm Callback with input value when confirmed.
+ */
+function showPromptModal(message, defaultValue, onConfirm) {
+  var modalEl = document.getElementById('promptModal');
+  var modal = new bootstrap.Modal(modalEl);
+  document.getElementById('promptModalMessage').textContent = message;
+  var input = document.getElementById('promptModalInput');
+  input.value = defaultValue || '';
+  
+  var okBtn = document.getElementById('promptModalOk');
+  
+  var handleOk = function() {
+    var value = input.value;
+    // Blur focused element before hiding
+    document.activeElement.blur();
+    modal.hide();
+    if (onConfirm && value) onConfirm(value);
+  };
+  
+  var handleEnter = function(e) {
+    if (e.key === 'Enter') {
+      handleOk();
+    }
+  };
+  
+  var cleanup = function() {
+    okBtn.removeEventListener('click', handleOk);
+    input.removeEventListener('keypress', handleEnter);
+    modalEl.removeEventListener('hidden.bs.modal', cleanup);
+  };
+  
+  // Blur focused element when modal is about to hide
+  modalEl.addEventListener('hide.bs.modal', function() {
+    document.activeElement.blur();
+  }, { once: true });
+  
+  okBtn.addEventListener('click', handleOk);
+  input.addEventListener('keypress', handleEnter);
+  modalEl.addEventListener('hidden.bs.modal', cleanup);
+  
+  modal.show();
+  
+  // Focus input after modal is shown
+  modalEl.addEventListener('shown.bs.modal', function() {
+    input.focus();
+    input.select();
+  }, { once: true });
+}
+
+/**
  * Switch the visible pane when a tab is clicked.
  * @param {string} clickedName Name of tab clicked.
  */
 function tabClick(clickedName) {
   // If the XML tab was open, save and render the content.
-  if (document.getElementById('tab_xml').className == 'tabon') {
+  if (document.getElementById('tab_xml').classList.contains('active')) {
     var xmlTextarea = document.getElementById('content_xml');
     var xmlText = xmlTextarea.value;
     var xmlDom = null;
     try {
       xmlDom = Blockly.Xml.textToDom(xmlText);
     } catch (e) {
-      var q =
-          window.confirm('Error parsing XML:\n' + e + '\n\nAbandon changes?');
-      if (!q) {
-        // Leave the user on the XML tab.
-        return;
-      }
+      showConfirmModal('Error parsing XML:\n' + e + '\n\nAbandon changes?', function() {
+        // User confirmed - abandon changes
+        switchTab(clickedName);
+      });
+      return;
     }
     if (xmlDom) {
       Blockly.mainWorkspace.clear();
@@ -71,19 +172,26 @@ function tabClick(clickedName) {
     }
   }
 
-  if (document.getElementById('tab_blocks').className == 'tabon') {
+  switchTab(clickedName);
+}
+
+/**
+ * Internal function to switch tabs.
+ */
+function switchTab(clickedName) {
+  if (document.getElementById('tab_blocks').classList.contains('active')) {
     Blockly.mainWorkspace.setVisible(false);
   }
   // Deselect all tabs and hide all panes.
   for (var i = 0; i < TABS_.length; i++) {
     var name = TABS_[i];
-    document.getElementById('tab_' + name).className = 'taboff';
+    document.getElementById('tab_' + name).classList.remove('active');
     document.getElementById('content_' + name).style.visibility = 'hidden';
   }
 
- // Select the active tab.
+  // Select the active tab.
   selected = clickedName;
-  document.getElementById('tab_' + clickedName).className = 'tabon';
+  document.getElementById('tab_' + clickedName).classList.add('active');
   // Show the selected pane.
   document.getElementById('content_' + clickedName).style.visibility =
       'visible';
@@ -125,30 +233,6 @@ function renderContent() {
 }
 
 /**
- * Compute the absolute coordinates and dimensions of an HTML element.
- * @param {!Element} element Element to match.
- * @return {!Object} Contains height, width, x, and y properties.
- * @private
- */
-function getBBox_(element) {
-  var height = element.offsetHeight;
-  var width = element.offsetWidth;
-  var x = 0;
-  var y = 0;
-  do {
-    x += element.offsetLeft;
-    y += element.offsetTop;
-    element = element.offsetParent;
-  } while (element);
-  return {
-    height: height,
-    width: width,
-    x: x,
-    y: y
-  };
-}
-
-/**
  * Initialize Blockly.  Called on page load.
  */
 function init() {
@@ -156,25 +240,20 @@ function init() {
   //  return 'Leaving this page will result in the loss of your work.';
   //};
 
-  var container = document.getElementById('content_area');
+  var container = document.querySelector('.main-content');
   var onresize = function(e) {
-    var bBox = getBBox_(container);
+    var bBox = {
+      x: 0,
+      y: 0,
+      height: container.offsetHeight,
+      width: container.offsetWidth
+    };
     for (var i = 0; i < TABS_.length; i++) {
       var el = document.getElementById('content_' + TABS_[i]);
-      el.style.top = bBox.y + 'px';
-      el.style.left = bBox.x + 'px';
-      // Height and width need to be set, read back, then set again to
-      // compensate for scrollbars.
+      el.style.top = '0';
+      el.style.left = '0';
       el.style.height = bBox.height + 'px';
-      el.style.height = (2 * bBox.height - el.offsetHeight) + 'px';
       el.style.width = bBox.width + 'px';
-      el.style.width = (2 * bBox.width - el.offsetWidth) + 'px';
-    }
-    // Make the 'Blocks' tab line up with the toolbox.
-    if (Blockly.mainWorkspace.toolbox_.width) {
-      document.getElementById('tab_blocks').style.minWidth =
-          (Blockly.mainWorkspace.toolbox_.width - 38) + 'px';
-          // Account for the 19 pixel margin and on each side.
     }
   };
   window.addEventListener('resize', onresize, false);
@@ -198,73 +277,62 @@ function init() {
   if(dest){
     load_by_url(dest);
   }
+  
+  // Initial resize
+  onresize();
 }
   </script>
   <style>
     html, body {
       height: 100%;
+      margin: 0;
+      padding: 0;
     }
     body {
-      background-color: #fff;
-      font-family: sans-serif;
-      margin: 0;
-      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
     }
-    h1 {
-      font-weight: normal;
-      font-size: 140%;
-      margin-left: 5px;
-      margin-right: 5px;
+    .navbar-brand {
+      font-weight: 600;
     }
-
-    /* Tabs */
-    #tabRow>td {
-      border: 1px solid #ccc;
+    .nav-tabs {
+      border-bottom: 2px solid #dee2e6;
     }
-    td.tabon {
-      border-bottom-color: #ddd !important;
-      background-color: #ddd;
-      padding: 5px 19px;
-    }
-    td.taboff {
-      cursor: pointer;
-      padding: 5px 19px;
-    }
-    td.taboff:hover {
-      background-color: #eee;
-    }
-    td.tabmin {
-      border-top-style: none !important;
-      border-left-style: none !important;
-      border-right-style: none !important;
-    }
-    td.tabmax {
-      border-top-style: none !important;
-      border-left-style: none !important;
-      border-right-style: none !important;
-      width: 99%;
-      text-align: right;
-    }
-
-    table {
-      border-collapse: collapse;
-      margin: 0;
-      padding: 0;
+    .nav-tabs .nav-link {
       border: none;
+      border-bottom: 3px solid transparent;
+      color: #6c757d;
+      font-weight: 500;
+      padding: 0.75rem 1.25rem;
+      transition: all 0.2s;
     }
-    td {
-      padding: 0;
-      vertical-align: top;
+    .nav-tabs .nav-link:hover {
+      border-color: transparent;
+      border-bottom-color: #0d6efd;
+      color: #0d6efd;
+    }
+    .nav-tabs .nav-link.active {
+      border-color: transparent;
+      border-bottom-color: #0d6efd;
+      color: #0d6efd;
+      background-color: transparent;
+    }
+    .toolbar-area {
+      background-color: #fff;
+      padding: 0.5rem 1rem;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .form-select-sm {
+      min-width: 180px;
     }
     .content {
       visibility: hidden;
-      margin: 0;
-      padding: 1ex;
       position: absolute;
-      direction: ltr;
-    }
-    pre.content {
-      overflow: scroll;
+      top: 120px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 0;
     }
     #content_blocks {
       padding: 0;
@@ -272,81 +340,159 @@ function init() {
     .blocklySvg {
       border-top: none !important;
     }
-    #content_xml {
-      resize: none;
-      outline: none;
+    #content_arduino, #content_xml {
+      width: 100%;
+      height: 100%;
       border: none;
-      font-family: monospace;
-      overflow: scroll;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 14px;
+      padding: 1rem;
+      background-color: #1e1e1e;
+      color: #d4d4d4;
+      resize: none;
     }
-    button {
-      padding: 1px 1em;
-      font-size: 90%;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-      background-color: #eee;
-      color: black;
+    #content_arduino:focus, #content_xml:focus {
+      outline: none;
     }
-    button.launch {
-      border: 1px solid #d43;
-      background-color: #d43;
-      color: white;
+    .btn-group-sm > .btn, .btn-sm {
+      padding: 0.4rem 0.75rem;
+      font-size: 0.875rem;
     }
-    button:active {
-      border: 1px solid blue !important;
-    }
-    button:hover {
-      box-shadow: 2px 2px 5px #888;
+    .main-content {
+      height: calc(100vh - 120px);
+      position: relative;
     }
   </style>
 </head>
 <body onload="init()">
-  <table height="100%" width="100%">
-    <tr>
-      <td>
-        <h1><a href="https://github.com/gasolin/BlocklyDuino/wiki">BlocklyDuino</a> &gt; web-based visual programming editor for arduino</h1>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <table width="100%">
-          <tr id="tabRow" height="1em">
-            <td id="tab_blocks" class="tabon" onclick="tabClick('blocks')">Blocks</td>
-            <td class="tabmin">&nbsp;</td>
-            <!--td id="tab_javascript" class="taboff" onclick="tabClick(this.id)">JavaScript</td>
-            <td class="tabmin">&nbsp;</td-->
-            <!--td id="tab_dart" class="taboff" onclick="tabClick(this.id)">Dart</td>
-            <td class="tabmin">&nbsp;</td>
-            <td id="tab_python" class="taboff" onclick="tabClick(this.id)">Python</td>
-            <td class="tabmin">&nbsp;</td-->
-            <td id="tab_arduino" class="taboff" onclick="tabClick('arduino')">Arduino</td>
-            <td class="tabmin">&nbsp;</td>
-            <td id="tab_xml" class="taboff" onclick="tabClick('xml')">XML</td>
-            <td class="tabmax">
-              <select id="boardSelector">
-                <option value="esp32-s3-devkitc1">BWS Playground Master</option>
-                <option value="arduino-uno">Arduino Uno</option>
-              </select>
-              <button onclick="saveProject()" title="Download project as zip to be used in VSCode with PlatformIO">Download</button>
-              <button type="button" onclick="uploadClick()" title="Upload the project to the board">Upload</button>
-              <button type="button" onclick="resetClick()" title="Reset the board">Reset</button>
-              <button onclick="discard()" title="Discard changes">Discard</button>
-              <button onclick="save()" title="Save XML">Save XML</button>
-              <button id="fakeload" title="Load XML">Load XML</button>
-              <input type="file" id="load" style="display: none;"/>
-              <!--button class="launch" onclick="runJS()">Run Program</button-->
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td height="99%" id="content_area"></td>
-    </tr>
-  </table>
-  <div id="content_blocks" class="content"></div>
-  <textarea id="content_arduino" class="content" readonly wrap="off"></textarea>
-  <textarea id="content_xml" class="content" wrap="off"></textarea>
+  <nav class="navbar navbar-expand navbar-light bg-white shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand text-primary" href="https://github.com/gasolin/BlocklyDuino/wiki">
+        <i class="bi bi-cpu"></i> BlocklyDuino
+      </a>
+      <span class="navbar-text text-muted small d-none d-md-inline">
+        Visual Programming for Arduino
+      </span>
+    </div>
+  </nav>
+
+  <div class="toolbar-area">
+    <div class="container-fluid">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <ul class="nav nav-tabs border-0" id="mainTabs">
+          <li class="nav-item">
+            <a class="nav-link active" id="tab_blocks" href="#" onclick="tabClick('blocks'); return false;">
+              <i class="bi bi-grid-3x3-gap"></i> Blocks
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="tab_arduino" href="#" onclick="tabClick('arduino'); return false;">
+              <i class="bi bi-code-slash"></i> Arduino
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="tab_xml" href="#" onclick="tabClick('xml'); return false;">
+              <i class="bi bi-file-code"></i> XML
+            </a>
+          </li>
+        </ul>
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <select class="form-select form-select-sm" id="boardSelector">
+            <option value="esp32-s3-devkitc1">BWS Playground Master</option>
+            <option value="arduino-uno">Arduino Uno</option>
+          </select>
+          <div class="btn-group btn-group-sm" role="group">
+            <button type="button" class="btn btn-primary" onclick="saveProject()" title="Download project as zip to be used in VSCode with PlatformIO">
+              <i class="bi bi-download"></i> Download
+            </button>
+            <button type="button" class="btn btn-success" onclick="uploadClick()" title="Upload the project to the board">
+              <i class="bi bi-upload"></i> Upload
+            </button>
+          </div>
+          <div class="btn-group btn-group-sm" role="group">
+            <button type="button" class="btn btn-outline-secondary" onclick="resetClick()" title="Reset the board">
+              <i class="bi bi-arrow-clockwise"></i>
+            </button>
+            <button type="button" class="btn btn-outline-secondary" onclick="discard()" title="Discard changes">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+          <div class="btn-group btn-group-sm" role="group">
+            <button type="button" class="btn btn-outline-primary" onclick="save()" title="Save XML">
+              <i class="bi bi-save"></i> Save
+            </button>
+            <button type="button" class="btn btn-outline-primary" id="fakeload" title="Load XML">
+              <i class="bi bi-folder2-open"></i> Load
+            </button>
+          </div>
+          <input type="file" id="load" style="display: none;"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div id="content_blocks" class="content"></div>
+    <textarea id="content_arduino" class="content" readonly wrap="off"></textarea>
+    <textarea id="content_xml" class="content" wrap="off"></textarea>
+  </div>
+
+  <!-- Confirm Modal -->
+  <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmModalLabel">Confirm</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="confirmModalBody">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="confirmModalCancel">Cancel</button>
+          <button type="button" class="btn btn-primary" id="confirmModalOk">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert Modal -->
+  <div class="modal fade" id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="alertModalLabel">
+            <i class="bi bi-info-circle text-primary me-2"></i>Info
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="alertModalBody">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prompt Modal -->
+  <div class="modal fade" id="promptModal" tabindex="-1" aria-labelledby="promptModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="promptModalLabel">Input Required</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="promptModalMessage"></p>
+          <input type="text" class="form-control" id="promptModalInput" placeholder="">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="promptModalCancel">Cancel</button>
+          <button type="button" class="btn btn-primary" id="promptModalOk">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <xml id="toolbox" style="display: none">
     <category name="Logic">
@@ -458,5 +604,6 @@ function init() {
       <block type="internal_led_off"></block>
     </category>
   </xml>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

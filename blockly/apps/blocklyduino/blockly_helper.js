@@ -7,7 +7,7 @@ function runJS() {
   try {
     eval(code);
   } catch (e) {
-    alert('Program error:\n' + e);
+    showAlertModal('Program error:\n' + e);
   }
 }
 
@@ -35,23 +35,25 @@ function restore_blocks() {
 * Save Arduino generated code to local file.
 */
 function saveCode() {
-  var fileName = window.prompt('What would you like to name your file?', 'BlocklyDuino')
-  //doesn't save if the user quits the save prompt
-  if(fileName){
+  showPromptModal('What would you like to name your file?', 'BlocklyDuino', function(fileName) {
     var blob = new Blob([Blockly.Arduino.workspaceToCode()], {type: 'text/plain;charset=utf-8'});
     saveAs(blob, fileName + '.ino');
-  }
+  });
 }
 
 /**
 * Save complete PlatformIO project as ZIP.
 */
-async function saveProject() {
-  var fileName = window.prompt('What would you like to name your project?', 'MyProject');
-  if (!fileName) {
-    return;
-  }
+function saveProject() {
+  showPromptModal('What would you like to name your project?', 'MyProject', function(fileName) {
+    doSaveProject(fileName);
+  });
+}
 
+/**
+* Internal function to save project.
+*/
+async function doSaveProject(fileName) {
   var boardId = document.getElementById('boardSelector').value;
   var arduinoCode = Blockly.Arduino.workspaceToCode();
 
@@ -144,15 +146,10 @@ lib_deps =
 function save() {
   var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
   var data = Blockly.Xml.domToText(xml);
-  var fileName = window.prompt('What would you like to name your file?', 'BlocklyDuino');
-  // Store data in blob.
-  // var builder = new BlobBuilder();
-  // builder.append(data);
-  // saveAs(builder.getBlob('text/plain;charset=utf-8'), 'blockduino.xml');
-  if(fileName){
+  showPromptModal('What would you like to name your file?', 'BlocklyDuino', function(fileName) {
     var blob = new Blob([data], {type: 'text/xml'});
     saveAs(blob, fileName + ".xml");
-  } 
+  });
 }
 
 /**
@@ -174,14 +171,18 @@ function load(event) {
       try {
         var xml = Blockly.Xml.textToDom(target.result);
       } catch (e) {
-        alert('Error parsing XML:\n' + e);
+        showAlertModal('Error parsing XML:\n' + e);
         return;
       }
       var count = Blockly.mainWorkspace.getAllBlocks().length;
-      if (count && confirm('Replace existing blocks?\n"Cancel" will merge.')) {
-        Blockly.mainWorkspace.clear();
+      if (count) {
+        showConfirmModal('Replace existing blocks?\n"Cancel" will merge.', function() {
+          Blockly.mainWorkspace.clear();
+          loadXmlToWorkspace(xml);
+        });
+        return;
       }
-      Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+      loadXmlToWorkspace(xml);
     }
     // Reset value of input after loading because Chrome will not fire
     // a 'change' event if the same file is loaded again.
@@ -191,16 +192,34 @@ function load(event) {
 }
 
 /**
+ * Load XML to workspace.
+ */
+function loadXmlToWorkspace(xml) {
+  Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+}
+
+/**
  * Discard all blocks from the workspace.
  */
 function discard() {
   var count = Blockly.mainWorkspace.getAllBlocks().length;
-  if (count < 2 || window.confirm('Delete all ' + count + ' blocks?')) {
-    Blockly.mainWorkspace.clear();
-    // Recreate setup and loop blocks
-    window.setTimeout(ensureProgramStructure, 50);
-    renderContent();
+  if (count < 2) {
+    clearWorkspace();
+  } else {
+    showConfirmModal('Delete all ' + count + ' blocks?', function() {
+      clearWorkspace();
+    });
   }
+}
+
+/**
+ * Clear workspace and recreate structure blocks.
+ */
+function clearWorkspace() {
+  Blockly.mainWorkspace.clear();
+  // Recreate setup and loop blocks
+  window.setTimeout(ensureProgramStructure, 50);
+  renderContent();
 }
 
 /*
@@ -266,7 +285,7 @@ function ensureProgramStructure() {
     var setupBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'arduino_setup');
     setupBlock.initSvg();
     setupBlock.render();
-    setupBlock.moveBy(20, 20);
+    setupBlock.moveBy(50, 50);
   }
 
   // Create loop block if missing - positioned horizontally next to setup
@@ -274,7 +293,7 @@ function ensureProgramStructure() {
     var loopBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'arduino_loop');
     loopBlock.initSvg();
     loopBlock.render();
-    loopBlock.moveBy(250, 20);
+    loopBlock.moveBy(350, 50);
   }
 }
 
@@ -320,16 +339,20 @@ function onSuccess() {
       try {
       var xml = Blockly.Xml.textToDom(ajax.responseText);
       } catch (e) {
-        alert('Error parsing XML:\n' + e);
+        showAlertModal('Error parsing XML:\n' + e);
         return;
       }
       var count = Blockly.mainWorkspace.getAllBlocks().length;
-      if (count && confirm('Replace existing blocks?\n"Cancel" will merge.')) {
-        Blockly.mainWorkspace.clear();
+      if (count) {
+        showConfirmModal('Replace existing blocks?\n"Cancel" will merge.', function() {
+          Blockly.mainWorkspace.clear();
+          Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+        });
+        return;
       }
       Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
     } else {
-      alert("Server error");
+      showAlertModal("Server error");
     }
   }
 }
@@ -337,9 +360,9 @@ function onSuccess() {
 function load_by_url(uri) {
   ajax = createAJAX();
   if (!ajax) {
-　　   alert ('Not compatible with XMLHttpRequest');
-　　   return 0;
-　  }
+    showAlertModal('Not compatible with XMLHttpRequest');
+    return 0;
+  }
   if (ajax.overrideMimeType) {
     ajax.overrideMimeType('text/xml');
   }
@@ -402,13 +425,13 @@ function uploadCode(code, callback) {
 function uploadClick() {
     var code = Blockly.Arduino.workspaceToCode();
 
-    alert("Ready to upload to Arduino.");
+    showAlertModal("Ready to upload to Arduino.");
     
     uploadCode(code, function(status, errorInfo) {
         if (status == 200) {
-            alert("Program uploaded ok");
+            showAlertModal("Program uploaded ok");
         } else {
-            alert("Error uploading program: " + errorInfo);
+            showAlertModal("Error uploading program: " + errorInfo);
         }
     });
 }
@@ -418,7 +441,7 @@ function resetClick() {
 
     uploadCode(code, function(status, errorInfo) {
         if (status != 200) {
-            alert("Error resetting program: " + errorInfo);
+            showAlertModal("Error resetting program: " + errorInfo);
         }
     });
 }
