@@ -494,9 +494,17 @@ function observeTreeChanges() {
  * Initialize Blockly.  Called on page load.
  */
 function init() {
-  // Initialize i18n first
   initI18n();
+  setVersionInfo();
   initBlockly();
+}
+
+function setVersionInfo() {
+  var versionEl = document.getElementById('versionInfo');
+  if (versionEl) {
+    var buildDate = new Date(document.lastModified);
+    versionEl.textContent = '(' + buildDate.toLocaleDateString() + ')';
+  }
 }
 
 function initBlockly() {
@@ -771,8 +779,9 @@ function initBlockly() {
       <a class="navbar-brand text-primary" href="https://github.com/gasolin/BlocklyDuino/wiki">
         <i class="bi bi-cpu"></i> <span data-i18n="app.title">BlocklyDuino - BWS Uster</span>
       </a>
-      <span class="navbar-text text-muted small d-none d-md-inline" data-i18n="app.subtitle">
-        Visual Programming for Arduino
+      <span class="navbar-text text-muted small d-none d-md-inline">
+        <span data-i18n="app.subtitle">Visual Programming for Arduino</span>
+        <span class="ms-2 text-secondary" id="versionInfo"></span>
       </span>
       <div class="ms-auto d-flex align-items-center gap-2">
         <select class="form-select form-select-sm" id="languageSelector" onchange="setLanguage(this.value)" style="width: auto;">
