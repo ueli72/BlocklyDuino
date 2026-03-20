@@ -37,18 +37,7 @@ void clearOled() {
 }
 
 void testOLED() {
-
-  configTime(0, 0, "pool.ntp.org", "time.nist.gov");
-
-  for (int i = 0; i < 5; i++) {
-    time_t now = time(nullptr);
-    struct tm* timeinfo = localtime(&now);
-
-    char dateBuf[32];
-    char timeBuf[16];
-    strftime(dateBuf, sizeof(dateBuf), DATE_FORMAT, timeinfo);
-    strftime(timeBuf, sizeof(timeBuf), "%H:%M:%S", timeinfo);
-
+  for (int i = 5; i >= 0; i--) {
     u8g2.clearBuffer();
     u8g2.setFont(u8g2_font_ncenB08_tr);
 
@@ -56,10 +45,12 @@ void testOLED() {
     u8g2.print("OLED Test");
 
     u8g2.setCursor(0, 26);
-    u8g2.print(dateBuf);
+    u8g2.print("Version: ");
+    u8g2.print(__DATE__);
 
     u8g2.setCursor(0, 40);
-    u8g2.print(timeBuf);
+    u8g2.print("Countdown: ");
+    u8g2.print(i);
 
     u8g2.sendBuffer();
     delay(1000);

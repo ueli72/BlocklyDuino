@@ -9,9 +9,6 @@
 #define OLED_SCL_PIN 9
 #define OLED_ADDRESS 0x78
 
-// Date format for testOLED()
-#define DATE_FORMAT "%m/%d/%Y"
-
 // Initialize OLED display
 void initOLED();
 

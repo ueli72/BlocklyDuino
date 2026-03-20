@@ -140,13 +140,8 @@ async function doSaveProject(fileName) {
   var template = BOARD_TEMPLATES[boardId];
   
   if (template) {
-    var dateFormat = i18n.t('dateFormat') || '%m/%d/%Y';
     for (var filepath in template) {
-      var content = template[filepath];
-      if (filepath === 'include/oled.h') {
-        content = content.replace('{{DATE_FORMAT}}', dateFormat);
-      }
-      zip.file(filepath, content);
+      zip.file(filepath, template[filepath]);
     }
   }
 

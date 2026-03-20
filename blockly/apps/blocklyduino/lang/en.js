@@ -95,7 +95,6 @@ i18n.registerTranslations('en', {
     },
     "oled": {
       "title": "OLED Display",
-      "message": "The OLED display shows text and graphics.",
       "testMessage": "This block tests the OLED display by showing 'OLED Test' on the screen."
     },
     "ledMatrix": {

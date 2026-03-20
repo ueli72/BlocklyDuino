@@ -32,6 +32,17 @@ If you want to install it locally. Get code from github and open `blockly/apps/b
 
 The preffered way is to put the `BlocklyDuino/web` folder into a web server and open the url like `localhost/public/blockly/apps/blocklyduino/index.html` for use.
 
+### Development: Updating Board Templates
+
+The board templates in `blockly/apps/blocklyduino/templates.js` are generated from the actual source files in the `boards/` directory. 
+
+To update templates after modifying board source files:
+```
+python3 generate_templates.py
+```
+
+This script reads files from `boards/esp32-s3-devkitc1/` and `boards/arduino-uno/` and generates the `templates.js` file used for project downloads.
+
 ### Integrated Arduino upload
 To avoid the tedious step of manually pasting code to the Arduino IDE, you can run a mini webserver that uses
 the [Arduino IDE](https://www.arduino.cc/en/Main/Software) to upload the code to a connected Arduino board on Windows, Mac OS X and Linux systems.
