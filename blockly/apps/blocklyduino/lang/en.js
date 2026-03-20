@@ -54,7 +54,8 @@ i18n.registerTranslations('en', {
     "internalLED": "Internal LED",
     "button": "Button",
     "ledMatrix": "LED Matrix",
-    "oled": "OLED Display"
+    "oled": "OLED Display",
+    "relais": "Relais"
   },
   "blocks": {
     "servoInit": "Initialize",
@@ -72,7 +73,9 @@ i18n.registerTranslations('en', {
     "oledClear": "Clear",
     "oledTest": "Test",
     "ledMatrixInit": "Initialize",
-    "ledMatrixTest": "Test Rainbow"
+    "ledMatrixTest": "Test Rainbow",
+    "relaisSet": "Set State",
+    "relaisTest": "Test"
   },
   "blockInfo": {
     "internalLED": {
@@ -101,6 +104,11 @@ i18n.registerTranslations('en', {
       "title": "LED Matrix",
       "message": "The LED Matrix only works with an external power-source of 5 volts.",
       "testMessage": "This block tests the LED Matrix with a rainbow effect, cycling through all 16 LEDs."
+    },
+    "relais": {
+      "title": "Relais",
+      "message": "Relais need an external powersource of 5V to work.",
+      "testMessage": "This block tests both relays by turning them on and off with a 500ms delay, 5 times each."
     }
   },
   "dependencies": {

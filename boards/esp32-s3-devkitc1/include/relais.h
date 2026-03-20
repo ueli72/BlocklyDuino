@@ -13,4 +13,7 @@ void setRelay(int relayNum, bool state);
 // Test function for relays
 void testRelays();
 
+// Test sequence for relays
+void testRelaisSequence();
+
 #endif // RELAIS_H

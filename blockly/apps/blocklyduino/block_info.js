@@ -71,6 +71,17 @@ var BLOCK_INFO = {
     message: 'blockInfo.ledMatrix.message',
     testMessage: 'blockInfo.ledMatrix.testMessage',
     includes: ['LEDMatrix.h']
+  },
+  'relais_set': {
+    title: 'blockInfo.relais.title',
+    message: 'blockInfo.relais.message',
+    includes: ['relais.h']
+  },
+  'relais_test': {
+    title: 'blockInfo.relais.title',
+    message: 'blockInfo.relais.message',
+    testMessage: 'blockInfo.relais.testMessage',
+    includes: ['relais.h']
   }
 };
 

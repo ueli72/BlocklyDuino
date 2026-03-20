@@ -54,7 +54,8 @@ i18n.registerTranslations('de', {
     "internalLED": "Interne LED",
     "button": "Taster",
     "ledMatrix": "LED Matrix",
-    "oled": "OLED Display"
+    "oled": "OLED Display",
+    "relais": "Relais"
   },
   "blocks": {
     "servoInit": "Initialisieren",
@@ -72,7 +73,9 @@ i18n.registerTranslations('de', {
     "oledClear": "Löschen",
     "oledTest": "Test",
     "ledMatrixInit": "Initialisieren",
-    "ledMatrixTest": "Regenbogen Test"
+    "ledMatrixTest": "Regenbogen Test",
+    "relaisSet": "Status setzen",
+    "relaisTest": "Test"
   },
   "blockInfo": {
     "internalLED": {
@@ -101,6 +104,11 @@ i18n.registerTranslations('de', {
       "title": "LED Matrix",
       "message": "Die LED Matrix funktioniert nur mit einer externen Stromquelle von 5 Volt.",
       "testMessage": "Dieser Block testet die LED Matrix mit einem Regenbogen-Effekt, der alle 16 LEDs durchläuft."
+    },
+    "relais": {
+      "title": "Relais",
+      "message": "Relais benötigen eine externe Stromquelle von 5V.",
+      "testMessage": "Dieser Block testet beide Relais, indem sie mit einer Verzögerung von 500ms 5-mal ein- und ausgeschaltet werden."
     }
   },
   "dependencies": {

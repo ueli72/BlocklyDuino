@@ -23,6 +23,7 @@
   <script type="text/javascript" src="../../blocks/playground/button.js"></script>
   <script type="text/javascript" src="../../blocks/playground/ledmatrix.js"></script>
   <script type="text/javascript" src="../../blocks/playground/oled.js"></script>
+  <script type="text/javascript" src="../../blocks/playground/relais.js"></script>
   <script type="text/javascript" src="../../generators/arduino.js"></script>
   <script type="text/javascript" src="../../generators/arduino/base.js"></script>
   <script type="text/javascript" src="../../generators/arduino/control.js"></script>
@@ -38,6 +39,7 @@
   <script type="text/javascript" src="../../generators/arduino/playground/button.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/ledmatrix.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/oled.js"></script>
+  <script type="text/javascript" src="../../generators/arduino/playground/relais.js"></script>
   <script type="text/javascript" src="../../msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
@@ -357,9 +359,10 @@ function addToolboxIcons() {
     var buttonText = i18n.t('categories.button');
     var ledMatrixText = i18n.t('categories.ledMatrix');
     var oledText = i18n.t('categories.oled');
+    var relaisText = i18n.t('categories.relais');
     var playgroundText = i18n.t('categories.playground');
     
-    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText;
+    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText;
     
     // Add class for subcategories
     if (isSubcategory) {
@@ -396,6 +399,7 @@ function addToolboxIcons() {
     else if (text === buttonText) iconClass = 'bi-toggle-off';
     else if (text === ledMatrixText) iconClass = 'bi-grid-3x3';
     else if (text === oledText) iconClass = 'bi-display';
+    else if (text === relaisText) iconClass = 'bi-lightning-charge-fill';
     
     if (iconClass || iconText) {
       var icon = row.querySelector('.toolbox-icon');
@@ -1106,6 +1110,10 @@ function initBlockly() {
         </block>
         <block type="oled_clear"></block>
         <block type="oled_test"></block>
+      </category>
+      <category name="Relais" data-i18n-name="categories.relais">
+        <block type="relais_set"></block>
+        <block type="relais_test"></block>
       </category>
     </category>
   </xml>
