@@ -8,7 +8,7 @@ void initDHT11() {
   dht.begin();
 }
 
-float readTemp() {
+float readDHT11Temperature() {
   float temperature = dht.readTemperature();
   if (isnan(temperature)) {
     return -1.0;
@@ -16,7 +16,7 @@ float readTemp() {
   return temperature;
 }
 
-float readHum() {
+float readDHT11Humidity() {
   float humidity = dht.readHumidity();
   if (isnan(humidity)) {
     return -1.0;
@@ -25,16 +25,22 @@ float readHum() {
 }
 
 void testDHT11() {
-  initDHT11();
+  initOLED();
   delay(2000);
   
-  float temperature = readTemp();
-  float humidity = readHum();
-  
-  if (temperature >= 0 && humidity >= 0) {
-    String displayText = "T:" + String(temperature, 1) + "C H:" + String(humidity, 0) + "%";
-    writeToOled(displayText.c_str());
-  } else {
-    writeToOled("DHT11 Error");
+  for (int i = 0; i < 10; i++) {
+    float temperature = readDHT11Temperature();
+    float humidity = readDHT11Humidity();
+    
+    char buffer[64];
+    if (temperature >= 0 && humidity >= 0) {
+      snprintf(buffer, sizeof(buffer), "Temp: %.1f C\nHumidity: %.0f %%", temperature, humidity);
+    } else {
+      snprintf(buffer, sizeof(buffer), "DHT11 Error\nCheck connection");
+    }
+    writeToOled(buffer);
+    delay(2000);
   }
+  
+  clearOled();
 }

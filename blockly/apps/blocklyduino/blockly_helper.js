@@ -327,14 +327,20 @@ function setupBlockInfoListener() {
       currentBlockIds[block.id] = block.type;
       
       if (!lastBlockIds[block.id]) {
-        // Check for block info
         if (hasBlockInfo(block.type) && !seenBlocks.has(block.type)) {
-          seenBlocks.add(block.type);
           var info = getBlockInfo(block.type);
-          if (info) {
-            var title = i18n.t(info.title);
-            var message = i18n.t(info.message);
-            showBlockInfoModal(title, message);
+          var warningKey = info && info.warningKey ? info.warningKey : block.type;
+          
+          if (!seenBlocks.has(warningKey)) {
+            seenBlocks.add(warningKey);
+            seenBlocks.add(block.type);
+            if (info) {
+              var title = i18n.t(info.title);
+              var message = i18n.t(info.message);
+              showBlockInfoModal(title, message);
+            }
+          } else {
+            seenBlocks.add(block.type);
           }
         }
         

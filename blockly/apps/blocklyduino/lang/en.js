@@ -56,7 +56,8 @@ i18n.registerTranslations('en', {
     "ledMatrix": "LED Matrix",
     "oled": "OLED Display",
     "relais": "Relais",
-    "dcMotor": "DC Motor"
+    "dcMotor": "DC Motor",
+    "dht11": "DHT11"
   },
   "blocks": {
     "servoInit": "Initialize",
@@ -80,7 +81,11 @@ i18n.registerTranslations('en', {
     "dcMotorInit": "Initialize",
     "dcMotorSet": "Set Direction",
     "dcMotorStop": "Stop",
-    "dcMotorTest": "Test"
+    "dcMotorTest": "Test",
+    "dht11Init": "Initialize",
+    "dht11ReadTemp": "Read Temperature",
+    "dht11ReadHumidity": "Read Humidity",
+    "dht11Test": "Test"
   },
   "blockInfo": {
     "internalLED": {
@@ -119,6 +124,11 @@ i18n.registerTranslations('en', {
       "title": "DC Motor",
       "message": "Motors need an external powersource. Make sure the jumper is set correctly.",
       "testMessage": "This block tests both motors: forward, stop, backward, stop (1 second each), 3 times."
+    },
+    "dht11": {
+      "title": "DHT11 Sensor",
+      "message": "The DHT11 sensor measures temperature (0-50°C) and humidity (20-90%). Read interval should be at least 2 seconds.",
+      "testMessage": "This block tests the DHT11 sensor by reading temperature and humidity values and displaying them on the OLED display for 20 seconds."
     }
   },
   "dependencies": {
@@ -139,6 +149,9 @@ i18n.registerTranslations('en', {
     "oledTest": "OLED must be initialized before running test.",
     "dcMotorSet": "DC Motors must be initialized before setting direction.",
     "dcMotorStop": "DC Motors must be initialized before stopping.",
-    "dcMotorTest": "DC Motors must be initialized before running test."
+    "dcMotorTest": "DC Motors must be initialized before running test.",
+    "dht11ReadTemp": "DHT11 must be initialized before reading temperature.",
+    "dht11ReadHumidity": "DHT11 must be initialized before reading humidity.",
+    "dht11Test": "DHT11 must be initialized before running test."
   }
 });

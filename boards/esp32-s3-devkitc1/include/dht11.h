@@ -1,21 +1,16 @@
- #ifndef DHT11_H
+#ifndef DHT11_H
 #define DHT11_H
 
 #include <Arduino.h>
 
-// DHT11 sensor pin
 #define DHT11_PIN 6
 
-// Initialize DHT11 sensor
 void initDHT11();
 
-// Read temperature from DHT11 (returns value in Celsius)
-float readTemp();
+float readDHT11Temperature();
 
-// Read humidity from DHT11 (returns value in %)
-float readHum();
+float readDHT11Humidity();
 
-// Test function for DHT11 sensor
 void testDHT11();
 
-#endif // DHT11_H
+#endif

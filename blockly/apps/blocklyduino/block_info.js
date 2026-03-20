@@ -103,6 +103,31 @@ var BLOCK_INFO = {
     message: 'blockInfo.dcMotor.message',
     testMessage: 'blockInfo.dcMotor.testMessage',
     includes: ['dcmotor.h']
+  },
+  'dht11_init': {
+    title: 'blockInfo.dht11.title',
+    message: 'blockInfo.dht11.message',
+    warningKey: 'dht11',
+    includes: ['dht11.h']
+  },
+  'dht11_read_temp': {
+    title: 'blockInfo.dht11.title',
+    message: 'blockInfo.dht11.message',
+    warningKey: 'dht11',
+    includes: ['dht11.h']
+  },
+  'dht11_read_humidity': {
+    title: 'blockInfo.dht11.title',
+    message: 'blockInfo.dht11.message',
+    warningKey: 'dht11',
+    includes: ['dht11.h']
+  },
+  'dht11_test': {
+    title: 'blockInfo.dht11.title',
+    message: 'blockInfo.dht11.message',
+    warningKey: 'dht11',
+    testMessage: 'blockInfo.dht11.testMessage',
+    includes: ['dht11.h', 'oled.h']
   }
 };
 
@@ -178,6 +203,18 @@ var BLOCK_DEPENDENCIES = {
   'dc_motor_test': {
     requires: 'dc_motor_init',
     message: 'dependencies.dcMotorTest'
+  },
+  'dht11_read_temp': {
+    requires: 'dht11_init',
+    message: 'dependencies.dht11ReadTemp'
+  },
+  'dht11_read_humidity': {
+    requires: 'dht11_init',
+    message: 'dependencies.dht11ReadHumidity'
+  },
+  'dht11_test': {
+    requires: 'dht11_init',
+    message: 'dependencies.dht11Test'
   }
 };
 

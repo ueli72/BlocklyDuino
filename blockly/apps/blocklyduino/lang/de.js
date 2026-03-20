@@ -56,7 +56,8 @@ i18n.registerTranslations('de', {
     "ledMatrix": "LED Matrix",
     "oled": "OLED Display",
     "relais": "Relais",
-    "dcMotor": "DC Motor"
+    "dcMotor": "DC Motor",
+    "dht11": "DHT11"
   },
   "blocks": {
     "servoInit": "Initialisieren",
@@ -80,7 +81,11 @@ i18n.registerTranslations('de', {
     "dcMotorInit": "Initialisieren",
     "dcMotorSet": "Richtung setzen",
     "dcMotorStop": "Stop",
-    "dcMotorTest": "Test"
+    "dcMotorTest": "Test",
+    "dht11Init": "Initialisieren",
+    "dht11ReadTemp": "Temperatur lesen",
+    "dht11ReadHumidity": "Feuchtigkeit lesen",
+    "dht11Test": "Test"
   },
   "blockInfo": {
     "internalLED": {
@@ -119,6 +124,11 @@ i18n.registerTranslations('de', {
       "title": "DC Motor",
       "message": "Motoren benötigen eine externe Stromquelle. Stellen Sie sicher, dass der Jumper korrekt gesetzt ist.",
       "testMessage": "Dieser Block testet beide Motoren: vorwärts, stop, rückwärts, stop (je 1 Sekunde), 3-mal."
+    },
+    "dht11": {
+      "title": "DHT11 Sensor",
+      "message": "Der DHT11 Sensor misst Temperatur (0-50°C) und Luftfeuchtigkeit (20-90%). Das Leseintervall sollte mindestens 2 Sekunden betragen.",
+      "testMessage": "Dieser Block testet den DHT11 Sensor, indem Temperatur und Luftfeuchtigkeit gelesen und 20 Sekunden lang auf dem OLED Display angezeigt werden."
     }
   },
   "dependencies": {
@@ -139,6 +149,9 @@ i18n.registerTranslations('de', {
     "oledTest": "Das OLED muss initialisiert werden, bevor der Test durchgeführt werden kann.",
     "dcMotorSet": "DC-Motoren müssen initialisiert werden, bevor die Richtung gesetzt werden kann.",
     "dcMotorStop": "DC-Motoren müssen initialisiert werden, bevor sie gestoppt werden können.",
-    "dcMotorTest": "DC-Motoren müssen initialisiert werden, bevor der Test durchgeführt werden kann."
+    "dcMotorTest": "DC-Motoren müssen initialisiert werden, bevor der Test durchgeführt werden kann.",
+    "dht11ReadTemp": "DHT11 muss initialisiert werden, bevor die Temperatur gelesen werden kann.",
+    "dht11ReadHumidity": "DHT11 muss initialisiert werden, bevor die Luftfeuchtigkeit gelesen werden kann.",
+    "dht11Test": "DHT11 muss initialisiert werden, bevor der Test durchgeführt werden kann."
   }
 });
