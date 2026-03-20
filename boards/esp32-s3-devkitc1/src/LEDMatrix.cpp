@@ -1,11 +1,10 @@
 #include "LEDMatrix.h"
 
-// Create NeoPixel object for LED Matrix
 Adafruit_NeoPixel ledMatrix(NUM_LEDS, LED_MATRIX_PIN, NEO_GRB + NEO_KHZ800);
 
 void initializeLEDMatrix() {
   ledMatrix.begin();
-  ledMatrix.setBrightness(100); // Set brightness (0-255)
+  ledMatrix.setBrightness(100);
   turnOffLEDMatrix();
 }
 
@@ -31,8 +30,6 @@ Adafruit_NeoPixel* getLEDMatrix() {
 }
 
 void runLEDMatrixTest() {
-  Serial.println("Running LED Matrix rainbow test...");
-  
   turnOffLEDMatrix();
   delay(100);
   
@@ -56,13 +53,10 @@ void runLEDMatrixTest() {
       blue = 255 - pos * 3;
     }
     
-    Serial.print("LED Matrix: Pixel ");
-    Serial.println(i);
     setLEDMatrixPixel(i, red, green, blue);
     showLEDMatrix();
     delay(200);
   }
   
-  Serial.println("LED Matrix test complete - turning off");
   turnOffLEDMatrix();
 }
