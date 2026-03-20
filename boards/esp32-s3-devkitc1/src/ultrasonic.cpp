@@ -1,5 +1,5 @@
 #include "ultrasonic.h"
-#include "buttons.h"
+#include "oled.h"
 
 float measureDistance(int sensor) {
   int trigPin, echoPin;
@@ -29,28 +29,30 @@ float measureDistance(int sensor) {
   return distance;
 }
 
-void testUltrasonic() {
-  pinMode(SW1_PIN, INPUT_PULLUP);
-  pinMode(SW2_PIN, INPUT_PULLUP);
-  pinMode(SW3_PIN, INPUT_PULLUP);
-
-  bool running = true;
-  while (running) {
-    if (digitalRead(SW1_PIN) == LOW) {
-      float dist = measureDistance(SENSOR_FRONT);
-      delay(500);
-    }
-
-    if (digitalRead(SW2_PIN) == LOW) {
-      float dist = measureDistance(SENSOR_BACK);
-      delay(500);
-    }
-
-    if (digitalRead(SW3_PIN) == LOW) {
-      running = false;
-      delay(500);
-    }
-
-    delay(10);
+void testUltrasonicOLED() {
+  initOLED();
+  
+  char buffer[64];
+  
+  writeToOled("Testing Front\nSensor");
+  delay(2000);
+  
+  for (int i = 0; i < 50; i++) {
+    float dist = measureDistance(SENSOR_FRONT);
+    snprintf(buffer, sizeof(buffer), "Front: %.1f cm", dist);
+    writeToOled(buffer);
+    delay(200);
   }
+  
+  writeToOled("Testing Back\nSensor");
+  delay(2000);
+  
+  for (int i = 0; i < 50; i++) {
+    float dist = measureDistance(SENSOR_BACK);
+    snprintf(buffer, sizeof(buffer), "Back: %.1f cm", dist);
+    writeToOled(buffer);
+    delay(200);
+  }
+  
+  clearOled();
 }

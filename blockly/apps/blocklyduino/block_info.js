@@ -128,6 +128,12 @@ var BLOCK_INFO = {
     warningKey: 'dht11',
     testMessage: 'blockInfo.dht11.testMessage',
     includes: ['dht11.h', 'oled.h']
+  },
+  'ultrasonic_read': {
+    includes: ['ultrasonic.h']
+  },
+  'ultrasonic_test': {
+    includes: ['ultrasonic.h', 'oled.h']
   }
 };
 

@@ -57,7 +57,8 @@ i18n.registerTranslations('de', {
     "oled": "OLED Display",
     "relais": "Relais",
     "dcMotor": "DC Motor",
-    "dht11": "DHT11"
+    "dht11": "DHT11",
+    "ultrasonic": "Ultraschall"
   },
   "blocks": {
     "servoInit": "Initialisieren",
@@ -85,7 +86,9 @@ i18n.registerTranslations('de', {
     "dht11Init": "Initialisieren",
     "dht11ReadTemp": "Temperatur lesen",
     "dht11ReadHumidity": "Feuchtigkeit lesen",
-    "dht11Test": "Test"
+    "dht11Test": "Test",
+    "ultrasonicRead": "Distanz lesen",
+    "ultrasonicTest": "Test"
   },
   "blockInfo": {
     "internalLED": {

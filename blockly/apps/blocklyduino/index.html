@@ -26,6 +26,7 @@
   <script type="text/javascript" src="../../blocks/playground/relais.js"></script>
   <script type="text/javascript" src="../../blocks/playground/dc_motor.js"></script>
   <script type="text/javascript" src="../../blocks/playground/dht11.js"></script>
+  <script type="text/javascript" src="../../blocks/playground/ultrasonic.js"></script>
   <script type="text/javascript" src="../../generators/arduino.js"></script>
   <script type="text/javascript" src="../../generators/arduino/base.js"></script>
   <script type="text/javascript" src="../../generators/arduino/control.js"></script>
@@ -44,6 +45,7 @@
   <script type="text/javascript" src="../../generators/arduino/playground/relais.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/dc_motor.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/dht11.js"></script>
+  <script type="text/javascript" src="../../generators/arduino/playground/ultrasonic.js"></script>
   <script type="text/javascript" src="../../msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
@@ -366,9 +368,10 @@ function addToolboxIcons() {
     var relaisText = i18n.t('categories.relais');
     var dcMotorText = i18n.t('categories.dcMotor');
     var dht11Text = i18n.t('categories.dht11');
+    var ultrasonicText = i18n.t('categories.ultrasonic');
     var playgroundText = i18n.t('categories.playground');
     
-    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text;
+    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText;
     
     // Add class for subcategories
     if (isSubcategory) {
@@ -408,6 +411,7 @@ function addToolboxIcons() {
     else if (text === relaisText) iconClass = 'bi-lightning-charge-fill';
     else if (text === dcMotorText) iconClass = 'bi-gear-wide-connected';
     else if (text === dht11Text) iconClass = 'bi-thermometer-half';
+    else if (text === ultrasonicText) iconClass = 'bi-rulers';
     
     if (iconClass || iconText) {
       var icon = row.querySelector('.toolbox-icon');
@@ -1149,6 +1153,10 @@ function initBlockly() {
         <block type="dht11_read_temp"></block>
         <block type="dht11_read_humidity"></block>
         <block type="dht11_test"></block>
+      </category>
+      <category name="Ultrasonic" data-i18n-name="categories.ultrasonic">
+        <block type="ultrasonic_read"></block>
+        <block type="ultrasonic_test"></block>
       </category>
     </category>
   </xml>
