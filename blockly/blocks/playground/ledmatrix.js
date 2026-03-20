@@ -117,3 +117,16 @@ Blockly.Blocks['led_matrix_off'] = {
     this.setTooltip('Turn off all LEDs on the Matrix');
   }
 };
+
+Blockly.Blocks['led_matrix_test'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("LED Matrix")
+        .appendField(new Blockly.FieldImage("../../media/ledmatrix.jpg", 64, 64))
+        .appendField("Test Rainbow");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('Test the LED Matrix with a rainbow effect');
+  }
+};

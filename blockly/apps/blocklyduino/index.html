@@ -22,6 +22,7 @@
   <script type="text/javascript" src="../../blocks/playground/internal_led.js"></script>
   <script type="text/javascript" src="../../blocks/playground/button.js"></script>
   <script type="text/javascript" src="../../blocks/playground/ledmatrix.js"></script>
+  <script type="text/javascript" src="../../blocks/playground/oled.js"></script>
   <script type="text/javascript" src="../../generators/arduino.js"></script>
   <script type="text/javascript" src="../../generators/arduino/base.js"></script>
   <script type="text/javascript" src="../../generators/arduino/control.js"></script>
@@ -36,6 +37,7 @@
   <script type="text/javascript" src="../../generators/arduino/playground/internal_led.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/button.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/ledmatrix.js"></script>
+  <script type="text/javascript" src="../../generators/arduino/playground/oled.js"></script>
   <script type="text/javascript" src="../../msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
@@ -121,6 +123,11 @@ function showAlertModal(message) {
 
 function showBlockInfoModal(title, message) {
   document.activeElement.blur();
+  
+  if (typeof addWarning === 'function') {
+    addWarning(title, message);
+  }
+  
   var modalEl = document.getElementById('blockInfoModal');
   var modal = new bootstrap.Modal(modalEl);
   document.getElementById('blockInfoTitle').textContent = title || 'Block Info';
@@ -349,9 +356,10 @@ function addToolboxIcons() {
     var ledText = i18n.t('categories.internalLED');
     var buttonText = i18n.t('categories.button');
     var ledMatrixText = i18n.t('categories.ledMatrix');
+    var oledText = i18n.t('categories.oled');
     var playgroundText = i18n.t('categories.playground');
     
-    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText;
+    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText;
     
     // Add class for subcategories
     if (isSubcategory) {
@@ -387,6 +395,7 @@ function addToolboxIcons() {
     else if (text === ledText) iconClass = 'bi-lightbulb-fill';
     else if (text === buttonText) iconClass = 'bi-toggle-off';
     else if (text === ledMatrixText) iconClass = 'bi-grid-3x3';
+    else if (text === oledText) iconClass = 'bi-display';
     
     if (iconClass || iconText) {
       var icon = row.querySelector('.toolbox-icon');
@@ -791,6 +800,9 @@ function initBlockly() {
             <button type="button" class="btn btn-primary" onclick="saveProject()" data-i18n-title="toolbar.download">
               <i class="bi bi-download"></i> <span data-i18n="toolbar.download">Download</span>
             </button>
+            <button type="button" class="btn btn-outline-warning d-none" id="warningsBtn" onclick="showWarningsModal()" title="View warnings">
+              <i class="bi bi-exclamation-triangle"></i>
+            </button>
           </div>
           <div class="btn-group btn-group-sm" role="group">
             <button type="button" class="btn btn-outline-secondary" onclick="discard()" data-i18n-title="toolbar.discard">
@@ -914,13 +926,22 @@ function initBlockly() {
       </div>
     </div>
   </div>
+
+  <!-- Warnings Collection Modal -->
+  <div class="modal fade" id="warningsModal" tabindex="-1" aria-labelledby="warningsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-warning bg-opacity-25">
+          <h5 class="modal-title" id="warningsModalLabel">
+            <i class="bi bi-exclamation-triangle text-warning me-2"></i><span data-i18n="modals.warnings">Warnings</span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <pre id="blockWarningMessage" style="white-space: pre-wrap; font-family: inherit; margin: 0;"></pre>
+          <ul id="warningsList" class="list-group"></ul>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="blockWarningCancel">Cancel</button>
-          <button type="button" class="btn btn-primary" id="blockWarningOk">Continue</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-i18n="modals.ok">OK</button>
         </div>
       </div>
     </div>
@@ -1072,6 +1093,19 @@ function initBlockly() {
         </block>
         <block type="led_matrix_show"></block>
         <block type="led_matrix_off"></block>
+        <block type="led_matrix_test"></block>
+      </category>
+      <category name="OLED Display" data-i18n-name="categories.oled">
+        <block type="oled_init"></block>
+        <block type="oled_write">
+          <value name="TEXT">
+            <block type="text">
+              <field name="TEXT">Hello</field>
+            </block>
+          </value>
+        </block>
+        <block type="oled_clear"></block>
+        <block type="oled_test"></block>
       </category>
     </category>
   </xml>

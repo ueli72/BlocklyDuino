@@ -31,23 +31,38 @@ Adafruit_NeoPixel* getLEDMatrix() {
 }
 
 void runLEDMatrixTest() {
-  Serial.println("Running LED Matrix test...");
-  Serial.println("Turning on LEDs one by one with white color (200ms delay)");
+  Serial.println("Running LED Matrix rainbow test...");
   
-  // Turn off all LEDs first
   turnOffLEDMatrix();
   delay(100);
   
-  // Light up each LED with white color (200ms delay between LEDs)
   for (uint8_t i = 0; i < NUM_LEDS; i++) {
+    uint8_t pos = (i * 256 / NUM_LEDS);
+    uint8_t red, green, blue;
+    
+    if (pos < 85) {
+      red = pos * 3;
+      green = 255 - pos * 3;
+      blue = 0;
+    } else if (pos < 170) {
+      pos -= 85;
+      red = 255 - pos * 3;
+      green = 0;
+      blue = pos * 3;
+    } else {
+      pos -= 170;
+      red = 0;
+      green = pos * 3;
+      blue = 255 - pos * 3;
+    }
+    
     Serial.print("LED Matrix: Pixel ");
     Serial.println(i);
-    setLEDMatrixPixel(i, 255, 255, 255); // White color
+    setLEDMatrixPixel(i, red, green, blue);
     showLEDMatrix();
     delay(200);
   }
   
-  // Turn off all LEDs after test
   Serial.println("LED Matrix test complete - turning off");
   turnOffLEDMatrix();
 }

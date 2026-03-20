@@ -11,6 +11,51 @@ function runJS() {
   }
 }
 
+var sessionWarnings = [];
+
+function addWarning(title, message) {
+  sessionWarnings.push({ title: title, message: message });
+  updateWarningsButton();
+}
+
+function updateWarningsButton() {
+  var btn = document.getElementById('warningsBtn');
+  if (btn) {
+    if (sessionWarnings.length > 0) {
+      btn.classList.remove('d-none');
+    } else {
+      btn.classList.add('d-none');
+    }
+  }
+}
+
+function showWarningsModal() {
+  var modalEl = document.getElementById('warningsModal');
+  var modal = new bootstrap.Modal(modalEl);
+  var list = document.getElementById('warningsList');
+  
+  list.innerHTML = '';
+  sessionWarnings.forEach(function(warning) {
+    var li = document.createElement('li');
+    li.className = 'list-group-item';
+    li.innerHTML = '<strong>' + warning.title + '</strong><br><small class="text-muted">' + warning.message + '</small>';
+    list.appendChild(li);
+  });
+  
+  var cleanup = function() {
+    var backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) backdrop.remove();
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+    modalEl.removeEventListener('hidden.bs.modal', cleanup);
+    modal.dispose();
+  };
+  
+  modalEl.addEventListener('hidden.bs.modal', cleanup);
+  modal.show();
+}
+
 /**
  * Backup code blocks to localStorage.
  */
@@ -95,9 +140,13 @@ async function doSaveProject(fileName) {
   var template = BOARD_TEMPLATES[boardId];
   
   if (template) {
-    // Add all template files to ZIP
+    var dateFormat = i18n.t('dateFormat') || '%m/%d/%Y';
     for (var filepath in template) {
-      zip.file(filepath, template[filepath]);
+      var content = template[filepath];
+      if (filepath === 'include/oled.h') {
+        content = content.replace('{{DATE_FORMAT}}', dateFormat);
+      }
+      zip.file(filepath, content);
     }
   }
 
@@ -113,8 +162,11 @@ async function doSaveProject(fileName) {
   if (arduinoCode.includes('initializeButtons') || arduinoCode.includes('readButton')) {
     newMain += '#include "buttons.h"\n';
   }
-  if (arduinoCode.includes('initializeLEDMatrix') || arduinoCode.includes('setLEDMatrixPixel') || arduinoCode.includes('fillLEDMatrix') || arduinoCode.includes('showLEDMatrix') || arduinoCode.includes('turnOffLEDMatrix')) {
+  if (arduinoCode.includes('initializeLEDMatrix') || arduinoCode.includes('setLEDMatrixPixel') || arduinoCode.includes('fillLEDMatrix') || arduinoCode.includes('showLEDMatrix') || arduinoCode.includes('turnOffLEDMatrix') || arduinoCode.includes('runLEDMatrixTest')) {
     newMain += '#include "LEDMatrix.h"\n';
+  }
+  if (arduinoCode.includes('initOLED') || arduinoCode.includes('writeToOled') || arduinoCode.includes('clearOled') || arduinoCode.includes('testOLED')) {
+    newMain += '#include "oled.h"\n';
   }
   newMain += '\n' + arduinoCode;
   zip.file('src/main.cpp', newMain);

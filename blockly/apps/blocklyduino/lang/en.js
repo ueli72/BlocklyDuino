@@ -1,4 +1,5 @@
 i18n.registerTranslations('en', {
+  "dateFormat": "%m/%d/%Y",
   "app": {
     "title": "BlocklyDuino",
     "subtitle": "Visual Programming for Arduino"
@@ -22,7 +23,8 @@ i18n.registerTranslations('en', {
     "continue": "Continue",
     "info": "Info",
     "inputRequired": "Input Required",
-    "missingDependency": "Missing Dependency"
+    "missingDependency": "Missing Dependency",
+    "warnings": "Warnings"
   },
   "messages": {
     "replaceBlocks": "Replace existing blocks?\n\"Cancel\" will merge.",
@@ -51,7 +53,8 @@ i18n.registerTranslations('en', {
     "sg90Servo": "SG90 Servo",
     "internalLED": "Internal LED",
     "button": "Button",
-    "ledMatrix": "LED Matrix"
+    "ledMatrix": "LED Matrix",
+    "oled": "OLED Display"
   },
   "blocks": {
     "servoInit": "Initialize",
@@ -63,7 +66,13 @@ i18n.registerTranslations('en', {
     "ledOff": "Turn Off",
     "ledTest": "Test RGB",
     "buttonInit": "Initialize",
-    "buttonRead": "Read"
+    "buttonRead": "Read",
+    "oledInit": "Initialize",
+    "oledWrite": "Write",
+    "oledClear": "Clear",
+    "oledTest": "Test",
+    "ledMatrixInit": "Initialize",
+    "ledMatrixTest": "Test Rainbow"
   },
   "blockInfo": {
     "internalLED": {
@@ -83,6 +92,16 @@ i18n.registerTranslations('en', {
       "title": "Button",
       "initMessage": "This block initializes all 4 buttons.\n\nPins used:\n• Button1: GPIO4\n• Button2: GPIO5\n• Button3: GPIO6\n• Button4: GPIO7",
       "readMessage": "This block reads the state of a button.\n\nReturns true when pressed, false when not pressed."
+    },
+    "oled": {
+      "title": "OLED Display",
+      "message": "The OLED display shows text and graphics.",
+      "testMessage": "This block tests the OLED display by showing 'OLED Test' on the screen."
+    },
+    "ledMatrix": {
+      "title": "LED Matrix",
+      "message": "The LED Matrix only works with an external power-source of 5 volts.",
+      "testMessage": "This block tests the LED Matrix with a rainbow effect, cycling through all 16 LEDs."
     }
   },
   "dependencies": {
@@ -96,6 +115,10 @@ i18n.registerTranslations('en', {
     "ledMatrixSetPixel": "LED Matrix must be initialized before setting pixels.",
     "ledMatrixFill": "LED Matrix must be initialized before filling.",
     "ledMatrixShow": "LED Matrix must be initialized before showing.",
-    "ledMatrixOff": "LED Matrix must be initialized before turning off."
+    "ledMatrixOff": "LED Matrix must be initialized before turning off.",
+    "ledMatrixTest": "LED Matrix must be initialized before running test.",
+    "oledWrite": "OLED must be initialized before writing.",
+    "oledClear": "OLED must be initialized before clearing.",
+    "oledTest": "OLED must be initialized before running test."
   }
 });

@@ -7,7 +7,10 @@
 // OLED Display parameters
 #define OLED_SDA_PIN 8
 #define OLED_SCL_PIN 9
-#define OLED_ADDRESS 0x78  // 0x78 or 0x3C depending on configuration
+#define OLED_ADDRESS 0x78
+
+// Date format for testOLED()
+#define DATE_FORMAT "%m/%d/%Y"
 
 // Initialize OLED display
 void initOLED();

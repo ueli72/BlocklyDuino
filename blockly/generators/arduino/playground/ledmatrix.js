@@ -57,3 +57,9 @@ Blockly.Arduino.led_matrix_off = function() {
   var code = 'turnOffLEDMatrix();\n';
   return code;
 };
+
+Blockly.Arduino.led_matrix_test = function() {
+  Blockly.Arduino.definitions_['include_ledmatrix_h'] = '#include "LEDMatrix.h"\n';
+  var code = 'runLEDMatrixTest();\n';
+  return code;
+};

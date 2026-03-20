@@ -1,4 +1,5 @@
 i18n.registerTranslations('de', {
+  "dateFormat": "%d.%m.%Y",
   "app": {
     "title": "BlocklyDuino",
     "subtitle": "Visuelle Programmierung für Arduino"
@@ -22,7 +23,8 @@ i18n.registerTranslations('de', {
     "continue": "Fortfahren",
     "info": "Info",
     "inputRequired": "Eingabe erforderlich",
-    "missingDependency": "Fehlende Abhängigkeit"
+    "missingDependency": "Fehlende Abhängigkeit",
+    "warnings": "Warnungen"
   },
   "messages": {
     "replaceBlocks": "Bestehende Blöcke ersetzen?\n\"Abbrechen\" führt sie zusammen.",
@@ -51,7 +53,8 @@ i18n.registerTranslations('de', {
     "sg90Servo": "SG90 Servo",
     "internalLED": "Interne LED",
     "button": "Taster",
-    "ledMatrix": "LED Matrix"
+    "ledMatrix": "LED Matrix",
+    "oled": "OLED Display"
   },
   "blocks": {
     "servoInit": "Initialisieren",
@@ -63,7 +66,13 @@ i18n.registerTranslations('de', {
     "ledOff": "Ausschalten",
     "ledTest": "RGB Test",
     "buttonInit": "Initialisieren",
-    "buttonRead": "Lesen"
+    "buttonRead": "Lesen",
+    "oledInit": "Initialisieren",
+    "oledWrite": "Schreiben",
+    "oledClear": "Löschen",
+    "oledTest": "Test",
+    "ledMatrixInit": "Initialisieren",
+    "ledMatrixTest": "Regenbogen Test"
   },
   "blockInfo": {
     "internalLED": {
@@ -83,6 +92,16 @@ i18n.registerTranslations('de', {
       "title": "Taster",
       "initMessage": "Dieser Block initialisiert alle 4 Taster.\n\nVerwendete Pins:\n• Taster1: GPIO4\n• Taster2: GPIO5\n• Taster3: GPIO6\n• Taster4: GPIO7",
       "readMessage": "Dieser Block liest den Status eines Tasters.\n\nGibt true zurück wenn gedrückt, false wenn nicht gedrückt."
+    },
+    "oled": {
+      "title": "OLED Display",
+      "message": "Das OLED Display zeigt Text und Grafiken an.",
+      "testMessage": "Dieser Block testet das OLED Display indem 'OLED Test' auf dem Bildschirm angezeigt wird."
+    },
+    "ledMatrix": {
+      "title": "LED Matrix",
+      "message": "Die LED Matrix funktioniert nur mit einer externen Stromquelle von 5 Volt.",
+      "testMessage": "Dieser Block testet die LED Matrix mit einem Regenbogen-Effekt, der alle 16 LEDs durchläuft."
     }
   },
   "dependencies": {
@@ -96,6 +115,10 @@ i18n.registerTranslations('de', {
     "ledMatrixSetPixel": "Die LED Matrix muss initialisiert werden, bevor Pixel gesetzt werden können.",
     "ledMatrixFill": "Die LED Matrix muss initialisiert werden, bevor sie gefüllt werden kann.",
     "ledMatrixShow": "Die LED Matrix muss initialisiert werden, bevor sie angezeigt werden kann.",
-    "ledMatrixOff": "Die LED Matrix muss initialisiert werden, bevor sie ausgeschaltet werden kann."
+    "ledMatrixOff": "Die LED Matrix muss initialisiert werden, bevor sie ausgeschaltet werden kann.",
+    "ledMatrixTest": "Die LED Matrix muss initialisiert werden, bevor der Test durchgeführt werden kann.",
+    "oledWrite": "Das OLED muss initialisiert werden, bevor geschrieben werden kann.",
+    "oledClear": "Das OLED muss initialisiert werden, bevor es gelöscht werden kann.",
+    "oledTest": "Das OLED muss initialisiert werden, bevor der Test durchgeführt werden kann."
   }
 });

@@ -19,6 +19,58 @@ var BLOCK_INFO = {
     message: 'blockInfo.internalLED.message',
     testMessage: 'blockInfo.internalLED.testMessage',
     includes: ['internalLED.h']
+  },
+  'oled_init': {
+    title: 'blockInfo.oled.title',
+    message: 'blockInfo.oled.message',
+    includes: ['oled.h']
+  },
+  'oled_write': {
+    title: 'blockInfo.oled.title',
+    message: 'blockInfo.oled.message',
+    includes: ['oled.h']
+  },
+  'oled_clear': {
+    title: 'blockInfo.oled.title',
+    message: 'blockInfo.oled.message',
+    includes: ['oled.h']
+  },
+  'oled_test': {
+    title: 'blockInfo.oled.title',
+    message: 'blockInfo.oled.message',
+    testMessage: 'blockInfo.oled.testMessage',
+    includes: ['oled.h']
+  },
+  'led_matrix_init': {
+    title: 'blockInfo.ledMatrix.title',
+    message: 'blockInfo.ledMatrix.message',
+    includes: ['LEDMatrix.h']
+  },
+  'led_matrix_set_pixel': {
+    title: 'blockInfo.ledMatrix.title',
+    message: 'blockInfo.ledMatrix.message',
+    includes: ['LEDMatrix.h']
+  },
+  'led_matrix_fill': {
+    title: 'blockInfo.ledMatrix.title',
+    message: 'blockInfo.ledMatrix.message',
+    includes: ['LEDMatrix.h']
+  },
+  'led_matrix_show': {
+    title: 'blockInfo.ledMatrix.title',
+    message: 'blockInfo.ledMatrix.message',
+    includes: ['LEDMatrix.h']
+  },
+  'led_matrix_off': {
+    title: 'blockInfo.ledMatrix.title',
+    message: 'blockInfo.ledMatrix.message',
+    includes: ['LEDMatrix.h']
+  },
+  'led_matrix_test': {
+    title: 'blockInfo.ledMatrix.title',
+    message: 'blockInfo.ledMatrix.message',
+    testMessage: 'blockInfo.ledMatrix.testMessage',
+    includes: ['LEDMatrix.h']
   }
 };
 
@@ -51,6 +103,18 @@ var BLOCK_DEPENDENCIES = {
     requires: 'internal_led_init',
     message: 'dependencies.ledTest'
   },
+  'oled_write': {
+    requires: 'oled_init',
+    message: 'dependencies.oledWrite'
+  },
+  'oled_clear': {
+    requires: 'oled_init',
+    message: 'dependencies.oledClear'
+  },
+  'oled_test': {
+    requires: 'oled_init',
+    message: 'dependencies.oledTest'
+  },
   'led_matrix_set_pixel': {
     requires: 'led_matrix_init',
     message: 'dependencies.ledMatrixSetPixel'
@@ -66,6 +130,10 @@ var BLOCK_DEPENDENCIES = {
   'led_matrix_off': {
     requires: 'led_matrix_init',
     message: 'dependencies.ledMatrixOff'
+  },
+  'led_matrix_test': {
+    requires: 'led_matrix_init',
+    message: 'dependencies.ledMatrixTest'
   }
 };
 
