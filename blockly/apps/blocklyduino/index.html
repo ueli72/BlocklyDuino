@@ -71,19 +71,22 @@ function showConfirmModal(message, onConfirm) {
   var okBtn = document.getElementById('confirmModalOk');
   
   var handleOk = function() {
-    // Blur focused element before hiding
     document.activeElement.blur();
     modal.hide();
     if (onConfirm) onConfirm();
-    cleanup();
   };
   
   var cleanup = function() {
+    var backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) backdrop.remove();
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
     okBtn.removeEventListener('click', handleOk);
     modalEl.removeEventListener('hidden.bs.modal', cleanup);
+    modal.dispose();
   };
   
-  // Blur focused element when modal is about to hide
   modalEl.addEventListener('hide.bs.modal', function() {
     document.activeElement.blur();
   }, { once: true });
@@ -98,8 +101,21 @@ function showConfirmModal(message, onConfirm) {
  * @param {string} message Message to display.
  */
 function showAlertModal(message) {
-  var modal = new bootstrap.Modal(document.getElementById('alertModal'));
+  var modalEl = document.getElementById('alertModal');
+  var modal = new bootstrap.Modal(modalEl);
   document.getElementById('alertModalBody').textContent = message;
+  
+  var cleanup = function() {
+    var backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) backdrop.remove();
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+    modalEl.removeEventListener('hidden.bs.modal', cleanup);
+    modal.dispose();
+  };
+  
+  modalEl.addEventListener('hidden.bs.modal', cleanup);
   modal.show();
 }
 
@@ -110,9 +126,21 @@ function showBlockInfoModal(title, message) {
   document.getElementById('blockInfoTitle').textContent = title || 'Block Info';
   document.getElementById('blockInfoMessage').textContent = message;
   
+  var cleanup = function() {
+    var backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) backdrop.remove();
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+    modalEl.removeEventListener('hidden.bs.modal', cleanup);
+    modal.dispose();
+  };
+  
   modalEl.addEventListener('hide.bs.modal', function() {
     document.activeElement.blur();
   }, { once: true });
+  
+  modalEl.addEventListener('hidden.bs.modal', cleanup);
   
   modal.show();
 }
@@ -129,12 +157,17 @@ function showBlockWarningModal(message, onContinue) {
     document.activeElement.blur();
     modal.hide();
     if (onContinue) onContinue();
-    cleanup();
   };
   
   var cleanup = function() {
+    var backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) backdrop.remove();
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
     okBtn.removeEventListener('click', handleOk);
     modalEl.removeEventListener('hidden.bs.modal', cleanup);
+    modal.dispose();
   };
   
   modalEl.addEventListener('hide.bs.modal', function() {
@@ -164,7 +197,6 @@ function showPromptModal(message, defaultValue, onConfirm) {
   
   var handleOk = function() {
     var value = input.value;
-    // Blur focused element before hiding
     document.activeElement.blur();
     modal.hide();
     if (onConfirm && value) onConfirm(value);
@@ -177,12 +209,17 @@ function showPromptModal(message, defaultValue, onConfirm) {
   };
   
   var cleanup = function() {
+    var backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) backdrop.remove();
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
     okBtn.removeEventListener('click', handleOk);
     input.removeEventListener('keypress', handleEnter);
     modalEl.removeEventListener('hidden.bs.modal', cleanup);
+    modal.dispose();
   };
   
-  // Blur focused element when modal is about to hide
   modalEl.addEventListener('hide.bs.modal', function() {
     document.activeElement.blur();
   }, { once: true });
@@ -193,7 +230,6 @@ function showPromptModal(message, defaultValue, onConfirm) {
   
   modal.show();
   
-  // Focus input after modal is shown
   modalEl.addEventListener('shown.bs.modal', function() {
     input.focus();
     input.select();
@@ -982,6 +1018,7 @@ function initBlockly() {
           </value>
         </block>
         <block type="servo_sg90_read_degrees"></block>
+        <block type="servo_sg90_test_sweep"></block>
       </category>
       <category name="Internal LED" data-i18n-name="categories.internalLED">
         <block type="internal_led_init"></block>
@@ -1003,6 +1040,7 @@ function initBlockly() {
           </value>
         </block>
         <block type="internal_led_off"></block>
+        <block type="internal_led_test"></block>
       </category>
       <category name="Button" data-i18n-name="categories.button">
         <block type="button_init"></block>

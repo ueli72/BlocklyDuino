@@ -57,23 +57,27 @@ i18n.registerTranslations('en', {
     "servoInit": "Initialize",
     "servoMove": "Move",
     "servoRead": "Read Degrees",
+    "servoTestSweep": "Test Sweep",
     "ledInit": "Initialize",
     "ledSet": "Set Color",
     "ledOff": "Turn Off",
+    "ledTest": "Test RGB",
     "buttonInit": "Initialize",
     "buttonRead": "Read"
   },
   "blockInfo": {
     "internalLED": {
       "title": "Internal RGB LED",
-      "message": "Be careful. On the DEV-Board there is a solderable jumper that needs to be connected to make the internal RGB-LED work."
+      "message": "Be careful. On the DEV-Board there is a solderable jumper that needs to be connected to make the internal RGB-LED work.",
+      "testMessage": "This block tests the internal RGB LED: Red, Green, Blue (500ms each), then turns off."
     },
     "servo": {
       "title": "SG90 Servo",
       "message": "The servos only work with an external power-source of 5 to 6 volts.",
       "initMessage": "This block initializes all 3 SG90 servos.\n\nPins used:\n• Servo1: GPIO37\n• Servo2: GPIO38\n• Servo3: GPIO45",
       "moveMessage": "This block moves a servo to a specific angle (0-180 degrees).",
-      "readMessage": "This block reads the current angle of a servo."
+      "readMessage": "This block reads the current angle of a servo.",
+      "testMessage": "This block performs a full 180° sweep back and forward once."
     },
     "button": {
       "title": "Button",
@@ -85,8 +89,10 @@ i18n.registerTranslations('en', {
     "buttonRead": "Buttons must be initialized before they can be read.",
     "servoMove": "Servos must be initialized before they can be moved.",
     "servoRead": "Servos must be initialized before they can be read.",
+    "servoTestSweep": "Servos must be initialized before running test sweep.",
     "ledSet": "Internal LED must be initialized before setting color.",
     "ledOff": "Internal LED must be initialized before turning off.",
+    "ledTest": "Internal LED must be initialized before running test.",
     "ledMatrixSetPixel": "LED Matrix must be initialized before setting pixels.",
     "ledMatrixFill": "LED Matrix must be initialized before filling.",
     "ledMatrixShow": "LED Matrix must be initialized before showing.",

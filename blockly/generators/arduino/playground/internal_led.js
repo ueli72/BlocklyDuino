@@ -44,3 +44,10 @@ Blockly.Arduino.internal_led_off = function() {
   var code = 'turnOffLED();\n';
   return code;
 };
+
+Blockly.Arduino.internal_led_test = function() {
+  Blockly.Arduino.definitions_['include_internal_led_h'] = '#include "internalLED.h"\n';
+
+  var code = 'runLEDInitTest();\n';
+  return code;
+};

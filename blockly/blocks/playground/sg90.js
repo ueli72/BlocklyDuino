@@ -86,3 +86,19 @@ Blockly.Blocks['servo_sg90_read_degrees'] = {
     this.setTooltip('return that degree with the last SG90 servo move.');
   }
 };
+
+Blockly.Blocks['servo_sg90_test_sweep'] = {
+  helpUrl: 'http://www.arduino.cc/playground/ComponentLib/servo',
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("SG90 Servo")
+        .appendField(new Blockly.FieldImage("../../media/sg90.jpg", 64, 64))
+        .appendField("PIN#")
+        .appendField(new Blockly.FieldDropdown(getSg90Pins), "PIN")
+        .appendField("Test Sweep 180°");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('Perform a full 180° sweep back and forward once');
+  }
+};

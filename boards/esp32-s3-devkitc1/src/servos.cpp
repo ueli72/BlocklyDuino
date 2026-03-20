@@ -31,9 +31,20 @@ void setServoAngle(int servoNum, int angle) {
     case 3:
       servo3.write(angle);
       break;
-    default:
+    default:re w
       Serial.println("Invalid servo number");
       break;
+  }
+}
+
+void testServoSweep(int servoNum) {
+  for (int angle = 0; angle <= 180; angle++) {
+    setServoAngle(servoNum, angle);
+    delay(10);
+  }
+  for (int angle = 180; angle >= 0; angle--) {
+    setServoAngle(servoNum, angle);
+    delay(10);
   }
 }
 

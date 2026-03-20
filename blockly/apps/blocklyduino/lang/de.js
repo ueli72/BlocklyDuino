@@ -57,23 +57,27 @@ i18n.registerTranslations('de', {
     "servoInit": "Initialisieren",
     "servoMove": "Bewegen",
     "servoRead": "Grad lesen",
+    "servoTestSweep": "Test Durchlauf",
     "ledInit": "Initialisieren",
     "ledSet": "Farbe setzen",
     "ledOff": "Ausschalten",
+    "ledTest": "RGB Test",
     "buttonInit": "Initialisieren",
     "buttonRead": "Lesen"
   },
   "blockInfo": {
     "internalLED": {
       "title": "Interne RGB-LED",
-      "message": "Achtung. Auf dem DEV-Board gibt es eine lötbare Brücke, die verbunden werden muss, damit die interne RGB-LED funktioniert."
+      "message": "Achtung. Auf dem DEV-Board gibt es eine lötbare Brücke, die verbunden werden muss, damit die interne RGB-LED funktioniert.",
+      "testMessage": "Dieser Block testet die interne RGB-LED: Rot, Grün, Blau (je 500ms), dann aus."
     },
     "servo": {
       "title": "SG90 Servo",
       "message": "Die Servos funktionieren nur mit einer externen Stromquelle von 5 bis 6 Volt.",
       "initMessage": "Dieser Block initialisiert alle 3 SG90 Servos.\n\nVerwendete Pins:\n• Servo1: GPIO37\n• Servo2: GPIO38\n• Servo3: GPIO45",
       "moveMessage": "Dieser Block bewegt einen Servo auf einen bestimmten Winkel (0-180 Grad).",
-      "readMessage": "Dieser Block liest den aktuellen Winkel eines Servos."
+      "readMessage": "Dieser Block liest den aktuellen Winkel eines Servos.",
+      "testMessage": "Dieser Block führt einen vollen 180° Durchlauf vor und zurück aus."
     },
     "button": {
       "title": "Taster",
@@ -85,8 +89,10 @@ i18n.registerTranslations('de', {
     "buttonRead": "Taster müssen initialisiert werden, bevor sie gelesen werden können.",
     "servoMove": "Servos müssen initialisiert werden, bevor sie bewegt werden können.",
     "servoRead": "Servos müssen initialisiert werden, bevor sie gelesen werden können.",
+    "servoTestSweep": "Servos müssen initialisiert werden, bevor der Test durchgeführt werden kann.",
     "ledSet": "Die interne LED muss initialisiert werden, bevor die Farbe gesetzt werden kann.",
     "ledOff": "Die interne LED muss initialisiert werden, bevor sie ausgeschaltet werden kann.",
+    "ledTest": "Die interne LED muss initialisiert werden, bevor der Test durchgeführt werden kann.",
     "ledMatrixSetPixel": "Die LED Matrix muss initialisiert werden, bevor Pixel gesetzt werden können.",
     "ledMatrixFill": "Die LED Matrix muss initialisiert werden, bevor sie gefüllt werden kann.",
     "ledMatrixShow": "Die LED Matrix muss initialisiert werden, bevor sie angezeigt werden kann.",

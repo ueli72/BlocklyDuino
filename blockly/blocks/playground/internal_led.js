@@ -75,3 +75,16 @@ Blockly.Blocks['internal_led_off'] = {
     this.setTooltip('Turn off the internal RGB LED');
   }
 };
+
+Blockly.Blocks['internal_led_test'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("Internal LED")
+        .appendField(new Blockly.FieldImage("../../media/internalled.png", 64, 64))
+        .appendField("Test RGB");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('Test the internal RGB LED: Red, Green, Blue (500ms each), then off');
+  }
+};

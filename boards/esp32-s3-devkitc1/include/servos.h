@@ -25,4 +25,7 @@ void setServoAngle(int servoNum, int angle);
 // Function to test servos
 void testServos();
 
+// Function to test single servo sweep
+void testServoSweep(int servoNum);
+
 #endif // SERVOS_H

@@ -14,23 +14,11 @@ var BLOCK_INFO = {
     message: 'blockInfo.internalLED.message',
     includes: ['internalLED.h']
   },
-  'servo_sg90_init': {
-    title: 'blockInfo.servo.title',
-    message: 'blockInfo.servo.message',
-    initMessage: 'blockInfo.servo.initMessage',
-    includes: ['servos.h']
-  },
-  'servo_sg90_move': {
-    title: 'blockInfo.servo.title',
-    message: 'blockInfo.servo.message',
-    moveMessage: 'blockInfo.servo.moveMessage',
-    includes: ['servos.h']
-  },
-  'servo_sg90_read_degrees': {
-    title: 'blockInfo.servo.title',
-    message: 'blockInfo.servo.message',
-    readMessage: 'blockInfo.servo.readMessage',
-    includes: ['servos.h']
+  'internal_led_test': {
+    title: 'blockInfo.internalLED.title',
+    message: 'blockInfo.internalLED.message',
+    testMessage: 'blockInfo.internalLED.testMessage',
+    includes: ['internalLED.h']
   }
 };
 
@@ -47,6 +35,10 @@ var BLOCK_DEPENDENCIES = {
     requires: 'servo_sg90_init',
     message: 'dependencies.servoRead'
   },
+  'servo_sg90_test_sweep': {
+    requires: 'servo_sg90_init',
+    message: 'dependencies.servoTestSweep'
+  },
   'internal_led_set': {
     requires: 'internal_led_init',
     message: 'dependencies.ledSet'
@@ -54,6 +46,10 @@ var BLOCK_DEPENDENCIES = {
   'internal_led_off': {
     requires: 'internal_led_init',
     message: 'dependencies.ledOff'
+  },
+  'internal_led_test': {
+    requires: 'internal_led_init',
+    message: 'dependencies.ledTest'
   },
   'led_matrix_set_pixel': {
     requires: 'led_matrix_init',
@@ -73,7 +69,31 @@ var BLOCK_DEPENDENCIES = {
   }
 };
 
-var seenBlocks = new Set();
+var seenBlocks = {
+  _data: null,
+  _init: function() {
+    if (this._data === null) {
+      try {
+        this._data = JSON.parse(sessionStorage.getItem('seenBlocks') || '[]');
+      } catch (e) {
+        this._data = [];
+      }
+    }
+  },
+  has: function(blockType) {
+    this._init();
+    return this._data.indexOf(blockType) !== -1;
+  },
+  add: function(blockType) {
+    this._init();
+    if (this._data.indexOf(blockType) === -1) {
+      this._data.push(blockType);
+      try {
+        sessionStorage.setItem('seenBlocks', JSON.stringify(this._data));
+      } catch (e) {}
+    }
+  }
+};
 
 function getBlockInfo(blockType) {
   return BLOCK_INFO[blockType] || null;

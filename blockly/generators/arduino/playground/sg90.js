@@ -70,3 +70,20 @@ Blockly.Arduino.servo_sg90_read_degrees = function() {
   }
   return code;
 };
+
+Blockly.Arduino.servo_sg90_test_sweep = function() {
+  var dropdown_pin = this.getFieldValue('PIN');
+  var servo_constant = sg90_servo_constants[dropdown_pin];
+
+  if (servo_constant) {
+    Blockly.Arduino.definitions_['include_servos_h'] = '#include "servos.h"\n';
+    var code = 'testServoSweep(' + servo_constant + ');\n';
+  } else {
+    Blockly.Arduino.definitions_['define_servo'] = '#include <Servo.h>\n';
+    Blockly.Arduino.definitions_['var_sg90_servo' + dropdown_pin] = 'Servo sg90_servo_' + dropdown_pin + ';\n';
+    var code = 'sg90_servo_' + dropdown_pin + '.attach(' + dropdown_pin + ');\n';
+    code += 'for (int angle = 0; angle <= 180; angle++) { sg90_servo_' + dropdown_pin + '.write(angle); delay(10); }\n';
+    code += 'for (int angle = 180; angle >= 0; angle--) { sg90_servo_' + dropdown_pin + '.write(angle); delay(10); }\n';
+  }
+  return code;
+};
