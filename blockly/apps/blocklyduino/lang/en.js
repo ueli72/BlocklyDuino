@@ -55,7 +55,8 @@ i18n.registerTranslations('en', {
     "button": "Button",
     "ledMatrix": "LED Matrix",
     "oled": "OLED Display",
-    "relais": "Relais"
+    "relais": "Relais",
+    "dcMotor": "DC Motor"
   },
   "blocks": {
     "servoInit": "Initialize",
@@ -75,7 +76,11 @@ i18n.registerTranslations('en', {
     "ledMatrixInit": "Initialize",
     "ledMatrixTest": "Test Rainbow",
     "relaisSet": "Set State",
-    "relaisTest": "Test"
+    "relaisTest": "Test",
+    "dcMotorInit": "Initialize",
+    "dcMotorSet": "Set Direction",
+    "dcMotorStop": "Stop",
+    "dcMotorTest": "Test"
   },
   "blockInfo": {
     "internalLED": {
@@ -109,6 +114,11 @@ i18n.registerTranslations('en', {
       "title": "Relais",
       "message": "Relais need an external powersource of 5V to work.",
       "testMessage": "This block tests both relays by turning them on and off with a 500ms delay, 5 times each."
+    },
+    "dcMotor": {
+      "title": "DC Motor",
+      "message": "Motors need an external powersource. Make sure the jumper is set correctly.",
+      "testMessage": "This block tests both motors: forward, stop, backward, stop (1 second each), 3 times."
     }
   },
   "dependencies": {
@@ -126,6 +136,9 @@ i18n.registerTranslations('en', {
     "ledMatrixTest": "LED Matrix must be initialized before running test.",
     "oledWrite": "OLED must be initialized before writing.",
     "oledClear": "OLED must be initialized before clearing.",
-    "oledTest": "OLED must be initialized before running test."
+    "oledTest": "OLED must be initialized before running test.",
+    "dcMotorSet": "DC Motors must be initialized before setting direction.",
+    "dcMotorStop": "DC Motors must be initialized before stopping.",
+    "dcMotorTest": "DC Motors must be initialized before running test."
   }
 });

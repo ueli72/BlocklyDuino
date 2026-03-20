@@ -5,6 +5,8 @@
 void initDCMotors() {
   pinMode(MOTOR1_IN1_PIN, OUTPUT);
   pinMode(MOTOR1_IN2_PIN, OUTPUT);
+  pinMode(MOTOR2_IN1_PIN, OUTPUT);
+  pinMode(MOTOR2_IN2_PIN, OUTPUT);
  
   pinMode(MOTOR3_IN1_PIN, OUTPUT);
   pinMode(MOTOR3_IN2_PIN, OUTPUT);
@@ -59,80 +61,42 @@ void setDCSpeed(int motorNum, int direction, int speedPercent) {
 }
 
 void testDCMotors() {
-  for (int i = 1; i <= 4; i++) {
-    setDCSpeed(i, FORWARD, 0);
-  }
 
-  pinMode(SW1_PIN, INPUT_PULLUP);
-  pinMode(SW2_PIN, INPUT_PULLUP);
-  pinMode(SW3_PIN, INPUT_PULLUP);
-  pinMode(SW4_PIN, INPUT_PULLUP);
+    setDCSpeed(1, FORWARD, 100);
+    delay(1000);
+    setDCSpeed(1, FORWARD, 0);
+    delay(500);
+    setDCSpeed(1, BACKWARD, 100);
+    delay(1000);
+    setDCSpeed(1, BACKWARD, 0);
+    delay(500);
+    
+    setDCSpeed(2, FORWARD, 100);
+    delay(1000);
+    setDCSpeed(2, FORWARD, 0);
+    delay(500);
+    setDCSpeed(2, BACKWARD, 100);
+    delay(1000);
+    setDCSpeed(2, BACKWARD, 0);
+    delay(500);
 
-  turnOffLEDMatrix();
+    setDCSpeed(3, FORWARD, 100);
+    delay(1000);
+    setDCSpeed(3, FORWARD, 0);
+    delay(500);
+    setDCSpeed(3, BACKWARD, 100);
+    delay(1000);
+    setDCSpeed(3, BACKWARD, 0);
+    delay(500);
 
-  int currentMotor = 1;
-  setLEDMatrixPixel(currentMotor - 1, 255, 255, 255);
-  showLEDMatrix();
-  int speed = 0;
-  int direction = FORWARD;
+    setDCSpeed(4, FORWARD, 100);
+    delay(1000);
+    setDCSpeed(4, FORWARD, 0);
+    delay(500);
+    setDCSpeed(4, BACKWARD, 100);
+    delay(1000);
+    setDCSpeed(4, BACKWARD, 0);
+    delay(500);
 
-  int prevMotor = currentMotor;
-  int prevSpeed = speed;
-  int prevDir = direction;
-
-  bool running = true;
-  while (running) {
-    if (digitalRead(SW1_PIN) == LOW) {
-      currentMotor = (currentMotor % 4) + 1;
-      turnOffLEDMatrix();
-      setLEDMatrixPixel(currentMotor - 1, 255, 255, 255);
-      showLEDMatrix();
-      delay(200);
-    }
-
-    if (digitalRead(SW2_PIN) == LOW) {
-      speed += 10;
-      if (speed > 100) speed = 0;
-      setDCSpeed(currentMotor, direction, speed);
-      delay(200);
-    }
-
-    if (digitalRead(SW3_PIN) == LOW) {
-      direction = (direction == FORWARD) ? BACKWARD : FORWARD;
-      setDCSpeed(currentMotor, direction, speed);
-      delay(200);
-    }
-
-    if (digitalRead(SW4_PIN) == LOW) {
-      running = false;
-      delay(200);
-    }
-
-    if (currentMotor != prevMotor || speed != prevSpeed || direction != prevDir) {
-      prevMotor = currentMotor;
-      prevSpeed = speed;
-      prevDir = direction;
-    }
-
-    int brightness = map(speed, 0, 100, 0, 255);
-    for (int i = 0; i < 4; i++) {
-      if (i + 1 == currentMotor) {
-        if (direction == FORWARD) {
-          setLEDMatrixPixel(4 + i, 0, brightness, 0);
-        } else {
-          setLEDMatrixPixel(4 + i, brightness, 0, 0);
-        }
-      } else {
-        setLEDMatrixPixel(4 + i, 0, 0, 0);
-      }
-    }
-    showLEDMatrix();
-
-    delay(50);
-  }
-
-  for (int i = 1; i <= 4; i++) {
-    setDCSpeed(i, FORWARD, 0);
-  }
-  turnOffLEDMatrix();
 }
+

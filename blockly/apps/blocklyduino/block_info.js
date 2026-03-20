@@ -82,6 +82,27 @@ var BLOCK_INFO = {
     message: 'blockInfo.relais.message',
     testMessage: 'blockInfo.relais.testMessage',
     includes: ['relais.h']
+  },
+  'dc_motor_init': {
+    title: 'blockInfo.dcMotor.title',
+    message: 'blockInfo.dcMotor.message',
+    includes: ['dcmotor.h']
+  },
+  'dc_motor_set': {
+    title: 'blockInfo.dcMotor.title',
+    message: 'blockInfo.dcMotor.message',
+    includes: ['dcmotor.h']
+  },
+  'dc_motor_stop': {
+    title: 'blockInfo.dcMotor.title',
+    message: 'blockInfo.dcMotor.message',
+    includes: ['dcmotor.h']
+  },
+  'dc_motor_test': {
+    title: 'blockInfo.dcMotor.title',
+    message: 'blockInfo.dcMotor.message',
+    testMessage: 'blockInfo.dcMotor.testMessage',
+    includes: ['dcmotor.h']
   }
 };
 
@@ -145,6 +166,18 @@ var BLOCK_DEPENDENCIES = {
   'led_matrix_test': {
     requires: 'led_matrix_init',
     message: 'dependencies.ledMatrixTest'
+  },
+  'dc_motor_set': {
+    requires: 'dc_motor_init',
+    message: 'dependencies.dcMotorSet'
+  },
+  'dc_motor_stop': {
+    requires: 'dc_motor_init',
+    message: 'dependencies.dcMotorStop'
+  },
+  'dc_motor_test': {
+    requires: 'dc_motor_init',
+    message: 'dependencies.dcMotorTest'
   }
 };
 

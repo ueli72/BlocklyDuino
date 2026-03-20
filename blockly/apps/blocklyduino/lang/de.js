@@ -55,7 +55,8 @@ i18n.registerTranslations('de', {
     "button": "Taster",
     "ledMatrix": "LED Matrix",
     "oled": "OLED Display",
-    "relais": "Relais"
+    "relais": "Relais",
+    "dcMotor": "DC Motor"
   },
   "blocks": {
     "servoInit": "Initialisieren",
@@ -75,7 +76,11 @@ i18n.registerTranslations('de', {
     "ledMatrixInit": "Initialisieren",
     "ledMatrixTest": "Regenbogen Test",
     "relaisSet": "Status setzen",
-    "relaisTest": "Test"
+    "relaisTest": "Test",
+    "dcMotorInit": "Initialisieren",
+    "dcMotorSet": "Richtung setzen",
+    "dcMotorStop": "Stop",
+    "dcMotorTest": "Test"
   },
   "blockInfo": {
     "internalLED": {
@@ -109,6 +114,11 @@ i18n.registerTranslations('de', {
       "title": "Relais",
       "message": "Relais benötigen eine externe Stromquelle von 5V.",
       "testMessage": "Dieser Block testet beide Relais, indem sie mit einer Verzögerung von 500ms 5-mal ein- und ausgeschaltet werden."
+    },
+    "dcMotor": {
+      "title": "DC Motor",
+      "message": "Motoren benötigen eine externe Stromquelle. Stellen Sie sicher, dass der Jumper korrekt gesetzt ist.",
+      "testMessage": "Dieser Block testet beide Motoren: vorwärts, stop, rückwärts, stop (je 1 Sekunde), 3-mal."
     }
   },
   "dependencies": {
@@ -126,6 +136,9 @@ i18n.registerTranslations('de', {
     "ledMatrixTest": "Die LED Matrix muss initialisiert werden, bevor der Test durchgeführt werden kann.",
     "oledWrite": "Das OLED muss initialisiert werden, bevor geschrieben werden kann.",
     "oledClear": "Das OLED muss initialisiert werden, bevor es gelöscht werden kann.",
-    "oledTest": "Das OLED muss initialisiert werden, bevor der Test durchgeführt werden kann."
+    "oledTest": "Das OLED muss initialisiert werden, bevor der Test durchgeführt werden kann.",
+    "dcMotorSet": "DC-Motoren müssen initialisiert werden, bevor die Richtung gesetzt werden kann.",
+    "dcMotorStop": "DC-Motoren müssen initialisiert werden, bevor sie gestoppt werden können.",
+    "dcMotorTest": "DC-Motoren müssen initialisiert werden, bevor der Test durchgeführt werden kann."
   }
 });
