@@ -133,8 +133,6 @@ static bool readSector(uint32_t sector, uint8_t* buffer) {
   SPI.transfer(0xFF);
   SPI.transfer(0xFF);
   digitalWrite(SD_CS_PIN, HIGH);
-  for (int i = 0; i < 20; i++) SPI.transfer(0xFF);
-  delay(1);
   
   return true;
 }
@@ -903,7 +901,7 @@ bool initSDCard() {
   delay(2000);
   
   SPI.begin(SD_CLK_PIN, SD_MISO_PIN, SD_MOSI_PIN);
-  SPI.setFrequency(100000);
+  SPI.setFrequency(400000);  // slow for init only
   SPI.setDataMode(SPI_MODE0);
   SPI.setBitOrder(MSBFIRST);
   
@@ -1111,6 +1109,10 @@ success:
   
   useManualMode = true;
   sdInitialized = true;
+
+  // Raise SPI clock to full speed now that card is initialized
+  SPI.setFrequency(4000000);
+
   DBG_PRINTLN("=== Card OK (manual mode) ===");
   return true;
 }

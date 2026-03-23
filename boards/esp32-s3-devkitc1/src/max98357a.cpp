@@ -223,12 +223,11 @@ void playAudioFile(const char* filename) {
             return;
         }
 
-        writeToOled("Playing WAV\n%luHz %d-bit\n%s",
-                    wavHeader.sampleRate, wavHeader.bitsPerSample, filename);
-
         i2s_set_sample_rates(I2S_NUM, wavHeader.sampleRate);
 
-        uint8_t* audioBuffer = (uint8_t*)malloc(32768);
+        int chunkSize = 16384;
+        int bufferSize = 65536;
+        uint8_t* audioBuffer = (uint8_t*)malloc(bufferSize);
         if (audioBuffer == NULL) {
             writeToOled("Memory error");
             free(headerBuffer);
@@ -279,12 +278,15 @@ void playAudioFile(const char* filename) {
                 i2s_write(I2S_NUM, converted, samples * 4, &bytesWritten, portMAX_DELAY);
                 bytesPlayed += initialBytes;
             }
+
         }
 
         int bytesRead;
-        int chunkSize = (wavHeader.bitsPerSample == 8 && wavHeader.numChannels == 1) ? 8192 : 16384;
+        int i2sWriteSize = 4096;
+
         while ((bytesRead = readAudioChunk(handle, audioBuffer, chunkSize)) > 0) {
             size_t bytesWritten;
+            int writeOffset = 0;
 
             if (wavHeader.bitsPerSample == 8) {
                 int samples = bytesRead;
@@ -295,17 +297,31 @@ void playAudioFile(const char* filename) {
                         converted[i*2] = val;
                         converted[i*2+1] = val;
                     }
-                    i2s_write(I2S_NUM, converted, samples * 4, &bytesWritten, portMAX_DELAY);
+                    int totalToWrite = samples * 4;
+                    while (writeOffset < totalToWrite) {
+                        int toWrite = (totalToWrite - writeOffset < i2sWriteSize) ? (totalToWrite - writeOffset) : i2sWriteSize;
+                        i2s_write(I2S_NUM, (uint8_t*)converted + writeOffset, toWrite, &bytesWritten, portMAX_DELAY);
+                        writeOffset += bytesWritten;
+                    }
                 } else {
                     for (int i = samples - 1; i >= 0; i--) {
                         converted[i] = ((int16_t)audioBuffer[i] - 128) * 256;
                     }
-                    i2s_write(I2S_NUM, converted, samples * 2, &bytesWritten, portMAX_DELAY);
+                    int totalToWrite = samples * 2;
+                    while (writeOffset < totalToWrite) {
+                        int toWrite = (totalToWrite - writeOffset < i2sWriteSize) ? (totalToWrite - writeOffset) : i2sWriteSize;
+                        i2s_write(I2S_NUM, (uint8_t*)converted + writeOffset, toWrite, &bytesWritten, portMAX_DELAY);
+                        writeOffset += bytesWritten;
+                    }
                 }
             }
             else if (wavHeader.bitsPerSample == 16) {
                 if (wavHeader.numChannels == 2) {
-                    i2s_write(I2S_NUM, audioBuffer, bytesRead, &bytesWritten, portMAX_DELAY);
+                    while (writeOffset < bytesRead) {
+                        int toWrite = (bytesRead - writeOffset < i2sWriteSize) ? (bytesRead - writeOffset) : i2sWriteSize;
+                        i2s_write(I2S_NUM, audioBuffer + writeOffset, toWrite, &bytesWritten, portMAX_DELAY);
+                        writeOffset += bytesWritten;
+                    }
                 } else {
                     int samples = bytesRead / 2;
                     int16_t* src = (int16_t*)audioBuffer;
@@ -314,11 +330,17 @@ void playAudioFile(const char* filename) {
                         dst[i*2] = src[i];
                         dst[i*2+1] = src[i];
                     }
-                    i2s_write(I2S_NUM, audioBuffer, samples * 4, &bytesWritten, portMAX_DELAY);
+                    int totalToWrite = samples * 4;
+                    while (writeOffset < totalToWrite) {
+                        int toWrite = (totalToWrite - writeOffset < i2sWriteSize) ? (totalToWrite - writeOffset) : i2sWriteSize;
+                        i2s_write(I2S_NUM, audioBuffer + writeOffset, toWrite, &bytesWritten, portMAX_DELAY);
+                        writeOffset += bytesWritten;
+                    }
                 }
             }
             else if (wavHeader.bitsPerSample == 24) {
                 int16_t* converted = (int16_t*)audioBuffer;
+                int totalToWrite;
                 if (wavHeader.numChannels == 2) {
                     int frames = bytesRead / 6;
                     for (int i = 0; i < frames; i++) {
@@ -326,25 +348,31 @@ void playAudioFile(const char* filename) {
                         int32_t right = audioBuffer[i*6+3] | (audioBuffer[i*6+4] << 8);
                         converted[i] = (int16_t)((left + right) / 2);
                     }
-                    i2s_write(I2S_NUM, converted, frames * 2, &bytesWritten, portMAX_DELAY);
+                    totalToWrite = frames * 2;
                 } else {
                     int samples = bytesRead / 3;
                     for (int i = 0; i < samples; i++) {
                         converted[i] = (int16_t)(audioBuffer[i*3] | (audioBuffer[i*3+1] << 8));
                     }
-                    i2s_write(I2S_NUM, converted, samples * 2, &bytesWritten, portMAX_DELAY);
+                    totalToWrite = samples * 2;
+                }
+                while (writeOffset < totalToWrite) {
+                    int toWrite = (totalToWrite - writeOffset < i2sWriteSize) ? (totalToWrite - writeOffset) : i2sWriteSize;
+                    i2s_write(I2S_NUM, (uint8_t*)converted + writeOffset, toWrite, &bytesWritten, portMAX_DELAY);
+                    writeOffset += bytesWritten;
                 }
             }
 
             bytesPlayed += bytesRead;
             progressCounter++;
+
             if (progressCounter % 50 == 0 && wavHeader.dataSize > 0) {
                 int percent = (bytesPlayed * 100) / wavHeader.dataSize;
                 writeToOled("Playing...\n%d%%\n%s", percent, filename);
             }
         }
 
-        // Wait for DMA to finish playing, then silence it
+
         delay((I2S_DMA_BUF_COUNT * I2S_DMA_BUF_LEN * 1000) / (wavHeader.sampleRate * 4) + 50);
         i2s_zero_dma_buffer(I2S_NUM);
 

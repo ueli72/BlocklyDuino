@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <U8g2lib.h>
+#include <stdarg.h>
 
 // OLED Display parameters
 #define OLED_SDA_PIN 8
@@ -12,8 +13,8 @@
 // Initialize OLED display
 void initOLED();
 
-// Write text to OLED display
-void writeToOled(const char* text);
+// Write text to OLED display (supports printf-style formatting)
+void writeToOled(const char* format, ...);
 
 // Clear the OLED display
 void clearOled();

@@ -1,5 +1,6 @@
 #include "oled.h"
 #include <time.h>
+#include <stdarg.h>
 
 U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, OLED_SCL_PIN, OLED_SDA_PIN, U8X8_PIN_NONE);
 
@@ -10,7 +11,7 @@ void initOLED() {
   clearOled();
 }
 
-void writeToOled(const char* text) {
+static void writeToOledInternal(const char* text) {
   u8g2.clearBuffer();
   u8g2.setFont(u8g2_font_ncenB08_tr);
 
@@ -29,6 +30,15 @@ void writeToOled(const char* text) {
   }
 
   u8g2.sendBuffer();
+}
+
+void writeToOled(const char* format, ...) {
+  char buf[256];
+  va_list args;
+  va_start(args, format);
+  vsnprintf(buf, sizeof(buf), format, args);
+  va_end(args);
+  writeToOledInternal(buf);
 }
 
 void clearOled() {
