@@ -59,7 +59,8 @@ i18n.registerTranslations('en', {
     "dcMotor": "DC Motor",
     "dht11": "DHT11",
     "ultrasonic": "Ultrasonic",
-    "sdcard": "SD Card"
+    "sdcard": "SD Card",
+    "max98357a": "MAX98357A"
   },
   "blocks": {
     "servoInit": "Initialize",
@@ -96,7 +97,12 @@ i18n.registerTranslations('en', {
     "sdcardAppend": "Append to File",
     "sdcardExists": "File Exists",
     "sdcardDelete": "Delete File",
-    "sdcardTest": "Test"
+    "sdcardTest": "Test",
+    "max98357aInit": "Initialize",
+    "max98357aPlayTone": "Play Tone",
+    "max98357aStop": "Stop",
+    "max98357aTest": "Test",
+    "max98357aPlayFile": "Play File"
   },
   "blockInfo": {
     "internalLED": {
@@ -150,6 +156,13 @@ i18n.registerTranslations('en', {
       "title": "SD Card Module",
       "message": "",
       "testMessage": "This block tests the SD card by writing, reading, and deleting a test file."
+    },
+    "max98357a": {
+      "title": "MAX98357A Amplifier",
+      "message": "The MAX98357A is an I2S audio amplifier. It requires an external power source of 5V and a connected speaker.",
+      "testWarning": "Place a 'test.wav' file (16kHz, 8bit mono) on the SD card. If missing, a triad will play instead.",
+      "testMessage": "This block tests the MAX98357A amplifier. If a 'test.wav' file (16kHz, 8bit mono) exists on the SD card, it will be played. Otherwise, a triad (C4, E4, G4, C5) will play.",
+      "playFileMessage": "WAV files must be: 16kHz sample rate, 8-bit, mono. Other formats will not play correctly."
     }
   },
   "dependencies": {
@@ -179,6 +192,10 @@ i18n.registerTranslations('en', {
     "sdcardAppend": "SD Card must be initialized before appending.",
     "sdcardExists": "SD Card must be initialized before checking file existence.",
     "sdcardDelete": "SD Card must be initialized before deleting files.",
-    "sdcardTest": "SD Card must be initialized before running test."
+    "sdcardTest": "SD Card must be initialized before running test.",
+    "max98357aPlayTone": "MAX98357A must be initialized before playing tones.",
+    "max98357aStop": "MAX98357A must be initialized before stopping.",
+    "max98357aTest": "MAX98357A must be initialized before running test.",
+    "max98357aPlayFile": "MAX98357A and SD Card must be initialized before playing audio files."
   }
 });

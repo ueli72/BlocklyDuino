@@ -36,4 +36,16 @@ void sdListFiles();
 
 void testSDCard();
 
+int openAudioFile(const char* filename);
+
+int readAudioChunk(int handle, uint8_t* buffer, int maxBytes);
+
+void closeAudioFile(int handle);
+
+bool getAudioFileInfo(const char* filename, uint32_t* size);
+
+uint32_t getAudioFilePosition(int handle);
+
+bool isAudioFileOpen(int handle);
+
 #endif

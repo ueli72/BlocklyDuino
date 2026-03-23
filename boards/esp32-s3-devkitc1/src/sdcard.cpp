@@ -19,6 +19,19 @@ static bool sdInitialized = false;
 static bool useManualMode = false;
 static bool isSDHC = false;
 
+#define MAX_AUDIO_FILES 4
+
+typedef struct {
+  bool inUse;
+  uint32_t startCluster;
+  uint32_t fileSize;
+  uint32_t currentCluster;
+  uint32_t bytesRead;
+  uint32_t sectorInCluster;
+} AudioFileHandle;
+
+static AudioFileHandle audioFiles[MAX_AUDIO_FILES];
+
 static bool setFatEntry(uint32_t cluster, uint32_t value);
 
 static uint8_t crc7(const uint8_t* data, int len) {
@@ -1289,4 +1302,141 @@ void testSDCard() {
   delay(5000);
   
   clearOled();
+}
+
+int openAudioFile(const char* filename) {
+  if (!sdInitialized) {
+    DBG_PRINTLN("SD not initialized");
+    return -1;
+  }
+  
+  if (fatStartSector == 0) {
+    if (!initFatFS()) {
+      DBG_PRINTLN("FAT init failed");
+      return -1;
+    }
+  }
+  
+  uint32_t fileSize, startCluster;
+  int32_t found = findFile(filename, &fileSize, &startCluster);
+  
+  if (found < 0) {
+    DBG_PRINTF("Audio file not found: %s\n", filename);
+    return -1;
+  }
+  
+  int handle = -1;
+  for (int i = 0; i < MAX_AUDIO_FILES; i++) {
+    if (!audioFiles[i].inUse) {
+      handle = i;
+      break;
+    }
+  }
+  
+  if (handle < 0) {
+    DBG_PRINTLN("No free audio file handles");
+    return -1;
+  }
+  
+  audioFiles[handle].inUse = true;
+  audioFiles[handle].startCluster = startCluster;
+  audioFiles[handle].fileSize = fileSize;
+  audioFiles[handle].currentCluster = startCluster;
+  audioFiles[handle].bytesRead = 0;
+  audioFiles[handle].sectorInCluster = 0;
+  
+  DBG_PRINTF("Opened audio file: %s, size: %lu, handle: %d\n", filename, fileSize, handle);
+  
+  return handle;
+}
+
+int readAudioChunk(int handle, uint8_t* buffer, int maxBytes) {
+  if (handle < 0 || handle >= MAX_AUDIO_FILES || !audioFiles[handle].inUse) {
+    return -1;
+  }
+  
+  AudioFileHandle* af = &audioFiles[handle];
+  
+  if (af->bytesRead >= af->fileSize) {
+    return 0;
+  }
+  
+  uint8_t sectorBuffer[512];
+  int totalRead = 0;
+  
+  while (totalRead < maxBytes && af->bytesRead < af->fileSize) {
+    uint32_t cluster = af->currentCluster;
+    uint32_t sector = clusterToSector(cluster) + af->sectorInCluster;
+    
+    if (!readSector(sector, sectorBuffer)) {
+      DBG_PRINTF("Failed to read sector %lu\n", sector);
+      break;
+    }
+    
+    uint32_t offsetInSector = (af->bytesRead % 512);
+    uint32_t bytesLeftInFile = af->fileSize - af->bytesRead;
+    uint32_t bytesLeftInSector = 512 - offsetInSector;
+    uint32_t bytesLeftToRead = maxBytes - totalRead;
+    
+    uint32_t toCopy = bytesLeftInSector;
+    if (toCopy > bytesLeftInFile) toCopy = bytesLeftInFile;
+    if (toCopy > bytesLeftToRead) toCopy = bytesLeftToRead;
+    
+    memcpy(buffer + totalRead, sectorBuffer + offsetInSector, toCopy);
+    
+    totalRead += toCopy;
+    af->bytesRead += toCopy;
+    
+    if (af->bytesRead % 512 == 0 || af->bytesRead >= af->fileSize) {
+      af->sectorInCluster++;
+      
+      if (af->sectorInCluster >= sectorsPerCluster) {
+        af->sectorInCluster = 0;
+        uint32_t nextCluster = getNextCluster(cluster);
+        
+        if (nextCluster < 2 || nextCluster >= 0x0FFFFFF8) {
+          break;
+        }
+        
+        af->currentCluster = nextCluster;
+      }
+    }
+  }
+  
+  return totalRead;
+}
+
+void closeAudioFile(int handle) {
+  if (handle >= 0 && handle < MAX_AUDIO_FILES) {
+    audioFiles[handle].inUse = false;
+    DBG_PRINTF("Closed audio file handle: %d\n", handle);
+  }
+}
+
+bool getAudioFileInfo(const char* filename, uint32_t* size) {
+  if (!sdInitialized) return false;
+  
+  if (fatStartSector == 0) {
+    if (!initFatFS()) return false;
+    }
+  
+  uint32_t fileSize, startCluster;
+  int32_t found = findFile(filename, &fileSize, &startCluster);
+  
+  if (found < 0) return false;
+  
+  if (size) *size = fileSize;
+  return true;
+}
+
+uint32_t getAudioFilePosition(int handle) {
+  if (handle < 0 || handle >= MAX_AUDIO_FILES || !audioFiles[handle].inUse) {
+    return 0;
+  }
+  return audioFiles[handle].bytesRead;
+}
+
+bool isAudioFileOpen(int handle) {
+  if (handle < 0 || handle >= MAX_AUDIO_FILES) return false;
+  return audioFiles[handle].inUse;
 }

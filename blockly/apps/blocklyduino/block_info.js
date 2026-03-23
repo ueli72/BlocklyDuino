@@ -184,6 +184,34 @@ var BLOCK_INFO = {
     warningKey: 'sdcard',
     testMessage: 'blockInfo.sdcard.testMessage',
     includes: ['sdcard.h', 'oled.h']
+  },
+  'max98357a_init': {
+    title: 'blockInfo.max98357a.title',
+    message: 'blockInfo.max98357a.message',
+    includes: ['max98357a.h']
+  },
+  'max98357a_play_tone': {
+    title: 'blockInfo.max98357a.title',
+    message: 'blockInfo.max98357a.message',
+    includes: ['max98357a.h']
+  },
+  'max98357a_stop': {
+    title: 'blockInfo.max98357a.title',
+    message: 'blockInfo.max98357a.message',
+    includes: ['max98357a.h']
+  },
+  'max98357a_test': {
+    title: 'blockInfo.max98357a.title',
+    message: 'blockInfo.max98357a.testWarning',
+    warningKey: 'max98357a_test_wav',
+    testMessage: 'blockInfo.max98357a.testMessage',
+    includes: ['max98357a.h', 'oled.h']
+  },
+  'max98357a_play_file': {
+    title: 'blockInfo.max98357a.title',
+    message: 'blockInfo.max98357a.playFileMessage',
+    warningKey: 'max98357a_play_file',
+    includes: ['max98357a.h', 'sdcard.h']
   }
 };
 
@@ -295,6 +323,22 @@ var BLOCK_DEPENDENCIES = {
   'sdcard_test': {
     requires: 'sdcard_init',
     message: 'dependencies.sdcardTest'
+  },
+  'max98357a_play_tone': {
+    requires: 'max98357a_init',
+    message: 'dependencies.max98357aPlayTone'
+  },
+  'max98357a_stop': {
+    requires: 'max98357a_init',
+    message: 'dependencies.max98357aStop'
+  },
+  'max98357a_test': {
+    requires: 'max98357a_init',
+    message: 'dependencies.max98357aTest'
+  },
+  'max98357a_play_file': {
+    requires: 'max98357a_init',
+    message: 'dependencies.max98357aPlayFile'
   }
 };
 

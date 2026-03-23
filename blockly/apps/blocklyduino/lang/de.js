@@ -59,7 +59,8 @@ i18n.registerTranslations('de', {
     "dcMotor": "DC Motor",
     "dht11": "DHT11",
     "ultrasonic": "Ultraschall",
-    "sdcard": "SD Karte"
+    "sdcard": "SD Karte",
+    "max98357a": "MAX98357A"
   },
   "blocks": {
     "servoInit": "Initialisieren",
@@ -96,7 +97,12 @@ i18n.registerTranslations('de', {
     "sdcardAppend": "An Datei anhängen",
     "sdcardExists": "Datei existiert",
     "sdcardDelete": "Datei löschen",
-    "sdcardTest": "Test"
+    "sdcardTest": "Test",
+    "max98357aInit": "Initialisieren",
+    "max98357aPlayTone": "Ton spielen",
+    "max98357aStop": "Stop",
+    "max98357aTest": "Test",
+    "max98357aPlayFile": "Datei abspielen"
   },
   "blockInfo": {
     "internalLED": {
@@ -150,6 +156,13 @@ i18n.registerTranslations('de', {
       "title": "SD Karten Modul",
       "message": "",
       "testMessage": "Dieser Block testet die SD Karte, indem eine Testdatei geschrieben, gelesen und gelöscht wird."
+    },
+    "max98357a": {
+      "title": "MAX98357A Verstärker",
+      "message": "Der MAX98357A ist ein I2S-Audioverstärker. Er benötigt eine externe Stromquelle von 5V und einen angeschlossenen Lautsprecher.",
+      "testWarning": "Platzieren Sie eine 'test.wav' Datei (16kHz, 8bit mono) auf der SD-Karte. Falls nicht vorhanden, wird ein Dreiklang gespielt.",
+      "testMessage": "Dieser Block testet den MAX98357A Verstärker. Wenn eine 'test.wav' Datei (16kHz, 8bit mono) auf der SD-Karte existiert, wird sie abgespielt. Andernfalls wird ein Dreiklang (C4, E4, G4, C5) gespielt.",
+      "playFileMessage": "WAV-Dateien müssen sein: 16kHz Abtastrate, 8-bit, mono. Andere Formate werden nicht korrekt abgespielt."
     }
   },
   "dependencies": {
@@ -179,6 +192,10 @@ i18n.registerTranslations('de', {
     "sdcardAppend": "SD Karte muss initialisiert werden, bevor angehängt werden kann.",
     "sdcardExists": "SD Karte muss initialisiert werden, bevor die Existenz geprüft werden kann.",
     "sdcardDelete": "SD Karte muss initialisiert werden, bevor Dateien gelöscht werden können.",
-    "sdcardTest": "SD Karte muss initialisiert werden, bevor der Test durchgeführt werden kann."
+    "sdcardTest": "SD Karte muss initialisiert werden, bevor der Test durchgeführt werden kann.",
+    "max98357aPlayTone": "MAX98357A muss initialisiert werden, bevor Töne gespielt werden können.",
+    "max98357aStop": "MAX98357A muss initialisiert werden, bevor gestoppt werden kann.",
+    "max98357aTest": "MAX98357A muss initialisiert werden, bevor der Test durchgeführt werden kann.",
+    "max98357aPlayFile": "MAX98357A und SD-Karte müssen initialisiert werden, bevor Audiodateien abgespielt werden können."
   }
 });

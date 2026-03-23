@@ -28,6 +28,7 @@
   <script type="text/javascript" src="../../blocks/playground/dht11.js"></script>
   <script type="text/javascript" src="../../blocks/playground/ultrasonic.js"></script>
   <script type="text/javascript" src="../../blocks/playground/sdcard.js"></script>
+<script type="text/javascript" src="../../blocks/playground/max98357a.js"></script>
   <script type="text/javascript" src="../../generators/arduino.js"></script>
   <script type="text/javascript" src="../../generators/arduino/base.js"></script>
   <script type="text/javascript" src="../../generators/arduino/control.js"></script>
@@ -48,6 +49,7 @@
   <script type="text/javascript" src="../../generators/arduino/playground/dht11.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/ultrasonic.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/sdcard.js"></script>
+<script type="text/javascript" src="../../generators/arduino/playground/max98357a.js"></script>
   <script type="text/javascript" src="../../msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
@@ -372,9 +374,10 @@ function addToolboxIcons() {
     var dht11Text = i18n.t('categories.dht11');
     var ultrasonicText = i18n.t('categories.ultrasonic');
     var sdcardText = i18n.t('categories.sdcard');
+    var max98357aText = i18n.t('categories.max98357a');
     var playgroundText = i18n.t('categories.playground');
     
-    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText || text === sdcardText;
+    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText || text === sdcardText || text === max98357aText;
     
     // Add class for subcategories
     if (isSubcategory) {
@@ -416,6 +419,7 @@ function addToolboxIcons() {
     else if (text === dht11Text) iconClass = 'bi-thermometer-half';
     else if (text === ultrasonicText) iconClass = 'bi-rulers';
     else if (text === sdcardText) iconClass = 'bi-sd-card';
+    else if (text === max98357aText) iconClass = 'bi-speaker';
     
     if (iconClass || iconText) {
       var icon = row.querySelector('.toolbox-icon');
@@ -1210,6 +1214,30 @@ function initBlockly() {
           </value>
         </block>
         <block type="sdcard_test"></block>
+      </category>
+      <category name="MAX98357A" data-i18n-name="categories.max98357a">
+        <block type="max98357a_init"></block>
+        <block type="max98357a_play_tone">
+          <value name="FREQUENCY">
+            <block type="math_number">
+              <field name="NUM">440</field>
+            </block>
+          </value>
+          <value name="DURATION">
+            <block type="math_number">
+              <field name="NUM">1000</field>
+            </block>
+          </value>
+        </block>
+        <block type="max98357a_stop"></block>
+        <block type="max98357a_test"></block>
+        <block type="max98357a_play_file">
+          <value name="FILENAME">
+            <block type="text">
+              <field name="TEXT">audio.wav</field>
+            </block>
+          </value>
+        </block>
       </category>
     </category>
   </xml>
