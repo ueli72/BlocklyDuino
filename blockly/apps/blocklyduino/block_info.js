@@ -141,6 +141,49 @@ var BLOCK_INFO = {
     warningKey: 'ultrasonic',
     testMessage: 'blockInfo.ultrasonic.testMessage',
     includes: ['ultrasonic.h', 'oled.h']
+  },
+  'sdcard_init': {
+    title: 'blockInfo.sdcard.title',
+    message: 'blockInfo.sdcard.message',
+    warningKey: 'sdcard',
+    includes: ['sdcard.h']
+  },
+  'sdcard_write': {
+    title: 'blockInfo.sdcard.title',
+    message: 'blockInfo.sdcard.message',
+    warningKey: 'sdcard',
+    includes: ['sdcard.h']
+  },
+  'sdcard_read': {
+    title: 'blockInfo.sdcard.title',
+    message: 'blockInfo.sdcard.message',
+    warningKey: 'sdcard',
+    includes: ['sdcard.h']
+  },
+  'sdcard_append': {
+    title: 'blockInfo.sdcard.title',
+    message: 'blockInfo.sdcard.message',
+    warningKey: 'sdcard',
+    includes: ['sdcard.h']
+  },
+  'sdcard_exists': {
+    title: 'blockInfo.sdcard.title',
+    message: 'blockInfo.sdcard.message',
+    warningKey: 'sdcard',
+    includes: ['sdcard.h']
+  },
+  'sdcard_delete': {
+    title: 'blockInfo.sdcard.title',
+    message: 'blockInfo.sdcard.message',
+    warningKey: 'sdcard',
+    includes: ['sdcard.h']
+  },
+  'sdcard_test': {
+    title: 'blockInfo.sdcard.title',
+    message: 'blockInfo.sdcard.message',
+    warningKey: 'sdcard',
+    testMessage: 'blockInfo.sdcard.testMessage',
+    includes: ['sdcard.h', 'oled.h']
   }
 };
 
@@ -228,6 +271,30 @@ var BLOCK_DEPENDENCIES = {
   'dht11_test': {
     requires: 'dht11_init',
     message: 'dependencies.dht11Test'
+  },
+  'sdcard_write': {
+    requires: 'sdcard_init',
+    message: 'dependencies.sdcardWrite'
+  },
+  'sdcard_read': {
+    requires: 'sdcard_init',
+    message: 'dependencies.sdcardRead'
+  },
+  'sdcard_append': {
+    requires: 'sdcard_init',
+    message: 'dependencies.sdcardAppend'
+  },
+  'sdcard_exists': {
+    requires: 'sdcard_init',
+    message: 'dependencies.sdcardExists'
+  },
+  'sdcard_delete': {
+    requires: 'sdcard_init',
+    message: 'dependencies.sdcardDelete'
+  },
+  'sdcard_test': {
+    requires: 'sdcard_init',
+    message: 'dependencies.sdcardTest'
   }
 };
 

@@ -58,7 +58,8 @@ i18n.registerTranslations('en', {
     "relais": "Relais",
     "dcMotor": "DC Motor",
     "dht11": "DHT11",
-    "ultrasonic": "Ultrasonic"
+    "ultrasonic": "Ultrasonic",
+    "sdcard": "SD Card"
   },
   "blocks": {
     "servoInit": "Initialize",
@@ -88,7 +89,14 @@ i18n.registerTranslations('en', {
     "dht11ReadHumidity": "Read Humidity",
     "dht11Test": "Test",
     "ultrasonicRead": "Read Distance",
-    "ultrasonicTest": "Test"
+    "ultrasonicTest": "Test",
+    "sdcardInit": "Initialize",
+    "sdcardWrite": "Write to File",
+    "sdcardRead": "Read from File",
+    "sdcardAppend": "Append to File",
+    "sdcardExists": "File Exists",
+    "sdcardDelete": "Delete File",
+    "sdcardTest": "Test"
   },
   "blockInfo": {
     "internalLED": {
@@ -137,6 +145,11 @@ i18n.registerTranslations('en', {
       "title": "Ultrasonic Sensor",
       "message": "The ultrasonic sensor needs an external power source of 5V to work correctly.",
       "testMessage": "This block tests the ultrasonic sensor by reading distance values and displaying them on the OLED display for 10 seconds."
+    },
+    "sdcard": {
+      "title": "SD Card Module",
+      "message": "",
+      "testMessage": "This block tests the SD card by writing, reading, and deleting a test file."
     }
   },
   "dependencies": {
@@ -160,6 +173,12 @@ i18n.registerTranslations('en', {
     "dcMotorTest": "DC Motors must be initialized before running test.",
     "dht11ReadTemp": "DHT11 must be initialized before reading temperature.",
     "dht11ReadHumidity": "DHT11 must be initialized before reading humidity.",
-    "dht11Test": "DHT11 must be initialized before running test."
+    "dht11Test": "DHT11 must be initialized before running test.",
+    "sdcardWrite": "SD Card must be initialized before writing.",
+    "sdcardRead": "SD Card must be initialized before reading.",
+    "sdcardAppend": "SD Card must be initialized before appending.",
+    "sdcardExists": "SD Card must be initialized before checking file existence.",
+    "sdcardDelete": "SD Card must be initialized before deleting files.",
+    "sdcardTest": "SD Card must be initialized before running test."
   }
 });

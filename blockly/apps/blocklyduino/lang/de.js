@@ -58,7 +58,8 @@ i18n.registerTranslations('de', {
     "relais": "Relais",
     "dcMotor": "DC Motor",
     "dht11": "DHT11",
-    "ultrasonic": "Ultraschall"
+    "ultrasonic": "Ultraschall",
+    "sdcard": "SD Karte"
   },
   "blocks": {
     "servoInit": "Initialisieren",
@@ -88,7 +89,14 @@ i18n.registerTranslations('de', {
     "dht11ReadHumidity": "Feuchtigkeit lesen",
     "dht11Test": "Test",
     "ultrasonicRead": "Distanz lesen",
-    "ultrasonicTest": "Test"
+    "ultrasonicTest": "Test",
+    "sdcardInit": "Initialisieren",
+    "sdcardWrite": "In Datei schreiben",
+    "sdcardRead": "Aus Datei lesen",
+    "sdcardAppend": "An Datei anhängen",
+    "sdcardExists": "Datei existiert",
+    "sdcardDelete": "Datei löschen",
+    "sdcardTest": "Test"
   },
   "blockInfo": {
     "internalLED": {
@@ -137,6 +145,11 @@ i18n.registerTranslations('de', {
       "title": "Ultraschall Sensor",
       "message": "Der Ultraschall-Sensor benötigt eine externe Stromquelle von 5V.",
       "testMessage": "Dieser Block testet den Ultraschall-Sensor, indem Distanzwerte gelesen und 10 Sekunden lang auf dem OLED Display angezeigt werden."
+    },
+    "sdcard": {
+      "title": "SD Karten Modul",
+      "message": "",
+      "testMessage": "Dieser Block testet die SD Karte, indem eine Testdatei geschrieben, gelesen und gelöscht wird."
     }
   },
   "dependencies": {
@@ -160,6 +173,12 @@ i18n.registerTranslations('de', {
     "dcMotorTest": "DC-Motoren müssen initialisiert werden, bevor der Test durchgeführt werden kann.",
     "dht11ReadTemp": "DHT11 muss initialisiert werden, bevor die Temperatur gelesen werden kann.",
     "dht11ReadHumidity": "DHT11 muss initialisiert werden, bevor die Luftfeuchtigkeit gelesen werden kann.",
-    "dht11Test": "DHT11 muss initialisiert werden, bevor der Test durchgeführt werden kann."
+    "dht11Test": "DHT11 muss initialisiert werden, bevor der Test durchgeführt werden kann.",
+    "sdcardWrite": "SD Karte muss initialisiert werden, bevor geschrieben werden kann.",
+    "sdcardRead": "SD Karte muss initialisiert werden, bevor gelesen werden kann.",
+    "sdcardAppend": "SD Karte muss initialisiert werden, bevor angehängt werden kann.",
+    "sdcardExists": "SD Karte muss initialisiert werden, bevor die Existenz geprüft werden kann.",
+    "sdcardDelete": "SD Karte muss initialisiert werden, bevor Dateien gelöscht werden können.",
+    "sdcardTest": "SD Karte muss initialisiert werden, bevor der Test durchgeführt werden kann."
   }
 });
