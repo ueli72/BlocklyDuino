@@ -132,6 +132,11 @@ i18n.registerTranslations('de', {
       "title": "DHT11 Sensor",
       "message": "Der DHT11 Sensor misst Temperatur (0-50°C) und Luftfeuchtigkeit (20-90%). Das Leseintervall sollte mindestens 2 Sekunden betragen.",
       "testMessage": "Dieser Block testet den DHT11 Sensor, indem Temperatur und Luftfeuchtigkeit gelesen und 20 Sekunden lang auf dem OLED Display angezeigt werden."
+    },
+    "ultrasonic": {
+      "title": "Ultraschall Sensor",
+      "message": "Der Ultraschall-Sensor benötigt eine externe Stromquelle von 5V.",
+      "testMessage": "Dieser Block testet den Ultraschall-Sensor, indem Distanzwerte gelesen und 10 Sekunden lang auf dem OLED Display angezeigt werden."
     }
   },
   "dependencies": {

@@ -32,24 +32,12 @@ float measureDistance(int sensor) {
 void testUltrasonicOLED() {
   initOLED();
   
-  char buffer[64];
+  char buffer[80];
   
-  writeToOled("Testing Front\nSensor");
-  delay(2000);
-  
-  for (int i = 0; i < 50; i++) {
-    float dist = measureDistance(SENSOR_FRONT);
-    snprintf(buffer, sizeof(buffer), "Front: %.1f cm", dist);
-    writeToOled(buffer);
-    delay(200);
-  }
-  
-  writeToOled("Testing Back\nSensor");
-  delay(2000);
-  
-  for (int i = 0; i < 50; i++) {
-    float dist = measureDistance(SENSOR_BACK);
-    snprintf(buffer, sizeof(buffer), "Back: %.1f cm", dist);
+  for (int i = 0; i < 20; i++) {
+    float distFront = measureDistance(SENSOR_FRONT);
+    float distBack = measureDistance(SENSOR_BACK);
+    snprintf(buffer, sizeof(buffer), "! 5V external !\n%d/20\nFront: %.1f cm\nBack: %.1f cm", i + 1, distFront, distBack);
     writeToOled(buffer);
     delay(200);
   }

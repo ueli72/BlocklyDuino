@@ -130,9 +130,16 @@ var BLOCK_INFO = {
     includes: ['dht11.h', 'oled.h']
   },
   'ultrasonic_read': {
+    title: 'blockInfo.ultrasonic.title',
+    message: 'blockInfo.ultrasonic.message',
+    warningKey: 'ultrasonic',
     includes: ['ultrasonic.h']
   },
   'ultrasonic_test': {
+    title: 'blockInfo.ultrasonic.title',
+    message: 'blockInfo.ultrasonic.message',
+    warningKey: 'ultrasonic',
+    testMessage: 'blockInfo.ultrasonic.testMessage',
     includes: ['ultrasonic.h', 'oled.h']
   }
 };

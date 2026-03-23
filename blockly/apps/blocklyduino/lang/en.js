@@ -132,6 +132,11 @@ i18n.registerTranslations('en', {
       "title": "DHT11 Sensor",
       "message": "The DHT11 sensor measures temperature (0-50°C) and humidity (20-90%). Read interval should be at least 2 seconds.",
       "testMessage": "This block tests the DHT11 sensor by reading temperature and humidity values and displaying them on the OLED display for 20 seconds."
+    },
+    "ultrasonic": {
+      "title": "Ultrasonic Sensor",
+      "message": "The ultrasonic sensor needs an external power source of 5V to work correctly.",
+      "testMessage": "This block tests the ultrasonic sensor by reading distance values and displaying them on the OLED display for 10 seconds."
     }
   },
   "dependencies": {
