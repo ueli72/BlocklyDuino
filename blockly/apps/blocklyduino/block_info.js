@@ -239,6 +239,37 @@ var BLOCK_INFO = {
     message: 'blockInfo.brightness.message',
     includes: ['brightness.h']
   },
+  'ws2812_init': {
+    title: 'blockInfo.ws2812.title',
+    message: 'blockInfo.ws2812.message',
+    includes: ['ws2812.h']
+  },
+  'ws2812_set_pixel': {
+    title: 'blockInfo.ws2812.title',
+    message: 'blockInfo.ws2812.message',
+    includes: ['ws2812.h']
+  },
+  'ws2812_fill': {
+    title: 'blockInfo.ws2812.title',
+    message: 'blockInfo.ws2812.message',
+    includes: ['ws2812.h']
+  },
+  'ws2812_show': {
+    title: 'blockInfo.ws2812.title',
+    message: 'blockInfo.ws2812.message',
+    includes: ['ws2812.h']
+  },
+  'ws2812_off': {
+    title: 'blockInfo.ws2812.title',
+    message: 'blockInfo.ws2812.message',
+    includes: ['ws2812.h']
+  },
+  'ws2812_test': {
+    title: 'blockInfo.ws2812.title',
+    message: 'blockInfo.ws2812.message',
+    testMessage: 'blockInfo.ws2812.testMessage',
+    includes: ['ws2812.h']
+  },
   'test_all': {
     title: 'blockInfo.testAll.title',
     message: 'blockInfo.testAll.message',
@@ -379,6 +410,26 @@ var BLOCK_DEPENDENCIES = {
   'max98357a_wait_until_done': {
     requires: 'max98357a_init',
     message: 'dependencies.max98357aWaitUntilDone'
+  },
+  'ws2812_set_pixel': {
+    requires: 'ws2812_init',
+    message: 'dependencies.ws2812SetPixel'
+  },
+  'ws2812_fill': {
+    requires: 'ws2812_init',
+    message: 'dependencies.ws2812Fill'
+  },
+  'ws2812_show': {
+    requires: 'ws2812_init',
+    message: 'dependencies.ws2812Show'
+  },
+  'ws2812_off': {
+    requires: 'ws2812_init',
+    message: 'dependencies.ws2812Off'
+  },
+  'ws2812_test': {
+    requires: 'ws2812_init',
+    message: 'dependencies.ws2812Test'
   }
 };
 

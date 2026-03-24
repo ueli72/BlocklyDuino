@@ -68,6 +68,7 @@ i18n.registerTranslations('en', {
     "sdcard": "SD Card",
     "max98357a": "MAX98357A",
     "brightness": "Brightness",
+    "ws2812": "WS2812 Strip",
     "testAll": "Test All"
   },
   "blocks": {
@@ -116,6 +117,12 @@ i18n.registerTranslations('en', {
     "max98357aIsPlaying": "Is Playing",
     "max98357aWaitUntilDone": "Wait Until Done",
     "brightnessRead": "Read Brightness",
+    "ws2812Init": "Initialize",
+    "ws2812SetPixel": "Set Pixel",
+    "ws2812Fill": "Fill All",
+    "ws2812Show": "Show",
+    "ws2812Off": "Turn Off",
+    "ws2812Test": "Test",
     "testAll": "Test All"
   },
   "blockInfo": {
@@ -193,6 +200,11 @@ i18n.registerTranslations('en', {
     "brightness": {
       "title": "Brightness Sensor",
       "message": "GL5546 LDR with 1MOhm resistor. Returns analog value 0-4095. Higher value = more light detected."
+    },
+    "ws2812": {
+      "title": "WS2812 LED Strip",
+      "message": "Addressable RGB LED strip using Adafruit NeoPixel library. Set pixel colors, then call Show to update.",
+      "testMessage": "This block tests the WS2812 strip by cycling through red, green, blue colors 3 times."
     }
   },
   "dependencies": {
@@ -228,6 +240,11 @@ i18n.registerTranslations('en', {
     "max98357aTest": "MAX98357A must be initialized before running test.",
     "max98357aPlayFile": "MAX98357A and SD Card must be initialized before playing audio files.",
     "max98357aIsPlaying": "MAX98357A must be initialized before checking playback status.",
-    "max98357aWaitUntilDone": "MAX98357A must be initialized before waiting for audio completion."
+    "max98357aWaitUntilDone": "MAX98357A must be initialized before waiting for audio completion.",
+    "ws2812SetPixel": "WS2812 must be initialized before setting pixels.",
+    "ws2812Fill": "WS2812 must be initialized before filling.",
+    "ws2812Show": "WS2812 must be initialized before showing.",
+    "ws2812Off": "WS2812 must be initialized before turning off.",
+    "ws2812Test": "WS2812 must be initialized before running test."
   }
 });

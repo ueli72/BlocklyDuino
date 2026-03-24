@@ -30,6 +30,7 @@
   <script type="text/javascript" src="../../blocks/playground/sdcard.js"></script>
 <script type="text/javascript" src="../../blocks/playground/max98357a.js"></script>
   <script type="text/javascript" src="../../blocks/playground/brightness.js"></script>
+  <script type="text/javascript" src="../../blocks/playground/ws2812.js"></script>
   <script type="text/javascript" src="../../blocks/playground/test_all.js"></script>
   <script type="text/javascript" src="../../blocks/playground/timer.js"></script>
   <script type="text/javascript" src="../../generators/arduino.js"></script>
@@ -54,6 +55,7 @@
   <script type="text/javascript" src="../../generators/arduino/playground/sdcard.js"></script>
 <script type="text/javascript" src="../../generators/arduino/playground/max98357a.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/brightness.js"></script>
+  <script type="text/javascript" src="../../generators/arduino/playground/ws2812.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/test_all.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/timer.js"></script>
   <script type="text/javascript" src="../../msg/js/en.js"></script>
@@ -382,6 +384,7 @@ function addToolboxIcons() {
     var sdcardText = i18n.t('categories.sdcard');
     var max98357aText = i18n.t('categories.max98357a');
     var brightnessText = i18n.t('categories.brightness');
+    var ws2812Text = i18n.t('categories.ws2812');
     var testAllText = i18n.t('categories.testAll');
     var playgroundText = i18n.t('categories.playground');
     
@@ -429,6 +432,7 @@ function addToolboxIcons() {
     else if (text === sdcardText) iconClass = 'bi-sd-card';
     else if (text === max98357aText) iconClass = 'bi-speaker';
     else if (text === brightnessText) iconClass = 'bi-sun';
+    else if (text === ws2812Text) iconClass = 'bi-lightbulb';
     else if (text === testAllText) iconClass = 'bi-list-check';
     
     if (iconClass || iconText) {
@@ -1164,6 +1168,57 @@ function initBlockly() {
         </value>
       </block>
       <block type="inout_notone"></block>
+      <category name="WS2812 Strip" data-i18n-name="categories.ws2812">
+        <block type="ws2812_init">
+          <value name="COUNT">
+            <block type="math_number">
+              <field name="NUM">16</field>
+            </block>
+          </value>
+        </block>
+        <block type="ws2812_set_pixel">
+          <value name="INDEX">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+          <value name="RED">
+            <block type="math_number">
+              <field name="NUM">255</field>
+            </block>
+          </value>
+          <value name="GREEN">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+          <value name="BLUE">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+        </block>
+        <block type="ws2812_fill">
+          <value name="RED">
+            <block type="math_number">
+              <field name="NUM">255</field>
+            </block>
+          </value>
+          <value name="GREEN">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+          <value name="BLUE">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+        </block>
+        <block type="ws2812_show"></block>
+        <block type="ws2812_off"></block>
+        <block type="ws2812_test"></block>
+      </category>
     </category>
     <category name="Playground" data-i18n-name="categories.playground" data-board="esp32-s3-devkitc1">
       <category name="SG90 Servo" data-i18n-name="categories.sg90Servo">

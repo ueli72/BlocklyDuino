@@ -68,6 +68,7 @@ i18n.registerTranslations('de', {
     "sdcard": "SD Karte",
     "max98357a": "MAX98357A",
     "brightness": "Helligkeit",
+    "ws2812": "WS2812 Streifen",
     "testAll": "Alle Testen"
   },
   "blocks": {
@@ -116,6 +117,12 @@ i18n.registerTranslations('de', {
     "max98357aIsPlaying": "Spielt",
     "max98357aWaitUntilDone": "Warten bis fertig",
     "brightnessRead": "Helligkeit lesen",
+    "ws2812Init": "Initialisieren",
+    "ws2812SetPixel": "Pixel setzen",
+    "ws2812Fill": "Alle füllen",
+    "ws2812Show": "Anzeigen",
+    "ws2812Off": "Ausschalten",
+    "ws2812Test": "Test",
     "testAll": "Alle Testen"
   },
   "blockInfo": {
@@ -193,6 +200,11 @@ i18n.registerTranslations('de', {
     "brightness": {
       "title": "Helligkeitssensor",
       "message": "GL5546 LDR mit 1MOhm Widerstand. Gibt Analogwert 0-4095 zurück. Höherer Wert = mehr Licht erkannt."
+    },
+    "ws2812": {
+      "title": "WS2812 LED Streifen",
+      "message": "Adressierbarer RGB-LED-Streifen mit Adafruit NeoPixel Bibliothek. Pixel-Farben setzen, dann Anzeigen aufrufen.",
+      "testMessage": "Dieser Block testet den WS2812 Streifen, indem er 3-mal durch die Farben Rot, Grün, Blau wechselt."
     }
   },
   "dependencies": {
@@ -228,6 +240,11 @@ i18n.registerTranslations('de', {
     "max98357aTest": "MAX98357A muss initialisiert werden, bevor der Test durchgeführt werden kann.",
     "max98357aPlayFile": "MAX98357A und SD-Karte müssen initialisiert werden, bevor Audiodateien abgespielt werden können.",
     "max98357aIsPlaying": "MAX98357A muss initialisiert werden, bevor der Wiedergabestatus geprüft werden kann.",
-    "max98357aWaitUntilDone": "MAX98357A muss initialisiert werden, bevor auf Audio-Abschluss gewartet werden kann."
+    "max98357aWaitUntilDone": "MAX98357A muss initialisiert werden, bevor auf Audio-Abschluss gewartet werden kann.",
+    "ws2812SetPixel": "WS2812 muss initialisiert werden, bevor Pixel gesetzt werden können.",
+    "ws2812Fill": "WS2812 muss initialisiert werden, bevor gefüllt werden kann.",
+    "ws2812Show": "WS2812 muss initialisiert werden, bevor angezeigt werden kann.",
+    "ws2812Off": "WS2812 muss initialisiert werden, bevor ausgeschaltet werden kann.",
+    "ws2812Test": "WS2812 muss initialisiert werden, bevor der Test durchgeführt werden kann."
   }
 });
