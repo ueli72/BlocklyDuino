@@ -60,7 +60,8 @@ i18n.registerTranslations('en', {
     "dht11": "DHT11",
     "ultrasonic": "Ultrasonic",
     "sdcard": "SD Card",
-    "max98357a": "MAX98357A"
+    "max98357a": "MAX98357A",
+    "testAll": "Test All"
   },
   "blocks": {
     "servoInit": "Initialize",
@@ -102,7 +103,10 @@ i18n.registerTranslations('en', {
     "max98357aPlayTone": "Play Tone",
     "max98357aStop": "Stop",
     "max98357aTest": "Test",
-    "max98357aPlayFile": "Play File"
+    "max98357aPlayFile": "Play File",
+    "max98357aIsPlaying": "Is Playing",
+    "max98357aWaitUntilDone": "Wait Until Done",
+    "testAll": "Test All"
   },
   "blockInfo": {
     "internalLED": {
@@ -162,7 +166,14 @@ i18n.registerTranslations('en', {
       "message": "The MAX98357A is an I2S audio amplifier. It requires an external power source of 5V and a connected speaker.",
       "testWarning": "Place a 'test.wav' file (16kHz, 8bit mono) on the SD card. If missing, a triad will play instead.",
       "testMessage": "This block tests the MAX98357A amplifier. If a 'test.wav' file (16kHz, 8bit mono) exists on the SD card, it will be played. Otherwise, a triad (C4, E4, G4, C5) will play.",
-      "playFileMessage": "WAV files must be: 16kHz sample rate, 8-bit, mono. Other formats will not play correctly."
+      "playFileMessage": "WAV files must be: 16kHz sample rate, 8-bit, mono. Other formats will not play correctly.",
+      "isPlayingMessage": "Returns true if audio is currently playing in the background. Use this to check if playback is still ongoing.",
+      "waitUntilDoneMessage": "Blocks execution until audio playback is finished. Audio plays in background, this block waits for completion."
+    },
+    "testAll": {
+      "title": "Test All",
+      "message": "Interactive test menu for all components. Use SW1/SW2 to navigate, SW3 to select, SW4 to exit.",
+      "testMessage": "This block shows an interactive menu on the OLED display. Select which component to test using the buttons."
     }
   },
   "dependencies": {
@@ -196,6 +207,8 @@ i18n.registerTranslations('en', {
     "max98357aPlayTone": "MAX98357A must be initialized before playing tones.",
     "max98357aStop": "MAX98357A must be initialized before stopping.",
     "max98357aTest": "MAX98357A must be initialized before running test.",
-    "max98357aPlayFile": "MAX98357A and SD Card must be initialized before playing audio files."
+    "max98357aPlayFile": "MAX98357A and SD Card must be initialized before playing audio files.",
+    "max98357aIsPlaying": "MAX98357A must be initialized before checking playback status.",
+    "max98357aWaitUntilDone": "MAX98357A must be initialized before waiting for audio completion."
   }
 });

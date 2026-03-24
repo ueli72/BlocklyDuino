@@ -3,6 +3,9 @@
 #include "sdcard.h"
 #include <driver/i2s.h>
 #include <string.h>
+#include <freertos/FreeRTOS.h>
+#include <freertos/task.h>
+#include <freertos/queue.h>
 
 static bool i2sInitialized = false;
 
@@ -31,7 +34,19 @@ static const i2s_pin_config_t pin_config = {
     .data_in_num = I2S_PIN_NO_CHANGE
 };
 
-void initMAX98357A() {
+typedef struct {
+    int frequency;
+    int duration;
+    char filename[64];
+    bool isFile;
+} AudioCommand;
+
+static TaskHandle_t audioTaskHandle = NULL;
+static QueueHandle_t audioQueue = NULL;
+static volatile bool stopRequested = false;
+static volatile bool isCurrentlyPlaying = false;
+
+static void initI2S() {
     if (i2sInitialized) return;
 
     Serial.begin(115200);
@@ -49,70 +64,36 @@ void initMAX98357A() {
     i2sInitialized = true;
 }
 
-void playTone(int frequency, int duration) {
-    if (!i2sInitialized) return;
+static bool checkStop() {
+    return stopRequested;
+}
 
-    writeToOled("Tone: %dHz\n%dms", frequency, duration);
-
+static void playToneBlocking(int frequency, int duration) {
     const int sampleRate = I2S_SAMPLE_RATE;
     const int samplesPerCycle = sampleRate / frequency;
     const int totalSamples = (sampleRate * duration) / 1000;
+    const int chunkSize = 4096;
 
-    int16_t *samples = (int16_t*)malloc(totalSamples * sizeof(int16_t));
-    if (samples == NULL) {
-        writeToOled("Memory error");
-        return;
+    int16_t *samples = (int16_t*)malloc(chunkSize * sizeof(int16_t));
+    if (samples == NULL) return;
+
+    int samplesGenerated = 0;
+    while (samplesGenerated < totalSamples && !checkStop()) {
+        int samplesToWrite = (totalSamples - samplesGenerated < chunkSize) ? 
+                             (totalSamples - samplesGenerated) : chunkSize;
+
+        for (int i = 0; i < samplesToWrite; i++) {
+            float t = (float)(samplesGenerated + i) / sampleRate;
+            float value = sin(2.0 * PI * frequency * t);
+            samples[i] = (int16_t)(value * 32767 * 0.5);
+        }
+
+        size_t bytesWritten;
+        i2s_write(I2S_NUM, samples, samplesToWrite * sizeof(int16_t), &bytesWritten, portMAX_DELAY);
+        samplesGenerated += samplesToWrite;
     }
-
-    for (int i = 0; i < totalSamples; i++) {
-        float t = (float)i / sampleRate;
-        float value = sin(2.0 * PI * frequency * t);
-        samples[i] = (int16_t)(value * 32767 * 0.5);
-    }
-
-    size_t bytesWritten;
-    i2s_write(I2S_NUM, samples, totalSamples * sizeof(int16_t), &bytesWritten, portMAX_DELAY);
 
     free(samples);
-}
-
-void stopAudio() {
-    if (!i2sInitialized) return;
-
-    i2s_zero_dma_buffer(I2S_NUM);
-}
-
-void testMAX98357A() {
-    if (!i2sInitialized) {
-        initMAX98357A();
-    }
-
-    writeToOled("Test: SD Card");
-    delay(1000);
-
-    uint32_t dummySize;
-    bool sdAvailable = getAudioFileInfo("test.wav", &dummySize);
-    bool wavExists = false;
-
-    if (sdAvailable) {
-        wavExists = (openAudioFile("test.wav") >= 0);
-        if (wavExists) {
-            closeAudioFile(0);
-        }
-    }
-
-    if (wavExists) {
-        playAudioFile("test.wav");
-    } else {
-        writeToOled("Test: Triad");
-        playTone(262, 500);
-        playTone(330, 500);
-        playTone(392, 500);
-        playTone(523, 500);
-    }
-
-    clearOled();
-    stopAudio();
 }
 
 typedef struct {
@@ -170,220 +151,308 @@ static bool parseWavHeader(uint8_t* buffer, int bufLen, WavHeader* header) {
     return (header->dataSize > 0);
 }
 
-void playAudioFile(const char* filename) {
-    if (!i2sInitialized) {
-        initMAX98357A();
-    }
-
-    writeToOled("Opening:\n%s", filename);
-    delay(500);
-
+static void playAudioFileBlocking(const char* filename) {
     int handle = openAudioFile(filename);
     if (handle < 0) {
         writeToOled("File not found:\n%s", filename);
-        delay(2000);
-        clearOled();
         return;
     }
 
-    uint32_t fileSize = 0;
-    getAudioFileInfo(filename, &fileSize);
+    uint8_t* headerBuffer = (uint8_t*)malloc(2048);
+    if (headerBuffer == NULL) {
+        closeAudioFile(handle);
+        return;
+    }
+    int headerRead = readAudioChunk(handle, headerBuffer, 2048);
 
-    writeToOled("File: %s\nSize: %lu bytes", filename, fileSize);
-    delay(1000);
+    if (headerRead < 44) {
+        free(headerBuffer);
+        closeAudioFile(handle);
+        return;
+    }
 
-    {
-        uint8_t* headerBuffer = (uint8_t*)malloc(2048);
-        if (headerBuffer == NULL) {
-            writeToOled("Memory error");
-            closeAudioFile(handle);
-            delay(2000);
-            clearOled();
-            return;
+    WavHeader wavHeader;
+    if (!parseWavHeader(headerBuffer, headerRead, &wavHeader)) {
+        free(headerBuffer);
+        closeAudioFile(handle);
+        return;
+    }
+
+    i2s_set_sample_rates(I2S_NUM, wavHeader.sampleRate);
+
+    int chunkSize = 16384;
+    int bufferSize = 65536;
+    uint8_t* audioBuffer = (uint8_t*)malloc(bufferSize);
+    if (audioBuffer == NULL) {
+        free(headerBuffer);
+        closeAudioFile(handle);
+        return;
+    }
+
+    if (headerRead > (int)wavHeader.dataOffset) {
+        int initialBytes = headerRead - wavHeader.dataOffset;
+        memcpy(audioBuffer, headerBuffer + wavHeader.dataOffset, initialBytes);
+
+        size_t bytesWritten = 0;
+        if (wavHeader.bitsPerSample == 16 && wavHeader.numChannels == 2) {
+            i2s_write(I2S_NUM, audioBuffer, initialBytes, &bytesWritten, portMAX_DELAY);
+        } else if (wavHeader.bitsPerSample == 24 && wavHeader.numChannels == 2) {
+            int frames = initialBytes / 6;
+            int16_t* converted = (int16_t*)audioBuffer;
+            for (int i = 0; i < frames; i++) {
+                int32_t left = audioBuffer[i*6] | (audioBuffer[i*6+1] << 8);
+                int32_t right = audioBuffer[i*6+3] | (audioBuffer[i*6+4] << 8);
+                converted[i] = (int16_t)((left + right) / 2);
+            }
+            i2s_write(I2S_NUM, converted, frames * 2, &bytesWritten, portMAX_DELAY);
+        } else if (wavHeader.bitsPerSample == 16 && wavHeader.numChannels == 1) {
+            int samples = initialBytes / 2;
+            int16_t* buf = (int16_t*)audioBuffer;
+            for (int i = samples - 1; i >= 0; i--) {
+                buf[i*2] = buf[i];
+                buf[i*2+1] = buf[i];
+            }
+            i2s_write(I2S_NUM, audioBuffer, samples * 4, &bytesWritten, portMAX_DELAY);
+        } else if (wavHeader.bitsPerSample == 8 && wavHeader.numChannels == 1) {
+            int samples = initialBytes;
+            int16_t* converted = (int16_t*)audioBuffer;
+            for (int i = samples - 1; i >= 0; i--) {
+                int16_t val = ((int16_t)audioBuffer[i] - 128) * 256;
+                converted[i*2] = val;
+                converted[i*2+1] = val;
+            }
+            i2s_write(I2S_NUM, converted, samples * 4, &bytesWritten, portMAX_DELAY);
         }
-        int headerRead = readAudioChunk(handle, headerBuffer, 2048);
+    }
 
-        if (headerRead < 44) {
-            writeToOled("Invalid WAV\nheader");
-            free(headerBuffer);
-            closeAudioFile(handle);
-            delay(2000);
-            clearOled();
-            return;
-        }
+    int bytesRead;
+    int i2sWriteSize = 4096;
 
-        WavHeader wavHeader;
-        if (!parseWavHeader(headerBuffer, headerRead, &wavHeader)) {
-            uint16_t audioFormat = headerBuffer[20] | (headerBuffer[21] << 8);
-            writeToOled("WAV parse fail\nfmt: %d", audioFormat);
-            free(headerBuffer);
-            closeAudioFile(handle);
-            delay(2000);
-            clearOled();
-            return;
-        }
+    while ((bytesRead = readAudioChunk(handle, audioBuffer, chunkSize)) > 0 && !checkStop()) {
+        size_t bytesWritten;
+        int writeOffset = 0;
 
-        i2s_set_sample_rates(I2S_NUM, wavHeader.sampleRate);
-
-        int chunkSize = 16384;
-        int bufferSize = 65536;
-        uint8_t* audioBuffer = (uint8_t*)malloc(bufferSize);
-        if (audioBuffer == NULL) {
-            writeToOled("Memory error");
-            free(headerBuffer);
-            closeAudioFile(handle);
-            delay(2000);
-            clearOled();
-            return;
-        }
-
-        uint32_t bytesPlayed = 0;
-        int progressCounter = 0;
-
-        if (headerRead > (int)wavHeader.dataOffset) {
-            int initialBytes = headerRead - wavHeader.dataOffset;
-            memcpy(audioBuffer, headerBuffer + wavHeader.dataOffset, initialBytes);
-
-            size_t bytesWritten = 0;
-            if (wavHeader.bitsPerSample == 16 && wavHeader.numChannels == 2) {
-                i2s_write(I2S_NUM, audioBuffer, initialBytes, &bytesWritten, portMAX_DELAY);
-                bytesPlayed += initialBytes;
-            } else if (wavHeader.bitsPerSample == 24 && wavHeader.numChannels == 2) {
-                int frames = initialBytes / 6;
-                int16_t* converted = (int16_t*)audioBuffer;
-                for (int i = 0; i < frames; i++) {
-                    int32_t left = audioBuffer[i*6] | (audioBuffer[i*6+1] << 8);
-                    int32_t right = audioBuffer[i*6+3] | (audioBuffer[i*6+4] << 8);
-                    converted[i] = (int16_t)((left + right) / 2);
-                }
-                i2s_write(I2S_NUM, converted, frames * 2, &bytesWritten, portMAX_DELAY);
-                bytesPlayed += initialBytes;
-            } else if (wavHeader.bitsPerSample == 16 && wavHeader.numChannels == 1) {
-                int samples = initialBytes / 2;
-                int16_t* buf = (int16_t*)audioBuffer;
-                for (int i = samples - 1; i >= 0; i--) {
-                    buf[i*2] = buf[i];
-                    buf[i*2+1] = buf[i];
-                }
-                i2s_write(I2S_NUM, audioBuffer, samples * 4, &bytesWritten, portMAX_DELAY);
-                bytesPlayed += initialBytes;
-            } else if (wavHeader.bitsPerSample == 8 && wavHeader.numChannels == 1) {
-                int samples = initialBytes;
-                int16_t* converted = (int16_t*)audioBuffer;
+        if (wavHeader.bitsPerSample == 8) {
+            int samples = bytesRead;
+            int16_t* converted = (int16_t*)audioBuffer;
+            if (wavHeader.numChannels == 1) {
                 for (int i = samples - 1; i >= 0; i--) {
                     int16_t val = ((int16_t)audioBuffer[i] - 128) * 256;
                     converted[i*2] = val;
                     converted[i*2+1] = val;
                 }
-                i2s_write(I2S_NUM, converted, samples * 4, &bytesWritten, portMAX_DELAY);
-                bytesPlayed += initialBytes;
-            }
-
-        }
-
-        int bytesRead;
-        int i2sWriteSize = 4096;
-
-        while ((bytesRead = readAudioChunk(handle, audioBuffer, chunkSize)) > 0) {
-            size_t bytesWritten;
-            int writeOffset = 0;
-
-            if (wavHeader.bitsPerSample == 8) {
-                int samples = bytesRead;
-                int16_t* converted = (int16_t*)audioBuffer;
-                if (wavHeader.numChannels == 1) {
-                    for (int i = samples - 1; i >= 0; i--) {
-                        int16_t val = ((int16_t)audioBuffer[i] - 128) * 256;
-                        converted[i*2] = val;
-                        converted[i*2+1] = val;
-                    }
-                    int totalToWrite = samples * 4;
-                    while (writeOffset < totalToWrite) {
-                        int toWrite = (totalToWrite - writeOffset < i2sWriteSize) ? (totalToWrite - writeOffset) : i2sWriteSize;
-                        i2s_write(I2S_NUM, (uint8_t*)converted + writeOffset, toWrite, &bytesWritten, portMAX_DELAY);
-                        writeOffset += bytesWritten;
-                    }
-                } else {
-                    for (int i = samples - 1; i >= 0; i--) {
-                        converted[i] = ((int16_t)audioBuffer[i] - 128) * 256;
-                    }
-                    int totalToWrite = samples * 2;
-                    while (writeOffset < totalToWrite) {
-                        int toWrite = (totalToWrite - writeOffset < i2sWriteSize) ? (totalToWrite - writeOffset) : i2sWriteSize;
-                        i2s_write(I2S_NUM, (uint8_t*)converted + writeOffset, toWrite, &bytesWritten, portMAX_DELAY);
-                        writeOffset += bytesWritten;
-                    }
+                int totalToWrite = samples * 4;
+                while (writeOffset < totalToWrite && !checkStop()) {
+                    int toWrite = (totalToWrite - writeOffset < i2sWriteSize) ? (totalToWrite - writeOffset) : i2sWriteSize;
+                    i2s_write(I2S_NUM, (uint8_t*)converted + writeOffset, toWrite, &bytesWritten, portMAX_DELAY);
+                    writeOffset += bytesWritten;
                 }
-            }
-            else if (wavHeader.bitsPerSample == 16) {
-                if (wavHeader.numChannels == 2) {
-                    while (writeOffset < bytesRead) {
-                        int toWrite = (bytesRead - writeOffset < i2sWriteSize) ? (bytesRead - writeOffset) : i2sWriteSize;
-                        i2s_write(I2S_NUM, audioBuffer + writeOffset, toWrite, &bytesWritten, portMAX_DELAY);
-                        writeOffset += bytesWritten;
-                    }
-                } else {
-                    int samples = bytesRead / 2;
-                    int16_t* src = (int16_t*)audioBuffer;
-                    int16_t* dst = (int16_t*)audioBuffer;
-                    for (int i = samples - 1; i >= 0; i--) {
-                        dst[i*2] = src[i];
-                        dst[i*2+1] = src[i];
-                    }
-                    int totalToWrite = samples * 4;
-                    while (writeOffset < totalToWrite) {
-                        int toWrite = (totalToWrite - writeOffset < i2sWriteSize) ? (totalToWrite - writeOffset) : i2sWriteSize;
-                        i2s_write(I2S_NUM, audioBuffer + writeOffset, toWrite, &bytesWritten, portMAX_DELAY);
-                        writeOffset += bytesWritten;
-                    }
+            } else {
+                for (int i = samples - 1; i >= 0; i--) {
+                    converted[i] = ((int16_t)audioBuffer[i] - 128) * 256;
                 }
-            }
-            else if (wavHeader.bitsPerSample == 24) {
-                int16_t* converted = (int16_t*)audioBuffer;
-                int totalToWrite;
-                if (wavHeader.numChannels == 2) {
-                    int frames = bytesRead / 6;
-                    for (int i = 0; i < frames; i++) {
-                        int32_t left = audioBuffer[i*6] | (audioBuffer[i*6+1] << 8);
-                        int32_t right = audioBuffer[i*6+3] | (audioBuffer[i*6+4] << 8);
-                        converted[i] = (int16_t)((left + right) / 2);
-                    }
-                    totalToWrite = frames * 2;
-                } else {
-                    int samples = bytesRead / 3;
-                    for (int i = 0; i < samples; i++) {
-                        converted[i] = (int16_t)(audioBuffer[i*3] | (audioBuffer[i*3+1] << 8));
-                    }
-                    totalToWrite = samples * 2;
-                }
-                while (writeOffset < totalToWrite) {
+                int totalToWrite = samples * 2;
+                while (writeOffset < totalToWrite && !checkStop()) {
                     int toWrite = (totalToWrite - writeOffset < i2sWriteSize) ? (totalToWrite - writeOffset) : i2sWriteSize;
                     i2s_write(I2S_NUM, (uint8_t*)converted + writeOffset, toWrite, &bytesWritten, portMAX_DELAY);
                     writeOffset += bytesWritten;
                 }
             }
-
-            bytesPlayed += bytesRead;
-            progressCounter++;
-
-            if (progressCounter % 50 == 0 && wavHeader.dataSize > 0) {
-                int percent = (bytesPlayed * 100) / wavHeader.dataSize;
-                writeToOled("Playing...\n%d%%\n%s", percent, filename);
+        }
+        else if (wavHeader.bitsPerSample == 16) {
+            if (wavHeader.numChannels == 2) {
+                while (writeOffset < bytesRead && !checkStop()) {
+                    int toWrite = (bytesRead - writeOffset < i2sWriteSize) ? (bytesRead - writeOffset) : i2sWriteSize;
+                    i2s_write(I2S_NUM, audioBuffer + writeOffset, toWrite, &bytesWritten, portMAX_DELAY);
+                    writeOffset += bytesWritten;
+                }
+            } else {
+                int samples = bytesRead / 2;
+                int16_t* src = (int16_t*)audioBuffer;
+                int16_t* dst = (int16_t*)audioBuffer;
+                for (int i = samples - 1; i >= 0; i--) {
+                    dst[i*2] = src[i];
+                    dst[i*2+1] = src[i];
+                }
+                int totalToWrite = samples * 4;
+                while (writeOffset < totalToWrite && !checkStop()) {
+                    int toWrite = (totalToWrite - writeOffset < i2sWriteSize) ? (totalToWrite - writeOffset) : i2sWriteSize;
+                    i2s_write(I2S_NUM, audioBuffer + writeOffset, toWrite, &bytesWritten, portMAX_DELAY);
+                    writeOffset += bytesWritten;
+                }
             }
         }
-
-
-        delay((I2S_DMA_BUF_COUNT * I2S_DMA_BUF_LEN * 1000) / (wavHeader.sampleRate * 4) + 50);
-        i2s_zero_dma_buffer(I2S_NUM);
-
-        free(audioBuffer);
-        free(headerBuffer);
-        i2s_set_sample_rates(I2S_NUM, I2S_SAMPLE_RATE);
+        else if (wavHeader.bitsPerSample == 24) {
+            int16_t* converted = (int16_t*)audioBuffer;
+            int totalToWrite;
+            if (wavHeader.numChannels == 2) {
+                int frames = bytesRead / 6;
+                for (int i = 0; i < frames; i++) {
+                    int32_t left = audioBuffer[i*6] | (audioBuffer[i*6+1] << 8);
+                    int32_t right = audioBuffer[i*6+3] | (audioBuffer[i*6+4] << 8);
+                    converted[i] = (int16_t)((left + right) / 2);
+                }
+                totalToWrite = frames * 2;
+            } else {
+                int samples = bytesRead / 3;
+                for (int i = 0; i < samples; i++) {
+                    converted[i] = (int16_t)(audioBuffer[i*3] | (audioBuffer[i*3+1] << 8));
+                }
+                totalToWrite = samples * 2;
+            }
+            while (writeOffset < totalToWrite && !checkStop()) {
+                int toWrite = (totalToWrite - writeOffset < i2sWriteSize) ? (totalToWrite - writeOffset) : i2sWriteSize;
+                i2s_write(I2S_NUM, (uint8_t*)converted + writeOffset, toWrite, &bytesWritten, portMAX_DELAY);
+                writeOffset += bytesWritten;
+            }
+        }
     }
 
+    if (!checkStop()) {
+        delay((I2S_DMA_BUF_COUNT * I2S_DMA_BUF_LEN * 1000) / (wavHeader.sampleRate * 4) + 50);
+    }
+    i2s_zero_dma_buffer(I2S_NUM);
+
+    free(audioBuffer);
+    free(headerBuffer);
+    i2s_set_sample_rates(I2S_NUM, I2S_SAMPLE_RATE);
     closeAudioFile(handle);
-    writeToOled("Playback\ndone!");
-    delay(1000);
+}
+
+static void audioTask(void* parameter) {
+    AudioCommand cmd;
+    
+    while (1) {
+        if (xQueueReceive(audioQueue, &cmd, portMAX_DELAY) == pdTRUE) {
+            if (stopRequested) {
+                continue;
+            }
+            
+            isCurrentlyPlaying = true;
+            
+            if (cmd.isFile) {
+                writeToOled("Playing:\n%s", cmd.filename);
+                playAudioFileBlocking(cmd.filename);
+            } else {
+                writeToOled("Tone: %dHz\n%dms", cmd.frequency, cmd.duration);
+                playToneBlocking(cmd.frequency, cmd.duration);
+            }
+            
+            isCurrentlyPlaying = false;
+            stopRequested = false;
+            
+            if (!cmd.isFile || !stopRequested) {
+                clearOled();
+            }
+        }
+    }
+}
+
+void initMAX98357A() {
+    initI2S();
+    
+    if (audioQueue == NULL) {
+        audioQueue = xQueueCreate(1, sizeof(AudioCommand));
+    }
+    
+    if (audioTaskHandle == NULL) {
+        xTaskCreate(audioTask, "AudioTask", 16384, NULL, 1, &audioTaskHandle);
+    }
+}
+
+void playTone(int frequency, int duration) {
+    if (!i2sInitialized) {
+        initMAX98357A();
+    }
+    
+    stopRequested = true;
+    while (isCurrentlyPlaying) {
+        vTaskDelay(1);
+    }
+    stopRequested = false;
+    
+    AudioCommand cmd;
+    cmd.frequency = frequency;
+    cmd.duration = duration;
+    cmd.isFile = false;
+    cmd.filename[0] = '\0';
+    
+    xQueueOverwrite(audioQueue, &cmd);
+}
+
+void playAudioFile(const char* filename) {
+    if (!i2sInitialized) {
+        initMAX98357A();
+    }
+    
+    stopRequested = true;
+    while (isCurrentlyPlaying) {
+        vTaskDelay(1);
+    }
+    stopRequested = false;
+    
+    AudioCommand cmd;
+    cmd.frequency = 0;
+    cmd.duration = 0;
+    cmd.isFile = true;
+    strncpy(cmd.filename, filename, sizeof(cmd.filename) - 1);
+    cmd.filename[sizeof(cmd.filename) - 1] = '\0';
+    
+    xQueueOverwrite(audioQueue, &cmd);
+}
+
+void stopAudio() {
+    stopRequested = true;
+    i2s_zero_dma_buffer(I2S_NUM);
+    
+    int timeout = 100;
+    while (isCurrentlyPlaying && timeout > 0) {
+        vTaskDelay(1);
+        timeout--;
+    }
+    
     clearOled();
+}
+
+bool isPlaying() {
+    return isCurrentlyPlaying;
+}
+
+void testMAX98357A() {
+    if (!i2sInitialized) {
+        initMAX98357A();
+    }
+
+    writeToOled("Test: SD Card");
+    delay(1000);
+
+    uint32_t dummySize;
+    bool sdAvailable = getAudioFileInfo("test.wav", &dummySize);
+    bool wavExists = false;
+
+    if (sdAvailable) {
+        wavExists = (openAudioFile("test.wav") >= 0);
+        if (wavExists) {
+            closeAudioFile(0);
+        }
+    }
+
+    if (wavExists) {
+        playAudioFile("test.wav");
+        while (isPlaying()) {
+            delay(100);
+        }
+    } else {
+        writeToOled("Test: Triad");
+        playTone(262, 500);
+        while (isPlaying()) delay(10);
+        playTone(330, 500);
+        while (isPlaying()) delay(10);
+        playTone(392, 500);
+        while (isPlaying()) delay(10);
+        playTone(523, 500);
+        while (isPlaying()) delay(10);
+    }
+
     stopAudio();
 }

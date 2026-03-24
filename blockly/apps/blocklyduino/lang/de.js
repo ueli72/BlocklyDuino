@@ -60,7 +60,8 @@ i18n.registerTranslations('de', {
     "dht11": "DHT11",
     "ultrasonic": "Ultraschall",
     "sdcard": "SD Karte",
-    "max98357a": "MAX98357A"
+    "max98357a": "MAX98357A",
+    "testAll": "Alle Testen"
   },
   "blocks": {
     "servoInit": "Initialisieren",
@@ -102,7 +103,10 @@ i18n.registerTranslations('de', {
     "max98357aPlayTone": "Ton spielen",
     "max98357aStop": "Stop",
     "max98357aTest": "Test",
-    "max98357aPlayFile": "Datei abspielen"
+    "max98357aPlayFile": "Datei abspielen",
+    "max98357aIsPlaying": "Spielt",
+    "max98357aWaitUntilDone": "Warten bis fertig",
+    "testAll": "Alle Testen"
   },
   "blockInfo": {
     "internalLED": {
@@ -162,7 +166,14 @@ i18n.registerTranslations('de', {
       "message": "Der MAX98357A ist ein I2S-Audioverstärker. Er benötigt eine externe Stromquelle von 5V und einen angeschlossenen Lautsprecher.",
       "testWarning": "Platzieren Sie eine 'test.wav' Datei (16kHz, 8bit mono) auf der SD-Karte. Falls nicht vorhanden, wird ein Dreiklang gespielt.",
       "testMessage": "Dieser Block testet den MAX98357A Verstärker. Wenn eine 'test.wav' Datei (16kHz, 8bit mono) auf der SD-Karte existiert, wird sie abgespielt. Andernfalls wird ein Dreiklang (C4, E4, G4, C5) gespielt.",
-      "playFileMessage": "WAV-Dateien müssen sein: 16kHz Abtastrate, 8-bit, mono. Andere Formate werden nicht korrekt abgespielt."
+      "playFileMessage": "WAV-Dateien müssen sein: 16kHz Abtastrate, 8-bit, mono. Andere Formate werden nicht korrekt abgespielt.",
+      "isPlayingMessage": "Gibt true zurück, wenn Audio im Hintergrund abgespielt wird. Verwenden Sie dies, um zu prüfen, ob die Wiedergabe noch läuft.",
+      "waitUntilDoneMessage": "Blockiert die Ausführung bis die Audiowiedergabe beendet ist. Audio läuft im Hintergrund, dieser Block wartet auf den Abschluss."
+    },
+    "testAll": {
+      "title": "Alle Testen",
+      "message": "Interaktives Testmenü für alle Komponenten. SW1/SW2 zum Navigieren, SW3 zum Auswählen, SW4 zum Beenden.",
+      "testMessage": "Dieser Block zeigt ein interaktives Menü auf dem OLED Display an. Wählen Sie mit den Tastern, welche Komponente getestet werden soll."
     }
   },
   "dependencies": {
@@ -196,6 +207,8 @@ i18n.registerTranslations('de', {
     "max98357aPlayTone": "MAX98357A muss initialisiert werden, bevor Töne gespielt werden können.",
     "max98357aStop": "MAX98357A muss initialisiert werden, bevor gestoppt werden kann.",
     "max98357aTest": "MAX98357A muss initialisiert werden, bevor der Test durchgeführt werden kann.",
-    "max98357aPlayFile": "MAX98357A und SD-Karte müssen initialisiert werden, bevor Audiodateien abgespielt werden können."
+    "max98357aPlayFile": "MAX98357A und SD-Karte müssen initialisiert werden, bevor Audiodateien abgespielt werden können.",
+    "max98357aIsPlaying": "MAX98357A muss initialisiert werden, bevor der Wiedergabestatus geprüft werden kann.",
+    "max98357aWaitUntilDone": "MAX98357A muss initialisiert werden, bevor auf Audio-Abschluss gewartet werden kann."
   }
 });

@@ -60,3 +60,17 @@ Blockly.Arduino.max98357a_play_file = function() {
   var code = 'playAudioFile(' + filename + ');\n';
   return code;
 };
+
+Blockly.Arduino.max98357a_is_playing = function() {
+  Blockly.Arduino.definitions_['include_max98357a_h'] = '#include "max98357a.h"\n';
+
+  var code = 'isPlaying()';
+  return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino.max98357a_wait_until_done = function() {
+  Blockly.Arduino.definitions_['include_max98357a_h'] = '#include "max98357a.h"\n';
+
+  var code = 'while (isPlaying()) { delay(10); }\n';
+  return code;
+};

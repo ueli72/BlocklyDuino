@@ -212,6 +212,22 @@ var BLOCK_INFO = {
     message: 'blockInfo.max98357a.playFileMessage',
     warningKey: 'max98357a_play_file',
     includes: ['max98357a.h', 'sdcard.h']
+  },
+  'max98357a_is_playing': {
+    title: 'blockInfo.max98357a.title',
+    message: 'blockInfo.max98357a.isPlayingMessage',
+    includes: ['max98357a.h']
+  },
+  'max98357a_wait_until_done': {
+    title: 'blockInfo.max98357a.title',
+    message: 'blockInfo.max98357a.waitUntilDoneMessage',
+    includes: ['max98357a.h']
+  },
+  'test_all': {
+    title: 'blockInfo.testAll.title',
+    message: 'blockInfo.testAll.message',
+    testMessage: 'blockInfo.testAll.testMessage',
+    includes: ['test_all.h', 'oled.h', 'buttons.h', 'LEDMatrix.h', 'relais.h', 'dcmotor.h', 'dht11.h', 'ultrasonic.h', 'sdcard.h', 'max98357a.h', 'internalLED.h', 'servos.h']
   }
 };
 
@@ -339,6 +355,14 @@ var BLOCK_DEPENDENCIES = {
   'max98357a_play_file': {
     requires: 'max98357a_init',
     message: 'dependencies.max98357aPlayFile'
+  },
+  'max98357a_is_playing': {
+    requires: 'max98357a_init',
+    message: 'dependencies.max98357aIsPlaying'
+  },
+  'max98357a_wait_until_done': {
+    requires: 'max98357a_init',
+    message: 'dependencies.max98357aWaitUntilDone'
   }
 };
 

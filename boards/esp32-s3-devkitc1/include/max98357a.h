@@ -14,10 +14,12 @@ void initMAX98357A();
 
 void playTone(int frequency, int duration);
 
+void playAudioFile(const char* filename);
+
 void stopAudio();
 
-void testMAX98357A();
+bool isPlaying();
 
-void playAudioFile(const char* filename);
+void testMAX98357A();
 
 #endif

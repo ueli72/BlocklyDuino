@@ -101,3 +101,28 @@ Blockly.Blocks['max98357a_play_file'] = {
     this.setTooltip('Play a WAV file from SD card (16kHz, 8bit mono required)');
   }
 };
+
+Blockly.Blocks['max98357a_is_playing'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("MAX98357A")
+        .appendField(new Blockly.FieldImage("../../media/max98357a.png", 64, 64))
+        .appendField("Is Playing");
+    this.setOutput(true, 'Boolean');
+    this.setTooltip('Returns true if audio is currently playing');
+  }
+};
+
+Blockly.Blocks['max98357a_wait_until_done'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("MAX98357A")
+        .appendField(new Blockly.FieldImage("../../media/max98357a.png", 64, 64))
+        .appendField("Wait Until Done");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('Wait until audio playback is finished');
+  }
+};
