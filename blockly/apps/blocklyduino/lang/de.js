@@ -29,7 +29,7 @@ i18n.registerTranslations('de', {
   "boardSelection": {
     "title": "Board auswählen",
     "description": "Wählen Sie Ihr Board, um ein neues Projekt zu starten:",
-    "playgroundDesc": "ESP32-S3 mit Sensoren, Display, Motoren und mehr",
+    "playgroundDesc": "Spezialisiertes Entwicklungsboard von BWS Uster für Lernprojekte.",
     "unoDesc": "Klassisches Arduino-Board für einfache Projekte"
   },
   "messages": {

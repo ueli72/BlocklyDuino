@@ -29,7 +29,7 @@ i18n.registerTranslations('en', {
   "boardSelection": {
     "title": "Select Board",
     "description": "Choose your board to start a new project:",
-    "playgroundDesc": "ESP32-S3 with sensors, display, motors and more",
+    "playgroundDesc": "Specialized development board by BWS Uster for learning projects.",
     "unoDesc": "Classic Arduino board for basic projects"
   },
   "messages": {

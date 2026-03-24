@@ -49,6 +49,8 @@ function selectBoard(boardId) {
     profile['default'] = profile['arduino'];
   }
   
+  updateToolboxForBoard(boardId);
+  
   var modalEl = document.getElementById('boardSelectionModal');
   var modal = bootstrap.Modal.getInstance(modalEl);
   if (modal) {
@@ -59,6 +61,33 @@ function selectBoard(boardId) {
   if (boardSelectorContainer) {
     boardSelectorContainer.style.display = 'none';
   }
+}
+
+function updateToolboxForBoard(boardId) {
+  if (!Blockly.mainWorkspace) return;
+  
+  if (!window.originalToolbox) return;
+  
+  var toolboxClone = window.originalToolbox.cloneNode(true);
+  var categories = toolboxClone.querySelectorAll('category[data-board]');
+  
+  categories.forEach(function(category) {
+    var requiredBoard = category.getAttribute('data-board');
+    if (requiredBoard !== boardId) {
+      category.parentNode.removeChild(category);
+    } else {
+      category.removeAttribute('data-board');
+    }
+  });
+  
+  Blockly.mainWorkspace.updateToolbox(toolboxClone);
+  
+  // Re-add icons after toolbox update
+  window.setTimeout(function() {
+    if (typeof addToolboxIcons === 'function') {
+      addToolboxIcons();
+    }
+  }, 100);
 }
 
 function initBoardSelection() {
@@ -76,6 +105,9 @@ function initBoardSelection() {
     } else if (savedBoard === 'arduino-uno') {
       profile['default'] = profile['arduino'];
     }
+    window.setTimeout(function() {
+      updateToolboxForBoard(savedBoard);
+    }, 200);
   } else {
     if (boardSelector) {
       boardSelector.style.display = 'none';

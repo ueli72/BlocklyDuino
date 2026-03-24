@@ -547,7 +547,16 @@ function initBlockly() {
   // Translate toolbox categories before injection
   updateToolboxCategories();
 
+  // Store original toolbox and filter board-specific categories
   var toolbox = document.getElementById('toolbox');
+  window.originalToolbox = toolbox.cloneNode(true);
+  
+  // Remove board-specific categories for initial display
+  var boardCategories = toolbox.querySelectorAll('category[data-board]');
+  boardCategories.forEach(function(cat) {
+    cat.parentNode.removeChild(cat);
+  });
+
   Blockly.inject(document.getElementById('content_blocks'),
       {grid:
           {spacing: 25,
@@ -1018,7 +1027,7 @@ function initBlockly() {
                 <img src="../../media/playground.png" class="card-img-top" alt="BWS Playground Master" style="object-fit: contain; height: 200px; padding: 1rem;">
                 <div class="card-body text-center">
                   <h5 class="card-title">BWS Playground Master</h5>
-                  <p class="card-text text-muted" data-i18n="boardSelection.playgroundDesc">ESP32-S3 with sensors, display, motors and more</p>
+                  <p class="card-text text-muted" data-i18n="boardSelection.playgroundDesc">Specialized development board by BWS Uster for learning projects.</p>
                 </div>
               </div>
             </div>
@@ -1126,7 +1135,7 @@ function initBlockly() {
       </block>
       <block type="inout_notone"></block>
     </category>
-    <category name="Playground" data-i18n-name="categories.playground">
+    <category name="Playground" data-i18n-name="categories.playground" data-board="esp32-s3-devkitc1">
       <category name="SG90 Servo" data-i18n-name="categories.sg90Servo">
         <block type="servo_sg90_init"></block>
         <block type="servo_sg90_move">
