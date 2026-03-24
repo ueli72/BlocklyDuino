@@ -302,8 +302,8 @@ var BLOCK_INFO = {
   },
   'ble_remote_test': {
     title: 'blockInfo.bleRemote.title',
-    message: 'blockInfo.bleRemote.message',
-    testMessage: 'blockInfo.bleRemote.testMessage',
+    message: 'blockInfo.bleRemote.testMessage',
+    testMessage: 'blockInfo.bleRemote.testInfo',
     includes: ['ble_remote.h']
   },
   'test_all': {

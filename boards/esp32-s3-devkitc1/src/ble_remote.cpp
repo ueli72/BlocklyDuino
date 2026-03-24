@@ -1,4 +1,5 @@
 #include "ble_remote.h"
+#include "oled.h"
 #include <NimBLEDevice.h>
 
 #define SERVICE_UUID           "4fafc201-1fb5-459e-8fcc-c5e9f8f1c9ab"
@@ -124,22 +125,27 @@ bool isBLEConnected() {
 }
 
 void testBLERemote() {
-  Serial.println("\n=== BLE Remote Test ===");
-  Serial.println("Connect with nRF Connect or similar BLE app");
-  Serial.println("Service UUID: " SERVICE_UUID);
-  Serial.println("Direction UUID: " CHARACTERISTIC_DIRECTION);
-  Serial.println("Speed UUID: " CHARACTERISTIC_SPEED);
-  Serial.println("Command UUID: " CHARACTERISTIC_COMMAND);
-  Serial.println("Sensor UUID: " CHARACTERISTIC_SENSOR);
-  Serial.println("\nWaiting for commands...");
+  clearOled();
+  writeToOled("BLE Test");
+  writeToOled("Connect nRF Connect");
+  writeToOled("Service:");
+  writeToOled("4fafc201...");
+  writeToOled("Waiting...");
   
   unsigned long startTime = millis();
+  bool wasConnected = false;
   while (millis() - startTime < 30000) {
-    if (isBLEConnected()) {
-      Serial.println("Client connected!");
+    if (isBLEConnected() && !wasConnected) {
+      clearOled();
+      writeToOled("BLE Test");
+      writeToOled("Client");
+      writeToOled("Connected!");
+      wasConnected = true;
     }
-    delay(1000);
+    delay(500);
   }
   
-  Serial.println("BLE test complete.");
+  clearOled();
+  writeToOled("BLE Test");
+  writeToOled("Complete");
 }

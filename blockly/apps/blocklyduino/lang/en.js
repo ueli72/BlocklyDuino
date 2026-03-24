@@ -219,7 +219,8 @@ i18n.registerTranslations('en', {
       "message": "Bluetooth Low Energy server for mobile app remote control. Use nRF Connect app to test.",
       "callbackMessage": "⚠️ ISR Restrictions: No delay(), no Serial, no OLED/SD Card/DHT11/Ultrasonic. Only motor/LED/servo control allowed.",
       "sendMessage": "Send sensor data back to connected mobile app. Use only in main loop, not in BLE callbacks.",
-      "testMessage": "Test BLE by printing connection status to Serial. Connect with nRF Connect app to test commands."
+      "testMessage": "Test BLE by printing connection status to Serial. Connect with nRF Connect app to test commands.",
+      "testInfo": "See readme_ble.txt for detailed testing instructions with nRF Connect mobile app."
     }
   },
   "dependencies": {
