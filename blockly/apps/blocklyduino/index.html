@@ -31,6 +31,7 @@
 <script type="text/javascript" src="../../blocks/playground/max98357a.js"></script>
   <script type="text/javascript" src="../../blocks/playground/brightness.js"></script>
   <script type="text/javascript" src="../../blocks/playground/ws2812.js"></script>
+  <script type="text/javascript" src="../../blocks/playground/ble_remote.js"></script>
   <script type="text/javascript" src="../../blocks/playground/test_all.js"></script>
   <script type="text/javascript" src="../../blocks/playground/timer.js"></script>
   <script type="text/javascript" src="../../generators/arduino.js"></script>
@@ -56,6 +57,7 @@
 <script type="text/javascript" src="../../generators/arduino/playground/max98357a.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/brightness.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/ws2812.js"></script>
+  <script type="text/javascript" src="../../generators/arduino/playground/ble_remote.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/test_all.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/timer.js"></script>
   <script type="text/javascript" src="../../msg/js/en.js"></script>
@@ -385,10 +387,11 @@ function addToolboxIcons() {
     var max98357aText = i18n.t('categories.max98357a');
     var brightnessText = i18n.t('categories.brightness');
     var ws2812Text = i18n.t('categories.ws2812');
+    var bluetoothLEText = i18n.t('categories.bluetoothLE');
     var testAllText = i18n.t('categories.testAll');
     var playgroundText = i18n.t('categories.playground');
     
-    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText || text === sdcardText || text === max98357aText || text === brightnessText || text === testAllText;
+    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText || text === sdcardText || text === max98357aText || text === brightnessText || text === ws2812Text || text === bluetoothLEText || text === testAllText;
     
     // Add class for subcategories
     if (isSubcategory) {
@@ -433,6 +436,7 @@ function addToolboxIcons() {
     else if (text === max98357aText) iconClass = 'bi-speaker';
     else if (text === brightnessText) iconClass = 'bi-sun';
     else if (text === ws2812Text) iconClass = 'bi-lightbulb';
+    else if (text === bluetoothLEText) iconClass = 'bi-bluetooth';
     else if (text === testAllText) iconClass = 'bi-list-check';
     
     if (iconClass || iconText) {
@@ -1218,6 +1222,21 @@ function initBlockly() {
         <block type="ws2812_show"></block>
         <block type="ws2812_off"></block>
         <block type="ws2812_test"></block>
+      </category>
+      <category name="Bluetooth LE" data-i18n-name="categories.bluetoothLE" data-board="esp32-s3-devkitc1">
+        <block type="ble_remote_init"></block>
+        <block type="ble_remote_on_direction"></block>
+        <block type="ble_remote_on_speed"></block>
+        <block type="ble_remote_on_command"></block>
+        <block type="ble_remote_send">
+          <value name="VALUE">
+            <block type="text">
+              <field name="TEXT">sensor data</field>
+            </block>
+          </value>
+        </block>
+        <block type="ble_remote_is_connected"></block>
+        <block type="ble_remote_test"></block>
       </category>
     </category>
     <category name="Playground" data-i18n-name="categories.playground" data-board="esp32-s3-devkitc1">

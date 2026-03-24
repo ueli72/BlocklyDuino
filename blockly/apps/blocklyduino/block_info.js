@@ -270,6 +270,42 @@ var BLOCK_INFO = {
     testMessage: 'blockInfo.ws2812.testMessage',
     includes: ['ws2812.h']
   },
+  'ble_remote_init': {
+    title: 'blockInfo.bleRemote.title',
+    message: 'blockInfo.bleRemote.message',
+    includes: ['ble_remote.h']
+  },
+  'ble_remote_on_direction': {
+    title: 'blockInfo.bleRemote.title',
+    message: 'blockInfo.bleRemote.callbackMessage',
+    includes: ['ble_remote.h']
+  },
+  'ble_remote_on_speed': {
+    title: 'blockInfo.bleRemote.title',
+    message: 'blockInfo.bleRemote.callbackMessage',
+    includes: ['ble_remote.h']
+  },
+  'ble_remote_on_command': {
+    title: 'blockInfo.bleRemote.title',
+    message: 'blockInfo.bleRemote.callbackMessage',
+    includes: ['ble_remote.h']
+  },
+  'ble_remote_send': {
+    title: 'blockInfo.bleRemote.title',
+    message: 'blockInfo.bleRemote.sendMessage',
+    includes: ['ble_remote.h']
+  },
+  'ble_remote_is_connected': {
+    title: 'blockInfo.bleRemote.title',
+    message: 'blockInfo.bleRemote.message',
+    includes: ['ble_remote.h']
+  },
+  'ble_remote_test': {
+    title: 'blockInfo.bleRemote.title',
+    message: 'blockInfo.bleRemote.message',
+    testMessage: 'blockInfo.bleRemote.testMessage',
+    includes: ['ble_remote.h']
+  },
   'test_all': {
     title: 'blockInfo.testAll.title',
     message: 'blockInfo.testAll.message',
@@ -430,6 +466,30 @@ var BLOCK_DEPENDENCIES = {
   'ws2812_test': {
     requires: 'ws2812_init',
     message: 'dependencies.ws2812Test'
+  },
+  'ble_remote_on_direction': {
+    requires: 'ble_remote_init',
+    message: 'dependencies.bleRemoteOnDirection'
+  },
+  'ble_remote_on_speed': {
+    requires: 'ble_remote_init',
+    message: 'dependencies.bleRemoteOnSpeed'
+  },
+  'ble_remote_on_command': {
+    requires: 'ble_remote_init',
+    message: 'dependencies.bleRemoteOnCommand'
+  },
+  'ble_remote_send': {
+    requires: 'ble_remote_init',
+    message: 'dependencies.bleRemoteSend'
+  },
+  'ble_remote_is_connected': {
+    requires: 'ble_remote_init',
+    message: 'dependencies.bleRemoteIsConnected'
+  },
+  'ble_remote_test': {
+    requires: 'ble_remote_init',
+    message: 'dependencies.bleRemoteTest'
   }
 };
 

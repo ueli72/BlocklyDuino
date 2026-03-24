@@ -67,8 +67,9 @@ i18n.registerTranslations('de', {
     "ultrasonic": "Ultraschall",
     "sdcard": "SD Karte",
     "max98357a": "MAX98357A",
-    "brightness": "Helligkeit",
-    "ws2812": "WS2812 Streifen",
+"brightness": "Helligkeit",
+    "ws2812": "WS2812 LED Streifen",
+    "bluetoothLE": "Bluetooth LE",
     "testAll": "Alle Testen"
   },
   "blocks": {
@@ -123,6 +124,13 @@ i18n.registerTranslations('de', {
     "ws2812Show": "Anzeigen",
     "ws2812Off": "Ausschalten",
     "ws2812Test": "Test",
+    "bleRemoteInit": "Initialisieren",
+    "bleRemoteOnDirection": "Bei Richtung",
+    "bleRemoteOnSpeed": "Bei Geschwindigkeit",
+    "bleRemoteOnCommand": "Bei Befehl",
+    "bleRemoteSend": "Daten senden",
+    "bleRemoteIsConnected": "Verbunden",
+    "bleRemoteTest": "Test",
     "testAll": "Alle Testen"
   },
   "blockInfo": {
@@ -205,6 +213,13 @@ i18n.registerTranslations('de', {
       "title": "WS2812 LED Streifen",
       "message": "Adressierbarer RGB-LED-Streifen mit Adafruit NeoPixel Bibliothek. Pixel-Farben setzen, dann Anzeigen aufrufen.",
       "testMessage": "Dieser Block testet den WS2812 Streifen, indem er 3-mal durch die Farben Rot, Grün, Blau wechselt."
+    },
+    "bleRemote": {
+      "title": "BLE Fernsteuerung",
+      "message": "Bluetooth Low Energy Server für mobile App Fernsteuerung. nRF Connect App zum Testen verwenden.",
+      "callbackMessage": "⚠️ ISR Einschränkungen: Kein delay(), kein Serial, kein OLED/SD Card/DHT11/Ultrasonic. Nur Motor/LED/Servo Steuerung erlaubt.",
+      "sendMessage": "Sensordaten an verbundene mobile App senden. Nur im Hauptprogramm verwenden, nicht in BLE Callbacks.",
+      "testMessage": "Testet BLE durch Ausgabe des Verbindungsstatus auf Serial. Mit nRF Connect App verbinden zum Testen."
     }
   },
   "dependencies": {
@@ -245,6 +260,12 @@ i18n.registerTranslations('de', {
     "ws2812Fill": "WS2812 muss initialisiert werden, bevor gefüllt werden kann.",
     "ws2812Show": "WS2812 muss initialisiert werden, bevor angezeigt werden kann.",
     "ws2812Off": "WS2812 muss initialisiert werden, bevor ausgeschaltet werden kann.",
-    "ws2812Test": "WS2812 muss initialisiert werden, bevor der Test durchgeführt werden kann."
+    "ws2812Test": "WS2812 muss initialisiert werden, bevor der Test durchgeführt werden kann.",
+    "bleRemoteOnDirection": "BLE muss initialisiert werden, bevor der Richtungs-Callback verwendet werden kann.",
+    "bleRemoteOnSpeed": "BLE muss initialisiert werden, bevor der Geschwindigkeits-Callback verwendet werden kann.",
+    "bleRemoteOnCommand": "BLE muss initialisiert werden, bevor der Befehls-Callback verwendet werden kann.",
+    "bleRemoteSend": "BLE muss initialisiert werden, bevor Daten gesendet werden können.",
+    "bleRemoteIsConnected": "BLE muss initialisiert werden, bevor die Verbindung geprüft werden kann.",
+    "bleRemoteTest": "BLE muss initialisiert werden, bevor der Test durchgeführt werden kann."
   }
 });
