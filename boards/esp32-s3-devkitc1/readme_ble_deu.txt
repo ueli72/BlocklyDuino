@@ -3,7 +3,7 @@
 ================================================================================
 
 Diese Anleitung erklärt, wie Sie die Bluetooth LE Fernsteuerungs-Blöcke mit
-der kostenlosen "nRF Connect" App (iOS und Android) testen können.
+der kostenlosen "LightBlue" App (iOS und Android) testen können.
 
 ================================================================================
 1. PLAYGROUND BOARD EINRICHTEN
@@ -18,26 +18,26 @@ der kostenlosen "nRF Connect" App (iOS und Android) testen können.
 4. Laden Sie das Programm auf Ihr Playground Board hoch
 
 ================================================================================
-2. NRF CONNECT APP INSTALLIEREN
+2. LIGHTBLUE APP INSTALLIEREN
 ================================================================================
 
 Kostenloser Download aus:
-- iOS: App Store - Suche nach "nRF Connect"
-- Android: Play Store - Suche nach "nRF Connect"
+- iOS: App Store - Suche nach "LightBlue"
+- Android: Play Store - Suche nach "LightBlue"
 
 Alternative Apps die ebenfalls funktionieren:
+- "nRF Connect" (iOS und Android)
 - "BLE Terminal" (Android)
-- "LightBlue" (iOS)
 
 ================================================================================
 3. MIT DEM GERÄT VERBINDEN
 ================================================================================
 
-1. Öffnen Sie nRF Connect
+1. Öffnen Sie LightBlue
 2. Aktivieren Sie Bluetooth auf Ihrem Telefon falls gefragt
-3. Ziehen Sie nach unten um nach Geräten zu suchen
+3. Suchen Sie nach Geräten (nach unten ziehen oder Scan antippen)
 4. Suchen Sie nach Ihrem Gerätenamen (z.B. "MeinAuto1")
-5. Tippen Sie auf "VERBINDEN" neben Ihrem Gerät
+5. Tippen Sie auf Ihr Gerät um zu verbinden
 
 ================================================================================
 4. SERVICE UND CHARAKTERISTIKEN
@@ -45,15 +45,15 @@ Alternative Apps die ebenfalls funktionieren:
 
 Nach dem Verbindungsaufbau sehen Sie einen Service mit 4 Charakteristiken:
 
-Service UUID: 4fafc201-1fb5-459e-8fcc-c5e9f8f1c9ab
+Service UUID: 0x8001
 
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│ Charakteristik         │ UUID (kurz)    │ Typ     │ Eigenschaften           │
+│ Charakteristik         │ UUID            │ Typ     │ Eigenschaften           │
 ├─────────────────────────────────────────────────────────────────────────────┤
-│ Richtung               │ ...26a8         │ int8    │ Write, Notify           │
-│ Geschwindigkeit        │ ...26a9         │ uint8   │ Write, Notify           │
-│ Befehl                 │ ...26aa         │ string  │ Write                   │
-│ Sensordaten            │ ...26ab         │ string  │ Notify                  │
+│ Richtung               │ 0x8002          │ int8    │ Write, Notify           │
+│ Geschwindigkeit        │ 0x8003          │ uint8   │ Write, Notify           │
+│ Befehl                 │ 0x8004          │ string  │ Write                   │
+│ Sensordaten            │ 0x8005          │ string  │ Notify                  │
 └─────────────────────────────────────────────────────────────────────────────┘
 
 ================================================================================
@@ -62,30 +62,30 @@ Service UUID: 4fafc201-1fb5-459e-8fcc-c5e9f8f1c9ab
 
 RICHTUNG (Lenkung)
 ------------------
-1. Tippen Sie auf die Richtungs-Charakteristik (...26a8)
+1. Tippen Sie auf die Richtungs-Charakteristik (0x8002)
 2. Tippen Sie auf die "Write" Schaltfläche (Bleistift-Symbol)
-3. Geben Sie einen Wert zwischen -60 und +60 ein
-   - -60 = voll links
-   -   0 = geradeaus
-   - +60 = voll rechts
+3. Geben Sie einen Hex-Wert ein (ohne 0x-Präfix), z.B.:
+   - 00 = geradeaus (0)
+   - 3C = voll rechts (+60)
+   - C4 = voll links (-60, als unsigned: 0xC4 = 196)
 4. Tippen Sie auf "Write" oder "Send"
 
-Hinweis: Sie müssen den Wert als einzelnes Byte senden (hex oder signed int8)
-- In nRF Connect wählen Sie das "Signed" Format
-- Eingabe: -60 bis +60
+Hinweis: Werte werden als signed int8 gesendet:
+- 0x00 bis 0x7F = 0 bis +127
+- 0x80 bis 0xFF = -128 bis -1
 
 GESCHWINDIGKEIT
 ---------------
-1. Tippen Sie auf die Geschwindigkeits-Charakteristik (...26a9)
+1. Tippen Sie auf die Geschwindigkeits-Charakteristik (0x8003)
 2. Tippen Sie auf die "Write" Schaltfläche
-3. Geben Sie einen Wert zwischen 0 und 255 ein
-   -   0 = gestoppt
-   - 255 = maximale Geschwindigkeit
+3. Geben Sie einen Hex-Wert ein (ohne 0x-Präfix), z.B.:
+   - 00 = gestoppt (0)
+   - FF = maximale Geschwindigkeit (255)
 4. Tippen Sie auf "Write" oder "Send"
 
 BENUTZERDEFINIERTE BEFEHLE
 --------------------------
-1. Tippen Sie auf die Befehls-Charakteristik (...26aa)
+1. Tippen Sie auf die Befehls-Charakteristik (0x8004)
 2. Tippen Sie auf die "Write" Schaltfläche
 3. Geben Sie einen Textbefehl ein, z.B.:
    - "light_on"
@@ -100,7 +100,7 @@ BENUTZERDEFINIERTE BEFEHLE
 
 Wenn Ihr Programm den "BLE Fernsteuerung - Daten senden" Block verwendet:
 
-1. Tippen Sie auf die Sensordaten-Charakteristik (...26ab)
+1. Tippen Sie auf die Sensordaten-Charakteristik (0x8005)
 2. Tippen Sie auf die "Subscribe" Schaltfläche (Glocken-Symbol)
 3. Vom Playground gesendete Daten erscheinen als Benachrichtigungen
 4. Die Daten werden als Textzeichenfolge gesendet
@@ -176,11 +176,11 @@ Swift (iOS):
 
 Service und Charakteristik UUIDs für Ihre App:
 
-const SERVICE_UUID = "4fafc201-1fb5-459e-8fcc-c5e9f8f1c9ab";
-const CHAR_DIRECTION = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
-const CHAR_SPEED = "beb5483e-36e1-4688-b7f5-ea07361b26a9";
-const CHAR_COMMAND = "beb5483e-36e1-4688-b7f5-ea07361b26aa";
-const CHAR_SENSOR = "beb5483e-36e1-4688-b7f5-ea07361b26ab";
+const SERVICE_UUID = "8001";
+const CHAR_DIRECTION = "8002";
+const CHAR_SPEED = "8003";
+const CHAR_COMMAND = "8004";
+const CHAR_SENSOR = "8005";
 
 ================================================================================
 10. ISR EINSCHRÄNKUNGEN (WICHTIG!)

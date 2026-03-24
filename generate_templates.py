@@ -14,6 +14,8 @@ OUTPUT_FILE = "blockly/apps/blocklyduino/templates.js"
 FILES_TO_INCLUDE = [
     "platformio.ini",
     ".gitignore",
+    "readme_ble.txt",
+    "readme_ble_deu.txt",
 ]
 
 DIRECTORIES_TO_SCAN = [
