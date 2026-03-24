@@ -30,6 +30,10 @@ function clearSelectedBoard() {
 }
 
 function showBoardSelectionModal() {
+  // Update translations before showing modal
+  if (typeof i18n !== 'undefined' && typeof i18n.updateUI === 'function') {
+    i18n.updateUI();
+  }
   var modalEl = document.getElementById('boardSelectionModal');
   var modal = new bootstrap.Modal(modalEl);
   modal.show();
