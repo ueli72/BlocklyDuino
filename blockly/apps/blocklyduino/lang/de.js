@@ -126,7 +126,7 @@ i18n.registerTranslations('de', {
     },
     "button": {
       "title": "Taster",
-      "initMessage": "Dieser Block initialisiert alle 4 Taster.\n\nVerwendete Pins:\n• Taster1: GPIO4\n• Taster2: GPIO5\n• Taster3: GPIO6\n• Taster4: GPIO7",
+      "initMessage": "Dieser Block initialisiert alle 4 Taster.\n\nVerwendete Pins:\n• Taster1: GPIO1\n• Taster2: GPIO4\n• Taster3: GPIO3\n• Taster4: GPIO2",
       "readMessage": "Dieser Block liest den Status eines Tasters.\n\nGibt true zurück wenn gedrückt, false wenn nicht gedrückt.",
       "interruptMessage": "ISR Einschränkungen:\n• Kein delay() oder delayMicroseconds()\n• Kein Serial.print() oder Serial.write()\n• Code kurz und schnell halten\n• 'volatile' für Variablen verwenden, die mit der Hauptschleife geteilt werden\n• Funktionsaufrufe vermeiden, die blockieren könnten\n\nDer Interrupt läuft asynchron und nicht-blockierend."
     },
@@ -180,7 +180,7 @@ i18n.registerTranslations('de', {
     },
     "timer": {
       "title": "Async Timer",
-      "message": "Nicht-blockierender Timer, der Code nach einer Verzögerung ausführt.\n\n• 'once': Führt Code einmal nach der Verzögerung aus\n• 'repeated': Führt Code in jedem Verzögerungsintervall aus\n\nDer Timer läuft parallel zur Hauptschleife. Mehrere Timer können gleichzeitig laufen."
+      "message": "Nicht-blockierender Timer mit Ticker Bibliothek.\n\n• 'once': Führt Code einmal nach der Verzögerung aus\n• 'repeated': Führt Code in jedem Verzögerungsintervall aus\n\n⚠️ ISR Einschränkungen:\n• Kein delay() oder delayMicroseconds()\n• Kein Serial.print()\n• Kein OLED, SD Card, DHT11, Ultrasonic\n• Kein MAX98357A, Internal LED\n• 'volatile' für Variablen verwenden, die mit der Hauptschleife geteilt werden\n\nDer Timer läuft asynchron und nicht-blockierend."
     }
   },
   "dependencies": {

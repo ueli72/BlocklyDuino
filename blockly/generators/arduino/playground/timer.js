@@ -17,7 +17,7 @@
  */
 
 /**
- * @fileoverview Generating Arduino for Timer blocks.
+ * @fileoverview Generating Arduino for Timer blocks using Ticker library.
  */
 'use strict';
 
@@ -26,33 +26,28 @@ Blockly.Arduino.async_timer = function() {
   var mode = this.getFieldValue('MODE');
   var branch = Blockly.Arduino.statementToCode(this, 'HANDLER_CODE');
 
-  var timerVar = Blockly.Arduino.variableDB_.getDistinctName('timer', Blockly.Variables.NAME_TYPE);
-  var timerTriggered = Blockly.Arduino.variableDB_.getDistinctName('timer_triggered', Blockly.Variables.NAME_TYPE);
-  var timerLast = Blockly.Arduino.variableDB_.getDistinctName('timer_last', Blockly.Variables.NAME_TYPE);
+  var timerName = Blockly.Arduino.variableDB_.getDistinctName('timer', Blockly.Variables.NAME_TYPE);
+  var callbackName = Blockly.Arduino.variableDB_.getDistinctName('timer_callback', Blockly.Procedures.NAME_TYPE);
 
-  var code = '';
+  // Include Ticker library
+  Blockly.Arduino.definitions_['include_ticker'] = '#include <Ticker.h>\n';
   
+  // Create Ticker object
+  Blockly.Arduino.definitions_[timerName + '_obj'] = 'Ticker ' + timerName + ';\n';
+
+  // Create callback function
+  var callbackCode = 'void ' + callbackName + '() {\n' + branch + '}\n';
+  Blockly.Arduino.definitions_[callbackName] = callbackCode;
+
+  // Setup code to attach the timer
+  var setupCode = '';
   if (mode === 'once') {
-    Blockly.Arduino.definitions_[timerTriggered] = 'static bool ' + timerTriggered + ' = false;\n';
-    Blockly.Arduino.definitions_[timerVar] = 'static unsigned long ' + timerVar + ' = 0;\n';
-    
-    code = 'if (!' + timerTriggered + ') {\n';
-    code += '  if (' + timerVar + ' == 0) {\n';
-    code += '    ' + timerVar + ' = millis();\n';
-    code += '  }\n';
-    code += '  if (millis() - ' + timerVar + ' >= ' + delay + ') {\n';
-    code += '    ' + timerTriggered + ' = true;\n';
-    code += branch;
-    code += '  }\n';
-    code += '}\n';
+    setupCode = timerName + '.once_ms(' + delay + ', ' + callbackName + ');\n';
   } else {
-    Blockly.Arduino.definitions_[timerLast] = 'static unsigned long ' + timerLast + ' = 0;\n';
-    
-    code = 'if (millis() - ' + timerLast + ' >= ' + delay + ') {\n';
-    code += '  ' + timerLast + ' = millis();\n';
-    code += branch;
-    code += '}\n';
+    setupCode = timerName + '.attach_ms(' + delay + ', ' + callbackName + ');\n';
   }
 
-  return code;
+  Blockly.Arduino.setups_[timerName + '_setup'] = setupCode;
+
+  return '';
 };

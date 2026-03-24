@@ -22,10 +22,10 @@
 'use strict';
 
 var button_constants = {
-  '4': 'BUTTON1',
-  '5': 'BUTTON2',
-  '6': 'BUTTON3',
-  '7': 'BUTTON4'
+  '1': 'SW1_PIN',
+  '4': 'SW2_PIN',
+  '3': 'SW3_PIN',
+  '2': 'SW4_PIN'
 };
 
 Blockly.Arduino.button_init = function() {
@@ -40,7 +40,7 @@ Blockly.Arduino.button_read = function() {
 
   if (button_constant) {
     Blockly.Arduino.definitions_['include_buttons_h'] = '#include "buttons.h"\n';
-    var code = 'readButton(' + button_constant + ')';
+    var code = 'digitalRead(' + button_constant + ') == LOW';
   } else {
     var code = 'digitalRead(' + dropdown_pin + ') == LOW';
   }
@@ -60,8 +60,10 @@ Blockly.Arduino.button_interrupt = function() {
   var button_constant = button_constants[pin];
   var pinCode = button_constant ? button_constant : pin;
 
-  var code = 'pinMode(' + pinCode + ', INPUT_PULLUP);\n';
-  code += 'attachInterrupt(digitalPinToInterrupt(' + pinCode + '), ' + isrName + ', ' + mode + ');\n';
+  var setupCode = 'pinMode(' + pinCode + ', INPUT_PULLUP);\n';
+  setupCode += 'attachInterrupt(digitalPinToInterrupt(' + pinCode + '), ' + isrName + ', ' + mode + ');\n';
 
-  return code;
+  Blockly.Arduino.setups_[isrName + '_setup'] = setupCode;
+
+  return '';
 };

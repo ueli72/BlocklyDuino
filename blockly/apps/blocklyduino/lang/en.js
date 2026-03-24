@@ -126,7 +126,7 @@ i18n.registerTranslations('en', {
     },
     "button": {
       "title": "Button",
-      "initMessage": "This block initializes all 4 buttons.\n\nPins used:\n• Button1: GPIO4\n• Button2: GPIO5\n• Button3: GPIO6\n• Button4: GPIO7",
+      "initMessage": "This block initializes all 4 buttons.\n\nPins used:\n• Button1: GPIO1\n• Button2: GPIO4\n• Button3: GPIO3\n• Button4: GPIO2",
       "readMessage": "This block reads the state of a button.\n\nReturns true when pressed, false when not pressed.",
       "interruptMessage": "ISR Restrictions:\n• No delay() or delayMicroseconds()\n• No Serial.print() or Serial.write()\n• Keep code short and fast\n• Use 'volatile' for variables shared with main loop\n• Avoid function calls that may block\n\nThe interrupt runs asynchronously and non-blocking."
     },
@@ -180,7 +180,7 @@ i18n.registerTranslations('en', {
     },
     "timer": {
       "title": "Async Timer",
-      "message": "Non-blocking timer that executes code after a delay.\n\n• 'once': Executes code one time after the delay\n• 'repeated': Executes code every delay interval\n\nThe timer runs in parallel with the main loop. Multiple timers can run simultaneously."
+      "message": "Non-blocking timer using Ticker library.\n\n• 'once': Executes code one time after the delay\n• 'repeated': Executes code every delay interval\n\n⚠️ ISR Restrictions apply:\n• No delay() or delayMicroseconds()\n• No Serial.print()\n• No OLED, SD Card, DHT11, Ultrasonic\n• No MAX98357A, Internal LED\n• Use 'volatile' for variables shared with main loop\n\nThe timer runs asynchronously and non-blocking."
     }
   },
   "dependencies": {

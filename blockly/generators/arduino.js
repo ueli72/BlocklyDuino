@@ -111,22 +111,24 @@ Blockly.Arduino.init = function(workspace) {
   Blockly.Arduino.definitions_ = Object.create(null);
   // Create a dictionary of setups to be printed before the code.
   Blockly.Arduino.setups_ = Object.create(null);
+  // Create a dictionary of loop code to be printed in loop().
+  Blockly.Arduino.loops_ = Object.create(null);
 
-	if (!Blockly.Arduino.variableDB_) {
-		Blockly.Arduino.variableDB_ =
-				new Blockly.Names(Blockly.Arduino.RESERVED_WORDS_);
-	} else {
-		Blockly.Arduino.variableDB_.reset();
-	}
+  if (!Blockly.Arduino.variableDB_) {
+    Blockly.Arduino.variableDB_ =
+        new Blockly.Names(Blockly.Arduino.RESERVED_WORDS_);
+  } else {
+    Blockly.Arduino.variableDB_.reset();
+  }
 
-	var defvars = [];
-	var variables = Blockly.Variables.allVariables(workspace);
-	for (var x = 0; x < variables.length; x++) {
-		defvars[x] = 'int ' +
-				Blockly.Arduino.variableDB_.getName(variables[x],
-				Blockly.Variables.NAME_TYPE) + ';\n';
-	}
-	Blockly.Arduino.definitions_['variables'] = defvars.join('\n');
+  var defvars = [];
+  var variables = Blockly.Variables.allVariables(workspace);
+  for (var x = 0; x < variables.length; x++) {
+    defvars[x] = 'int ' +
+        Blockly.Arduino.variableDB_.getName(variables[x],
+        Blockly.Variables.NAME_TYPE) + ';\n';
+  }
+  Blockly.Arduino.definitions_['variables'] = defvars.join('\n');
 };
 
 /**
@@ -160,12 +162,10 @@ Blockly.Arduino.finish = function(code) {
     }
   }
 
-  // Convert the setups dictionary into a list (only if no setup block)
+  // Convert the setups dictionary into a list
   var setups = [];
-  if (!setupBlock) {
-    for (var name in Blockly.Arduino.setups_) {
-      setups.push(Blockly.Arduino.setups_[name]);
-    }
+  for (var name in Blockly.Arduino.setups_) {
+    setups.push(Blockly.Arduino.setups_[name]);
   }
 
   var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n');
@@ -174,9 +174,9 @@ Blockly.Arduino.finish = function(code) {
   var setupCode = '';
   if (setupBlock) {
     setupCode = Blockly.Arduino.statementToCode(setupBlock, 'SETUP_CODE');
-  } else {
-    setupCode = setups.join('\n  ');
   }
+  // Always add setups_ code (for blocks like interrupt that need setup code)
+  setupCode += setups.join('\n');
 
   // Generate loop function
   var loopCode = '';
@@ -188,6 +188,14 @@ Blockly.Arduino.finish = function(code) {
     code = code.replace(/\n\s+$/, '\n');
     loopCode = code;
   }
+  
+  // Convert the loops dictionary into a list
+  var loops = [];
+  for (var name in Blockly.Arduino.loops_) {
+    loops.push(Blockly.Arduino.loops_[name]);
+  }
+  // Always add loops_ code (for blocks like timer that need loop code)
+  loopCode += loops.join('\n');
 
   var setupFunc = 'void setup() \n{\n  ' + setupCode + '\n}\n\n';
   var loopFunc = 'void loop() \n{\n  ' + loopCode + '\n}\n';
