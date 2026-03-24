@@ -30,7 +30,7 @@ Blockly.Blocks['test_all'] = {
     this.setColour(190);
     this.appendDummyInput()
         .appendField("Test All")
-        .appendField(new Blockly.FieldImage("../../media/test_all.png", 64, 64))
+        .appendField(new Blockly.FieldImage("../../media/test_all.jpg", 64, 64))
         .appendField(" (Interactive Menu)");
     
     this.appendDummyInput()

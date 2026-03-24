@@ -1,6 +1,7 @@
 #include "relais.h"
 #include "LEDMatrix.h"
 #include "buttons.h"
+#include "oled.h"
 
 void setRelay(int relayNum, bool state) {
   int pin;
@@ -19,13 +20,18 @@ void setRelay(int relayNum, bool state) {
 
 void testRelaisSequence() {
   for (int i = 0; i < 5; i++) {
+    writeToOled("Relay 1: ON");
     setRelay(1, true);
     delay(500);
+    writeToOled("Relay 1: OFF");
     setRelay(1, false);
     delay(500);
+    writeToOled("Relay 2: ON");
     setRelay(2, true);
     delay(500);
+    writeToOled("Relay 2: OFF");
     setRelay(2, false);
     delay(500);
   }
+  clearOled();
 }

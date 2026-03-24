@@ -1,5 +1,5 @@
 #include "servos.h"
-#include "LEDMatrix.h"
+#include "oled.h"
 #include <ESP32Servo.h>
 
 Servo servo1;
@@ -44,11 +44,9 @@ void testServoSweep(int servoNum) {
 
 void testServos() {
   initializeServos();
-  turnOffLEDMatrix();
 
   for (int i = 1; i <= NUM_SERVOS; i++) {
-    setLEDMatrixPixel(i - 1, 255, 255, 255);
-    showLEDMatrix();
+    writeToOled("Servo %d\nSweep 0-180", i);
 
     for (int angle = 0; angle <= 180; angle++) {
       setServoAngle(i, angle);
@@ -57,7 +55,6 @@ void testServos() {
 
     setServoAngle(i, 0);
     delay(500);
-
-    turnOffLEDMatrix();
   }
+  clearOled();
 }

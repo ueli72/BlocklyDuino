@@ -1,5 +1,5 @@
 #include "dcmotor.h"
-#include "LEDMatrix.h"
+#include "oled.h"
 #include "buttons.h"
 
 void initDCMotors() {
@@ -61,42 +61,58 @@ void setDCSpeed(int motorNum, int direction, int speedPercent) {
 }
 
 void testDCMotors() {
-
+    writeToOled("Motor 1\nForward");
     setDCSpeed(1, FORWARD, 100);
     delay(1000);
+    writeToOled("Motor 1\nStop");
     setDCSpeed(1, FORWARD, 0);
     delay(500);
+    writeToOled("Motor 1\nBackward");
     setDCSpeed(1, BACKWARD, 100);
     delay(1000);
+    writeToOled("Motor 1\nStop");
     setDCSpeed(1, BACKWARD, 0);
     delay(500);
     
+    writeToOled("Motor 2\nForward");
     setDCSpeed(2, FORWARD, 100);
     delay(1000);
+    writeToOled("Motor 2\nStop");
     setDCSpeed(2, FORWARD, 0);
     delay(500);
+    writeToOled("Motor 2\nBackward");
     setDCSpeed(2, BACKWARD, 100);
     delay(1000);
+    writeToOled("Motor 2\nStop");
     setDCSpeed(2, BACKWARD, 0);
     delay(500);
 
+    writeToOled("Motor 3\nForward");
     setDCSpeed(3, FORWARD, 100);
     delay(1000);
+    writeToOled("Motor 3\nStop");
     setDCSpeed(3, FORWARD, 0);
     delay(500);
+    writeToOled("Motor 3\nBackward");
     setDCSpeed(3, BACKWARD, 100);
     delay(1000);
+    writeToOled("Motor 3\nStop");
     setDCSpeed(3, BACKWARD, 0);
     delay(500);
 
+    writeToOled("Motor 4\nForward");
     setDCSpeed(4, FORWARD, 100);
     delay(1000);
+    writeToOled("Motor 4\nStop");
     setDCSpeed(4, FORWARD, 0);
     delay(500);
+    writeToOled("Motor 4\nBackward");
     setDCSpeed(4, BACKWARD, 100);
     delay(1000);
+    writeToOled("Motor 4\nStop");
     setDCSpeed(4, BACKWARD, 0);
     delay(500);
 
+    clearOled();
 }
 
