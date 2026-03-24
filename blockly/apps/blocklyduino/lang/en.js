@@ -67,6 +67,7 @@ i18n.registerTranslations('en', {
     "ultrasonic": "Ultrasonic",
     "sdcard": "SD Card",
     "max98357a": "MAX98357A",
+    "brightness": "Brightness",
     "testAll": "Test All"
   },
   "blocks": {
@@ -114,6 +115,7 @@ i18n.registerTranslations('en', {
     "max98357aPlayFile": "Play File",
     "max98357aIsPlaying": "Is Playing",
     "max98357aWaitUntilDone": "Wait Until Done",
+    "brightnessRead": "Read Brightness",
     "testAll": "Test All"
   },
   "blockInfo": {
@@ -187,6 +189,10 @@ i18n.registerTranslations('en', {
     "timer": {
       "title": "Async Timer",
       "message": "Non-blocking timer using Ticker library.\n\n• 'once': Executes code one time after the delay\n• 'repeated': Executes code every delay interval\n\n⚠️ ISR Restrictions apply:\n• No delay() or delayMicroseconds()\n• No Serial.print()\n• No OLED, SD Card, DHT11, Ultrasonic\n• No MAX98357A, Internal LED\n• Use 'volatile' for variables shared with main loop\n\nThe timer runs asynchronously and non-blocking."
+    },
+    "brightness": {
+      "title": "Brightness Sensor",
+      "message": "GL5546 LDR with 1MOhm resistor. Returns analog value 0-4095. Higher value = more light detected."
     }
   },
   "dependencies": {

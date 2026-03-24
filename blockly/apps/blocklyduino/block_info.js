@@ -234,6 +234,11 @@ var BLOCK_INFO = {
     message: 'blockInfo.max98357a.waitUntilDoneMessage',
     includes: ['max98357a.h']
   },
+  'brightness_read': {
+    title: 'blockInfo.brightness.title',
+    message: 'blockInfo.brightness.message',
+    includes: ['brightness.h']
+  },
   'test_all': {
     title: 'blockInfo.testAll.title',
     message: 'blockInfo.testAll.message',

@@ -67,6 +67,7 @@ i18n.registerTranslations('de', {
     "ultrasonic": "Ultraschall",
     "sdcard": "SD Karte",
     "max98357a": "MAX98357A",
+    "brightness": "Helligkeit",
     "testAll": "Alle Testen"
   },
   "blocks": {
@@ -114,6 +115,7 @@ i18n.registerTranslations('de', {
     "max98357aPlayFile": "Datei abspielen",
     "max98357aIsPlaying": "Spielt",
     "max98357aWaitUntilDone": "Warten bis fertig",
+    "brightnessRead": "Helligkeit lesen",
     "testAll": "Alle Testen"
   },
   "blockInfo": {
@@ -187,6 +189,10 @@ i18n.registerTranslations('de', {
     "timer": {
       "title": "Async Timer",
       "message": "Nicht-blockierender Timer mit Ticker Bibliothek.\n\n• 'once': Führt Code einmal nach der Verzögerung aus\n• 'repeated': Führt Code in jedem Verzögerungsintervall aus\n\n⚠️ ISR Einschränkungen:\n• Kein delay() oder delayMicroseconds()\n• Kein Serial.print()\n• Kein OLED, SD Card, DHT11, Ultrasonic\n• Kein MAX98357A, Internal LED\n• 'volatile' für Variablen verwenden, die mit der Hauptschleife geteilt werden\n\nDer Timer läuft asynchron und nicht-blockierend."
+    },
+    "brightness": {
+      "title": "Helligkeitssensor",
+      "message": "GL5546 LDR mit 1MOhm Widerstand. Gibt Analogwert 0-4095 zurück. Höherer Wert = mehr Licht erkannt."
     }
   },
   "dependencies": {
