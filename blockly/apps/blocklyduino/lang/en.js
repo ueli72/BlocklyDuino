@@ -71,6 +71,7 @@ i18n.registerTranslations('en', {
     "ws2812": "WS2812 LED Strip",
     "bluetoothLE": "Bluetooth LE",
     "ky023": "KY023 Joystick",
+    "serial": "Serial",
     "testAll": "Test All"
   },
   "blocks": {
@@ -140,6 +141,12 @@ i18n.registerTranslations('en', {
     "ky023ReadY": "Read Y-Axis",
     "ky023ReadButton": "Read Button",
     "ky023Test": "Test",
+    "serialInit": "Initialize",
+    "serialPrint": "Print",
+    "serialPrintln": "Print Line",
+    "serialReadChar": "Read Char",
+    "serialReadLine": "Read Line",
+    "serialAvailable": "Available",
     "testAll": "Test All"
   },
   "blockInfo": {
@@ -238,6 +245,16 @@ i18n.registerTranslations('en', {
       "title": "KY023 Joystick",
       "message": "Dual-axis analog joystick with integrated button. Returns values from -128 to +127 for each axis (0 = center). Button is active LOW (pressed = true).",
       "testMessage": "This block tests the KY023 joystick by displaying X/Y values and button state on the OLED display for 10 seconds."
+    },
+    "serial": {
+      "title": "Serial Communication",
+      "message": "Serial communication over USB. Use Serial Monitor in Arduino IDE or PlatformIO to send/receive data.",
+      "initMessage": "Initialize serial with baud rate. Common rates: 9600, 115200. Must match the Serial Monitor setting.",
+      "printMessage": "Print text without newline. Use for continuous output on same line.",
+      "printlnMessage": "Print text with newline. Use for line-by-line output.",
+      "readCharMessage": "Read single character. Non-blocking returns empty string if no data. Blocking waits for input.",
+      "readLineMessage": "Read entire line until CR or LF. Returns trimmed string without leading/trailing whitespace.",
+      "availableMessage": "Returns number of bytes waiting to be read. Use to check if data is available before reading."
     }
   },
   "dependencies": {
@@ -291,6 +308,11 @@ i18n.registerTranslations('en', {
     "ky023ReadX": "KY023 joystick must be initialized before reading X-axis.",
     "ky023ReadY": "KY023 joystick must be initialized before reading Y-axis.",
     "ky023ReadButton": "KY023 joystick must be initialized before reading button.",
-    "ky023Test": "KY023 joystick must be initialized before running test."
+    "ky023Test": "KY023 joystick must be initialized before running test.",
+    "serialPrint": "Serial must be initialized before printing.",
+    "serialPrintln": "Serial must be initialized before printing.",
+    "serialReadChar": "Serial must be initialized before reading.",
+    "serialReadLine": "Serial must be initialized before reading.",
+    "serialAvailable": "Serial must be initialized before checking available bytes."
   }
 });

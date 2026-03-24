@@ -71,6 +71,7 @@ i18n.registerTranslations('de', {
     "ws2812": "WS2812 LED Streifen",
     "bluetoothLE": "Bluetooth LE",
     "ky023": "KY023 Joystick",
+    "serial": "Serial",
     "testAll": "Alle Testen"
   },
   "blocks": {
@@ -140,6 +141,12 @@ i18n.registerTranslations('de', {
     "ky023ReadY": "Y-Achse lesen",
     "ky023ReadButton": "Taster lesen",
     "ky023Test": "Test",
+    "serialInit": "Initialisieren",
+    "serialPrint": "Ausgeben",
+    "serialPrintln": "Zeile ausgeben",
+    "serialReadChar": "Zeichen lesen",
+    "serialReadLine": "Zeile lesen",
+    "serialAvailable": "Verfügbar",
     "testAll": "Alle Testen"
   },
   "blockInfo": {
@@ -238,6 +245,16 @@ i18n.registerTranslations('de', {
       "title": "KY023 Joystick",
       "message": "Zweiachsiger analoger Joystick mit integriertem Taster. Gibt Werte von -128 bis +127 für jede Achse zurück (0 = Mittelstellung). Taster ist active LOW (gedrückt = true).",
       "testMessage": "Dieser Block testet den KY023 Joystick, indem X/Y-Werte und Tasterstatus für 10 Sekunden auf dem OLED Display angezeigt werden."
+    },
+    "serial": {
+      "title": "Serial Kommunikation",
+      "message": "Serial Kommunikation über USB. Verwenden Sie den Serial Monitor in der Arduino IDE oder PlatformIO zum Senden/Empfangen von Daten.",
+      "initMessage": "Initialisiert Serial mit Baudrate. Übliche Raten: 9600, 115200. Muss mit der Serial Monitor Einstellung übereinstimmen.",
+      "printMessage": "Gibt Text ohne Zeilenumbruch aus. Verwenden für fortlaufende Ausgabe auf gleicher Zeile.",
+      "printlnMessage": "Gibt Text mit Zeilenumbruch aus. Verwenden für zeilenweise Ausgabe.",
+      "readCharMessage": "Liest einzelnes Zeichen. Nicht-blockierend gibt leeren String zurück wenn keine Daten. Blockierend wartet auf Eingabe.",
+      "readLineMessage": "Liest ganze Zeile bis CR oder LF. Gibt getrimmten String ohne führende/nachfolgende Leerzeichen zurück.",
+      "availableMessage": "Gibt Anzahl der wartenden Bytes zurück. Verwenden um zu prüfen ob Daten verfügbar sind vor dem Lesen."
     }
   },
   "dependencies": {
@@ -291,6 +308,11 @@ i18n.registerTranslations('de', {
     "ky023ReadX": "KY023 Joystick muss initialisiert werden, bevor die X-Achse gelesen werden kann.",
     "ky023ReadY": "KY023 Joystick muss initialisiert werden, bevor die Y-Achse gelesen werden kann.",
     "ky023ReadButton": "KY023 Joystick muss initialisiert werden, bevor der Taster gelesen werden kann.",
-    "ky023Test": "KY023 Joystick muss initialisiert werden, bevor der Test durchgeführt werden kann."
+    "ky023Test": "KY023 Joystick muss initialisiert werden, bevor der Test durchgeführt werden kann.",
+    "serialPrint": "Serial muss initialisiert werden, bevor ausgegeben werden kann.",
+    "serialPrintln": "Serial muss initialisiert werden, bevor ausgegeben werden kann.",
+    "serialReadChar": "Serial muss initialisiert werden, bevor gelesen werden kann.",
+    "serialReadLine": "Serial muss initialisiert werden, bevor gelesen werden kann.",
+    "serialAvailable": "Serial muss initialisiert werden, bevor verfügbare Bytes geprüft werden können."
   }
 });

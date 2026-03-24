@@ -352,6 +352,36 @@ var BLOCK_INFO = {
     message: 'blockInfo.ky023.message',
     testMessage: 'blockInfo.ky023.testMessage',
     includes: ['ky023.h', 'oled.h']
+  },
+  'serial_init': {
+    title: 'blockInfo.serial.title',
+    message: 'blockInfo.serial.message',
+    includes: ['serial.h']
+  },
+  'serial_print': {
+    title: 'blockInfo.serial.title',
+    message: 'blockInfo.serial.message',
+    includes: ['serial.h']
+  },
+  'serial_println': {
+    title: 'blockInfo.serial.title',
+    message: 'blockInfo.serial.message',
+    includes: ['serial.h']
+  },
+  'serial_read_char': {
+    title: 'blockInfo.serial.title',
+    message: 'blockInfo.serial.message',
+    includes: ['serial.h']
+  },
+  'serial_read_line': {
+    title: 'blockInfo.serial.title',
+    message: 'blockInfo.serial.message',
+    includes: ['serial.h']
+  },
+  'serial_available': {
+    title: 'blockInfo.serial.title',
+    message: 'blockInfo.serial.message',
+    includes: ['serial.h']
   }
 };
 
@@ -559,6 +589,26 @@ var BLOCK_DEPENDENCIES = {
   'ky023_test': {
     requires: 'ky023_init',
     message: 'dependencies.ky023Test'
+  },
+  'serial_print': {
+    requires: 'serial_init',
+    message: 'dependencies.serialPrint'
+  },
+  'serial_println': {
+    requires: 'serial_init',
+    message: 'dependencies.serialPrintln'
+  },
+  'serial_read_char': {
+    requires: 'serial_init',
+    message: 'dependencies.serialReadChar'
+  },
+  'serial_read_line': {
+    requires: 'serial_init',
+    message: 'dependencies.serialReadLine'
+  },
+  'serial_available': {
+    requires: 'serial_init',
+    message: 'dependencies.serialAvailable'
   }
 };
 
