@@ -52,7 +52,7 @@ Service UUID: 0x8001
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ Direction             │ 0x8002          │ int8    │ Write, Notify           │
 │ Speed                 │ 0x8003          │ uint8   │ Write, Notify           │
-│ Command               │ 0x8004          │ string  │ Write                   │
+│ Command               │ 0x8004          │ uint8   │ Read, Write             │
 │ Sensor Data           │ 0x8005          │ string  │ Notify                  │
 └─────────────────────────────────────────────────────────────────────────────┘
 
@@ -83,15 +83,14 @@ SPEED
    - FF = maximum speed (255)
 4. Tap "Write" or "Send"
 
-CUSTOM COMMANDS
----------------
+COMMAND
+-------
 1. Tap on the Command characteristic (0x8004)
 2. Tap the "Write" button
-3. Enter a text command, e.g.:
-   - "light_on"
-   - "light_off"
-   - "honk"
-   - "stop"
+3. Enter a hex value (without 0x prefix), e.g.:
+   - 00 = command 0
+   - 01 = command 1
+   - FF = command 255
 4. Tap "Write" or "Send"
 
 ================================================================================
@@ -123,7 +122,7 @@ Example BlocklyDuino program for testing:
 │   └─ do: [DC Motor Set Speed: speed]                                        │
 │                                                                             │
 │   [BLE Remote On Command]                                                   │
-│   └─ do: [if command == "honk"]                                             │
+│   └─ do: [if command == 1]                                                  │
 │            └─ [play tone 440Hz for 500ms]                                   │
 │                                                                             │
 │ Loop:                                                                       │

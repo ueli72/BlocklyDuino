@@ -14,7 +14,7 @@ der kostenlosen "LightBlue" App (iOS und Android) testen können.
 3. Fügen Sie Callback-Blöcke für die Befehle hinzu, die Sie testen möchten:
    - "Bei Richtung" - empfängt Lenkwinkel (-60 bis +60)
    - "Bei Geschwindigkeit" - empfängt Geschwindigkeit (0-255)
-   - "Bei Befehl" - empfängt benutzerdefinierte Textbefehle
+   - "Bei Befehl" - empfängt Befehlswert (0-255)
 4. Laden Sie das Programm auf Ihr Playground Board hoch
 
 ================================================================================
@@ -52,7 +52,7 @@ Service UUID: 0x8001
 ├─────────────────────────────────────────────────────────────────────────────┤
 │ Richtung               │ 0x8002          │ int8    │ Write, Notify           │
 │ Geschwindigkeit        │ 0x8003          │ uint8   │ Write, Notify           │
-│ Befehl                 │ 0x8004          │ string  │ Write                   │
+│ Befehl                 │ 0x8004          │ uint8   │ Read, Write             │
 │ Sensordaten            │ 0x8005          │ string  │ Notify                  │
 └─────────────────────────────────────────────────────────────────────────────┘
 
@@ -83,15 +83,14 @@ GESCHWINDIGKEIT
    - FF = maximale Geschwindigkeit (255)
 4. Tippen Sie auf "Write" oder "Send"
 
-BENUTZERDEFINIERTE BEFEHLE
---------------------------
+BEFEHL
+------
 1. Tippen Sie auf die Befehls-Charakteristik (0x8004)
 2. Tippen Sie auf die "Write" Schaltfläche
-3. Geben Sie einen Textbefehl ein, z.B.:
-   - "light_on"
-   - "light_off"
-   - "honk"
-   - "stop"
+3. Geben Sie einen Hex-Wert ein (ohne 0x-Präfix), z.B.:
+   - 00 = Befehl 0
+   - 01 = Befehl 1
+   - FF = Befehl 255
 4. Tippen Sie auf "Write" oder "Send"
 
 ================================================================================
@@ -123,7 +122,7 @@ Beispiel BlocklyDuino Programm zum Testen:
 │   └─ do: [DC Motor Geschwindigkeit setzen: speed]                          │
 │                                                                             │
 │   [BLE Fernsteuerung Bei Befehl]                                            │
-│   └─ do: [wenn command == "honk"]                                          │
+│   └─ do: [wenn command == 1]                                                │
 │            └─ [Ton spielen 440Hz für 500ms]                                 │
 │                                                                             │
 │ Schleife:                                                                   │

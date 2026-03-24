@@ -17,6 +17,7 @@ static NimBLECharacteristic* pSensorCharacteristic = nullptr;
 static BLEDirectionCallback directionCallback = nullptr;
 static BLESpeedCallback speedCallback = nullptr;
 static BLECommandCallback commandCallback = nullptr;
+static const char* bleDeviceName = nullptr;
 
 class ServerCallbacks : public NimBLEServerCallbacks {
   void onConnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo) {
@@ -50,8 +51,8 @@ class SpeedCallbackHandler : public NimBLECharacteristicCallbacks {
 class CommandCallbackHandler : public NimBLECharacteristicCallbacks {
   void onWrite(NimBLECharacteristic* pCharacteristic, NimBLEConnInfo& connInfo) {
     if (commandCallback) {
-      std::string value = pCharacteristic->getValue();
-      commandCallback(value.c_str());
+      uint8_t value = pCharacteristic->getValue<uint8_t>();
+      commandCallback(value);
     }
   }
 };
@@ -61,6 +62,7 @@ static SpeedCallbackHandler speedHandler;
 static CommandCallbackHandler commandHandler;
 
 void initBLERemote(const char* deviceName) {
+  bleDeviceName = deviceName;
   NimBLEDevice::init(deviceName);
   NimBLEDevice::setSecurityAuth(false, false, false);
   
@@ -83,8 +85,9 @@ void initBLERemote(const char* deviceName) {
   
   pCommandCharacteristic = pService->createCharacteristic(
     CHARACTERISTIC_COMMAND,
-    NIMBLE_PROPERTY::WRITE
+    NIMBLE_PROPERTY::READ | NIMBLE_PROPERTY::WRITE
   );
+  pCommandCharacteristic->setValue("");
   pCommandCharacteristic->setCallbacks(&commandHandler);
   
   pSensorCharacteristic = pService->createCharacteristic(
@@ -130,7 +133,7 @@ bool isBLEConnected() {
 
 static int8_t lastDirection = 0;
 static uint8_t lastSpeed = 0;
-static char lastCommand[64] = "";
+static uint8_t lastCommand = 0;
 static bool newDirection = false;
 static bool newSpeed = false;
 static bool newCommand = false;
@@ -145,9 +148,8 @@ static void bleTestSpeedCallback(uint8_t speed) {
   newSpeed = true;
 }
 
-static void bleTestCommandCallback(const char* cmd) {
-  strncpy(lastCommand, cmd, sizeof(lastCommand) - 1);
-  lastCommand[sizeof(lastCommand) - 1] = '\0';
+static void bleTestCommandCallback(uint8_t cmd) {
+  lastCommand = cmd;
   newCommand = true;
 }
 
@@ -179,7 +181,9 @@ void testBLERemote() {
   if (readButton(BLE_TEST_SW4_PIN)) { waitForButtonRelease(BLE_TEST_SW4_PIN); clearOled(); return; }
   waitForButtonRelease(BLE_TEST_SW3_PIN);
   
-  writeToOled("LightBlue Setup\n\n1. Scan devices\n2. Find PlaygroundCar\n3. Tap Connect\n\nSW4:Back SW3:Next");
+  char connectBuffer[128];
+  snprintf(connectBuffer, sizeof(connectBuffer), "LightBlue Setup\n\n1. Scan devices\n2. Find %s\n3. Tap Connect\n\nSW4:Back SW3:Next", bleDeviceName ? bleDeviceName : "Device");
+  writeToOled(connectBuffer);
   
   while (!readButton(BLE_TEST_SW3_PIN) && !readButton(BLE_TEST_SW4_PIN)) { delay(10); }
   if (readButton(BLE_TEST_SW4_PIN)) { waitForButtonRelease(BLE_TEST_SW4_PIN); clearOled(); return; }
@@ -274,12 +278,12 @@ void testBLERemote() {
         waitForButtonRelease(BLE_TEST_SW4_PIN);
       }
       else if (selectedIndex == 2) {
-        writeToOled("Command Test\n\nChar: 0x8004\nSend any text\n\nSW4:Back");
+        writeToOled("Command Test\n\nChar: 0x8004\nHex: 00 to FF\n\nSW4:Back");
         newCommand = false;
         while (!readButton(BLE_TEST_SW4_PIN)) {
           if (newCommand) {
-            char buf[128];
-            snprintf(buf, sizeof(buf), "Command Test\n\nReceived:\n%s\n\nSW4:Back", lastCommand);
+            char buf[64];
+            snprintf(buf, sizeof(buf), "Command Test\n\nReceived:\n0x%02X (%d)\n\nSW4:Back", lastCommand, lastCommand);
             writeToOled(buf);
             newCommand = false;
           }

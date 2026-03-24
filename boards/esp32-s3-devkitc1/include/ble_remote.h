@@ -5,7 +5,7 @@
 
 typedef void (*BLEDirectionCallback)(int8_t direction);
 typedef void (*BLESpeedCallback)(uint8_t speed);
-typedef void (*BLECommandCallback)(const char* command);
+typedef void (*BLECommandCallback)(uint8_t command);
 
 void initBLERemote(const char* deviceName);
 void setBLEDirectionCallback(BLEDirectionCallback callback);
