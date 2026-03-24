@@ -49,7 +49,7 @@ i18n.registerTranslations('en', {
     "logic": "Logic",
     "constants": "Constants",
     "loops": "Loops",
-    "timed": "Timed",
+    "timed": "Timed / Interrupts",
     "math": "Math",
     "text": "Text",
     "variables": "Variables",

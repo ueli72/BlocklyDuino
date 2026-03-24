@@ -80,12 +80,23 @@ function updateToolboxForBoard(boardId) {
     }
   });
   
+  // Apply translations to the toolbox
+  var allCategories = toolboxClone.querySelectorAll('category[data-i18n-name]');
+  allCategories.forEach(function(category) {
+    var key = category.getAttribute('data-i18n-name');
+    var translation = i18n.t(key);
+    category.setAttribute('name', translation);
+  });
+  
   Blockly.mainWorkspace.updateToolbox(toolboxClone);
   
   // Re-add icons after toolbox update
   window.setTimeout(function() {
     if (typeof addToolboxIcons === 'function') {
       addToolboxIcons();
+    }
+    if (typeof updateToolboxTree === 'function') {
+      updateToolboxTree();
     }
   }, 100);
 }

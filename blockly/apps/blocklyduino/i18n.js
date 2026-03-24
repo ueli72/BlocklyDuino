@@ -105,6 +105,13 @@ function setLanguage(lang) {
         if (typeof addToolboxIcons === 'function') {
           addToolboxIcons();
         }
+        // Re-apply board-specific toolbox if needed
+        if (typeof updateToolboxForBoard === 'function' && typeof getSelectedBoard === 'function') {
+          var board = getSelectedBoard();
+          if (board) {
+            updateToolboxForBoard(board);
+          }
+        }
       }, 100);
     });
   } else {
@@ -116,6 +123,13 @@ function setLanguage(lang) {
       updateToolboxTree();
       if (typeof addToolboxIcons === 'function') {
         addToolboxIcons();
+      }
+      // Re-apply board-specific toolbox if needed
+      if (typeof updateToolboxForBoard === 'function' && typeof getSelectedBoard === 'function') {
+        var board = getSelectedBoard();
+        if (board) {
+          updateToolboxForBoard(board);
+        }
       }
     }, 100);
   }
