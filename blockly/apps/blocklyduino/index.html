@@ -744,7 +744,8 @@ function initBlockly() {
     }
     
     .blocklyFlyoutBackground {
-      fill: #f8f9fa !important;
+      fill: #e9ecef !important;
+      fill-opacity: 1 !important;
       stroke: #dee2e6 !important;
     }
     
@@ -803,7 +804,7 @@ function initBlockly() {
     
     /* Flyout styling */
     .blocklyFlyout {
-      box-shadow: 4px 0 12px rgba(0,0,0,0.08) !important;
+      filter: drop-shadow(4px 0 8px rgba(0,0,0,0.4)) !important;
     }
     
     .blocklyFlyoutButton {
@@ -1164,13 +1165,6 @@ function initBlockly() {
           </value>
         </block>
         <block type="inout_analog_read"></block>
-        <block type="serial_print">
-          <value name="TEXT">
-            <block type="text">
-              <field name="TEXT"></field>
-            </block>
-          </value>
-        </block>
         <block type="inout_tone">
           <value name="NUM">
             <block type="math_number">
