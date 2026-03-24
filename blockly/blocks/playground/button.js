@@ -59,3 +59,37 @@ Blockly.Blocks['button_read'] = {
     this.setTooltip('Read button state (true = pressed, false = not pressed)');
   }
 };
+
+function getInterruptPins() {
+  var pins = getButtonPins();
+  for (var i = 0; i <= 48; i++) {
+    if (i !== 4 && i !== 5 && i !== 6 && i !== 7) {
+      pins.push(["GPIO" + i, String(i)]);
+    }
+  }
+  return pins;
+}
+
+function getInterruptModes() {
+  return [
+    ["FALLING (press)", "FALLING"],
+    ["RISING (release)", "RISING"],
+    ["CHANGE", "CHANGE"]
+  ];
+}
+
+Blockly.Blocks['button_interrupt'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldImage("../../media/trigger.png", 64, 64))
+        .appendField("On Interrupt")
+        .appendField(new Blockly.FieldDropdown(getInterruptPins), "PIN")
+        .appendField(new Blockly.FieldDropdown(getInterruptModes), "MODE");
+    this.appendStatementInput("HANDLER_CODE")
+        .appendField("do");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setTooltip('ISR: No delay(), no Serial, keep short! Use volatile variables for data shared with main loop.');
+  }
+};

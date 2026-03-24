@@ -46,3 +46,22 @@ Blockly.Arduino.button_read = function() {
   }
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
+
+Blockly.Arduino.button_interrupt = function() {
+  var pin = this.getFieldValue('PIN');
+  var mode = this.getFieldValue('MODE');
+  var branch = Blockly.Arduino.statementToCode(this, 'HANDLER_CODE');
+
+  var isrName = Blockly.Arduino.variableDB_.getDistinctName('isr_handler', Blockly.Procedures.NAME_TYPE);
+
+  var isrCode = 'void IRAM_ATTR ' + isrName + '() {\n' + branch + '}\n';
+  Blockly.Arduino.definitions_[isrName] = isrCode;
+
+  var button_constant = button_constants[pin];
+  var pinCode = button_constant ? button_constant : pin;
+
+  var code = 'pinMode(' + pinCode + ', INPUT_PULLUP);\n';
+  code += 'attachInterrupt(digitalPinToInterrupt(' + pinCode + '), ' + isrName + ', ' + mode + ');\n';
+
+  return code;
+};

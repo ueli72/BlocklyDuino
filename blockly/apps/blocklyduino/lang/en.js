@@ -74,6 +74,8 @@ i18n.registerTranslations('en', {
     "ledTest": "Test RGB",
     "buttonInit": "Initialize",
     "buttonRead": "Read",
+    "buttonInterrupt": "On Interrupt",
+    "asyncTimer": "After",
     "oledInit": "Initialize",
     "oledWrite": "Write",
     "oledClear": "Clear",
@@ -125,7 +127,8 @@ i18n.registerTranslations('en', {
     "button": {
       "title": "Button",
       "initMessage": "This block initializes all 4 buttons.\n\nPins used:\n• Button1: GPIO4\n• Button2: GPIO5\n• Button3: GPIO6\n• Button4: GPIO7",
-      "readMessage": "This block reads the state of a button.\n\nReturns true when pressed, false when not pressed."
+      "readMessage": "This block reads the state of a button.\n\nReturns true when pressed, false when not pressed.",
+      "interruptMessage": "ISR Restrictions:\n• No delay() or delayMicroseconds()\n• No Serial.print() or Serial.write()\n• Keep code short and fast\n• Use 'volatile' for variables shared with main loop\n• Avoid function calls that may block\n\nThe interrupt runs asynchronously and non-blocking."
     },
     "oled": {
       "title": "OLED Display",
@@ -174,6 +177,10 @@ i18n.registerTranslations('en', {
       "title": "Test All",
       "message": "Interactive test menu for all components. Use SW1/SW2 to navigate, SW3 to select, SW4 to exit.",
       "testMessage": "This block shows an interactive menu on the OLED display. Select which component to test using the buttons."
+    },
+    "timer": {
+      "title": "Async Timer",
+      "message": "Non-blocking timer that executes code after a delay.\n\n• 'once': Executes code one time after the delay\n• 'repeated': Executes code every delay interval\n\nThe timer runs in parallel with the main loop. Multiple timers can run simultaneously."
     }
   },
   "dependencies": {

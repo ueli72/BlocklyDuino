@@ -74,6 +74,8 @@ i18n.registerTranslations('de', {
     "ledTest": "RGB Test",
     "buttonInit": "Initialisieren",
     "buttonRead": "Lesen",
+    "buttonInterrupt": "Bei Interrupt",
+    "asyncTimer": "Nach",
     "oledInit": "Initialisieren",
     "oledWrite": "Schreiben",
     "oledClear": "Löschen",
@@ -125,7 +127,8 @@ i18n.registerTranslations('de', {
     "button": {
       "title": "Taster",
       "initMessage": "Dieser Block initialisiert alle 4 Taster.\n\nVerwendete Pins:\n• Taster1: GPIO4\n• Taster2: GPIO5\n• Taster3: GPIO6\n• Taster4: GPIO7",
-      "readMessage": "Dieser Block liest den Status eines Tasters.\n\nGibt true zurück wenn gedrückt, false wenn nicht gedrückt."
+      "readMessage": "Dieser Block liest den Status eines Tasters.\n\nGibt true zurück wenn gedrückt, false wenn nicht gedrückt.",
+      "interruptMessage": "ISR Einschränkungen:\n• Kein delay() oder delayMicroseconds()\n• Kein Serial.print() oder Serial.write()\n• Code kurz und schnell halten\n• 'volatile' für Variablen verwenden, die mit der Hauptschleife geteilt werden\n• Funktionsaufrufe vermeiden, die blockieren könnten\n\nDer Interrupt läuft asynchron und nicht-blockierend."
     },
     "oled": {
       "title": "OLED Display",
@@ -174,6 +177,10 @@ i18n.registerTranslations('de', {
       "title": "Alle Testen",
       "message": "Interaktives Testmenü für alle Komponenten. SW1/SW2 zum Navigieren, SW3 zum Auswählen, SW4 zum Beenden.",
       "testMessage": "Dieser Block zeigt ein interaktives Menü auf dem OLED Display an. Wählen Sie mit den Tastern, welche Komponente getestet werden soll."
+    },
+    "timer": {
+      "title": "Async Timer",
+      "message": "Nicht-blockierender Timer, der Code nach einer Verzögerung ausführt.\n\n• 'once': Führt Code einmal nach der Verzögerung aus\n• 'repeated': Führt Code in jedem Verzögerungsintervall aus\n\nDer Timer läuft parallel zur Hauptschleife. Mehrere Timer können gleichzeitig laufen."
     }
   },
   "dependencies": {

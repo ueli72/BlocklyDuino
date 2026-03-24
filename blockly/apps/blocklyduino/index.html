@@ -30,6 +30,7 @@
   <script type="text/javascript" src="../../blocks/playground/sdcard.js"></script>
 <script type="text/javascript" src="../../blocks/playground/max98357a.js"></script>
   <script type="text/javascript" src="../../blocks/playground/test_all.js"></script>
+  <script type="text/javascript" src="../../blocks/playground/timer.js"></script>
   <script type="text/javascript" src="../../generators/arduino.js"></script>
   <script type="text/javascript" src="../../generators/arduino/base.js"></script>
   <script type="text/javascript" src="../../generators/arduino/control.js"></script>
@@ -52,6 +53,7 @@
   <script type="text/javascript" src="../../generators/arduino/playground/sdcard.js"></script>
 <script type="text/javascript" src="../../generators/arduino/playground/max98357a.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/test_all.js"></script>
+  <script type="text/javascript" src="../../generators/arduino/playground/timer.js"></script>
   <script type="text/javascript" src="../../msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
@@ -1014,6 +1016,14 @@ function initBlockly() {
     <category name="Timed" data-i18n-name="categories.timed">
       <block type="base_delay">
         <value name="DELAY_TIME">
+          <block type="math_number">
+            <field name="NUM">1000</field>
+          </block>
+        </value>
+      </block>
+      <block type="button_interrupt"></block>
+      <block type="async_timer">
+        <value name="DELAY">
           <block type="math_number">
             <field name="NUM">1000</field>
           </block>

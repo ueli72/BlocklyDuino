@@ -20,6 +20,17 @@ var BLOCK_INFO = {
     testMessage: 'blockInfo.internalLED.testMessage',
     includes: ['internalLED.h']
   },
+  'button_interrupt': {
+    title: 'blockInfo.button.title',
+    message: 'blockInfo.button.interruptMessage',
+    warningKey: 'interrupt',
+    includes: []
+  },
+  'async_timer': {
+    title: 'blockInfo.timer.title',
+    message: 'blockInfo.timer.message',
+    includes: []
+  },
   'oled_init': {
     title: 'blockInfo.oled.title',
     message: 'blockInfo.oled.message',
