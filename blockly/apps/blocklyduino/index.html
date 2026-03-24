@@ -521,7 +521,9 @@ function setVersionInfo() {
   var versionEl = document.getElementById('versionInfo');
   if (versionEl) {
     var buildDate = new Date(document.lastModified);
-    versionEl.textContent = '(' + buildDate.toLocaleDateString() + ')';
+    var dateStr = buildDate.toLocaleDateString();
+    var timeStr = buildDate.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    versionEl.textContent = '(' + dateStr + ' ' + timeStr + ')';
   }
 }
 
