@@ -34,6 +34,7 @@
   <script type="text/javascript" src="../../blocks/playground/ble_remote.js"></script>
   <script type="text/javascript" src="../../blocks/playground/test_all.js"></script>
   <script type="text/javascript" src="../../blocks/playground/timer.js"></script>
+  <script type="text/javascript" src="../../blocks/playground/ky023.js"></script>
   <script type="text/javascript" src="../../generators/arduino.js"></script>
   <script type="text/javascript" src="../../generators/arduino/base.js"></script>
   <script type="text/javascript" src="../../generators/arduino/control.js"></script>
@@ -60,6 +61,7 @@
   <script type="text/javascript" src="../../generators/arduino/playground/ble_remote.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/test_all.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/timer.js"></script>
+  <script type="text/javascript" src="../../generators/arduino/playground/ky023.js"></script>
   <script type="text/javascript" src="../../msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
@@ -389,9 +391,10 @@ function addToolboxIcons() {
     var ws2812Text = i18n.t('categories.ws2812');
     var bluetoothLEText = i18n.t('categories.bluetoothLE');
     var testAllText = i18n.t('categories.testAll');
+    var ky023Text = i18n.t('categories.ky023');
     var playgroundText = i18n.t('categories.playground');
     
-    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText || text === sdcardText || text === max98357aText || text === brightnessText || text === ws2812Text || text === bluetoothLEText || text === testAllText;
+    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText || text === sdcardText || text === max98357aText || text === brightnessText || text === ws2812Text || text === bluetoothLEText || text === testAllText || text === ky023Text;
     
     // Add class for subcategories
     if (isSubcategory) {
@@ -438,6 +441,7 @@ function addToolboxIcons() {
     else if (text === ws2812Text) iconClass = 'bi-lightbulb';
     else if (text === bluetoothLEText) iconClass = 'bi-bluetooth';
     else if (text === testAllText) iconClass = 'bi-list-check';
+    else if (text === ky023Text) iconClass = 'bi-controller';
     
     if (iconClass || iconText) {
       var icon = row.querySelector('.toolbox-icon');
@@ -1172,6 +1176,13 @@ function initBlockly() {
         </value>
       </block>
       <block type="inout_notone"></block>
+      <category name="KY023 Joystick" data-i18n-name="categories.ky023">
+        <block type="ky023_init"></block>
+        <block type="ky023_read_x"></block>
+        <block type="ky023_read_y"></block>
+        <block type="ky023_read_button"></block>
+        <block type="ky023_test"></block>
+      </category>
       <category name="WS2812 Strip" data-i18n-name="categories.ws2812">
         <block type="ws2812_init">
           <value name="COUNT">

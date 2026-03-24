@@ -326,6 +326,32 @@ var BLOCK_INFO = {
     message: 'blockInfo.testAll.message',
     testMessage: 'blockInfo.testAll.testMessage',
     includes: ['test_all.h', 'oled.h', 'buttons.h', 'LEDMatrix.h', 'relais.h', 'dcmotor.h', 'dht11.h', 'ultrasonic.h', 'sdcard.h', 'max98357a.h', 'internalLED.h', 'servos.h']
+  },
+  'ky023_init': {
+    title: 'blockInfo.ky023.title',
+    message: 'blockInfo.ky023.message',
+    includes: ['ky023.h']
+  },
+  'ky023_read_x': {
+    title: 'blockInfo.ky023.title',
+    message: 'blockInfo.ky023.message',
+    includes: ['ky023.h']
+  },
+  'ky023_read_y': {
+    title: 'blockInfo.ky023.title',
+    message: 'blockInfo.ky023.message',
+    includes: ['ky023.h']
+  },
+  'ky023_read_button': {
+    title: 'blockInfo.ky023.title',
+    message: 'blockInfo.ky023.message',
+    includes: ['ky023.h']
+  },
+  'ky023_test': {
+    title: 'blockInfo.ky023.title',
+    message: 'blockInfo.ky023.message',
+    testMessage: 'blockInfo.ky023.testMessage',
+    includes: ['ky023.h', 'oled.h']
   }
 };
 
@@ -517,6 +543,22 @@ var BLOCK_DEPENDENCIES = {
   'ble_remote_test': {
     requires: 'ble_remote_init',
     message: 'dependencies.bleRemoteTest'
+  },
+  'ky023_read_x': {
+    requires: 'ky023_init',
+    message: 'dependencies.ky023ReadX'
+  },
+  'ky023_read_y': {
+    requires: 'ky023_init',
+    message: 'dependencies.ky023ReadY'
+  },
+  'ky023_read_button': {
+    requires: 'ky023_init',
+    message: 'dependencies.ky023ReadButton'
+  },
+  'ky023_test': {
+    requires: 'ky023_init',
+    message: 'dependencies.ky023Test'
   }
 };
 

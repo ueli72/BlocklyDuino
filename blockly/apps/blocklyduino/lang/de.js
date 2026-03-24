@@ -70,6 +70,7 @@ i18n.registerTranslations('de', {
 "brightness": "Helligkeit",
     "ws2812": "WS2812 LED Streifen",
     "bluetoothLE": "Bluetooth LE",
+    "ky023": "KY023 Joystick",
     "testAll": "Alle Testen"
   },
   "blocks": {
@@ -134,6 +135,11 @@ i18n.registerTranslations('de', {
     "bleRemoteSend": "Daten senden",
     "bleRemoteIsConnected": "Verbunden",
     "bleRemoteTest": "Test",
+    "ky023Init": "Initialisieren",
+    "ky023ReadX": "X-Achse lesen",
+    "ky023ReadY": "Y-Achse lesen",
+    "ky023ReadButton": "Taster lesen",
+    "ky023Test": "Test",
     "testAll": "Alle Testen"
   },
   "blockInfo": {
@@ -227,6 +233,11 @@ i18n.registerTranslations('de', {
       "sendMessage": "Sensordaten an verbundene mobile App senden. Nur im Hauptprogramm verwenden, nicht in BLE Callbacks.",
       "testMessage": "Testet BLE durch Ausgabe des Verbindungsstatus auf Serial. Mit LightBlue App verbinden zum Testen.",
       "testInfo": "Siehe readme_ble_deu.txt für detaillierte Testanleitung mit der LightBlue App."
+    },
+    "ky023": {
+      "title": "KY023 Joystick",
+      "message": "Zweiachsiger analoger Joystick mit integriertem Taster. Gibt Werte von -128 bis +127 für jede Achse zurück (0 = Mittelstellung). Taster ist active LOW (gedrückt = true).",
+      "testMessage": "Dieser Block testet den KY023 Joystick, indem X/Y-Werte und Tasterstatus für 10 Sekunden auf dem OLED Display angezeigt werden."
     }
   },
   "dependencies": {
@@ -276,6 +287,10 @@ i18n.registerTranslations('de', {
     "bleRemoteCommandValue": "Befehlswert-Block muss innerhalb des 'Bei Befehl' Callbacks verwendet werden.",
     "bleRemoteSend": "BLE muss initialisiert werden, bevor Daten gesendet werden können.",
     "bleRemoteIsConnected": "BLE muss initialisiert werden, bevor die Verbindung geprüft werden kann.",
-    "bleRemoteTest": "BLE muss initialisiert werden, bevor der Test durchgeführt werden kann."
+    "bleRemoteTest": "BLE muss initialisiert werden, bevor der Test durchgeführt werden kann.",
+    "ky023ReadX": "KY023 Joystick muss initialisiert werden, bevor die X-Achse gelesen werden kann.",
+    "ky023ReadY": "KY023 Joystick muss initialisiert werden, bevor die Y-Achse gelesen werden kann.",
+    "ky023ReadButton": "KY023 Joystick muss initialisiert werden, bevor der Taster gelesen werden kann.",
+    "ky023Test": "KY023 Joystick muss initialisiert werden, bevor der Test durchgeführt werden kann."
   }
 });

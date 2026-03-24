@@ -70,6 +70,7 @@ i18n.registerTranslations('en', {
 "brightness": "Brightness",
     "ws2812": "WS2812 LED Strip",
     "bluetoothLE": "Bluetooth LE",
+    "ky023": "KY023 Joystick",
     "testAll": "Test All"
   },
   "blocks": {
@@ -134,6 +135,11 @@ i18n.registerTranslations('en', {
     "bleRemoteSend": "Send Data",
     "bleRemoteIsConnected": "Is Connected",
     "bleRemoteTest": "Test",
+    "ky023Init": "Initialize",
+    "ky023ReadX": "Read X-Axis",
+    "ky023ReadY": "Read Y-Axis",
+    "ky023ReadButton": "Read Button",
+    "ky023Test": "Test",
     "testAll": "Test All"
   },
   "blockInfo": {
@@ -227,6 +233,11 @@ i18n.registerTranslations('en', {
       "sendMessage": "Send sensor data back to connected mobile app. Use only in main loop, not in BLE callbacks.",
       "testMessage": "Test BLE by printing connection status to Serial. Connect with LightBlue app to test commands.",
       "testInfo": "See readme_ble.txt for detailed testing instructions with LightBlue mobile app."
+    },
+    "ky023": {
+      "title": "KY023 Joystick",
+      "message": "Dual-axis analog joystick with integrated button. Returns values from -128 to +127 for each axis (0 = center). Button is active LOW (pressed = true).",
+      "testMessage": "This block tests the KY023 joystick by displaying X/Y values and button state on the OLED display for 10 seconds."
     }
   },
   "dependencies": {
@@ -276,6 +287,10 @@ i18n.registerTranslations('en', {
     "bleRemoteCommandValue": "Command Value block must be used inside 'On Command' callback.",
     "bleRemoteSend": "BLE must be initialized before sending data.",
     "bleRemoteIsConnected": "BLE must be initialized before checking connection.",
-    "bleRemoteTest": "BLE must be initialized before running test."
+    "bleRemoteTest": "BLE must be initialized before running test.",
+    "ky023ReadX": "KY023 joystick must be initialized before reading X-axis.",
+    "ky023ReadY": "KY023 joystick must be initialized before reading Y-axis.",
+    "ky023ReadButton": "KY023 joystick must be initialized before reading button.",
+    "ky023Test": "KY023 joystick must be initialized before running test."
   }
 });
