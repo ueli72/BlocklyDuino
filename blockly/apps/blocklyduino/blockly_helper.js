@@ -15,6 +15,34 @@ var sessionWarnings = [];
 
 var selectedBoard = null;
 
+var BOARD_INFO = {
+  'esp32-s3-devkitc1': {
+    name: 'BWS Playground Master',
+    image: '../../media/playground.png'
+  },
+  'arduino-uno': {
+    name: 'Arduino Uno',
+    image: '../../media/uno.jpg'
+  }
+};
+
+function updateBoardInfoDisplay(boardId) {
+  var boardInfo = document.getElementById('boardInfo');
+  var boardImage = document.getElementById('boardImage');
+  var boardName = document.getElementById('boardName');
+  
+  if (!boardInfo || !boardImage || !boardName) return;
+  
+  var info = BOARD_INFO[boardId];
+  if (info) {
+    boardImage.src = info.image;
+    boardName.textContent = info.name;
+    boardInfo.style.display = 'flex';
+  } else {
+    boardInfo.style.display = 'none';
+  }
+}
+
 function getSelectedBoard() {
   return localStorage.getItem('blocklyduino_board');
 }
@@ -46,6 +74,8 @@ function selectBoard(boardId) {
   if (boardSelector) {
     boardSelector.value = boardId;
   }
+  
+  updateBoardInfoDisplay(boardId);
   
   if (boardId === 'esp32-s3-devkitc1') {
     profile['default'] = profile['esp32'];
@@ -115,6 +145,7 @@ function initBoardSelection() {
       boardSelector.value = savedBoard;
       boardSelector.style.display = 'none';
     }
+    updateBoardInfoDisplay(savedBoard);
     if (savedBoard === 'esp32-s3-devkitc1') {
       profile['default'] = profile['esp32'];
     } else if (savedBoard === 'arduino-uno') {
@@ -384,6 +415,10 @@ function clearWorkspace() {
   var boardSelector = document.getElementById('boardSelector');
   if (boardSelector) {
     boardSelector.style.display = 'none';
+  }
+  var boardInfo = document.getElementById('boardInfo');
+  if (boardInfo) {
+    boardInfo.style.display = 'none';
   }
   window.setTimeout(showBoardSelectionModal, 100);
   renderContent();

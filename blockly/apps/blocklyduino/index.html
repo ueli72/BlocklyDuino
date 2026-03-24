@@ -817,6 +817,26 @@ function initBlockly() {
     .board-card:active {
       transform: translateY(-2px);
     }
+    
+    .board-info-display {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 6px;
+      padding: 4px 10px;
+    }
+    
+    .board-thumbnail {
+      width: 32px;
+      height: 24px;
+      object-fit: contain;
+      border-radius: 3px;
+    }
+    
+    .board-name {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #495057;
+    }
   </style>
 </head>
 <body onload="init()">
@@ -859,6 +879,10 @@ function initBlockly() {
           </li>
         </ul>
         <div class="d-flex flex-wrap align-items-center gap-2">
+          <div id="boardInfo" class="d-flex align-items-center gap-2 board-info-display" style="display: none;">
+            <img id="boardImage" src="" alt="Board" class="board-thumbnail">
+            <span id="boardName" class="board-name"></span>
+          </div>
           <select class="form-select form-select-sm" id="boardSelector">
             <option value="esp32-s3-devkitc1">BWS Playground Master</option>
             <option value="arduino-uno">Arduino Uno</option>
