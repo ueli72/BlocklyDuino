@@ -38,8 +38,9 @@ Blockly.Arduino.ble_remote_on_direction = function() {
   var callbackCode = 'void ' + callbackName + '(int8_t direction) {\n' + branch + '}\n';
   Blockly.Arduino.definitions_[callbackName] = callbackCode;
   
-  var code = 'setBLEDirectionCallback(' + callbackName + ');\n';
-  return code;
+  Blockly.Arduino.setups_['ble_direction_callback'] = 'setBLEDirectionCallback(' + callbackName + ');\n';
+  
+  return '';
 };
 
 Blockly.Arduino.ble_remote_on_speed = function() {
@@ -51,8 +52,9 @@ Blockly.Arduino.ble_remote_on_speed = function() {
   var callbackCode = 'void ' + callbackName + '(uint8_t speed) {\n' + branch + '}\n';
   Blockly.Arduino.definitions_[callbackName] = callbackCode;
   
-  var code = 'setBLESpeedCallback(' + callbackName + ');\n';
-  return code;
+  Blockly.Arduino.setups_['ble_speed_callback'] = 'setBLESpeedCallback(' + callbackName + ');\n';
+  
+  return '';
 };
 
 Blockly.Arduino.ble_remote_on_command = function() {
@@ -64,8 +66,21 @@ Blockly.Arduino.ble_remote_on_command = function() {
   var callbackCode = 'void ' + callbackName + '(uint8_t command) {\n' + branch + '}\n';
   Blockly.Arduino.definitions_[callbackName] = callbackCode;
   
-  var code = 'setBLECommandCallback(' + callbackName + ');\n';
-  return code;
+  Blockly.Arduino.setups_['ble_command_callback'] = 'setBLECommandCallback(' + callbackName + ');\n';
+  
+  return '';
+};
+
+Blockly.Arduino.ble_remote_direction_value = function() {
+  return ['direction', Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino.ble_remote_speed_value = function() {
+  return ['speed', Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino.ble_remote_command_value = function() {
+  return ['command', Blockly.Arduino.ORDER_ATOMIC];
 };
 
 Blockly.Arduino.ble_remote_send = function() {

@@ -128,6 +128,9 @@ i18n.registerTranslations('de', {
     "bleRemoteOnDirection": "Bei Richtung",
     "bleRemoteOnSpeed": "Bei Geschwindigkeit",
     "bleRemoteOnCommand": "Bei Befehl",
+    "bleRemoteDirectionValue": "Richtungswert",
+    "bleRemoteSpeedValue": "Geschwindigkeitswert",
+    "bleRemoteCommandValue": "Befehlswert",
     "bleRemoteSend": "Daten senden",
     "bleRemoteIsConnected": "Verbunden",
     "bleRemoteTest": "Test",
@@ -217,7 +220,10 @@ i18n.registerTranslations('de', {
     "bleRemote": {
       "title": "BLE Fernsteuerung",
       "message": "Bluetooth Low Energy Server für mobile App Fernsteuerung. LightBlue App zum Testen verwenden.",
-      "callbackMessage": "⚠️ ISR Einschränkungen: Kein delay(), kein Serial, kein OLED/SD Card/DHT11/Ultrasonic. Nur Motor/LED/Servo Steuerung erlaubt.",
+      "callbackMessage": "⚠️ ISR Einschränkungen: Kein delay(), kein Serial, kein OLED/SD Card/DHT11/Ultrasonic/MAX98357A/WS2812. Nur Motor/Relais/Servo Steuerung erlaubt.",
+      "directionValueMessage": "Gibt den Richtungswert (-60 bis +60) zurück. Nur gültig innerhalb des 'Bei Richtung' Callback-Blocks.",
+      "speedValueMessage": "Gibt den Geschwindigkeitswert (0-255) zurück. Nur gültig innerhalb des 'Bei Geschwindigkeit' Callback-Blocks.",
+      "commandValueMessage": "Gibt den Befehlswert (0-255) zurück. Nur gültig innerhalb des 'Bei Befehl' Callback-Blocks.",
       "sendMessage": "Sensordaten an verbundene mobile App senden. Nur im Hauptprogramm verwenden, nicht in BLE Callbacks.",
       "testMessage": "Testet BLE durch Ausgabe des Verbindungsstatus auf Serial. Mit LightBlue App verbinden zum Testen.",
       "testInfo": "Siehe readme_ble_deu.txt für detaillierte Testanleitung mit der LightBlue App."
@@ -265,6 +271,9 @@ i18n.registerTranslations('de', {
     "bleRemoteOnDirection": "BLE muss initialisiert werden, bevor der Richtungs-Callback verwendet werden kann.",
     "bleRemoteOnSpeed": "BLE muss initialisiert werden, bevor der Geschwindigkeits-Callback verwendet werden kann.",
     "bleRemoteOnCommand": "BLE muss initialisiert werden, bevor der Befehls-Callback verwendet werden kann.",
+    "bleRemoteDirectionValue": "Richtungswert-Block muss innerhalb des 'Bei Richtung' Callbacks verwendet werden.",
+    "bleRemoteSpeedValue": "Geschwindigkeitswert-Block muss innerhalb des 'Bei Geschwindigkeit' Callbacks verwendet werden.",
+    "bleRemoteCommandValue": "Befehlswert-Block muss innerhalb des 'Bei Befehl' Callbacks verwendet werden.",
     "bleRemoteSend": "BLE muss initialisiert werden, bevor Daten gesendet werden können.",
     "bleRemoteIsConnected": "BLE muss initialisiert werden, bevor die Verbindung geprüft werden kann.",
     "bleRemoteTest": "BLE muss initialisiert werden, bevor der Test durchgeführt werden kann."

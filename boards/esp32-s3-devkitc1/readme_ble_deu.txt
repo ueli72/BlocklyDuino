@@ -194,12 +194,10 @@ Die Callback-Blöcke laufen im BLE Interrupt-Kontext. Folgendes ist VERBOTEN:
 ❌ KEINE DHT11-Lesevorgänge
 ❌ KEINE Ultraschall-Messungen
 ❌ KEINE MAX98357A Audio-Operationen
-❌ KEIN Internal LED init
+❌ KEINE Internal LED oder LED Matrix (WS2812)
 
 ✅ ERLAUBTE Operationen:
    - DC Motor Steuerung (Geschwindigkeit setzen, stoppen)
-   - WS2812 LED Steuerung
-   - LED Matrix Steuerung
    - Relais Steuerung
    - Servo-Bewegung
    - Variablenzuweisungen

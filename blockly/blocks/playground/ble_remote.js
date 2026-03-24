@@ -27,6 +27,7 @@ Blockly.Blocks.ble_remote = {};
 
 var BLE_BLOCKED_IN_CALLBACK = [
   'internal_led_init', 'internal_led_set', 'internal_led_off', 'internal_led_test',
+  'led_matrix_init', 'led_matrix_set_pixel', 'led_matrix_fill', 'led_matrix_show', 'led_matrix_off', 'led_matrix_test',
   'base_delay', 'serial_print', 'inout_tone', 'inout_notone',
   'max98357a_init', 'max98357a_play_tone', 'max98357a_stop', 'max98357a_test',
   'max98357a_play_file', 'max98357a_is_playing', 'max98357a_wait_until_done',
@@ -49,7 +50,7 @@ function checkBLEBlocks(block) {
     child = child.getNextBlock();
   }
   if (hasBlocked) {
-    block.setWarningText('⚠️ FORBIDDEN! This block cannot be used inside BLE callback!\n\nISR restrictions:\n• No delay()\n• No Serial\n• No OLED, SD Card, DHT11, Ultrasonic\n• No MAX98357A\n• No Internal LED init\n• No BLE Send (would cause recursion)\n\nRemove this block immediately!');
+    block.setWarningText('⚠️ FORBIDDEN! This block cannot be used inside BLE callback!\n\nISR restrictions:\n• No delay()\n• No Serial\n• No OLED, SD Card, DHT11, Ultrasonic\n• No MAX98357A\n• No Internal LED, LED Matrix (WS2812)\n• No BLE Send (would cause recursion)\n\nRemove this block immediately!');
     block.setColour(0);
   } else {
     block.setWarningText(null);
@@ -81,11 +82,9 @@ Blockly.Blocks['ble_remote_on_direction'] = {
         .appendField("On Direction");
     this.appendStatementInput("CALLBACK_CODE")
         .appendField("do");
-    this.appendDummyInput()
-        .appendField("  direction (-60 to +60)");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setTooltip('Callback when direction command received. ISR restrictions apply - no delay, no Serial, no blocking operations.');
+    this.setTooltip('Callback when direction command received. Use "Direction Value" block to get the value. ISR restrictions apply.');
   },
   onchange: function() {
     checkBLEBlocks(this);
@@ -101,11 +100,9 @@ Blockly.Blocks['ble_remote_on_speed'] = {
         .appendField("On Speed");
     this.appendStatementInput("CALLBACK_CODE")
         .appendField("do");
-    this.appendDummyInput()
-        .appendField("  speed (0-255)");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setTooltip('Callback when speed command received. ISR restrictions apply - no delay, no Serial, no blocking operations.');
+    this.setTooltip('Callback when speed command received. Use "Speed Value" block to get the value. ISR restrictions apply.');
   },
   onchange: function() {
     checkBLEBlocks(this);
@@ -121,14 +118,48 @@ Blockly.Blocks['ble_remote_on_command'] = {
         .appendField("On Command");
     this.appendStatementInput("CALLBACK_CODE")
         .appendField("do");
-    this.appendDummyInput()
-        .appendField("  command (0-255)");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setTooltip('Callback for custom commands (0-255). ISR restrictions apply.');
+    this.setTooltip('Callback for custom commands (0-255). Use "Command Value" block to get the value. ISR restrictions apply.');
   },
   onchange: function() {
     checkBLEBlocks(this);
+  }
+};
+
+Blockly.Blocks['ble_remote_direction_value'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("BLE Direction")
+        .appendField(new Blockly.FieldImage("../../media/ble.png", 40, 40))
+        .appendField("Value");
+    this.setOutput(true, 'Number');
+    this.setTooltip('Returns the direction value (-60 to +60). Only valid inside "On Direction" callback.');
+  }
+};
+
+Blockly.Blocks['ble_remote_speed_value'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("BLE Speed")
+        .appendField(new Blockly.FieldImage("../../media/ble.png", 40, 40))
+        .appendField("Value");
+    this.setOutput(true, 'Number');
+    this.setTooltip('Returns the speed value (0-255). Only valid inside "On Speed" callback.');
+  }
+};
+
+Blockly.Blocks['ble_remote_command_value'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("BLE Command")
+        .appendField(new Blockly.FieldImage("../../media/ble.png", 40, 40))
+        .appendField("Value");
+    this.setOutput(true, 'Number');
+    this.setTooltip('Returns the command value (0-255). Only valid inside "On Command" callback.');
   }
 };
 

@@ -290,6 +290,21 @@ var BLOCK_INFO = {
     message: 'blockInfo.bleRemote.callbackMessage',
     includes: ['ble_remote.h']
   },
+  'ble_remote_direction_value': {
+    title: 'blockInfo.bleRemote.title',
+    message: 'blockInfo.bleRemote.directionValueMessage',
+    includes: ['ble_remote.h']
+  },
+  'ble_remote_speed_value': {
+    title: 'blockInfo.bleRemote.title',
+    message: 'blockInfo.bleRemote.speedValueMessage',
+    includes: ['ble_remote.h']
+  },
+  'ble_remote_command_value': {
+    title: 'blockInfo.bleRemote.title',
+    message: 'blockInfo.bleRemote.commandValueMessage',
+    includes: ['ble_remote.h']
+  },
   'ble_remote_send': {
     title: 'blockInfo.bleRemote.title',
     message: 'blockInfo.bleRemote.sendMessage',
@@ -478,6 +493,18 @@ var BLOCK_DEPENDENCIES = {
   'ble_remote_on_command': {
     requires: 'ble_remote_init',
     message: 'dependencies.bleRemoteOnCommand'
+  },
+  'ble_remote_direction_value': {
+    requires: 'ble_remote_on_direction',
+    message: 'dependencies.bleRemoteDirectionValue'
+  },
+  'ble_remote_speed_value': {
+    requires: 'ble_remote_on_speed',
+    message: 'dependencies.bleRemoteSpeedValue'
+  },
+  'ble_remote_command_value': {
+    requires: 'ble_remote_on_command',
+    message: 'dependencies.bleRemoteCommandValue'
   },
   'ble_remote_send': {
     requires: 'ble_remote_init',

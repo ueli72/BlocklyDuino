@@ -128,6 +128,9 @@ i18n.registerTranslations('en', {
     "bleRemoteOnDirection": "On Direction",
     "bleRemoteOnSpeed": "On Speed",
     "bleRemoteOnCommand": "On Command",
+    "bleRemoteDirectionValue": "Direction Value",
+    "bleRemoteSpeedValue": "Speed Value",
+    "bleRemoteCommandValue": "Command Value",
     "bleRemoteSend": "Send Data",
     "bleRemoteIsConnected": "Is Connected",
     "bleRemoteTest": "Test",
@@ -217,7 +220,10 @@ i18n.registerTranslations('en', {
     "bleRemote": {
       "title": "BLE Remote Control",
       "message": "Bluetooth Low Energy server for mobile app remote control. Use LightBlue app to test.",
-      "callbackMessage": "⚠️ ISR Restrictions: No delay(), no Serial, no OLED/SD Card/DHT11/Ultrasonic. Only motor/LED/servo control allowed.",
+      "callbackMessage": "⚠️ ISR Restrictions: No delay(), no Serial, no OLED/SD Card/DHT11/Ultrasonic/MAX98357A/WS2812. Only motor/relay/servo control allowed.",
+      "directionValueMessage": "Returns the direction value (-60 to +60). Only valid inside 'On Direction' callback block.",
+      "speedValueMessage": "Returns the speed value (0-255). Only valid inside 'On Speed' callback block.",
+      "commandValueMessage": "Returns the command value (0-255). Only valid inside 'On Command' callback block.",
       "sendMessage": "Send sensor data back to connected mobile app. Use only in main loop, not in BLE callbacks.",
       "testMessage": "Test BLE by printing connection status to Serial. Connect with LightBlue app to test commands.",
       "testInfo": "See readme_ble.txt for detailed testing instructions with LightBlue mobile app."
@@ -265,6 +271,9 @@ i18n.registerTranslations('en', {
     "bleRemoteOnDirection": "BLE must be initialized before using direction callback.",
     "bleRemoteOnSpeed": "BLE must be initialized before using speed callback.",
     "bleRemoteOnCommand": "BLE must be initialized before using command callback.",
+    "bleRemoteDirectionValue": "Direction Value block must be used inside 'On Direction' callback.",
+    "bleRemoteSpeedValue": "Speed Value block must be used inside 'On Speed' callback.",
+    "bleRemoteCommandValue": "Command Value block must be used inside 'On Command' callback.",
     "bleRemoteSend": "BLE must be initialized before sending data.",
     "bleRemoteIsConnected": "BLE must be initialized before checking connection.",
     "bleRemoteTest": "BLE must be initialized before running test."

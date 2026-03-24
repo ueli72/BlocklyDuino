@@ -194,12 +194,10 @@ The callback blocks run in BLE interrupt context. The following are FORBIDDEN:
 ❌ NO DHT11 reads
 ❌ NO Ultrasonic reads
 ❌ NO MAX98357A audio operations
-❌ NO Internal LED init
+❌ NO Internal LED or LED Matrix (WS2812)
 
 ✅ ALLOWED operations:
    - DC Motor control (set speed, stop)
-   - WS2812 LED control
-   - LED Matrix control
    - Relay control
    - Servo movement
    - Variable assignments

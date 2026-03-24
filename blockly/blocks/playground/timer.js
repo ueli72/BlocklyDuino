@@ -34,6 +34,7 @@ function getTimerModes() {
 
 var BLOCKED_IN_TIMER = [
   'internal_led_init', 'internal_led_set', 'internal_led_off', 'internal_led_test',
+  'led_matrix_init', 'led_matrix_set_pixel', 'led_matrix_fill', 'led_matrix_show', 'led_matrix_off', 'led_matrix_test',
   'base_delay', 'serial_print', 'inout_tone', 'inout_notone',
   'max98357a_init', 'max98357a_play_tone', 'max98357a_stop', 'max98357a_test',
   'max98357a_play_file', 'max98357a_is_playing', 'max98357a_wait_until_done',
@@ -55,7 +56,7 @@ function checkTimerBlocks(block) {
     child = child.getNextBlock();
   }
   if (hasBlocked) {
-    block.setWarningText('⚠️ FORBIDDEN! This block cannot be used inside a timer callback!\n\nTimer restrictions:\n• No delay()\n• No Serial\n• No OLED, SD Card, DHT11, Ultrasonic\n• No MAX98357A\n• No Internal LED\n\nRemove this block immediately!');
+    block.setWarningText('⚠️ FORBIDDEN! This block cannot be used inside a timer callback!\n\nTimer restrictions:\n• No delay()\n• No Serial\n• No OLED, SD Card, DHT11, Ultrasonic\n• No MAX98357A\n• No Internal LED, LED Matrix (WS2812)\n\nRemove this block immediately!');
     block.setColour(0);
   } else {
     block.setWarningText(null);
@@ -78,7 +79,7 @@ Blockly.Blocks['async_timer'] = {
         .appendField("do");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setTooltip('Timer callback runs in interrupt context. No delay(), no Serial, keep short! Use volatile for variables shared with main loop.');
+    this.setTooltip('Timer callback runs in interrupt context. No delay(), no Serial, no OLED/SD/DHT11/Ultrasonic/MAX98357A/WS2812. Use volatile for variables shared with main loop.');
     this.setInputsInline(true);
   },
   onchange: function() {
