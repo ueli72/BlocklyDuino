@@ -207,8 +207,8 @@ i18n.registerTranslations('de', {
     },
     "testAll": {
       "title": "Alle Testen",
-      "message": "Interaktives Testmenü für alle Komponenten. SW1/SW2 zum Navigieren, SW3 zum Auswählen, SW4 zum Beenden.",
-      "testMessage": "Dieser Block zeigt ein interaktives Menü auf dem OLED Display an. Wählen Sie mit den Tastern, welche Komponente getestet werden soll."
+      "message": "Interaktives Testmenü für alle Komponenten. SW1: Durch Items scrollen, SW2: Ausgewählten Test starten. SW1 1 Sekunde gedrückt halten zum Beenden.",
+      "testMessage": "Dieser Block zeigt ein interaktives Menü auf dem OLED Display an. Wählen Sie mit SW1 und SW2, welche Komponente getestet werden soll."
     },
     "timer": {
       "title": "Async Timer",

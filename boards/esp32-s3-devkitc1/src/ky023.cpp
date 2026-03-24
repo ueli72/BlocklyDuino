@@ -30,7 +30,7 @@ bool isKY023ButtonPressed() {
 }
 
 void testKY023() {
-    writeToOled("KY023 Test\nMove joystick\nPress SW4 to stop");
+    writeToOled("KY023 Test\nMove joystick\nAuto-stops in 10s");
     delay(2000);
     
     for (int i = 0; i < 50; i++) {

@@ -13,8 +13,6 @@
 
 #define SW1_PIN 1
 #define SW2_PIN 4
-#define SW3_PIN 3
-#define SW4_PIN 2
 
 typedef struct {
     const char* name;
@@ -34,13 +32,22 @@ static bool readButton(int pin) {
     return digitalRead(pin) == LOW;
 }
 
+static bool checkHoldExit(int pin, unsigned long holdStart) {
+    while (digitalRead(pin) == LOW) {
+        if (millis() - holdStart >= 1000) {
+            waitForButtonRelease(pin);
+            return true;
+        }
+        delay(10);
+    }
+    return false;
+}
+
 void runTestMenu(uint16_t testMask) {
     initOLED();
     
     pinMode(SW1_PIN, INPUT_PULLUP);
     pinMode(SW2_PIN, INPUT_PULLUP);
-    pinMode(SW3_PIN, INPUT_PULLUP);
-    pinMode(SW4_PIN, INPUT_PULLUP);
     
     TestItem tests[] = {
         {"LED Matrix", TEST_LED_MATRIX, runLEDMatrixTest},
@@ -72,6 +79,8 @@ void runTestMenu(uint16_t testMask) {
     
     int selectedIndex = 0;
     bool running = true;
+    unsigned long sw1HoldStart = 0;
+    bool sw1WasPressed = false;
     
     while (running) {
         char menuBuffer[256];
@@ -86,25 +95,31 @@ void runTestMenu(uint16_t testMask) {
             snprintf(line2, sizeof(line2), "  %s", tests[testIdx2].name);
         }
         
-        snprintf(menuBuffer, sizeof(menuBuffer), "Test Menu\n%s\n%s\n\nSW3:Run SW4:Exit", line1, line2);
+        snprintf(menuBuffer, sizeof(menuBuffer), "Test Menu\n%s\n%s\n\nSW1:Scroll SW2:Run\n(hold SW1=Exit)", line1, line2);
         writeToOled(menuBuffer);
         
         delay(20);
         
         if (readButton(SW1_PIN)) {
-            waitForButtonRelease(SW1_PIN);
-            selectedIndex--;
-            if (selectedIndex < 0) selectedIndex = numActive - 1;
+            if (!sw1WasPressed) {
+                sw1HoldStart = millis();
+                sw1WasPressed = true;
+                
+                if (checkHoldExit(SW1_PIN, sw1HoldStart)) {
+                    running = false;
+                    continue;
+                }
+                
+                waitForButtonRelease(SW1_PIN);
+                selectedIndex++;
+                if (selectedIndex >= numActive) selectedIndex = 0;
+            }
+        } else {
+            sw1WasPressed = false;
         }
         
         if (readButton(SW2_PIN)) {
             waitForButtonRelease(SW2_PIN);
-            selectedIndex++;
-            if (selectedIndex >= numActive) selectedIndex = 0;
-        }
-        
-        if (readButton(SW3_PIN)) {
-            waitForButtonRelease(SW3_PIN);
             
             int testIdx = activeTests[selectedIndex];
             char runBuffer[64];
@@ -114,20 +129,14 @@ void runTestMenu(uint16_t testMask) {
             
             tests[testIdx].testFunc();
             
-            writeToOled("Test complete!\n\nSW3:Back");
+            writeToOled("Test complete!\n\nSW2:Back");
             
-            while (!readButton(SW3_PIN) && !readButton(SW4_PIN)) {
+            while (!readButton(SW2_PIN)) {
                 delay(10);
             }
-            waitForButtonRelease(SW3_PIN);
-            if (readButton(SW4_PIN)) waitForButtonRelease(SW4_PIN);
+            waitForButtonRelease(SW2_PIN);
             
             initOLED();
-        }
-        
-        if (readButton(SW4_PIN)) {
-            waitForButtonRelease(SW4_PIN);
-            running = false;
         }
     }
     

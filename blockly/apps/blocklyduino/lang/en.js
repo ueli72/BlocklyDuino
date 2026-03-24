@@ -207,8 +207,8 @@ i18n.registerTranslations('en', {
     },
     "testAll": {
       "title": "Test All",
-      "message": "Interactive test menu for all components. Use SW1/SW2 to navigate, SW3 to select, SW4 to exit.",
-      "testMessage": "This block shows an interactive menu on the OLED display. Select which component to test using the buttons."
+      "message": "Interactive test menu for all components. SW1: Scroll through items, SW2: Run selected test. Hold SW1 for 1 second to exit.",
+      "testMessage": "This block shows an interactive menu on the OLED display. Select which component to test using SW1 and SW2."
     },
     "timer": {
       "title": "Async Timer",

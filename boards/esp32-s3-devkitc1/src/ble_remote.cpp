@@ -128,8 +128,6 @@ bool isBLEConnected() {
 
 #define BLE_TEST_SW1_PIN 1
 #define BLE_TEST_SW2_PIN 4
-#define BLE_TEST_SW3_PIN 3
-#define BLE_TEST_SW4_PIN 2
 
 static int8_t lastDirection = 0;
 static uint8_t lastSpeed = 0;
@@ -163,139 +161,165 @@ static bool readButton(int pin) {
   return digitalRead(pin) == LOW;
 }
 
+static bool checkHoldExit(int pin, unsigned long holdStart) {
+  while (digitalRead(pin) == LOW) {
+    if (millis() - holdStart >= 1000) {
+      waitForButtonRelease(pin);
+      return true;
+    }
+    delay(10);
+  }
+  return false;
+}
+
+static bool showWizardPage(const char* text) {
+  writeToOled(text);
+  delay(20);
+  
+  while (true) {
+    if (readButton(BLE_TEST_SW1_PIN)) {
+      unsigned long holdStart = millis();
+      if (checkHoldExit(BLE_TEST_SW1_PIN, holdStart)) {
+        return false;
+      }
+      waitForButtonRelease(BLE_TEST_SW1_PIN);
+      return true;
+    }
+    
+    if (readButton(BLE_TEST_SW2_PIN)) {
+      waitForButtonRelease(BLE_TEST_SW2_PIN);
+      return false;
+    }
+    
+    delay(10);
+  }
+}
+
 void testBLERemote() {
   initOLED();
   
   pinMode(BLE_TEST_SW1_PIN, INPUT_PULLUP);
   pinMode(BLE_TEST_SW2_PIN, INPUT_PULLUP);
-  pinMode(BLE_TEST_SW3_PIN, INPUT_PULLUP);
-  pinMode(BLE_TEST_SW4_PIN, INPUT_PULLUP);
   
   setBLEDirectionCallback(bleTestDirectionCallback);
   setBLESpeedCallback(bleTestSpeedCallback);
   setBLECommandCallback(bleTestCommandCallback);
   
-  writeToOled("BLE Test\n\nOpen LightBlue\napp on phone\n\nSW4:Skip SW3:Next");
-  
-  while (!readButton(BLE_TEST_SW3_PIN) && !readButton(BLE_TEST_SW4_PIN)) { delay(10); }
-  if (readButton(BLE_TEST_SW4_PIN)) { waitForButtonRelease(BLE_TEST_SW4_PIN); clearOled(); return; }
-  waitForButtonRelease(BLE_TEST_SW3_PIN);
+  if (!showWizardPage("BLE Test\n\nOpen LightBlue\napp on phone\n\nSW1:Next SW2:Skip\n(hold SW1=Exit)")) {
+    clearOled(); return;
+  }
   
   char connectBuffer[128];
-  snprintf(connectBuffer, sizeof(connectBuffer), "LightBlue Setup\n\n1. Scan devices\n2. Find %s\n3. Tap Connect\n\nSW4:Back SW3:Next", bleDeviceName ? bleDeviceName : "Device");
-  writeToOled(connectBuffer);
+  snprintf(connectBuffer, sizeof(connectBuffer), "LightBlue Setup\n\n1. Scan devices\n2. Find %s\n3. Tap Connect\n\nSW1:Next SW2:Skip", bleDeviceName ? bleDeviceName : "Device");
+  if (!showWizardPage(connectBuffer)) {
+    clearOled(); return;
+  }
   
-  while (!readButton(BLE_TEST_SW3_PIN) && !readButton(BLE_TEST_SW4_PIN)) { delay(10); }
-  if (readButton(BLE_TEST_SW4_PIN)) { waitForButtonRelease(BLE_TEST_SW4_PIN); clearOled(); return; }
-  waitForButtonRelease(BLE_TEST_SW3_PIN);
+  if (!showWizardPage("LightBlue Setup\n\n4. Find service:\n   0x8001\n5. Tap to expand\n\nSW1:Next SW2:Skip")) {
+    clearOled(); return;
+  }
   
-  writeToOled("LightBlue Setup\n\n4. Find service:\n   0x8001\n5. Tap to expand\n\nSW4:Back SW3:Next");
+  if (!showWizardPage("LightBlue Setup\n\n6. Tap characteristic\n7. Write hex value\n   (no 0x, e.g. 7F)\n\nSW1:Next SW2:Skip")) {
+    clearOled(); return;
+  }
   
-  while (!readButton(BLE_TEST_SW3_PIN) && !readButton(BLE_TEST_SW4_PIN)) { delay(10); }
-  if (readButton(BLE_TEST_SW4_PIN)) { waitForButtonRelease(BLE_TEST_SW4_PIN); clearOled(); return; }
-  waitForButtonRelease(BLE_TEST_SW3_PIN);
-  
-  writeToOled("LightBlue Setup\n\n6. Tap characteristic\n7. Write hex value\n   (no 0x, e.g. 7F)\n\nSW4:Back SW3:Next");
-  
-  while (!readButton(BLE_TEST_SW3_PIN) && !readButton(BLE_TEST_SW4_PIN)) { delay(10); }
-  if (readButton(BLE_TEST_SW4_PIN)) { waitForButtonRelease(BLE_TEST_SW4_PIN); clearOled(); return; }
-  waitForButtonRelease(BLE_TEST_SW3_PIN);
-  
-  writeToOled("Waiting for\nconnection...\n\nService: 0x8001\n\nSW4:Exit");
+  writeToOled("Waiting for\nconnection...\n\nService: 0x8001\n\nSW2:Exit");
   
   unsigned long startTime = millis();
   while (!isBLEConnected() && millis() - startTime < 60000) {
-    if (readButton(BLE_TEST_SW4_PIN)) { waitForButtonRelease(BLE_TEST_SW4_PIN); clearOled(); return; }
+    if (readButton(BLE_TEST_SW2_PIN)) { waitForButtonRelease(BLE_TEST_SW2_PIN); clearOled(); return; }
     delay(100);
   }
   
   if (!isBLEConnected()) {
-    writeToOled("Connection\nTimeout!\n\nSW4:Exit");
-    while (!readButton(BLE_TEST_SW4_PIN)) { delay(10); }
-    waitForButtonRelease(BLE_TEST_SW4_PIN);
+    writeToOled("Connection\nTimeout!\n\nSW2:Exit");
+    while (!readButton(BLE_TEST_SW2_PIN)) { delay(10); }
+    waitForButtonRelease(BLE_TEST_SW2_PIN);
     clearOled();
     return;
   }
   
-  writeToOled("Connected!\n\nNow test each\ncharacteristic\n\nSW4:Back SW3:Start");
-  
-  while (!readButton(BLE_TEST_SW3_PIN) && !readButton(BLE_TEST_SW4_PIN)) { delay(10); }
-  if (readButton(BLE_TEST_SW4_PIN)) { waitForButtonRelease(BLE_TEST_SW4_PIN); clearOled(); return; }
-  waitForButtonRelease(BLE_TEST_SW3_PIN);
+  if (!showWizardPage("Connected!\n\nNow test each\ncharacteristic\n\nSW1:Start SW2:Exit")) {
+    clearOled(); return;
+  }
   
   const char* testItems[] = {"Direction", "Speed", "Command"};
   int numItems = 3;
   int selectedIndex = 0;
   bool inTestMenu = true;
+  unsigned long sw1HoldStart = 0;
+  bool sw1WasPressed = false;
   
   while (inTestMenu) {
     char menuBuffer[128];
-    snprintf(menuBuffer, sizeof(menuBuffer), "Test Menu\n> %s\n  %s\n\nSW1/2:Nav SW3:Run SW4:Exit", 
+    snprintf(menuBuffer, sizeof(menuBuffer), "Test Menu\n> %s\n  %s\n\nSW1:Scroll SW2:Run\n(hold SW1=Exit)", 
              testItems[selectedIndex], testItems[(selectedIndex + 1) % numItems]);
     writeToOled(menuBuffer);
     
     delay(20);
     
     if (readButton(BLE_TEST_SW1_PIN)) {
-      waitForButtonRelease(BLE_TEST_SW1_PIN);
-      selectedIndex = (selectedIndex - 1 + numItems) % numItems;
+      if (!sw1WasPressed) {
+        sw1HoldStart = millis();
+        sw1WasPressed = true;
+        
+        if (checkHoldExit(BLE_TEST_SW1_PIN, sw1HoldStart)) {
+          inTestMenu = false;
+          continue;
+        }
+        
+        waitForButtonRelease(BLE_TEST_SW1_PIN);
+        selectedIndex = (selectedIndex + 1) % numItems;
+      }
+    } else {
+      sw1WasPressed = false;
     }
     
     if (readButton(BLE_TEST_SW2_PIN)) {
       waitForButtonRelease(BLE_TEST_SW2_PIN);
-      selectedIndex = (selectedIndex + 1) % numItems;
-    }
-    
-    if (readButton(BLE_TEST_SW3_PIN)) {
-      waitForButtonRelease(BLE_TEST_SW3_PIN);
       
       if (selectedIndex == 0) {
-        writeToOled("Direction Test\n\nChar: 0x8002\nHex: 00-FF\n(80-FF=neg)\nSW4:Back");
+        writeToOled("Direction Test\n\nChar: 0x8002\nHex: 00-FF\n(80-FF=neg)\nSW2:Back");
         newDirection = false;
-        while (!readButton(BLE_TEST_SW4_PIN)) {
+        while (!readButton(BLE_TEST_SW2_PIN)) {
           if (newDirection) {
             char buf[64];
-            snprintf(buf, sizeof(buf), "Direction Test\n\nReceived:\n0x%02X (%d)\n\nSW4:Back", (uint8_t)lastDirection, lastDirection);
+            snprintf(buf, sizeof(buf), "Direction Test\n\nReceived:\n0x%02X (%d)\n\nSW2:Back", (uint8_t)lastDirection, lastDirection);
             writeToOled(buf);
             newDirection = false;
           }
           delay(50);
         }
-        waitForButtonRelease(BLE_TEST_SW4_PIN);
+        waitForButtonRelease(BLE_TEST_SW2_PIN);
       }
       else if (selectedIndex == 1) {
-        writeToOled("Speed Test\n\nChar: 0x8003\nHex: 00 to FF\n\nSW4:Back");
+        writeToOled("Speed Test\n\nChar: 0x8003\nHex: 00 to FF\n\nSW2:Back");
         newSpeed = false;
-        while (!readButton(BLE_TEST_SW4_PIN)) {
+        while (!readButton(BLE_TEST_SW2_PIN)) {
           if (newSpeed) {
             char buf[64];
-            snprintf(buf, sizeof(buf), "Speed Test\n\nReceived:\n0x%02X (%d)\n\nSW4:Back", lastSpeed, lastSpeed);
+            snprintf(buf, sizeof(buf), "Speed Test\n\nReceived:\n0x%02X (%d)\n\nSW2:Back", lastSpeed, lastSpeed);
             writeToOled(buf);
             newSpeed = false;
           }
           delay(50);
         }
-        waitForButtonRelease(BLE_TEST_SW4_PIN);
+        waitForButtonRelease(BLE_TEST_SW2_PIN);
       }
       else if (selectedIndex == 2) {
-        writeToOled("Command Test\n\nChar: 0x8004\nHex: 00 to FF\n\nSW4:Back");
+        writeToOled("Command Test\n\nChar: 0x8004\nHex: 00 to FF\n\nSW2:Back");
         newCommand = false;
-        while (!readButton(BLE_TEST_SW4_PIN)) {
+        while (!readButton(BLE_TEST_SW2_PIN)) {
           if (newCommand) {
             char buf[64];
-            snprintf(buf, sizeof(buf), "Command Test\n\nReceived:\n0x%02X (%d)\n\nSW4:Back", lastCommand, lastCommand);
+            snprintf(buf, sizeof(buf), "Command Test\n\nReceived:\n0x%02X (%d)\n\nSW2:Back", lastCommand, lastCommand);
             writeToOled(buf);
             newCommand = false;
           }
           delay(50);
         }
-        waitForButtonRelease(BLE_TEST_SW4_PIN);
+        waitForButtonRelease(BLE_TEST_SW2_PIN);
       }
-    }
-    
-    if (readButton(BLE_TEST_SW4_PIN)) {
-      waitForButtonRelease(BLE_TEST_SW4_PIN);
-      inTestMenu = false;
     }
   }
   
