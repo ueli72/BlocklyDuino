@@ -26,6 +26,12 @@ i18n.registerTranslations('en', {
     "missingDependency": "Missing Dependency",
     "warnings": "Warnings"
   },
+  "boardSelection": {
+    "title": "Select Board",
+    "description": "Choose your board to start a new project:",
+    "playgroundDesc": "ESP32-S3 with sensors, display, motors and more",
+    "unoDesc": "Classic Arduino board for basic projects"
+  },
   "messages": {
     "replaceBlocks": "Replace existing blocks?\n\"Cancel\" will merge.",
     "deleteAllBlocks": "Delete all {count} blocks?",

@@ -789,6 +789,23 @@ function initBlockly() {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
       font-size: 14px !important;
     }
+    
+    /* Board selection cards */
+    .board-card {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    
+    .board-card:hover {
+      border-color: #0d6efd;
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(13, 110, 253, 0.2);
+    }
+    
+    .board-card:active {
+      transform: translateY(-2px);
+    }
   </style>
 </head>
 <body onload="init()">
@@ -981,6 +998,40 @@ function initBlockly() {
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-i18n="modals.ok">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Board Selection Modal -->
+  <div class="modal fade" id="boardSelectionModal" tabindex="-1" aria-labelledby="boardSelectionModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="boardSelectionModalLabel" data-i18n="boardSelection.title">Select Board</h5>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted mb-4" data-i18n="boardSelection.description">Choose your board to start a new project:</p>
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="card h-100 board-card" data-board="esp32-s3-devkitc1" onclick="selectBoard('esp32-s3-devkitc1')">
+                <img src="../../media/playground.png" class="card-img-top" alt="BWS Playground Master" style="object-fit: contain; height: 200px; padding: 1rem;">
+                <div class="card-body text-center">
+                  <h5 class="card-title">BWS Playground Master</h5>
+                  <p class="card-text text-muted" data-i18n="boardSelection.playgroundDesc">ESP32-S3 with sensors, display, motors and more</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card h-100 board-card" data-board="arduino-uno" onclick="selectBoard('arduino-uno')">
+                <img src="../../media/uno.jpg" class="card-img-top" alt="Arduino Uno" style="object-fit: contain; height: 200px; padding: 1rem;">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Arduino Uno</h5>
+                  <p class="card-text text-muted" data-i18n="boardSelection.unoDesc">Classic Arduino board for basic projects</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

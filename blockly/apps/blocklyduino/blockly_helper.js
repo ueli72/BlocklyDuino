@@ -13,6 +13,77 @@ function runJS() {
 
 var sessionWarnings = [];
 
+var selectedBoard = null;
+
+function getSelectedBoard() {
+  return localStorage.getItem('blocklyduino_board');
+}
+
+function setSelectedBoard(boardId) {
+  localStorage.setItem('blocklyduino_board', boardId);
+  selectedBoard = boardId;
+}
+
+function clearSelectedBoard() {
+  localStorage.removeItem('blocklyduino_board');
+  selectedBoard = null;
+}
+
+function showBoardSelectionModal() {
+  var modalEl = document.getElementById('boardSelectionModal');
+  var modal = new bootstrap.Modal(modalEl);
+  modal.show();
+}
+
+function selectBoard(boardId) {
+  setSelectedBoard(boardId);
+  
+  var boardSelector = document.getElementById('boardSelector');
+  if (boardSelector) {
+    boardSelector.value = boardId;
+  }
+  
+  if (boardId === 'esp32-s3-devkitc1') {
+    profile['default'] = profile['esp32'];
+  } else if (boardId === 'arduino-uno') {
+    profile['default'] = profile['arduino'];
+  }
+  
+  var modalEl = document.getElementById('boardSelectionModal');
+  var modal = bootstrap.Modal.getInstance(modalEl);
+  if (modal) {
+    modal.hide();
+  }
+  
+  var boardSelectorContainer = document.getElementById('boardSelector');
+  if (boardSelectorContainer) {
+    boardSelectorContainer.style.display = 'none';
+  }
+}
+
+function initBoardSelection() {
+  var savedBoard = getSelectedBoard();
+  var boardSelector = document.getElementById('boardSelector');
+  
+  if (savedBoard) {
+    selectedBoard = savedBoard;
+    if (boardSelector) {
+      boardSelector.value = savedBoard;
+      boardSelector.style.display = 'none';
+    }
+    if (savedBoard === 'esp32-s3-devkitc1') {
+      profile['default'] = profile['esp32'];
+    } else if (savedBoard === 'arduino-uno') {
+      profile['default'] = profile['arduino'];
+    }
+  } else {
+    if (boardSelector) {
+      boardSelector.style.display = 'none';
+    }
+    window.setTimeout(showBoardSelectionModal, 300);
+  }
+}
+
 function addWarning(title, message) {
   sessionWarnings.push({ title: title, message: message });
   updateWarningsButton();
@@ -261,9 +332,13 @@ function discard() {
  * Clear workspace and recreate structure blocks.
  */
 function clearWorkspace() {
+  clearSelectedBoard();
   Blockly.mainWorkspace.clear();
-  // Recreate setup and loop blocks
-  window.setTimeout(ensureProgramStructure, 50);
+  var boardSelector = document.getElementById('boardSelector');
+  if (boardSelector) {
+    boardSelector.style.display = 'none';
+  }
+  window.setTimeout(showBoardSelectionModal, 100);
   renderContent();
 }
 
@@ -285,20 +360,7 @@ function auto_save_and_restore_blocks() {
     loadInput.click();
   };
 
-  // Init board selector event
-  var boardSelector = document.getElementById('boardSelector');
-  if (boardSelector) {
-    boardSelector.addEventListener('change', function() {
-      var boardId = this.value;
-      if (boardId === 'esp32-s3-devkitc1') {
-        profile['default'] = profile['esp32'];
-      } else if (boardId === 'arduino-uno') {
-        profile['default'] = profile['arduino'];
-      }
-    });
-    // Set initial profile based on default selection
-    profile['default'] = profile['esp32'];
-  }
+  initBoardSelection();
 
   // Ensure setup and loop blocks exist
   window.setTimeout(ensureProgramStructure, 100);
