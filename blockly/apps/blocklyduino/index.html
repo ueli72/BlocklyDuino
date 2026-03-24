@@ -395,17 +395,19 @@ function addToolboxIcons() {
     var testAllText = i18n.t('categories.testAll');
     var ky023Text = i18n.t('categories.ky023');
     var serialText = i18n.t('categories.serial');
+    var basicText = i18n.t('categories.basic');
     var playgroundText = i18n.t('categories.playground');
+    var inputOutputText = i18n.t('categories.inputOutput');
     
-    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText || text === sdcardText || text === max98357aText || text === brightnessText || text === ws2812Text || text === bluetoothLEText || text === testAllText || text === ky023Text || text === serialText;
+    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText || text === sdcardText || text === max98357aText || text === brightnessText || text === ws2812Text || text === bluetoothLEText || text === testAllText || text === ky023Text || text === serialText || text === basicText;
     
     // Add class for subcategories
     if (isSubcategory) {
       row.classList.add('subcategory');
     }
     
-    // Only Playground has subcategories - add arrow
-    if (text === playgroundText) {
+    // Playground and Input/Output have subcategories - add arrow
+    if (text === playgroundText || text === inputOutputText) {
       var arrow = row.querySelector('.tree-arrow');
       if (!arrow) {
         var rowContainer = row.parentElement;
@@ -414,7 +416,7 @@ function addToolboxIcons() {
         arrow.className = 'bi ' + (isExpanded ? 'bi-chevron-down' : 'bi-chevron-right') + ' tree-arrow';
         label.parentNode.insertBefore(arrow, label);
       }
-      return; // Skip icon for Playground
+      return; // Skip icon for categories with subcategories
     }
     
     // Add icons for other categories
@@ -446,6 +448,7 @@ function addToolboxIcons() {
     else if (text === testAllText) iconClass = 'bi-list-check';
     else if (text === ky023Text) iconClass = 'bi-controller';
     else if (text === serialText) iconClass = 'bi-terminal';
+    else if (text === basicText) iconClass = 'bi-plug';
     
     if (iconClass || iconText) {
       var icon = row.querySelector('.toolbox-icon');
@@ -471,26 +474,21 @@ function addToolboxIcons() {
 
 function updateTreeArrows() {
   var playgroundText = i18n.t('categories.playground');
-  var playgroundRow = document.querySelector('.blocklyTreeLabel');
-  if (!playgroundRow || playgroundRow.textContent.trim() !== playgroundText) {
-    playgroundRow = null;
-    var labels = document.querySelectorAll('.blocklyTreeLabel');
-    labels.forEach(function(l) {
-      if (l.textContent.trim() === playgroundText) {
-        playgroundRow = l;
-      }
-    });
-  }
+  var inputOutputText = i18n.t('categories.inputOutput');
   
-  if (playgroundRow) {
-    var row = playgroundRow.closest('.blocklyTreeRow');
-    var arrow = row ? row.querySelector('.tree-arrow') : null;
-    if (arrow) {
-      var rowContainer = row.parentElement;
-      var isExpanded = rowContainer && rowContainer.getAttribute('aria-expanded') === 'true';
-      arrow.className = 'bi ' + (isExpanded ? 'bi-chevron-down' : 'bi-chevron-right') + ' tree-arrow';
+  var labels = document.querySelectorAll('.blocklyTreeLabel');
+  labels.forEach(function(l) {
+    var text = l.textContent.trim();
+    if (text === playgroundText || text === inputOutputText) {
+      var row = l.closest('.blocklyTreeRow');
+      var arrow = row ? row.querySelector('.tree-arrow') : null;
+      if (arrow) {
+        var rowContainer = row.parentElement;
+        var isExpanded = rowContainer && rowContainer.getAttribute('aria-expanded') === 'true';
+        arrow.className = 'bi ' + (isExpanded ? 'bi-chevron-down' : 'bi-chevron-right') + ' tree-arrow';
+      }
     }
-  }
+  });
 }
 
 // Watch for tree changes and update arrows
@@ -1154,32 +1152,34 @@ function initBlockly() {
     <category name="Functions" custom="PROCEDURE" data-i18n-name="categories.functions"></category>
     <sep></sep>
     <category name="Input/Output" data-i18n-name="categories.inputOutput">
-      <block type="inout_highlow"></block>
-      <block type="inout_digital_write"></block>
-      <block type="inout_digital_read"></block>
-      <block type="inout_analog_write">
-        <value name="NUM">
-          <block type="math_number">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-      </block>
-      <block type="inout_analog_read"></block>
-      <block type="serial_print">
-        <value name="CONTENT">
-          <block type="text">
-            <field name="TEXT"></field>
-          </block>
-        </value>
-      </block>
-      <block type="inout_tone">
-        <value name="NUM">
-          <block type="math_number">
-            <field name="NUM">440</field>
-          </block>
-        </value>
-      </block>
-      <block type="inout_notone"></block>
+      <category name="Basic" data-i18n-name="categories.basic">
+        <block type="inout_highlow"></block>
+        <block type="inout_digital_write"></block>
+        <block type="inout_digital_read"></block>
+        <block type="inout_analog_write">
+          <value name="NUM">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+        </block>
+        <block type="inout_analog_read"></block>
+        <block type="serial_print">
+          <value name="CONTENT">
+            <block type="text">
+              <field name="TEXT"></field>
+            </block>
+          </value>
+        </block>
+        <block type="inout_tone">
+          <value name="NUM">
+            <block type="math_number">
+              <field name="NUM">440</field>
+            </block>
+          </value>
+        </block>
+        <block type="inout_notone"></block>
+      </category>
       <category name="Serial" data-i18n-name="categories.serial">
         <block type="serial_init">
           <field name="BAUD">115200</field>

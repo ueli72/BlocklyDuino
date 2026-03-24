@@ -72,6 +72,7 @@ i18n.registerTranslations('de', {
     "bluetoothLE": "Bluetooth LE",
     "ky023": "KY023 Joystick",
     "serial": "Serial",
+    "basic": "Basis",
     "testAll": "Alle Testen"
   },
   "blocks": {
