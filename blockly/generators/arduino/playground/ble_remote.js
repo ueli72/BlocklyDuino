@@ -61,7 +61,7 @@ Blockly.Arduino.ble_remote_on_command = function() {
   
   var callbackName = Blockly.Arduino.variableDB_.getDistinctName('ble_command_callback', Blockly.Procedures.NAME_TYPE);
   
-  var callbackCode = 'void ' + callbackName + '(const char* command) {\n' + branch + '}\n';
+  var callbackCode = 'void ' + callbackName + '(uint8_t command) {\n' + branch + '}\n';
   Blockly.Arduino.definitions_[callbackName] = callbackCode;
   
   var code = 'setBLECommandCallback(' + callbackName + ');\n';

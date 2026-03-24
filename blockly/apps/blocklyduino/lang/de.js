@@ -216,11 +216,11 @@ i18n.registerTranslations('de', {
     },
     "bleRemote": {
       "title": "BLE Fernsteuerung",
-      "message": "Bluetooth Low Energy Server für mobile App Fernsteuerung. nRF Connect App zum Testen verwenden.",
+      "message": "Bluetooth Low Energy Server für mobile App Fernsteuerung. LightBlue App zum Testen verwenden.",
       "callbackMessage": "⚠️ ISR Einschränkungen: Kein delay(), kein Serial, kein OLED/SD Card/DHT11/Ultrasonic. Nur Motor/LED/Servo Steuerung erlaubt.",
       "sendMessage": "Sensordaten an verbundene mobile App senden. Nur im Hauptprogramm verwenden, nicht in BLE Callbacks.",
-      "testMessage": "Testet BLE durch Ausgabe des Verbindungsstatus auf Serial. Mit nRF Connect App verbinden zum Testen.",
-      "testInfo": "Siehe readme_ble_deu.txt für detaillierte Testanleitung mit der nRF Connect App."
+      "testMessage": "Testet BLE durch Ausgabe des Verbindungsstatus auf Serial. Mit LightBlue App verbinden zum Testen.",
+      "testInfo": "Siehe readme_ble_deu.txt für detaillierte Testanleitung mit der LightBlue App."
     }
   },
   "dependencies": {

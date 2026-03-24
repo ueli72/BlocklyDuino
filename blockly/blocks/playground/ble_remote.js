@@ -122,10 +122,10 @@ Blockly.Blocks['ble_remote_on_command'] = {
     this.appendStatementInput("CALLBACK_CODE")
         .appendField("do");
     this.appendDummyInput()
-        .appendField("  command (string)");
+        .appendField("  command (0-255)");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setTooltip('Callback for custom commands (e.g., "light_on", "honk"). ISR restrictions apply.');
+    this.setTooltip('Callback for custom commands (0-255). ISR restrictions apply.');
   },
   onchange: function() {
     checkBLEBlocks(this);
