@@ -95,6 +95,8 @@ function selectBoard(boardId) {
   if (boardSelectorContainer) {
     boardSelectorContainer.style.display = 'none';
   }
+  
+  window.setTimeout(ensureProgramStructure, 100);
 }
 
 function updateToolboxForBoard(boardId) {
