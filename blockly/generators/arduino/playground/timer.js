@@ -40,14 +40,12 @@ Blockly.Arduino.async_timer = function() {
   Blockly.Arduino.definitions_[callbackName] = callbackCode;
 
   // Setup code to attach the timer
-  var setupCode = '';
+  var code = '';
   if (mode === 'once') {
-    setupCode = timerName + '.once_ms(' + delay + ', ' + callbackName + ');\n';
+    code = timerName + '.once_ms(' + delay + ', ' + callbackName + ');\n';
   } else {
-    setupCode = timerName + '.attach_ms(' + delay + ', ' + callbackName + ');\n';
+    code = timerName + '.attach_ms(' + delay + ', ' + callbackName + ');\n';
   }
 
-  Blockly.Arduino.setups_[timerName + '_setup'] = setupCode;
-
-  return '';
+  return code;
 };

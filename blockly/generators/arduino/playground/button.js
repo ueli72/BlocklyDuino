@@ -60,10 +60,8 @@ Blockly.Arduino.button_interrupt = function() {
   var button_constant = button_constants[pin];
   var pinCode = button_constant ? button_constant : pin;
 
-  var setupCode = 'pinMode(' + pinCode + ', INPUT_PULLUP);\n';
-  setupCode += 'attachInterrupt(digitalPinToInterrupt(' + pinCode + '), ' + isrName + ', ' + mode + ');\n';
+  var code = 'pinMode(' + pinCode + ', INPUT_PULLUP);\n';
+  code += 'attachInterrupt(digitalPinToInterrupt(' + pinCode + '), ' + isrName + ', ' + mode + ');\n';
 
-  Blockly.Arduino.setups_[isrName + '_setup'] = setupCode;
-
-  return '';
+  return code;
 };

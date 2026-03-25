@@ -28,10 +28,8 @@ Blockly.Arduino.ky023_init = function() {
   
   Blockly.Arduino.definitions_['include_ky023_h'] = '#include "ky023.h"\n';
   
-  var setupCode = 'initKY023(' + x_pin + ', ' + y_pin + ', ' + button_pin + ');\n';
-  Blockly.Arduino.setups_['ky023_init'] = setupCode;
-  
-  return '';
+  var code = 'initKY023(' + x_pin + ', ' + y_pin + ', ' + button_pin + ');\n';
+  return code;
 };
 
 Blockly.Arduino.ky023_read_x = function() {

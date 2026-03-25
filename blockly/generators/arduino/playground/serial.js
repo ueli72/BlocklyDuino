@@ -26,10 +26,8 @@ Blockly.Arduino.serial_init = function() {
   
   Blockly.Arduino.definitions_['include_serial_h'] = '#include "serial.h"\n';
   
-  var setupCode = 'initSerial(' + baud + ');\n';
-  Blockly.Arduino.setups_['serial_init'] = setupCode;
-  
-  return '';
+  var code = 'initSerial(' + baud + ');\n';
+  return code;
 };
 
 Blockly.Arduino.serial_print = function() {
