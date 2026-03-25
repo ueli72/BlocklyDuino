@@ -38,8 +38,45 @@ var BLE_BLOCKED_IN_CALLBACK = [
   'ble_remote_send'
 ];
 
+function isInInterruptsBlock(block) {
+  if (!block) return false;
+  var parent = block.getParent();
+  while (parent) {
+    if (parent.type === 'arduino_interrupts') {
+      return true;
+    }
+    parent = parent.getParent();
+  }
+  return false;
+}
+
+function isDuplicateBLEBlock(block) {
+  if (!block || !block.workspace) return false;
+  var blocks = block.workspace.getAllBlocks();
+  var count = 0;
+  for (var i = 0; i < blocks.length; i++) {
+    if (blocks[i].type === block.type && blocks[i].id !== block.id) {
+      count++;
+    }
+  }
+  return count > 0;
+}
+
 function checkBLEBlocks(block) {
   if (!block || !block.workspace) return;
+  
+  if (isDuplicateBLEBlock(block)) {
+    block.setWarningText('⚠️ This block can only be used ONCE!\n\nRemove the duplicate block.');
+    block.setColour(0);
+    return;
+  }
+  
+  if (!isInInterruptsBlock(block)) {
+    block.setWarningText('⚠️ This block must be placed inside the Interrupts block!\n\nDrag this block into the Interrupts block to use it properly.');
+    block.setColour(0);
+    return;
+  }
+  
   var child = block.getInputTargetBlock('CALLBACK_CODE');
   var hasBlocked = false;
   while (child) {
@@ -54,7 +91,7 @@ function checkBLEBlocks(block) {
     block.setColour(0);
   } else {
     block.setWarningText(null);
-    block.setColour(190);
+    block.setColour(0);
   }
 }
 
@@ -75,16 +112,16 @@ Blockly.Blocks['ble_remote_init'] = {
 
 Blockly.Blocks['ble_remote_on_direction'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(0);
     this.appendDummyInput()
         .appendField("BLE Remote")
         .appendField(new Blockly.FieldImage("../../media/ble.png", 64, 64))
         .appendField("On Direction");
     this.appendStatementInput("CALLBACK_CODE")
         .appendField("do");
-    this.setPreviousStatement(true, "general");
-    this.setNextStatement(true, "general");
-    this.setTooltip('Callback when direction command received. Use "Direction Value" block to get the value. ISR restrictions apply.');
+    this.setPreviousStatement(true, "interrupts");
+    this.setNextStatement(true, "interrupts");
+    this.setTooltip('Place in Interrupts block. Callback when direction command received. Use "Direction Value" block to get the value. ISR restrictions apply.');
   },
   onchange: function() {
     checkBLEBlocks(this);
@@ -93,16 +130,16 @@ Blockly.Blocks['ble_remote_on_direction'] = {
 
 Blockly.Blocks['ble_remote_on_speed'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(0);
     this.appendDummyInput()
         .appendField("BLE Remote")
         .appendField(new Blockly.FieldImage("../../media/ble.png", 64, 64))
         .appendField("On Speed");
     this.appendStatementInput("CALLBACK_CODE")
         .appendField("do");
-    this.setPreviousStatement(true, "general");
-    this.setNextStatement(true, "general");
-    this.setTooltip('Callback when speed command received. Use "Speed Value" block to get the value. ISR restrictions apply.');
+    this.setPreviousStatement(true, "interrupts");
+    this.setNextStatement(true, "interrupts");
+    this.setTooltip('Place in Interrupts block. Callback when speed command received. Use "Speed Value" block to get the value. ISR restrictions apply.');
   },
   onchange: function() {
     checkBLEBlocks(this);
@@ -111,16 +148,16 @@ Blockly.Blocks['ble_remote_on_speed'] = {
 
 Blockly.Blocks['ble_remote_on_command'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(0);
     this.appendDummyInput()
         .appendField("BLE Remote")
         .appendField(new Blockly.FieldImage("../../media/ble.png", 64, 64))
         .appendField("On Command");
     this.appendStatementInput("CALLBACK_CODE")
         .appendField("do");
-    this.setPreviousStatement(true, "general");
-    this.setNextStatement(true, "general");
-    this.setTooltip('Callback for custom commands (0-255). Use "Command Value" block to get the value. ISR restrictions apply.');
+    this.setPreviousStatement(true, "interrupts");
+    this.setNextStatement(true, "interrupts");
+    this.setTooltip('Place in Interrupts block. Callback for custom commands (0-255). Use "Command Value" block to get the value. ISR restrictions apply.');
   },
   onchange: function() {
     checkBLEBlocks(this);
