@@ -635,3 +635,133 @@ function load_by_url(uri) {
   ajax.open("GET", uri, true);
   ajax.send("");
 }
+
+/**
+ * Shake animation for blocks when connection is rejected due to type mismatch.
+ */
+var shakeAnimation = {
+  shakingBlock: null,
+  rejectedContainerBlock: null,
+  
+  shake: function(block) {
+    if (!block || !block.getSvgRoot) return;
+    
+    var svgRoot = block.getSvgRoot();
+    if (!svgRoot) return;
+    
+    if (this.shakingBlock === block) return;
+    this.shakingBlock = block;
+    
+    var xy = block.getRelativeToSurfaceXY();
+    var shakeAmount = 6;
+    var shakeCount = 3;
+    var shakeDuration = 60;
+    
+    var shakeIndex = 0;
+    var self = this;
+    
+    function doShake() {
+      if (shakeIndex >= shakeCount * 2) {
+        svgRoot.setAttribute('transform', 'translate(' + xy.x + ', ' + xy.y + ')');
+        self.shakingBlock = null;
+        return;
+      }
+      
+      var offset = (shakeIndex % 2 === 0) ? shakeAmount : -shakeAmount;
+      svgRoot.setAttribute('transform', 'translate(' + (xy.x + offset) + ', ' + xy.y + ')');
+      shakeIndex++;
+      setTimeout(doShake, shakeDuration);
+    }
+    
+    doShake();
+  }
+};
+
+/**
+ * Override Blockly's closest function to detect rejected connections near container blocks.
+ */
+(function() {
+  var originalClosest = Blockly.Connection.prototype.closest;
+  
+  Blockly.Connection.prototype.closest = function(maxLimit, dx, dy) {
+    var result = originalClosest.call(this, maxLimit, dx, dy);
+    
+    var selected = Blockly.selected;
+    if (!selected) return result;
+    
+    if (result.connection) {
+      var sourceBlock = result.connection.sourceBlock_;
+      if (sourceBlock && 
+          (sourceBlock.type === 'arduino_header' || 
+           sourceBlock.type === 'arduino_setup' || 
+           sourceBlock.type === 'arduino_loop')) {
+        shakeAnimation.rejectedContainerBlock = null;
+        return result;
+      }
+    }
+    
+    var myConnections = selected.getConnections_(false);
+    var foundRejected = false;
+    
+    for (var i = 0; i < myConnections.length; i++) {
+      var myConn = myConnections[i];
+      if (myConn.type !== Blockly.NEXT_STATEMENT && myConn.type !== Blockly.PREVIOUS_STATEMENT) continue;
+      
+      var db = this.dbList_[Blockly.OPPOSITE_TYPE[myConn.type]];
+      if (!db) continue;
+      
+      var currentX = myConn.x_ + dx;
+      var currentY = myConn.y_ + dy;
+      
+      for (var j = 0; j < db.length; j++) {
+        var otherConn = db[j];
+        var distX = currentX - otherConn.x_;
+        var distY = currentY - otherConn.y_;
+        var dist = Math.sqrt(distX * distX + distY * distY);
+        
+        if (dist < Blockly.SNAP_RADIUS * 2) {
+          var sourceBlock = otherConn.sourceBlock_;
+          if (sourceBlock && 
+              (sourceBlock.type === 'arduino_header' || 
+               sourceBlock.type === 'arduino_setup' || 
+               sourceBlock.type === 'arduino_loop')) {
+            
+            if (myConn.check_ && otherConn.check_) {
+              var hasMatch = false;
+              for (var k = 0; k < myConn.check_.length; k++) {
+                if (otherConn.check_.indexOf(myConn.check_[k]) !== -1) {
+                  hasMatch = true;
+                  break;
+                }
+              }
+              if (!hasMatch) {
+                shakeAnimation.rejectedContainerBlock = sourceBlock;
+                foundRejected = true;
+                break;
+              }
+            }
+          }
+        }
+      }
+      if (foundRejected) break;
+    }
+    
+    return result;
+  };
+})();
+
+/**
+ * Override Blockly's terminateDrag_ to add shake effect on type mismatch.
+ */
+(function() {
+  var originalTerminateDrag = Blockly.BlockSvg.terminateDrag_;
+  
+  Blockly.BlockSvg.terminateDrag_ = function() {
+    if (shakeAnimation.rejectedContainerBlock && !Blockly.highlightedConnection_) {
+      shakeAnimation.shake(shakeAnimation.rejectedContainerBlock);
+    }
+    shakeAnimation.rejectedContainerBlock = null;
+    
+    originalTerminateDrag.call(this);
+  };
+})();
