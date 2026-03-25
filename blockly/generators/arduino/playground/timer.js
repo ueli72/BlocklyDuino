@@ -22,10 +22,35 @@
 'use strict';
 
 Blockly.Arduino.async_timer = function() {
+  // Check if this block is inside the arduino_interrupts block
+  var parent = this.getParent();
+  var isInInterruptsBlock = false;
+  while (parent) {
+    if (parent.type === 'arduino_interrupts') {
+      isInInterruptsBlock = true;
+      break;
+    }
+    parent = parent.getParent();
+  }
+  
+  if (!isInInterruptsBlock) {
+    this.setWarningText('⚠️ This block must be placed inside the Interrupts block!');
+    return '';
+  }
+  this.setWarningText(null);
+
   var delay = Blockly.Arduino.valueToCode(this, 'DELAY', Blockly.Arduino.ORDER_ATOMIC) || '1000';
   var mode = this.getFieldValue('MODE');
-  var branch = Blockly.Arduino.statementToCode(this, 'HANDLER_CODE');
 
+  // Use delay+mode as a unique key for this timer configuration
+  var blockKey = 'timer_' + delay + '_' + mode;
+  
+  // If already generated, return the stored function code
+  if (Blockly.Arduino.generated_[blockKey]) {
+    return Blockly.Arduino.generated_[blockKey];
+  }
+
+  var branch = Blockly.Arduino.statementToCode(this, 'HANDLER_CODE');
   var timerName = Blockly.Arduino.variableDB_.getDistinctName('timer', Blockly.Variables.NAME_TYPE);
   var callbackName = Blockly.Arduino.variableDB_.getDistinctName('timer_callback', Blockly.Procedures.NAME_TYPE);
 
@@ -35,17 +60,20 @@ Blockly.Arduino.async_timer = function() {
   // Create Ticker object
   Blockly.Arduino.definitions_[timerName + '_obj'] = 'Ticker ' + timerName + ';\n';
 
-  // Create callback function
+  // Create callback function (returned to be placed in Interrupts block)
   var callbackCode = 'void ' + callbackName + '() {\n' + branch + '}\n';
-  Blockly.Arduino.definitions_[callbackName] = callbackCode;
+  
+  // Store the function code so we can return it on subsequent calls
+  Blockly.Arduino.generated_[blockKey] = callbackCode;
 
-  // Setup code to attach the timer
-  var code = '';
+  // Setup code to attach the timer (goes to setup)
+  var setupCode = '';
   if (mode === 'once') {
-    code = timerName + '.once_ms(' + delay + ', ' + callbackName + ');\n';
+    setupCode = timerName + '.once_ms(' + delay + ', ' + callbackName + ');\n';
   } else {
-    code = timerName + '.attach_ms(' + delay + ', ' + callbackName + ');\n';
+    setupCode = timerName + '.attach_ms(' + delay + ', ' + callbackName + ');\n';
   }
+  Blockly.Arduino.setups_['timer_' + timerName] = setupCode;
 
-  return code;
+  return callbackCode;
 };

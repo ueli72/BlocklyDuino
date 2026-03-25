@@ -46,6 +46,25 @@ var BLOCKED_IN_TIMER = [
 
 function checkTimerBlocks(block) {
   if (!block || !block.workspace) return;
+  
+  // Check if inside Interrupts block
+  var parent = block.getParent();
+  var isInInterruptsBlock = false;
+  while (parent) {
+    if (parent.type === 'arduino_interrupts') {
+      isInInterruptsBlock = true;
+      break;
+    }
+    parent = parent.getParent();
+  }
+  
+  if (!isInInterruptsBlock) {
+    block.setWarningText('⚠️ This block must be placed inside the Interrupts block!');
+    block.setColour(0);
+    return;
+  }
+  
+  // Check for forbidden blocks inside timer callback
   var child = block.getInputTargetBlock('HANDLER_CODE');
   var hasBlocked = false;
   while (child) {
@@ -60,13 +79,13 @@ function checkTimerBlocks(block) {
     block.setColour(0);
   } else {
     block.setWarningText(null);
-    block.setColour(120);
+    block.setColour(0);
   }
 }
 
 Blockly.Blocks['async_timer'] = {
   init: function() {
-    this.setColour(120);
+    this.setColour(0);
     this.appendDummyInput()
         .appendField(new Blockly.FieldImage("../../media/timer.png", 64, 64))
         .appendField("After");
@@ -77,8 +96,8 @@ Blockly.Blocks['async_timer'] = {
         .appendField(new Blockly.FieldDropdown(getTimerModes), "MODE");
     this.appendStatementInput("HANDLER_CODE")
         .appendField("do");
-    this.setPreviousStatement(true, "general");
-    this.setNextStatement(true, "general");
+    this.setPreviousStatement(true, "interrupts");
+    this.setNextStatement(true, "interrupts");
     this.setTooltip('Timer callback runs in interrupt context. No delay(), no Serial, no OLED/SD/DHT11/Ultrasonic/MAX98357A/WS2812. Use volatile for variables shared with main loop.');
     this.setInputsInline(true);
   },

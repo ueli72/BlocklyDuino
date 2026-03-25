@@ -48,20 +48,48 @@ Blockly.Arduino.button_read = function() {
 };
 
 Blockly.Arduino.button_interrupt = function() {
+  // Check if this block is inside the arduino_interrupts block
+  var parent = this.getParent();
+  var isInInterruptsBlock = false;
+  while (parent) {
+    if (parent.type === 'arduino_interrupts') {
+      isInInterruptsBlock = true;
+      break;
+    }
+    parent = parent.getParent();
+  }
+  
+  if (!isInInterruptsBlock) {
+    this.setWarningText('⚠️ This block must be placed inside the Interrupts block!');
+    return '';
+  }
+  this.setWarningText(null);
+
   var pin = this.getFieldValue('PIN');
   var mode = this.getFieldValue('MODE');
-  var branch = Blockly.Arduino.statementToCode(this, 'HANDLER_CODE');
+  
+  // Use pin+mode as a unique key for this interrupt configuration
+  var blockKey = 'isr_' + pin + '_' + mode;
+  
+  // If already generated, return the stored function code
+  if (Blockly.Arduino.generated_[blockKey]) {
+    return Blockly.Arduino.generated_[blockKey];
+  }
 
+  var branch = Blockly.Arduino.statementToCode(this, 'HANDLER_CODE');
   var isrName = Blockly.Arduino.variableDB_.getDistinctName('isr_handler', Blockly.Procedures.NAME_TYPE);
 
   var isrCode = 'void IRAM_ATTR ' + isrName + '() {\n' + branch + '}\n';
-  Blockly.Arduino.definitions_[isrName] = isrCode;
+  
+  // Store the function code so we can return it on subsequent calls
+  Blockly.Arduino.generated_[blockKey] = isrCode;
 
   var button_constant = button_constants[pin];
   var pinCode = button_constant ? button_constant : pin;
 
-  var code = 'pinMode(' + pinCode + ', INPUT_PULLUP);\n';
-  code += 'attachInterrupt(digitalPinToInterrupt(' + pinCode + '), ' + isrName + ', ' + mode + ');\n';
+  var setupCode = 'pinMode(' + pinCode + ', INPUT_PULLUP);\n';
+  setupCode += 'attachInterrupt(digitalPinToInterrupt(' + pinCode + '), ' + isrName + ', ' + mode + ');\n';
+  Blockly.Arduino.setups_['isr_' + isrName] = setupCode;
 
-  return code;
+  return isrCode;
 };

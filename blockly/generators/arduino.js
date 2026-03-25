@@ -113,6 +113,8 @@ Blockly.Arduino.init = function(workspace) {
   Blockly.Arduino.setups_ = Object.create(null);
   // Create a dictionary of loop code to be printed in loop().
   Blockly.Arduino.loops_ = Object.create(null);
+  // Create a dictionary to track already-generated blocks (prevents duplicates)
+  Blockly.Arduino.generated_ = Object.create(null);
 
   if (!Blockly.Arduino.variableDB_) {
     Blockly.Arduino.variableDB_ =
@@ -137,10 +139,11 @@ Blockly.Arduino.init = function(workspace) {
  * @return {string} Completed code.
  */
 Blockly.Arduino.finish = function(code) {
-  // Find setup, loop, and header blocks in the workspace
+  // Find setup, loop, header, and interrupts blocks in the workspace
   var setupBlock = null;
   var loopBlock = null;
   var headerBlock = null;
+  var interruptsBlock = null;
   var blocks = Blockly.mainWorkspace.getAllBlocks();
   for (var i = 0; i < blocks.length; i++) {
     if (blocks[i].type === 'arduino_setup') {
@@ -151,6 +154,9 @@ Blockly.Arduino.finish = function(code) {
     }
     if (blocks[i].type === 'arduino_header') {
       headerBlock = blocks[i];
+    }
+    if (blocks[i].type === 'arduino_interrupts') {
+      interruptsBlock = blocks[i];
     }
   }
 
@@ -166,16 +172,23 @@ Blockly.Arduino.finish = function(code) {
     }
   }
 
-  // Convert the setups dictionary into a list
-  var setups = [];
-  for (var name in Blockly.Arduino.setups_) {
-    setups.push(Blockly.Arduino.setups_[name]);
-  }
-
   // Generate header code (user-placed includes, defines, global variables)
   var headerCode = '';
   if (headerBlock) {
     headerCode = Blockly.Arduino.statementToCode(headerBlock, 'HEADER_CODE');
+  }
+
+  // Generate interrupts code (timer and interrupt callbacks)
+  // This must be called BEFORE converting setups_ to list
+  var interruptsCode = '';
+  if (interruptsBlock) {
+    interruptsCode = Blockly.Arduino.statementToCode(interruptsBlock, 'INTERRUPTS_CODE');
+  }
+
+  // Convert the setups dictionary into a list (AFTER generators have run)
+  var setups = [];
+  for (var name in Blockly.Arduino.setups_) {
+    setups.push(Blockly.Arduino.setups_[name]);
   }
 
   // Generate setup function
@@ -227,6 +240,12 @@ Blockly.Arduino.finish = function(code) {
   if (definitions.length > 0) {
     result += '\n// === Auto-definitions (global variables) ===\n';
     result += definitions.join('\n') + '\n';
+  }
+  
+  // Interrupts block content (timer and interrupt callbacks)
+  if (interruptsCode) {
+    result += '\n// === Interrupts (callbacks) ===\n';
+    result += interruptsCode + '\n';
   }
   
   result += '\n' + setupFunc + loopFunc;

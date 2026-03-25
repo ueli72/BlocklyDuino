@@ -60,3 +60,15 @@ Blockly.Blocks['arduino_header'] = {
     this.setTooltip('Code here is placed at the top of the file (includes, defines, global variables)');
   }
 };
+
+Blockly.Blocks['arduino_interrupts'] = {
+  init: function() {
+    this.setColour(0);
+    this.appendDummyInput()
+        .appendField("Interrupts");
+    this.appendStatementInput("INTERRUPTS_CODE")
+        .setCheck("interrupts");
+    this.setDeletable(false);
+    this.setTooltip('Timer and interrupt callback blocks go here');
+  }
+};

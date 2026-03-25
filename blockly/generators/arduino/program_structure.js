@@ -35,3 +35,8 @@ Blockly.Arduino.arduino_header = function() {
   var headerCode = Blockly.Arduino.statementToCode(this, 'HEADER_CODE');
   return headerCode;
 };
+
+Blockly.Arduino.arduino_interrupts = function() {
+  var interruptsCode = Blockly.Arduino.statementToCode(this, 'INTERRUPTS_CODE');
+  return interruptsCode;
+};

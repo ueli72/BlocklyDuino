@@ -91,6 +91,25 @@ var BLOCKED_IN_ISR = [
 
 function checkISRBlocks(block) {
   if (!block || !block.workspace) return;
+  
+  // Check if inside Interrupts block
+  var parent = block.getParent();
+  var isInInterruptsBlock = false;
+  while (parent) {
+    if (parent.type === 'arduino_interrupts') {
+      isInInterruptsBlock = true;
+      break;
+    }
+    parent = parent.getParent();
+  }
+  
+  if (!isInInterruptsBlock) {
+    block.setWarningText('⚠️ This block must be placed inside the Interrupts block!');
+    block.setColour(0);
+    return;
+  }
+  
+  // Check for forbidden blocks inside ISR
   var child = block.getInputTargetBlock('HANDLER_CODE');
   var hasBlocked = false;
   while (child) {
@@ -105,13 +124,13 @@ function checkISRBlocks(block) {
     block.setColour(0);
   } else {
     block.setWarningText(null);
-    block.setColour(190);
+    block.setColour(0);
   }
 }
 
 Blockly.Blocks['button_interrupt'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(0);
     this.appendDummyInput()
         .appendField(new Blockly.FieldImage("../../media/trigger.png", 64, 64))
         .appendField("On Interrupt")
@@ -119,8 +138,8 @@ Blockly.Blocks['button_interrupt'] = {
         .appendField(new Blockly.FieldDropdown(getInterruptModes), "MODE");
     this.appendStatementInput("HANDLER_CODE")
         .appendField("do");
-    this.setPreviousStatement(true, "general");
-    this.setNextStatement(true, "general");
+    this.setPreviousStatement(true, "interrupts");
+    this.setNextStatement(true, "interrupts");
     this.setTooltip('ISR: No delay(), no Serial, keep short! Use volatile variables for data shared with main loop.');
   },
   onchange: function() {
