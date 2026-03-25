@@ -512,7 +512,7 @@ function setupBlockInfoListener() {
 }
 
 /**
- * Ensure setup, loop, header, and interrupts blocks are present in the workspace.
+ * Ensure setup, loop, header, interrupts, and functions blocks are present in the workspace.
  */
 function ensureProgramStructure() {
   if (!Blockly.mainWorkspace) {
@@ -524,6 +524,7 @@ function ensureProgramStructure() {
   var hasLoop = false;
   var hasHeader = false;
   var hasInterrupts = false;
+  var hasFunctions = false;
 
   for (var i = 0; i < blocks.length; i++) {
     if (blocks[i].type === 'arduino_setup') {
@@ -538,6 +539,9 @@ function ensureProgramStructure() {
     if (blocks[i].type === 'arduino_interrupts') {
       hasInterrupts = true;
     }
+    if (blocks[i].type === 'arduino_functions') {
+      hasFunctions = true;
+    }
   }
 
   // Create header block if missing - positioned at top left
@@ -548,12 +552,20 @@ function ensureProgramStructure() {
     headerBlock.moveBy(50, 50);
   }
 
-  // Create interrupts block if missing - positioned at top right
+  // Create interrupts block if missing - positioned at top center
   if (!hasInterrupts) {
     var interruptsBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'arduino_interrupts');
     interruptsBlock.initSvg();
     interruptsBlock.render();
     interruptsBlock.moveBy(350, 50);
+  }
+
+  // Create functions block if missing - positioned at top right
+  if (!hasFunctions) {
+    var functionsBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'arduino_functions');
+    functionsBlock.initSvg();
+    functionsBlock.render();
+    functionsBlock.moveBy(650, 50);
   }
 
   // Create setup block if missing - positioned below header
@@ -707,7 +719,8 @@ var shakeAnimation = {
           (sourceBlock.type === 'arduino_header' || 
            sourceBlock.type === 'arduino_setup' || 
            sourceBlock.type === 'arduino_loop' ||
-           sourceBlock.type === 'arduino_interrupts')) {
+           sourceBlock.type === 'arduino_interrupts' ||
+           sourceBlock.type === 'arduino_functions')) {
         shakeAnimation.rejectedContainerBlock = null;
         return result;
       }
@@ -738,7 +751,8 @@ var shakeAnimation = {
               (sourceBlock.type === 'arduino_header' || 
                sourceBlock.type === 'arduino_setup' || 
                sourceBlock.type === 'arduino_loop' ||
-               sourceBlock.type === 'arduino_interrupts')) {
+               sourceBlock.type === 'arduino_interrupts' ||
+               sourceBlock.type === 'arduino_functions')) {
             
             if (myConn.check_ && otherConn.check_) {
               var hasMatch = false;

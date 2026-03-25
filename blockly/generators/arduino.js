@@ -139,11 +139,12 @@ Blockly.Arduino.init = function(workspace) {
  * @return {string} Completed code.
  */
 Blockly.Arduino.finish = function(code) {
-  // Find setup, loop, header, and interrupts blocks in the workspace
+  // Find setup, loop, header, interrupts, and functions blocks in the workspace
   var setupBlock = null;
   var loopBlock = null;
   var headerBlock = null;
   var interruptsBlock = null;
+  var functionsBlock = null;
   var blocks = Blockly.mainWorkspace.getAllBlocks();
   for (var i = 0; i < blocks.length; i++) {
     if (blocks[i].type === 'arduino_setup') {
@@ -157,6 +158,9 @@ Blockly.Arduino.finish = function(code) {
     }
     if (blocks[i].type === 'arduino_interrupts') {
       interruptsBlock = blocks[i];
+    }
+    if (blocks[i].type === 'arduino_functions') {
+      functionsBlock = blocks[i];
     }
   }
 
@@ -183,6 +187,12 @@ Blockly.Arduino.finish = function(code) {
   var interruptsCode = '';
   if (interruptsBlock) {
     interruptsCode = Blockly.Arduino.statementToCode(interruptsBlock, 'INTERRUPTS_CODE');
+  }
+
+  // Generate functions code (user-defined functions)
+  var functionsCode = '';
+  if (functionsBlock) {
+    functionsCode = Blockly.Arduino.statementToCode(functionsBlock, 'FUNCTIONS_CODE');
   }
 
   // Convert the setups dictionary into a list (AFTER generators have run)
@@ -246,6 +256,12 @@ Blockly.Arduino.finish = function(code) {
   if (interruptsCode) {
     result += '\n// === Interrupts (callbacks) ===\n';
     result += interruptsCode + '\n';
+  }
+  
+  // Functions block content (user-defined functions)
+  if (functionsCode) {
+    result += '\n// === Functions ===\n';
+    result += functionsCode + '\n';
   }
   
   result += '\n' + setupFunc + loopFunc;

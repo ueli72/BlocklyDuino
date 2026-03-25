@@ -40,3 +40,8 @@ Blockly.Arduino.arduino_interrupts = function() {
   var interruptsCode = Blockly.Arduino.statementToCode(this, 'INTERRUPTS_CODE');
   return interruptsCode;
 };
+
+Blockly.Arduino.arduino_functions = function() {
+  var functionsCode = Blockly.Arduino.statementToCode(this, 'FUNCTIONS_CODE');
+  return functionsCode;
+};

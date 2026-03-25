@@ -72,3 +72,15 @@ Blockly.Blocks['arduino_interrupts'] = {
     this.setTooltip('Timer and interrupt callback blocks go here');
   }
 };
+
+Blockly.Blocks['arduino_functions'] = {
+  init: function() {
+    this.setColour(60);
+    this.appendDummyInput()
+        .appendField("Functions");
+    this.appendStatementInput("FUNCTIONS_CODE")
+        .setCheck("functions");
+    this.setDeletable(false);
+    this.setTooltip('Function definitions go here');
+  }
+};

@@ -32,7 +32,7 @@ Blockly.Blocks.procedures = {};
 /**
  * Common HSV hue for all blocks in this category.
  */
-Blockly.Blocks.procedures.HUE = 290;
+Blockly.Blocks.procedures.HUE = 60;
 
 Blockly.Blocks['procedures_defnoreturn'] = {
   /**
@@ -56,6 +56,41 @@ Blockly.Blocks['procedures_defnoreturn'] = {
     this.arguments_ = [];
     this.setStatements_(true);
     this.statementConnection_ = null;
+    this.setPreviousStatement(true, "functions");
+    this.setNextStatement(true, "functions");
+  },
+  onchange: function() {
+    if (!this.workspace) return;
+    var parent = this.getParent();
+    var isInFunctionsBlock = false;
+    while (parent) {
+      if (parent.type === 'arduino_functions') {
+        isInFunctionsBlock = true;
+        break;
+      }
+      parent = parent.getParent();
+    }
+    if (!isInFunctionsBlock) {
+      this.setWarningText(i18n.t('warnings.mustBeInFunctions'));
+    } else if (this.arguments_ && this.arguments_.length > 0) {
+      // Check for duplicate arguments
+      var badArg = false;
+      var hash = {};
+      for (var i = 0; i < this.arguments_.length; i++) {
+        if (hash['arg_' + this.arguments_[i].toLowerCase()]) {
+          badArg = true;
+          break;
+        }
+        hash['arg_' + this.arguments_[i].toLowerCase()] = true;
+      }
+      if (badArg) {
+        this.setWarningText(Blockly.Msg.PROCEDURES_DEF_DUPLICATE_WARNING);
+      } else {
+        this.setWarningText(null);
+      }
+    } else {
+      this.setWarningText(null);
+    }
   },
   /**
    * Add or remove the statement block from this function definition.
@@ -355,6 +390,8 @@ Blockly.Blocks['procedures_defreturn'] = {
     this.arguments_ = [];
     this.setStatements_(true);
     this.statementConnection_ = null;
+    this.setPreviousStatement(true, "functions");
+    this.setNextStatement(true, "functions");
   },
   setStatements_: Blockly.Blocks['procedures_defnoreturn'].setStatements_,
   updateParams_: Blockly.Blocks['procedures_defnoreturn'].updateParams_,
@@ -363,6 +400,7 @@ Blockly.Blocks['procedures_defreturn'] = {
   decompose: Blockly.Blocks['procedures_defnoreturn'].decompose,
   compose: Blockly.Blocks['procedures_defnoreturn'].compose,
   dispose: Blockly.Blocks['procedures_defnoreturn'].dispose,
+  onchange: Blockly.Blocks['procedures_defnoreturn'].onchange,
   /**
    * Return the signature of this procedure definition.
    * @return {!Array} Tuple containing three elements:

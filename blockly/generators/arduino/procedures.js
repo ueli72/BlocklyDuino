@@ -27,6 +27,23 @@
 
 
 Blockly.Arduino.procedures_defreturn = function() {
+  // Check if this block is inside the arduino_functions block
+  var parent = this.getParent();
+  var isInFunctionsBlock = false;
+  while (parent) {
+    if (parent.type === 'arduino_functions') {
+      isInFunctionsBlock = true;
+      break;
+    }
+    parent = parent.getParent();
+  }
+  
+  if (!isInFunctionsBlock) {
+    this.setWarningText(i18n.t('warnings.mustBeInFunctions'));
+    return '';
+  }
+  this.setWarningText(null);
+
   // Define a procedure with a return value.
   var funcName = Blockly.Arduino.variableDB_.getName(this.getFieldValue('NAME'),
       Blockly.Procedures.NAME_TYPE);
@@ -49,8 +66,7 @@ Blockly.Arduino.procedures_defreturn = function() {
   var code = returnType + ' ' + funcName + '(' + args.join(', ') + ') {\n' +
       branch + returnValue + '}\n';
   code = Blockly.Arduino.scrub_(this, code);
-  Blockly.Arduino.definitions_[funcName] = code;
-  return null;
+  return code;
 };
 
 // Defining a procedure without a return value uses the same generator as

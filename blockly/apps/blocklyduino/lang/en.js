@@ -349,6 +349,7 @@ i18n.registerTranslations('en', {
   },
   "warnings": {
     "mustBeInInterrupts": "This block must be placed inside the Interrupts block!",
+    "mustBeInFunctions": "This block must be placed inside the Functions block!",
     "forbiddenInISR": "FORBIDDEN! This block cannot be used inside an interrupt!\n\nISR restrictions:\n• No delay()\n• No Serial\n• No OLED, SD Card, DHT11, Ultrasonic\n• No MAX98357A\n• No Internal LED\n\nRemove this block immediately!",
     "forbiddenInTimer": "FORBIDDEN! This block cannot be used inside a timer callback!\n\nTimer restrictions:\n• No delay()\n• No Serial\n• No OLED, SD Card, DHT11, Ultrasonic\n• No MAX98357A\n• No Internal LED, LED Matrix (WS2812)\n\nRemove this block immediately!"
   }
