@@ -563,3 +563,56 @@ Blockly.Blocks['math_power'] = {
     this.setTooltip('Power: base^exponent');
   }
 };
+
+Blockly.Blocks['math_random'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.math.HUE);
+    this.appendDummyInput()
+        .appendField("random")
+        .appendField(new Blockly.FieldDropdown([
+          ["integer", "INT"],
+          ["float", "FLOAT"],
+          ["boolean", "BOOL"]
+        ], function(option) {
+          this.sourceBlock_.updateShape_(option === 'INT' || option === 'FLOAT');
+        }), "TYPE");
+    this.appendValueInput('MIN')
+        .setCheck('Number')
+        .appendField("min");
+    this.appendValueInput('MAX')
+        .setCheck('Number')
+        .appendField("max");
+    this.setOutput(true, null);
+    this.setInputsInline(true);
+    this.setTooltip('Random number or boolean');
+  },
+  mutationToDom: function() {
+    var container = document.createElement('mutation');
+    var showMinMax = this.getFieldValue('TYPE') !== 'BOOL';
+    container.setAttribute('show_minmax', showMinMax);
+    return container;
+  },
+  domToMutation: function(xmlElement) {
+    var showMinMax = xmlElement.getAttribute('show_minmax') !== 'false';
+    this.updateShape_(showMinMax);
+  },
+  updateShape_: function(showMinMax) {
+    var minInput = this.getInput('MIN');
+    var maxInput = this.getInput('MAX');
+    if (showMinMax) {
+      if (!minInput) {
+        this.appendValueInput('MIN')
+            .setCheck('Number')
+            .appendField("min");
+      }
+      if (!maxInput) {
+        this.appendValueInput('MAX')
+            .setCheck('Number')
+            .appendField("max");
+      }
+    } else {
+      if (minInput) this.removeInput('MIN');
+      if (maxInput) this.removeInput('MAX');
+    }
+  }
+};

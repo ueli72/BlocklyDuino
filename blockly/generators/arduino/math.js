@@ -102,3 +102,20 @@ Blockly.Arduino.math_power = function() {
   var exp = Blockly.Arduino.valueToCode(this, 'EXP', Blockly.Arduino.ORDER_NONE) || '0';
   return ['pow(' + base + ', ' + exp + ')', Blockly.Arduino.ORDER_UNARY_POSTFIX];
 };
+
+Blockly.Arduino.math_random = function() {
+  var type = this.getFieldValue('TYPE');
+  
+  if (type === 'BOOL') {
+    return ['(random(0, 2) == 1)', Blockly.Arduino.ORDER_EQUALITY];
+  }
+  
+  var min = Blockly.Arduino.valueToCode(this, 'MIN', Blockly.Arduino.ORDER_NONE) || '0';
+  var max = Blockly.Arduino.valueToCode(this, 'MAX', Blockly.Arduino.ORDER_NONE) || '100';
+  
+  if (type === 'INT') {
+    return ['random(' + min + ', ' + max + ' + 1)', Blockly.Arduino.ORDER_UNARY_POSTFIX];
+  } else {
+    return ['(random(' + min + ', ' + max + ') + (random(0, 1000) / 1000.0))', Blockly.Arduino.ORDER_UNARY_POSTFIX];
+  }
+};

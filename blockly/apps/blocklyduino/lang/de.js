@@ -90,6 +90,7 @@ i18n.registerTranslations('de', {
     "mathDeg2rad": "Grad nach Radiant",
     "mathRad2deg": "Radiant nach Grad",
     "mathPower": "Potenz",
+    "mathRandom": "Zufall",
     "servoInit": "Initialisieren",
     "servoMove": "Bewegen",
     "servoRead": "Grad lesen",

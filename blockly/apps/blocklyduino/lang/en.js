@@ -90,6 +90,7 @@ i18n.registerTranslations('en', {
     "mathDeg2rad": "Degrees to Radians",
     "mathRad2deg": "Radians to Degrees",
     "mathPower": "Power",
+    "mathRandom": "Random",
     "servoInit": "Initialize",
     "servoMove": "Move",
     "servoRead": "Read Degrees",
