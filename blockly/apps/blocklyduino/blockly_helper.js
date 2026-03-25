@@ -549,15 +549,15 @@ function ensureProgramStructure() {
     var headerBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'arduino_header');
     headerBlock.initSvg();
     headerBlock.render();
-    headerBlock.moveBy(50, 50);
+    headerBlock.moveBy(-12, 13);
   }
 
-  // Create interrupts block if missing - positioned at top center
+  // Create interrupts block if missing - positioned at middle right
   if (!hasInterrupts) {
     var interruptsBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'arduino_interrupts');
     interruptsBlock.initSvg();
     interruptsBlock.render();
-    interruptsBlock.moveBy(350, 50);
+    interruptsBlock.moveBy(713, 238);
   }
 
   // Create functions block if missing - positioned at top right
@@ -565,23 +565,23 @@ function ensureProgramStructure() {
     var functionsBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'arduino_functions');
     functionsBlock.initSvg();
     functionsBlock.render();
-    functionsBlock.moveBy(650, 50);
+    functionsBlock.moveBy(713, 13);
   }
 
-  // Create setup block if missing - positioned below header
+  // Create setup block if missing - positioned at middle left
   if (!hasSetup) {
     var setupBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'arduino_setup');
     setupBlock.initSvg();
     setupBlock.render();
-    setupBlock.moveBy(50, 200);
+    setupBlock.moveBy(-12, 238);
   }
 
-  // Create loop block if missing - positioned horizontally next to setup
+  // Create loop block if missing - positioned at bottom left
   if (!hasLoop) {
     var loopBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'arduino_loop');
     loopBlock.initSvg();
     loopBlock.render();
-    loopBlock.moveBy(350, 200);
+    loopBlock.moveBy(-12, 513);
   }
 }
 
