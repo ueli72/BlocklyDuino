@@ -479,3 +479,87 @@ Blockly.Blocks['math_random_float'] = {
     this.setTooltip(Blockly.Msg.MATH_RANDOM_FLOAT_TOOLTIP);
   }
 };
+
+Blockly.Blocks['math_sqrt'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.math.HUE);
+    this.appendValueInput('NUM')
+        .setCheck('Number')
+        .appendField("√");
+    this.setOutput(true, 'Number');
+    this.setTooltip('Square root');
+  }
+};
+
+Blockly.Blocks['math_nth_root'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.math.HUE);
+    this.appendValueInput('ROOT')
+        .setCheck('Number');
+    this.appendDummyInput()
+        .appendField("√");
+    this.appendValueInput('NUM')
+        .setCheck('Number');
+    this.setOutput(true, 'Number');
+    this.setInputsInline(true);
+    this.setTooltip('Nth root: ³√8 = 2');
+  }
+};
+
+Blockly.Blocks['math_sin'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.math.HUE);
+    this.appendValueInput('NUM')
+        .setCheck('Number')
+        .appendField("sin");
+    this.setOutput(true, 'Number');
+    this.setTooltip('Sine (input in degrees)');
+  }
+};
+
+Blockly.Blocks['math_cos'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.math.HUE);
+    this.appendValueInput('NUM')
+        .setCheck('Number')
+        .appendField("cos");
+    this.setOutput(true, 'Number');
+    this.setTooltip('Cosine (input in degrees)');
+  }
+};
+
+Blockly.Blocks['math_deg2rad'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.math.HUE);
+    this.appendValueInput('NUM')
+        .setCheck('Number')
+        .appendField("deg→rad");
+    this.setOutput(true, 'Number');
+    this.setTooltip('Convert degrees to radians');
+  }
+};
+
+Blockly.Blocks['math_rad2deg'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.math.HUE);
+    this.appendValueInput('NUM')
+        .setCheck('Number')
+        .appendField("rad→deg");
+    this.setOutput(true, 'Number');
+    this.setTooltip('Convert radians to degrees');
+  }
+};
+
+Blockly.Blocks['math_power'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.math.HUE);
+    this.appendValueInput('BASE')
+        .setCheck('Number');
+    this.appendValueInput('EXP')
+        .setCheck('Number')
+        .appendField("^");
+    this.setOutput(true, 'Number');
+    this.setInputsInline(true);
+    this.setTooltip('Power: base^exponent');
+  }
+};

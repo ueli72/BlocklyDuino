@@ -44,3 +44,53 @@ Blockly.Blocks['constants_false'] = {
     this.setTooltip('Returns false');
   }
 };
+
+Blockly.Blocks['constants_pi'] = {
+  init: function() {
+    this.setColour(230);
+    this.appendDummyInput()
+        .appendField("π");
+    this.setOutput(true, 'Number');
+    this.setTooltip('Pi (π) ≈ 3.14159');
+  }
+};
+
+Blockly.Blocks['constants_sqrt2'] = {
+  init: function() {
+    this.setColour(230);
+    this.appendDummyInput()
+        .appendField("√2");
+    this.setOutput(true, 'Number');
+    this.setTooltip('Square root of 2 ≈ 1.41421');
+  }
+};
+
+Blockly.Blocks['constants_sqrt3'] = {
+  init: function() {
+    this.setColour(230);
+    this.appendDummyInput()
+        .appendField("√3");
+    this.setOutput(true, 'Number');
+    this.setTooltip('Square root of 3 ≈ 1.73205');
+  }
+};
+
+Blockly.Blocks['constants_e'] = {
+  init: function() {
+    this.setColour(230);
+    this.appendDummyInput()
+        .appendField("e");
+    this.setOutput(true, 'Number');
+    this.setTooltip('Euler\'s number (e) ≈ 2.71828');
+  }
+};
+
+Blockly.Blocks['constants_golden_ratio'] = {
+  init: function() {
+    this.setColour(230);
+    this.appendDummyInput()
+        .appendField("φ");
+    this.setOutput(true, 'Number');
+    this.setTooltip('Golden ratio (φ) ≈ 1.61803');
+  }
+};

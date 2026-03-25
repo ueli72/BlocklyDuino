@@ -60,3 +60,45 @@ Blockly.Arduino.math_arithmetic.OPERATORS = {
   DIVIDE: [' / ', Blockly.Arduino.ORDER_MULTIPLICATIVE],
   POWER: [null, Blockly.Arduino.ORDER_NONE]  // Handle power separately.
 };
+
+Blockly.Arduino.math_sqrt = function() {
+  Blockly.Arduino.definitions_['include_math_h'] = '#include <math.h>\n';
+  var num = Blockly.Arduino.valueToCode(this, 'NUM', Blockly.Arduino.ORDER_NONE) || '0';
+  return ['sqrt(' + num + ')', Blockly.Arduino.ORDER_UNARY_POSTFIX];
+};
+
+Blockly.Arduino.math_nth_root = function() {
+  Blockly.Arduino.definitions_['include_math_h'] = '#include <math.h>\n';
+  var root = Blockly.Arduino.valueToCode(this, 'ROOT', Blockly.Arduino.ORDER_NONE) || '2';
+  var num = Blockly.Arduino.valueToCode(this, 'NUM', Blockly.Arduino.ORDER_NONE) || '0';
+  return ['pow(' + num + ', 1.0/' + root + ')', Blockly.Arduino.ORDER_UNARY_POSTFIX];
+};
+
+Blockly.Arduino.math_sin = function() {
+  Blockly.Arduino.definitions_['include_math_h'] = '#include <math.h>\n';
+  var num = Blockly.Arduino.valueToCode(this, 'NUM', Blockly.Arduino.ORDER_NONE) || '0';
+  return ['sin((' + num + ') * DEG_TO_RAD)', Blockly.Arduino.ORDER_UNARY_POSTFIX];
+};
+
+Blockly.Arduino.math_cos = function() {
+  Blockly.Arduino.definitions_['include_math_h'] = '#include <math.h>\n';
+  var num = Blockly.Arduino.valueToCode(this, 'NUM', Blockly.Arduino.ORDER_NONE) || '0';
+  return ['cos((' + num + ') * DEG_TO_RAD)', Blockly.Arduino.ORDER_UNARY_POSTFIX];
+};
+
+Blockly.Arduino.math_deg2rad = function() {
+  var num = Blockly.Arduino.valueToCode(this, 'NUM', Blockly.Arduino.ORDER_NONE) || '0';
+  return ['(' + num + ') * DEG_TO_RAD', Blockly.Arduino.ORDER_MULTIPLICATIVE];
+};
+
+Blockly.Arduino.math_rad2deg = function() {
+  var num = Blockly.Arduino.valueToCode(this, 'NUM', Blockly.Arduino.ORDER_NONE) || '0';
+  return ['(' + num + ') * RAD_TO_DEG', Blockly.Arduino.ORDER_MULTIPLICATIVE];
+};
+
+Blockly.Arduino.math_power = function() {
+  Blockly.Arduino.definitions_['include_math_h'] = '#include <math.h>\n';
+  var base = Blockly.Arduino.valueToCode(this, 'BASE', Blockly.Arduino.ORDER_NONE) || '0';
+  var exp = Blockly.Arduino.valueToCode(this, 'EXP', Blockly.Arduino.ORDER_NONE) || '0';
+  return ['pow(' + base + ', ' + exp + ')', Blockly.Arduino.ORDER_UNARY_POSTFIX];
+};

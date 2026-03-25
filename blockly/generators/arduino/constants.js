@@ -28,3 +28,23 @@ Blockly.Arduino.constants_true = function() {
 Blockly.Arduino.constants_false = function() {
   return ['false', Blockly.Arduino.ORDER_ATOMIC];
 };
+
+Blockly.Arduino.constants_pi = function() {
+  return ['3.14159265358979323846', Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino.constants_sqrt2 = function() {
+  return ['1.41421356237309504880', Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino.constants_sqrt3 = function() {
+  return ['1.73205080756887729352', Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino.constants_e = function() {
+  return ['2.71828182845904523536', Blockly.Arduino.ORDER_ATOMIC];
+};
+
+Blockly.Arduino.constants_golden_ratio = function() {
+  return ['1.61803398874989484820', Blockly.Arduino.ORDER_ATOMIC];
+};
