@@ -148,7 +148,10 @@ i18n.registerTranslations('en', {
     "serialReadChar": "Read Char",
     "serialReadLine": "Read Line",
     "serialAvailable": "Available",
-    "testAll": "Test All"
+    "testAll": "Test All",
+    "globalVariable": "Declare Variable",
+    "globalVariableGet": "Get Variable",
+    "globalVariableSet": "Set Variable"
   },
   "blockInfo": {
     "internalLED": {
@@ -256,6 +259,10 @@ i18n.registerTranslations('en', {
       "readCharMessage": "Read single character. Non-blocking returns empty string if no data. Blocking waits for input.",
       "readLineMessage": "Read entire line until CR or LF. Returns trimmed string without leading/trailing whitespace.",
       "availableMessage": "Returns number of bytes waiting to be read. Use to check if data is available before reading."
+    },
+    "globalVariable": {
+      "title": "Global Variable",
+      "message": "Declare a global variable accessible from all code blocks including interrupts and timers.\n\n• 'volatile': Required for variables shared with interrupts/timers\n• Types: int, byte, long, float, bool, char*\n• Initial value is optional\n\nUse volatile when the variable is modified in an interrupt handler and read in the main loop (or vice versa)."
     }
   },
   "dependencies": {

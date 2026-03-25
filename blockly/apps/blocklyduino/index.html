@@ -36,6 +36,7 @@
   <script type="text/javascript" src="../../blocks/playground/timer.js"></script>
   <script type="text/javascript" src="../../blocks/playground/ky023.js"></script>
   <script type="text/javascript" src="../../blocks/playground/serial.js"></script>
+  <script type="text/javascript" src="../../blocks/playground/global_variable.js"></script>
   <script type="text/javascript" src="../../generators/arduino.js"></script>
   <script type="text/javascript" src="../../generators/arduino/base.js"></script>
   <script type="text/javascript" src="../../generators/arduino/control.js"></script>
@@ -64,6 +65,7 @@
   <script type="text/javascript" src="../../generators/arduino/playground/timer.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/ky023.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/serial.js"></script>
+  <script type="text/javascript" src="../../generators/arduino/playground/global_variable.js"></script>
   <script type="text/javascript" src="../../msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
@@ -1149,7 +1151,17 @@ function initBlockly() {
     <category name="Text" data-i18n-name="categories.text">
       <block type="text"></block>
     </category>
-    <category name="Variables" custom="VARIABLE" data-i18n-name="categories.variables"></category>
+    <category name="Variables" data-i18n-name="categories.variables">
+      <block type="global_variable"></block>
+      <block type="global_variable_get"></block>
+      <block type="global_variable_set"></block>
+      <block type="variables_get">
+        <field name="VAR">item</field>
+      </block>
+      <block type="variables_set">
+        <field name="VAR">item</field>
+      </block>
+    </category>
     <category name="Functions" custom="PROCEDURE" data-i18n-name="categories.functions"></category>
     <sep></sep>
     <category name="Input/Output" data-i18n-name="categories.inputOutput">

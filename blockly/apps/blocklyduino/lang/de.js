@@ -148,7 +148,10 @@ i18n.registerTranslations('de', {
     "serialReadChar": "Zeichen lesen",
     "serialReadLine": "Zeile lesen",
     "serialAvailable": "Verfügbar",
-    "testAll": "Alle Testen"
+    "testAll": "Alle Testen",
+    "globalVariable": "Variable deklarieren",
+    "globalVariableGet": "Variable lesen",
+    "globalVariableSet": "Variable setzen"
   },
   "blockInfo": {
     "internalLED": {
@@ -256,6 +259,10 @@ i18n.registerTranslations('de', {
       "readCharMessage": "Liest einzelnes Zeichen. Nicht-blockierend gibt leeren String zurück wenn keine Daten. Blockierend wartet auf Eingabe.",
       "readLineMessage": "Liest ganze Zeile bis CR oder LF. Gibt getrimmten String ohne führende/nachfolgende Leerzeichen zurück.",
       "availableMessage": "Gibt Anzahl der wartenden Bytes zurück. Verwenden um zu prüfen ob Daten verfügbar sind vor dem Lesen."
+    },
+    "globalVariable": {
+      "title": "Globale Variable",
+      "message": "Deklariert eine globale Variable, die aus allen Codeblöcken einschließlich Interrupts und Timern zugänglich ist.\n\n• 'volatile': Erforderlich für Variablen, die mit Interrupts/Timern geteilt werden\n• Typen: int, byte, long, float, bool, char*\n• Anfangswert ist optional\n\nVerwenden Sie volatile, wenn die Variable in einem Interrupt-Handler geändert und in der Hauptschleife gelesen wird (oder umgekehrt)."
     }
   },
   "dependencies": {
