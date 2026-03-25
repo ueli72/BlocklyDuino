@@ -32,8 +32,8 @@ Blockly.Blocks['internal_led_init'] = {
         .appendField("Internal LED")
         .appendField(new Blockly.FieldImage("../../media/internalled.png", 64, 64))
         .appendField("Initialize");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Initialize the internal RGB LED');
   }
 };
@@ -57,8 +57,8 @@ Blockly.Blocks['internal_led_set'] = {
         .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Blue (0-255)");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Set the internal RGB LED color');
   }
 };
@@ -70,8 +70,8 @@ Blockly.Blocks['internal_led_off'] = {
         .appendField("Internal LED")
         .appendField(new Blockly.FieldImage("../../media/internalled.png", 64, 64))
         .appendField("Turn Off");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Turn off the internal RGB LED');
   }
 };
@@ -83,8 +83,8 @@ Blockly.Blocks['internal_led_test'] = {
         .appendField("Internal LED")
         .appendField(new Blockly.FieldImage("../../media/internalled.png", 64, 64))
         .appendField("Test RGB");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Test the internal RGB LED: Red, Green, Blue (500ms each), then off');
   }
 };

@@ -408,8 +408,8 @@ Blockly.Blocks['procedures_mutatorarg'] = {
     this.appendDummyInput()
         .appendField(Blockly.Msg.PROCEDURES_MUTATORARG_TITLE)
         .appendField(new Blockly.FieldTextInput('x', this.validator_), 'NAME');
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip(Blockly.Msg.PROCEDURES_MUTATORARG_TOOLTIP);
     this.contextMenu = false;
   },
@@ -439,8 +439,8 @@ Blockly.Blocks['procedures_callnoreturn'] = {
     this.appendDummyInput('TOPROW')
         .appendField(Blockly.Msg.PROCEDURES_CALLNORETURN_CALL)
         .appendField('', 'NAME');
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     // Tooltip is set in domToMutation.
     this.arguments_ = [];
     this.quarkConnections_ = {};
@@ -699,8 +699,8 @@ Blockly.Blocks['procedures_ifreturn'] = {
     this.appendValueInput('VALUE')
         .appendField(Blockly.Msg.PROCEDURES_DEFRETURN_RETURN);
     this.setInputsInline(true);
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip(Blockly.Msg.PROCEDURES_IFRETURN_TOOLTIP);
     this.hasReturnValue_ = true;
   },

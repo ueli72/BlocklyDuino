@@ -31,7 +31,7 @@ Blockly.Blocks['arduino_setup'] = {
     this.appendDummyInput()
         .appendField("Setup");
     this.appendStatementInput("SETUP_CODE")
-        .setCheck(null);
+        .setCheck(["setup", "general"]);
     this.setDeletable(false);
     this.setTooltip('Code here runs once at startup');
   }
@@ -43,7 +43,7 @@ Blockly.Blocks['arduino_loop'] = {
     this.appendDummyInput()
         .appendField("Loop");
     this.appendStatementInput("LOOP_CODE")
-        .setCheck(null);
+        .setCheck(["loop", "general"]);
     this.setDeletable(false);
     this.setTooltip('Code here runs repeatedly');
   }
@@ -55,7 +55,7 @@ Blockly.Blocks['arduino_header'] = {
     this.appendDummyInput()
         .appendField("Header");
     this.appendStatementInput("HEADER_CODE")
-        .setCheck(null);
+        .setCheck("header");
     this.setDeletable(false);
     this.setTooltip('Code here is placed at the top of the file (includes, defines, global variables)');
   }

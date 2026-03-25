@@ -73,7 +73,7 @@ var globalArrayRenameHandler = function(oldName, newName) {
 
 Blockly.Blocks['global_array'] = {
   init: function() {
-    this.setColour(330);
+    this.setColour(300);
     this.appendDummyInput()
         .appendField("Create Array")
         .appendField(new Blockly.FieldCheckbox("FALSE"), "VOLATILE")
@@ -101,8 +101,8 @@ Blockly.Blocks['global_array'] = {
         .setCheck("Number")
         .appendField("size");
     
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "header");
+    this.setNextStatement(true, "header");
     this.setTooltip('Declare a global array. Use volatile for arrays shared with interrupts/timers.');
     
     this.oldName_ = "myArray";
@@ -124,7 +124,7 @@ Blockly.Blocks['global_array'] = {
 
 Blockly.Blocks['global_array_get'] = {
   init: function() {
-    this.setColour(330);
+    this.setColour(190);
     this.appendDummyInput()
         .appendField("Get")
         .appendField(new Blockly.FieldDropdown(globalArrayDropdownGenerator), "NAME");
@@ -141,7 +141,7 @@ Blockly.Blocks['global_array_get'] = {
 
 Blockly.Blocks['global_array_set'] = {
   init: function() {
-    this.setColour(330);
+    this.setColour(190);
     this.appendDummyInput()
         .appendField("Set")
         .appendField(new Blockly.FieldDropdown(globalArrayDropdownGenerator), "NAME");
@@ -153,8 +153,8 @@ Blockly.Blocks['global_array_set'] = {
     this.appendValueInput("VALUE")
         .setCheck(null)
         .appendField("=");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setInputsInline(true);
     this.setTooltip('Set array element at index');
   }
@@ -162,7 +162,7 @@ Blockly.Blocks['global_array_set'] = {
 
 Blockly.Blocks['global_array_length'] = {
   init: function() {
-    this.setColour(330);
+    this.setColour(190);
     this.appendDummyInput()
         .appendField("Length")
         .appendField(new Blockly.FieldDropdown(globalArrayDropdownGenerator), "NAME");
@@ -173,15 +173,15 @@ Blockly.Blocks['global_array_length'] = {
 
 Blockly.Blocks['global_array_fill'] = {
   init: function() {
-    this.setColour(330);
+    this.setColour(190);
     this.appendDummyInput()
         .appendField("Fill")
         .appendField(new Blockly.FieldDropdown(globalArrayDropdownGenerator), "NAME");
     this.appendValueInput("VALUE")
         .setCheck(null)
         .appendField("with");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setInputsInline(true);
     this.setTooltip('Fill array with value');
   }

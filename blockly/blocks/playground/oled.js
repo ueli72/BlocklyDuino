@@ -32,8 +32,8 @@ Blockly.Blocks['oled_init'] = {
         .appendField("OLED Display")
         .appendField(new Blockly.FieldImage("../../media/oled.png", 64, 64))
         .appendField("Initialize");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Initialize the OLED display');
   }
 };
@@ -49,8 +49,8 @@ Blockly.Blocks['oled_write'] = {
         .setCheck('String')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Text");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Write text to OLED display (use \\n for new lines)');
   }
 };
@@ -62,8 +62,8 @@ Blockly.Blocks['oled_clear'] = {
         .appendField("OLED Display")
         .appendField(new Blockly.FieldImage("../../media/oled.png", 64, 64))
         .appendField("Clear");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Clear the OLED display');
   }
 };
@@ -75,8 +75,8 @@ Blockly.Blocks['oled_test'] = {
         .appendField("OLED Display")
         .appendField(new Blockly.FieldImage("../../media/oled.png", 64, 64))
         .appendField("Test");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Test the OLED display');
   }
 };

@@ -32,8 +32,8 @@ Blockly.Blocks['sdcard_init'] = {
         .appendField("SD Card")
         .appendField(new Blockly.FieldImage("../../media/sdcard.jpg", 64, 64))
         .appendField("Initialize");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Initialize the SD card module');
   }
 };
@@ -51,8 +51,8 @@ Blockly.Blocks['sdcard_write'] = {
     this.appendValueInput("CONTENT")
         .setCheck('String')
         .appendField("Content");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Write content to a file on the SD card');
   }
 };
@@ -85,8 +85,8 @@ Blockly.Blocks['sdcard_append'] = {
     this.appendValueInput("CONTENT")
         .setCheck('String')
         .appendField("Content");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Append content to a file on the SD card');
   }
 };
@@ -116,8 +116,8 @@ Blockly.Blocks['sdcard_delete'] = {
     this.appendValueInput("PATH")
         .setCheck('String')
         .appendField("File");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Delete a file from the SD card');
   }
 };
@@ -129,8 +129,8 @@ Blockly.Blocks['sdcard_test'] = {
         .appendField("SD Card")
         .appendField(new Blockly.FieldImage("../../media/sdcard.jpg", 64, 64))
         .appendField("Test");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Test the SD card module');
   }
 };

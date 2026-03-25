@@ -46,8 +46,8 @@ Blockly.Blocks['ultrasonic_test'] = {
         .appendField("Ultrasonic")
         .appendField(new Blockly.FieldImage("../../media/hcsr04.jpg", 64, 64))
         .appendField("Test");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Test both ultrasonic sensors and display on OLED');
   }
 };

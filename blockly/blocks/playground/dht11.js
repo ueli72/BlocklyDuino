@@ -32,8 +32,8 @@ Blockly.Blocks['dht11_init'] = {
         .appendField("DHT11 Sensor")
         .appendField(new Blockly.FieldImage("../../media/dht11.jpg", 64, 64))
         .appendField("Initialize");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Initialize the DHT11 temperature and humidity sensor');
   }
 };
@@ -69,8 +69,8 @@ Blockly.Blocks['dht11_test'] = {
         .appendField("DHT11 Sensor")
         .appendField(new Blockly.FieldImage("../../media/dht11.jpg", 64, 64))
         .appendField("Test");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Test the DHT11 sensor and display values on OLED');
   }
 };

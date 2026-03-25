@@ -53,8 +53,8 @@ Blockly.Blocks['dc_motor_init'] = {
         .appendField("Motor4")
         .appendField(new Blockly.FieldCheckbox("TRUE"), "MOTOR4");
     
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Initialize selected DC motors');
   }
 };
@@ -73,8 +73,8 @@ Blockly.Blocks['dc_motor_set'] = {
         .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Speed (0-100)");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Set DC motor direction and speed (0-100%)');
   }
 };
@@ -88,8 +88,8 @@ Blockly.Blocks['dc_motor_stop'] = {
         .appendField("Motor#")
         .appendField(new Blockly.FieldDropdown([["Motor1", "1"], ["Motor2", "2"], ["Motor3", "3"], ["Motor4", "4"]]), "MOTOR")
         .appendField("Stop");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Stop DC motor');
   }
 };
@@ -122,8 +122,8 @@ Blockly.Blocks['dc_motor_test'] = {
         .appendField("Motor4")
         .appendField(new Blockly.FieldCheckbox("TRUE"), "MOTOR4");
     
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Test selected DC motors');
   }
 };

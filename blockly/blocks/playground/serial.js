@@ -46,8 +46,8 @@ Blockly.Blocks['serial_init'] = {
         .appendField(new Blockly.FieldImage("../../media/cli.png", 64, 64))
         .appendField("Initialize")
         .appendField(new Blockly.FieldDropdown(getBaudRates), "BAUD");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Initialize serial communication with selected baud rate');
   }
 };
@@ -62,8 +62,8 @@ Blockly.Blocks['serial_print'] = {
     this.appendValueInput("TEXT")
         .setCheck(null)
         .appendField("text");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Print text to serial without newline');
   }
 };
@@ -78,8 +78,8 @@ Blockly.Blocks['serial_println'] = {
     this.appendValueInput("TEXT")
         .setCheck(null)
         .appendField("text");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Print text to serial with newline');
   }
 };

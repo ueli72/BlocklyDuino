@@ -41,8 +41,8 @@ Blockly.Blocks['button_init'] = {
         .appendField("Button")
         .appendField(new Blockly.FieldImage("../../media/button.png", 64, 64))
         .appendField("Initialize");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Initialize all buttons');
   }
 };
@@ -119,8 +119,8 @@ Blockly.Blocks['button_interrupt'] = {
         .appendField(new Blockly.FieldDropdown(getInterruptModes), "MODE");
     this.appendStatementInput("HANDLER_CODE")
         .appendField("do");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('ISR: No delay(), no Serial, keep short! Use volatile variables for data shared with main loop.');
   },
   onchange: function() {

@@ -35,8 +35,8 @@ Blockly.Blocks['relais_set'] = {
         .appendField(new Blockly.FieldDropdown([["Relay1", "1"], ["Relay2", "2"]]), "RELAY")
         .appendField("State")
         .appendField(new Blockly.FieldDropdown([["ON", "true"], ["OFF", "false"]]), "STATE");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Set relay state ON or OFF');
   }
 };
@@ -48,8 +48,8 @@ Blockly.Blocks['relais_test'] = {
         .appendField("Relais")
         .appendField(new Blockly.FieldImage("../../media/relais.jpg", 64, 64))
         .appendField("Test");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Test the relais');
   }
 };

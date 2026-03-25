@@ -67,8 +67,8 @@ Blockly.Blocks['ble_remote_init'] = {
         .appendField("Initialize")
         .appendField("Name:")
         .appendField(new Blockly.FieldTextInput("PlaygroundCar"), "NAME");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Initialize BLE as server. Mobile app can connect to control the car.');
   }
 };
@@ -82,8 +82,8 @@ Blockly.Blocks['ble_remote_on_direction'] = {
         .appendField("On Direction");
     this.appendStatementInput("CALLBACK_CODE")
         .appendField("do");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Callback when direction command received. Use "Direction Value" block to get the value. ISR restrictions apply.');
   },
   onchange: function() {
@@ -100,8 +100,8 @@ Blockly.Blocks['ble_remote_on_speed'] = {
         .appendField("On Speed");
     this.appendStatementInput("CALLBACK_CODE")
         .appendField("do");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Callback when speed command received. Use "Speed Value" block to get the value. ISR restrictions apply.');
   },
   onchange: function() {
@@ -118,8 +118,8 @@ Blockly.Blocks['ble_remote_on_command'] = {
         .appendField("On Command");
     this.appendStatementInput("CALLBACK_CODE")
         .appendField("do");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Callback for custom commands (0-255). Use "Command Value" block to get the value. ISR restrictions apply.');
   },
   onchange: function() {
@@ -174,8 +174,8 @@ Blockly.Blocks['ble_remote_send'] = {
         .setCheck('String')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("value");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Send data back to connected mobile app. Can only be used in main loop, not in BLE callbacks.');
   }
 };
@@ -199,8 +199,8 @@ Blockly.Blocks['ble_remote_test'] = {
         .appendField("BLE Remote")
         .appendField(new Blockly.FieldImage("../../media/ble.png", 64, 64))
         .appendField("Test");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Test BLE by printing connection status and received commands to Serial.');
   }
 };

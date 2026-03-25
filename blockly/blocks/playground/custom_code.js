@@ -84,8 +84,8 @@ Blockly.Blocks['custom_code_statement'] = {
     this.appendDummyInput()
         .appendField(new Blockly.FieldLabel("digitalWrite(13, HIGH);"), "CODE_DISPLAY");
     this.code_ = "digitalWrite(13, HIGH);";
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Write custom C/C++ code. Click [Edit] to edit.');
   },
   getFieldValue: function(name) {
@@ -178,15 +178,15 @@ Blockly.Blocks['custom_code_expression'] = {
 
 Blockly.Blocks['custom_code_include'] = {
   init: function() {
-    this.setColour(290);
+    this.setColour(300);
     this.appendDummyInput()
         .appendField("Custom Include/Define")
         .appendField(new Blockly.FieldLabel("✏️"), "EDIT_BTN");
     this.appendDummyInput()
         .appendField(new Blockly.FieldLabel("#include <WiFi.h>"), "CODE_DISPLAY");
     this.code_ = "#include <WiFi.h>";
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "header");
+    this.setNextStatement(true, "header");
     this.setTooltip('Write custom includes or defines. Click [Edit] to edit.');
   },
   getFieldValue: function(name) {

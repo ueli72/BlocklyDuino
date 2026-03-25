@@ -47,8 +47,8 @@ Blockly.Blocks['controls_if'] = {
         .appendField(Blockly.Msg.CONTROLS_IF_MSG_IF);
     this.appendStatementInput('DO0')
         .appendField(Blockly.Msg.CONTROLS_IF_MSG_THEN);
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setMutator(new Blockly.Mutator(['controls_if_elseif',
                                          'controls_if_else']));
     // Assign 'this' to a variable for use in the tooltip closure below.
@@ -238,8 +238,8 @@ Blockly.Blocks['controls_if_elseif'] = {
     this.setColour(Blockly.Blocks.logic.HUE);
     this.appendDummyInput()
         .appendField(Blockly.Msg.CONTROLS_IF_ELSEIF_TITLE_ELSEIF);
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip(Blockly.Msg.CONTROLS_IF_ELSEIF_TOOLTIP);
     this.contextMenu = false;
   }
@@ -254,7 +254,7 @@ Blockly.Blocks['controls_if_else'] = {
     this.setColour(Blockly.Blocks.logic.HUE);
     this.appendDummyInput()
         .appendField(Blockly.Msg.CONTROLS_IF_ELSE_TITLE_ELSE);
-    this.setPreviousStatement(true);
+    this.setPreviousStatement(true, "general");
     this.setTooltip(Blockly.Msg.CONTROLS_IF_ELSE_TOOLTIP);
     this.contextMenu = false;
   }

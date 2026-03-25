@@ -72,7 +72,7 @@ var globalVariableRenameHandler = function(oldName, newName) {
 
 Blockly.Blocks['global_variable'] = {
   init: function() {
-    this.setColour(330);
+    this.setColour(300);
     this.appendDummyInput()
         .appendField("Declare")
         .appendField(new Blockly.FieldCheckbox("FALSE"), "VOLATILE")
@@ -100,8 +100,8 @@ Blockly.Blocks['global_variable'] = {
         .setCheck(null)
         .appendField("initial value");
     
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "header");
+    this.setNextStatement(true, "header");
     this.setTooltip('Declare a global variable. Use volatile for variables shared with interrupts/timers.');
     
     this.oldName_ = "myVar";
@@ -124,7 +124,7 @@ Blockly.Blocks['global_variable'] = {
 
 Blockly.Blocks['global_variable_get'] = {
   init: function() {
-    this.setColour(330);
+    this.setColour(190);
     this.appendDummyInput()
         .appendField("Get")
         .appendField(new Blockly.FieldDropdown(globalVariableDropdownGenerator), "NAME");
@@ -135,15 +135,15 @@ Blockly.Blocks['global_variable_get'] = {
 
 Blockly.Blocks['global_variable_set'] = {
   init: function() {
-    this.setColour(330);
+    this.setColour(190);
     this.appendDummyInput()
         .appendField("Set")
         .appendField(new Blockly.FieldDropdown(globalVariableDropdownGenerator), "NAME");
     this.appendValueInput("VALUE")
         .setCheck(null)
         .appendField("to");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Set the value of a global variable');
   }
 };

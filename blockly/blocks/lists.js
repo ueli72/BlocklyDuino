@@ -197,8 +197,8 @@ Blockly.Blocks['lists_create_with_item'] = {
     this.setColour(Blockly.Blocks.lists.HUE);
     this.appendDummyInput()
         .appendField(Blockly.Msg.LISTS_CREATE_WITH_ITEM_TITLE);
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip(Blockly.Msg.LISTS_CREATE_WITH_ITEM_TOOLTIP);
     this.contextMenu = false;
   }
@@ -383,8 +383,8 @@ Blockly.Blocks['lists_getIndex'] = {
       this.unplug(true, true);
       if (newStatement) {
         this.setOutput(false);
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
+        this.setPreviousStatement(true, "general");
+        this.setNextStatement(true, "general");
       } else {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
@@ -458,8 +458,8 @@ Blockly.Blocks['lists_setIndex'] = {
     this.appendValueInput('TO')
         .appendField(Blockly.Msg.LISTS_SET_INDEX_INPUT_TO);
     this.setInputsInline(true);
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip(Blockly.Msg.LISTS_SET_INDEX_TOOLTIP);
     this.updateAt_(true);
     // Assign 'this' to a variable for use in the tooltip closure below.

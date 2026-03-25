@@ -74,8 +74,8 @@ Blockly.Blocks['ws2812_init'] = {
         .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("LED Count");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Initialize WS2812 LED strip');
   }
 };
@@ -103,8 +103,8 @@ Blockly.Blocks['ws2812_set_pixel'] = {
         .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Blue (0-255)");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Set a single LED color');
   }
 };
@@ -128,8 +128,8 @@ Blockly.Blocks['ws2812_fill'] = {
         .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Blue (0-255)");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Fill all LEDs with a specific color');
   }
 };
@@ -141,8 +141,8 @@ Blockly.Blocks['ws2812_show'] = {
         .appendField("WS2812 Strip")
         .appendField(new Blockly.FieldImage("../../media/ws2812strip.png", 64, 64))
         .appendField("Show");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Update the LED strip to show changes');
   }
 };
@@ -154,8 +154,8 @@ Blockly.Blocks['ws2812_off'] = {
         .appendField("WS2812 Strip")
         .appendField(new Blockly.FieldImage("../../media/ws2812strip.png", 64, 64))
         .appendField("Turn Off");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Turn off all LEDs');
   }
 };
@@ -167,8 +167,8 @@ Blockly.Blocks['ws2812_test'] = {
         .appendField("WS2812 Strip")
         .appendField(new Blockly.FieldImage("../../media/ws2812strip.png", 64, 64))
         .appendField("Test");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Test the WS2812 strip with a rainbow effect');
   }
 };

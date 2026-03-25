@@ -32,8 +32,8 @@ Blockly.Blocks['max98357a_init'] = {
         .appendField("MAX98357A")
         .appendField(new Blockly.FieldImage("../../media/max98357a.png", 64, 64))
         .appendField("Initialize");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Initialize the MAX98357A I2S amplifier');
   }
 };
@@ -53,8 +53,8 @@ Blockly.Blocks['max98357a_play_tone'] = {
         .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Duration (ms)");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Play a tone at specified frequency for a duration');
   }
 };
@@ -66,8 +66,8 @@ Blockly.Blocks['max98357a_stop'] = {
         .appendField("MAX98357A")
         .appendField(new Blockly.FieldImage("../../media/max98357a.png", 64, 64))
         .appendField("Stop");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Stop audio output');
   }
 };
@@ -79,8 +79,8 @@ Blockly.Blocks['max98357a_test'] = {
         .appendField("MAX98357A")
         .appendField(new Blockly.FieldImage("../../media/max98357a.png", 64, 64))
         .appendField("Test");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Test the MAX98357A amplifier');
   }
 };
@@ -96,8 +96,8 @@ Blockly.Blocks['max98357a_play_file'] = {
         .setCheck('String')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Filename (.wav)");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Play a WAV file from SD card (16kHz, 8bit mono required)');
   }
 };
@@ -121,8 +121,8 @@ Blockly.Blocks['max98357a_wait_until_done'] = {
         .appendField("MAX98357A")
         .appendField(new Blockly.FieldImage("../../media/max98357a.png", 64, 64))
         .appendField("Wait Until Done");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Wait until audio playback is finished');
   }
 };

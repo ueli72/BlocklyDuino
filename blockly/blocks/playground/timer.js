@@ -77,8 +77,8 @@ Blockly.Blocks['async_timer'] = {
         .appendField(new Blockly.FieldDropdown(getTimerModes), "MODE");
     this.appendStatementInput("HANDLER_CODE")
         .appendField("do");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Timer callback runs in interrupt context. No delay(), no Serial, no OLED/SD/DHT11/Ultrasonic/MAX98357A/WS2812. Use volatile for variables shared with main loop.');
     this.setInputsInline(true);
   },

@@ -45,8 +45,8 @@ Blockly.Blocks['servo_sg90_init'] = {
         .appendField("SG90 Servo")
         .appendField(new Blockly.FieldImage("../../media/sg90.jpg", 64, 64))
         .appendField("Initialize");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Initialize all SG90 servos');
   }
 };
@@ -64,8 +64,8 @@ Blockly.Blocks['servo_sg90_move'] = {
         .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Degree (0~180)");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('SG90 servo move between 0~180 degree');
   }
 };
@@ -97,8 +97,8 @@ Blockly.Blocks['servo_sg90_test_sweep'] = {
         .appendField("PIN#")
         .appendField(new Blockly.FieldDropdown(getSg90Pins), "PIN")
         .appendField("Test Sweep 180°");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Perform a full 180° sweep back and forward once');
   }
 };

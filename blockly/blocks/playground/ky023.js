@@ -88,8 +88,8 @@ Blockly.Blocks['ky023_init'] = {
         .appendField(new Blockly.FieldDropdown(getKY023AnalogPins), "Y_PIN")
         .appendField(" Button")
         .appendField(new Blockly.FieldDropdown(getKY023AnalogPins), "BUTTON_PIN");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Initialize KY023 joystick module with configurable pins');
   }
 };
@@ -137,8 +137,8 @@ Blockly.Blocks['ky023_test'] = {
         .appendField("KY023 Joystick")
         .appendField(new Blockly.FieldImage("../../media/ky023jm.png", 64, 64))
         .appendField("Test");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Test the KY023 joystick by reading and printing values to Serial');
   }
 };

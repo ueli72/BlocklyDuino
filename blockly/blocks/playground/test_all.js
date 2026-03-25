@@ -78,8 +78,8 @@ Blockly.Blocks['test_all'] = {
         .appendField("SG90 Servo")
         .appendField(new Blockly.FieldCheckbox("TRUE"), "SG90_SERVO");
     
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Run interactive test menu for selected components. Use SW1/SW2 to navigate, SW3 to select, SW4 to exit.');
   }
 };

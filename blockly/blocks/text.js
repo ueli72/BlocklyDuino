@@ -216,8 +216,8 @@ Blockly.Blocks['text_create_join_item'] = {
     this.setColour(Blockly.Blocks.text.HUE);
     this.appendDummyInput()
         .appendField(Blockly.Msg.TEXT_CREATE_JOIN_ITEM_TITLE_ITEM);
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip(Blockly.Msg.TEXT_CREATE_JOIN_ITEM_TOOLTIP);
     this.contextMenu = false;
   }
@@ -236,8 +236,8 @@ Blockly.Blocks['text_append'] = {
         .appendField(new Blockly.FieldVariable(
         Blockly.Msg.TEXT_APPEND_VARIABLE), 'VAR')
         .appendField(Blockly.Msg.TEXT_APPEND_APPENDTEXT);
-    this.setPreviousStatement(true);
-    this.setNextStatement(true);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     // Assign 'this' to a variable for use in the tooltip closure below.
     var thisBlock = this;
     this.setTooltip(function() {

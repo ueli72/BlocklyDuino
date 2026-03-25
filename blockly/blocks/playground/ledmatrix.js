@@ -32,8 +32,8 @@ Blockly.Blocks['led_matrix_init'] = {
         .appendField("LED Matrix")
         .appendField(new Blockly.FieldImage("../../media/ledmatrix.jpg", 64, 64))
         .appendField("Initialize");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Initialize the 4x4 LED Matrix');
   }
 };
@@ -61,8 +61,8 @@ Blockly.Blocks['led_matrix_set_pixel'] = {
         .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Blue (0-255)");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Set a single pixel color (0-15)');
   }
 };
@@ -86,8 +86,8 @@ Blockly.Blocks['led_matrix_fill'] = {
         .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Blue (0-255)");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Fill all LEDs with a specific color');
   }
 };
@@ -99,8 +99,8 @@ Blockly.Blocks['led_matrix_show'] = {
         .appendField("LED Matrix")
         .appendField(new Blockly.FieldImage("../../media/ledmatrix.jpg", 64, 64))
         .appendField("Show");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Show the changes on the LED Matrix');
   }
 };
@@ -112,8 +112,8 @@ Blockly.Blocks['led_matrix_off'] = {
         .appendField("LED Matrix")
         .appendField(new Blockly.FieldImage("../../media/ledmatrix.jpg", 64, 64))
         .appendField("Turn Off");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Turn off all LEDs on the Matrix');
   }
 };
@@ -125,8 +125,8 @@ Blockly.Blocks['led_matrix_test'] = {
         .appendField("LED Matrix")
         .appendField(new Blockly.FieldImage("../../media/ledmatrix.jpg", 64, 64))
         .appendField("Test Rainbow");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Test the LED Matrix with a rainbow effect');
   }
 };

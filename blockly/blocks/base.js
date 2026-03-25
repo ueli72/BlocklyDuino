@@ -40,8 +40,8 @@ Blockly.Blocks['base_delay'] = {
         .appendField("Delay")
         .setCheck('Number');
     this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Delay specific time');
   }
 };
@@ -71,8 +71,8 @@ Blockly.Blocks['inout_buildin_led'] = {
      this.appendDummyInput()
 	       .appendField("Build-in LED Stat")
 	       .appendField(new Blockly.FieldDropdown([["HIGH", "HIGH"], ["LOW", "LOW"]]), "STAT");
-     this.setPreviousStatement(true, null);
-     this.setNextStatement(true, null);
+     this.setPreviousStatement(true, "general");
+     this.setNextStatement(true, "general");
      this.setTooltip('light or off the build-in LED');
    }
 };
@@ -86,8 +86,8 @@ Blockly.Blocks['inout_digital_write'] = {
 	      .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
       	.appendField("Stat")
       	.appendField(new Blockly.FieldDropdown([["HIGH", "HIGH"], ["LOW", "LOW"]]), "STAT");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Write digital value to a specific Port');
   }
 };
@@ -115,8 +115,8 @@ Blockly.Blocks['inout_analog_write'] = {
         .appendField("value")
         .setCheck('Number');
     this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Write analog value between 0 and 255 to a specific Port');
   }
 };
@@ -144,8 +144,8 @@ Blockly.Blocks['inout_tone'] = {
         .appendField("frequency")
         .setCheck("Number");
     this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip("Generate audio tones on a pin");
   }
 };
@@ -158,8 +158,8 @@ Blockly.Blocks['inout_notone'] = {
         .appendField("No tone PIN#")
         .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
     this.setInputsInline(true);
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip("Stop generating a tone on a pin");
   }
 };
@@ -181,8 +181,8 @@ Blockly.Blocks['serial_print'] = {
     this.setColour(230);
     this.appendValueInput("CONTENT", 'String')
         .appendField("Serial Print");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Prints data to the console/serial port as human-readable ASCII text.');
   }
 };
