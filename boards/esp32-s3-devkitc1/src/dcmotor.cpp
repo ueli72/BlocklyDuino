@@ -2,16 +2,23 @@
 #include "oled.h"
 #include "buttons.h"
 
-void initDCMotors() {
-  pinMode(MOTOR1_IN1_PIN, OUTPUT);
-  pinMode(MOTOR1_IN2_PIN, OUTPUT);
-  pinMode(MOTOR2_IN1_PIN, OUTPUT);
-  pinMode(MOTOR2_IN2_PIN, OUTPUT);
- 
-  pinMode(MOTOR3_IN1_PIN, OUTPUT);
-  pinMode(MOTOR3_IN2_PIN, OUTPUT);
-  pinMode(MOTOR4_IN1_PIN, OUTPUT);
-  pinMode(MOTOR4_IN2_PIN, OUTPUT);
+void initDCMotors(uint8_t mask) {
+  if (mask & 1) {
+    pinMode(MOTOR1_IN1_PIN, OUTPUT);
+    pinMode(MOTOR1_IN2_PIN, OUTPUT);
+  }
+  if (mask & 2) {
+    pinMode(MOTOR2_IN1_PIN, OUTPUT);
+    pinMode(MOTOR2_IN2_PIN, OUTPUT);
+  }
+  if (mask & 4) {
+    pinMode(MOTOR3_IN1_PIN, OUTPUT);
+    pinMode(MOTOR3_IN2_PIN, OUTPUT);
+  }
+  if (mask & 8) {
+    pinMode(MOTOR4_IN1_PIN, OUTPUT);
+    pinMode(MOTOR4_IN2_PIN, OUTPUT);
+  }
 
   analogWriteFrequency(500);
 }
@@ -60,58 +67,66 @@ void setDCSpeed(int motorNum, int direction, int speedPercent) {
   }
 }
 
-void testDCMotors() {
-    writeToOled("Motor 1\nForward");
-    setDCSpeed(1, FORWARD, 100);
-    delay(1000);
-    writeToOled("Motor 1\nStop");
-    setDCSpeed(1, FORWARD, 0);
-    delay(500);
-    writeToOled("Motor 1\nBackward");
-    setDCSpeed(1, BACKWARD, 100);
-    delay(1000);
-    writeToOled("Motor 1\nStop");
-    setDCSpeed(1, BACKWARD, 0);
-    delay(500);
+void testDCMotors(uint8_t mask) {
+    if (mask & 1) {
+        writeToOled("Motor 1\nForward");
+        setDCSpeed(1, FORWARD, 100);
+        delay(1000);
+        writeToOled("Motor 1\nStop");
+        setDCSpeed(1, FORWARD, 0);
+        delay(500);
+        writeToOled("Motor 1\nBackward");
+        setDCSpeed(1, BACKWARD, 100);
+        delay(1000);
+        writeToOled("Motor 1\nStop");
+        setDCSpeed(1, BACKWARD, 0);
+        delay(500);
+    }
     
-    writeToOled("Motor 2\nForward");
-    setDCSpeed(2, FORWARD, 100);
-    delay(1000);
-    writeToOled("Motor 2\nStop");
-    setDCSpeed(2, FORWARD, 0);
-    delay(500);
-    writeToOled("Motor 2\nBackward");
-    setDCSpeed(2, BACKWARD, 100);
-    delay(1000);
-    writeToOled("Motor 2\nStop");
-    setDCSpeed(2, BACKWARD, 0);
-    delay(500);
+    if (mask & 2) {
+        writeToOled("Motor 2\nForward");
+        setDCSpeed(2, FORWARD, 100);
+        delay(1000);
+        writeToOled("Motor 2\nStop");
+        setDCSpeed(2, FORWARD, 0);
+        delay(500);
+        writeToOled("Motor 2\nBackward");
+        setDCSpeed(2, BACKWARD, 100);
+        delay(1000);
+        writeToOled("Motor 2\nStop");
+        setDCSpeed(2, BACKWARD, 0);
+        delay(500);
+    }
 
-    writeToOled("Motor 3\nForward");
-    setDCSpeed(3, FORWARD, 100);
-    delay(1000);
-    writeToOled("Motor 3\nStop");
-    setDCSpeed(3, FORWARD, 0);
-    delay(500);
-    writeToOled("Motor 3\nBackward");
-    setDCSpeed(3, BACKWARD, 100);
-    delay(1000);
-    writeToOled("Motor 3\nStop");
-    setDCSpeed(3, BACKWARD, 0);
-    delay(500);
+    if (mask & 4) {
+        writeToOled("Motor 3\nForward");
+        setDCSpeed(3, FORWARD, 100);
+        delay(1000);
+        writeToOled("Motor 3\nStop");
+        setDCSpeed(3, FORWARD, 0);
+        delay(500);
+        writeToOled("Motor 3\nBackward");
+        setDCSpeed(3, BACKWARD, 100);
+        delay(1000);
+        writeToOled("Motor 3\nStop");
+        setDCSpeed(3, BACKWARD, 0);
+        delay(500);
+    }
 
-    writeToOled("Motor 4\nForward");
-    setDCSpeed(4, FORWARD, 100);
-    delay(1000);
-    writeToOled("Motor 4\nStop");
-    setDCSpeed(4, FORWARD, 0);
-    delay(500);
-    writeToOled("Motor 4\nBackward");
-    setDCSpeed(4, BACKWARD, 100);
-    delay(1000);
-    writeToOled("Motor 4\nStop");
-    setDCSpeed(4, BACKWARD, 0);
-    delay(500);
+    if (mask & 8) {
+        writeToOled("Motor 4\nForward");
+        setDCSpeed(4, FORWARD, 100);
+        delay(1000);
+        writeToOled("Motor 4\nStop");
+        setDCSpeed(4, FORWARD, 0);
+        delay(500);
+        writeToOled("Motor 4\nBackward");
+        setDCSpeed(4, BACKWARD, 100);
+        delay(1000);
+        writeToOled("Motor 4\nStop");
+        setDCSpeed(4, BACKWARD, 0);
+        delay(500);
+    }
 
     clearOled();
 }

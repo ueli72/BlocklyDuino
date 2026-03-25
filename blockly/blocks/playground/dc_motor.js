@@ -32,9 +32,30 @@ Blockly.Blocks['dc_motor_init'] = {
         .appendField("DC Motor")
         .appendField(new Blockly.FieldImage("../../media/motor.jpg", 64, 64))
         .appendField("Initialize");
+    
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Motor1")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "MOTOR1");
+    
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Motor2")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "MOTOR2");
+    
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Motor3")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "MOTOR3");
+    
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Motor4")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "MOTOR4");
+    
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setTooltip('Initialize all DC motors');
+    this.setTooltip('Initialize selected DC motors');
   }
 };
 
@@ -80,8 +101,29 @@ Blockly.Blocks['dc_motor_test'] = {
         .appendField("DC Motor")
         .appendField(new Blockly.FieldImage("../../media/motor.jpg", 64, 64))
         .appendField("Test");
+    
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Motor1")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "MOTOR1");
+    
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Motor2")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "MOTOR2");
+    
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Motor3")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "MOTOR3");
+    
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Motor4")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "MOTOR4");
+    
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setTooltip('Test all DC motors');
+    this.setTooltip('Test selected DC motors');
   }
 };

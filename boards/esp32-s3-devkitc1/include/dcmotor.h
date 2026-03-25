@@ -20,13 +20,13 @@
 #define FORWARD 1
 #define BACKWARD 0
 
-// Function to initialize DC motor pins
-void initDCMotors();
+// Function to initialize DC motor pins (mask: bit 0 = motor1, bit 1 = motor2, bit 2 = motor3, bit 3 = motor4)
+void initDCMotors(uint8_t mask);
 
 // Function to set DC motor speed and direction
 void setDCSpeed(int motorNum, int direction, int speedPercent);
 
-// Test function for DC motors
-void testDCMotors();
+// Test function for DC motors (mask: bit 0 = motor1, bit 1 = motor2, bit 2 = motor3, bit 3 = motor4)
+void testDCMotors(uint8_t mask);
 
 #endif // DCMOTOR_H

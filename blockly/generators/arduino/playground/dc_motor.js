@@ -22,8 +22,20 @@
 'use strict';
 
 Blockly.Arduino.dc_motor_init = function() {
+  var motor1 = this.getFieldValue('MOTOR1') === 'TRUE';
+  var motor2 = this.getFieldValue('MOTOR2') === 'TRUE';
+  var motor3 = this.getFieldValue('MOTOR3') === 'TRUE';
+  var motor4 = this.getFieldValue('MOTOR4') === 'TRUE';
+  
   Blockly.Arduino.definitions_['include_dcmotor_h'] = '#include "dcmotor.h"\n';
-  var code = 'initDCMotors();\n';
+  
+  var mask = 0;
+  if (motor1) mask |= 1;
+  if (motor2) mask |= 2;
+  if (motor3) mask |= 4;
+  if (motor4) mask |= 8;
+  
+  var code = 'initDCMotors(' + mask + ');\n';
   return code;
 };
 
@@ -44,7 +56,19 @@ Blockly.Arduino.dc_motor_stop = function() {
 };
 
 Blockly.Arduino.dc_motor_test = function() {
+  var motor1 = this.getFieldValue('MOTOR1') === 'TRUE';
+  var motor2 = this.getFieldValue('MOTOR2') === 'TRUE';
+  var motor3 = this.getFieldValue('MOTOR3') === 'TRUE';
+  var motor4 = this.getFieldValue('MOTOR4') === 'TRUE';
+  
   Blockly.Arduino.definitions_['include_dcmotor_h'] = '#include "dcmotor.h"\n';
-  var code = 'testDCMotors();\n';
+  
+  var mask = 0;
+  if (motor1) mask |= 1;
+  if (motor2) mask |= 2;
+  if (motor3) mask |= 4;
+  if (motor4) mask |= 8;
+  
+  var code = 'testDCMotors(' + mask + ');\n';
   return code;
 };
