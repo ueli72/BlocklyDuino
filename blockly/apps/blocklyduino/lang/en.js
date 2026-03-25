@@ -54,6 +54,7 @@ i18n.registerTranslations('en', {
     "text": "Text",
     "variables": "Variables",
     "functions": "Functions",
+    "customCode": "Custom Code",
     "inputOutput": "Input/Output",
     "playground": "Playground",
     "sg90Servo": "SG90 Servo",
@@ -171,7 +172,10 @@ i18n.registerTranslations('en', {
     "globalArrayGet": "Get Array Element",
     "globalArraySet": "Set Array Element",
     "globalArrayLength": "Array Length",
-    "globalArrayFill": "Fill Array"
+    "globalArrayFill": "Fill Array",
+    "customCodeStatement": "Custom Code",
+    "customCodeExpression": "Custom Expression",
+    "customCodeInclude": "Custom Include/Define"
   },
   "blockInfo": {
     "internalLED": {

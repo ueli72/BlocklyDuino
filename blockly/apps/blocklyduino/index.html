@@ -38,6 +38,7 @@
   <script type="text/javascript" src="../../blocks/playground/serial.js"></script>
   <script type="text/javascript" src="../../blocks/playground/global_variable.js"></script>
   <script type="text/javascript" src="../../blocks/playground/global_array.js"></script>
+  <script type="text/javascript" src="../../blocks/playground/custom_code.js"></script>
   <script type="text/javascript" src="../../generators/arduino.js"></script>
   <script type="text/javascript" src="../../generators/arduino/base.js"></script>
   <script type="text/javascript" src="../../generators/arduino/control.js"></script>
@@ -68,6 +69,7 @@
   <script type="text/javascript" src="../../generators/arduino/playground/serial.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/global_variable.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/global_array.js"></script>
+  <script type="text/javascript" src="../../generators/arduino/playground/custom_code.js"></script>
   <script type="text/javascript" src="../../msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
@@ -434,6 +436,7 @@ function addToolboxIcons() {
     else if (text === i18n.t('categories.text')) iconClass = 'bi-type';
     else if (text === i18n.t('categories.variables')) iconText = 'x';
     else if (text === i18n.t('categories.functions')) iconText = 'f(x)';
+    else if (text === i18n.t('categories.customCode')) iconClass = 'bi-code-slash';
     else if (text === i18n.t('categories.inputOutput')) iconClass = 'bi-arrow-left-right';
     else if (text === sg90Text) iconClass = 'bi-gear';
     else if (text === ledText) iconClass = 'bi-lightbulb-fill';
@@ -1212,6 +1215,11 @@ function initBlockly() {
       </block>
     </category>
     <category name="Functions" custom="PROCEDURE" data-i18n-name="categories.functions"></category>
+    <category name="Custom Code" data-i18n-name="categories.customCode">
+      <block type="custom_code_statement"></block>
+      <block type="custom_code_expression"></block>
+      <block type="custom_code_include"></block>
+    </category>
     <sep></sep>
     <category name="Input/Output" data-i18n-name="categories.inputOutput">
       <category name="Basic" data-i18n-name="categories.basic">
