@@ -346,5 +346,10 @@ i18n.registerTranslations('de', {
     "serialReadChar": "Serial muss initialisiert werden, bevor gelesen werden kann.",
     "serialReadLine": "Serial muss initialisiert werden, bevor gelesen werden kann.",
     "serialAvailable": "Serial muss initialisiert werden, bevor verfügbare Bytes geprüft werden können."
+  },
+  "warnings": {
+    "mustBeInInterrupts": "Dieser Block muss im Interrupts-Block platziert werden!",
+    "forbiddenInISR": "VERBOTEN! Dieser Block kann nicht in einem Interrupt verwendet werden!\n\nISR-Einschränkungen:\n• Kein delay()\n• Kein Serial\n• Kein OLED, SD-Karte, DHT11, Ultraschall\n• Kein MAX98357A\n• Keine interne LED\n\nEntferne diesen Block sofort!",
+    "forbiddenInTimer": "VERBOTEN! Dieser Block kann nicht in einem Timer-Callback verwendet werden!\n\nTimer-Einschränkungen:\n• Kein delay()\n• Kein Serial\n• Kein OLED, SD-Karte, DHT11, Ultraschall\n• Kein MAX98357A\n• Keine interne LED, LED-Matrix (WS2812)\n\nEntferne diesen Block sofort!"
   }
 });

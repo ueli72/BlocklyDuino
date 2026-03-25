@@ -59,7 +59,7 @@ function checkTimerBlocks(block) {
   }
   
   if (!isInInterruptsBlock) {
-    block.setWarningText('⚠️ This block must be placed inside the Interrupts block!');
+    block.setWarningText(i18n.t('warnings.mustBeInInterrupts'));
     block.setColour(0);
     return;
   }
@@ -75,7 +75,7 @@ function checkTimerBlocks(block) {
     child = child.getNextBlock();
   }
   if (hasBlocked) {
-    block.setWarningText('⚠️ FORBIDDEN! This block cannot be used inside a timer callback!\n\nTimer restrictions:\n• No delay()\n• No Serial\n• No OLED, SD Card, DHT11, Ultrasonic\n• No MAX98357A\n• No Internal LED, LED Matrix (WS2812)\n\nRemove this block immediately!');
+    block.setWarningText(i18n.t('warnings.forbiddenInTimer'));
     block.setColour(0);
   } else {
     block.setWarningText(null);

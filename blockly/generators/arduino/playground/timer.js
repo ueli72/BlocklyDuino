@@ -34,7 +34,7 @@ Blockly.Arduino.async_timer = function() {
   }
   
   if (!isInInterruptsBlock) {
-    this.setWarningText('⚠️ This block must be placed inside the Interrupts block!');
+    this.setWarningText(i18n.t('warnings.mustBeInInterrupts'));
     return '';
   }
   this.setWarningText(null);

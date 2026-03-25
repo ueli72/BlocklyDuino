@@ -104,7 +104,7 @@ function checkISRBlocks(block) {
   }
   
   if (!isInInterruptsBlock) {
-    block.setWarningText('⚠️ This block must be placed inside the Interrupts block!');
+    block.setWarningText(i18n.t('warnings.mustBeInInterrupts'));
     block.setColour(0);
     return;
   }
@@ -120,7 +120,7 @@ function checkISRBlocks(block) {
     child = child.getNextBlock();
   }
   if (hasBlocked) {
-    block.setWarningText('⚠️ FORBIDDEN! This block cannot be used inside an interrupt!\n\nISR restrictions:\n• No delay()\n• No Serial\n• No OLED, SD Card, DHT11, Ultrasonic\n• No MAX98357A\n• No Internal LED\n\nRemove this block immediately!');
+    block.setWarningText(i18n.t('warnings.forbiddenInISR'));
     block.setColour(0);
   } else {
     block.setWarningText(null);
