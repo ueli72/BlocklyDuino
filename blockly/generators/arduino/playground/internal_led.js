@@ -23,7 +23,7 @@
 
 Blockly.Arduino.internal_led_init = function() {
   Blockly.Arduino.definitions_['include_internal_led_h'] = '#include "internalLED.h"\n';
-  var code = 'initializeLED();\n';
+  var code = 'initializeLED();  // Initialize built-in RGB LED\n';
   return code;
 };
 
@@ -34,14 +34,14 @@ Blockly.Arduino.internal_led_set = function() {
 
   Blockly.Arduino.definitions_['include_internal_led_h'] = '#include "internalLED.h"\n';
 
-  var code = 'setLED(' + red + ', ' + green + ', ' + blue + ');\n';
+  var code = 'setLED(' + red + ', ' + green + ', ' + blue + ');  // Set RGB color (R:' + red + ', G:' + green + ', B:' + blue + ')\n';
   return code;
 };
 
 Blockly.Arduino.internal_led_off = function() {
   Blockly.Arduino.definitions_['include_internal_led_h'] = '#include "internalLED.h"\n';
 
-  var code = 'turnOffLED();\n';
+  var code = 'turnOffLED();  // Turn off built-in LED\n';
   return code;
 };
 

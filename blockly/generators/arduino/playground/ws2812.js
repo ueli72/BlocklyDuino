@@ -25,7 +25,7 @@ Blockly.Arduino.ws2812_init = function() {
   var dropdown_pin = this.getFieldValue('PIN');
   var count = Blockly.Arduino.valueToCode(this, 'COUNT', Blockly.Arduino.ORDER_ATOMIC);
   Blockly.Arduino.definitions_['include_ws2812_h'] = '#include "ws2812.h"\n';
-  var code = 'initWS2812(' + dropdown_pin + ', ' + count + ');\n';
+  var code = 'initWS2812(' + dropdown_pin + ', ' + count + ');  // Initialize WS2812 LED strip with ' + count + ' LEDs on pin ' + dropdown_pin + '\n';
   return code;
 };
 

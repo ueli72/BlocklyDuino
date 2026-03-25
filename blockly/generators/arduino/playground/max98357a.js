@@ -23,7 +23,7 @@
 
 Blockly.Arduino.max98357a_init = function() {
   Blockly.Arduino.definitions_['include_max98357a_h'] = '#include "max98357a.h"\n';
-  var code = 'initMAX98357A();\n';
+  var code = 'initMAX98357A();  // Initialize I2S audio amplifier\n';
   return code;
 };
 
@@ -33,14 +33,14 @@ Blockly.Arduino.max98357a_play_tone = function() {
 
   Blockly.Arduino.definitions_['include_max98357a_h'] = '#include "max98357a.h"\n';
 
-  var code = 'playTone(' + frequency + ', ' + duration + ');\n';
+  var code = 'playTone(' + frequency + ', ' + duration + ');  // Play ' + frequency + 'Hz tone for ' + duration + 'ms\n';
   return code;
 };
 
 Blockly.Arduino.max98357a_stop = function() {
   Blockly.Arduino.definitions_['include_max98357a_h'] = '#include "max98357a.h"\n';
 
-  var code = 'stopAudio();\n';
+  var code = 'stopAudio();  // Stop audio playback\n';
   return code;
 };
 

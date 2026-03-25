@@ -23,7 +23,7 @@
 
 Blockly.Arduino.led_matrix_init = function() {
   Blockly.Arduino.definitions_['include_ledmatrix_h'] = '#include "LEDMatrix.h"\n';
-  var code = 'initializeLEDMatrix();\n';
+  var code = 'initializeLEDMatrix();  // Initialize 5x5 LED matrix display\n';
   return code;
 };
 
@@ -33,7 +33,7 @@ Blockly.Arduino.led_matrix_set_pixel = function() {
   var red = Blockly.Arduino.valueToCode(this, 'RED', Blockly.Arduino.ORDER_ATOMIC);
   var green = Blockly.Arduino.valueToCode(this, 'GREEN', Blockly.Arduino.ORDER_ATOMIC);
   var blue = Blockly.Arduino.valueToCode(this, 'BLUE', Blockly.Arduino.ORDER_ATOMIC);
-  var code = 'setLEDMatrixPixel(' + index + ', ' + red + ', ' + green + ', ' + blue + ');\n';
+  var code = 'setLEDMatrixPixel(' + index + ', ' + red + ', ' + green + ', ' + blue + ');  // Set pixel ' + index + ' color\n';
   return code;
 };
 
@@ -42,19 +42,19 @@ Blockly.Arduino.led_matrix_fill = function() {
   var red = Blockly.Arduino.valueToCode(this, 'RED', Blockly.Arduino.ORDER_ATOMIC);
   var green = Blockly.Arduino.valueToCode(this, 'GREEN', Blockly.Arduino.ORDER_ATOMIC);
   var blue = Blockly.Arduino.valueToCode(this, 'BLUE', Blockly.Arduino.ORDER_ATOMIC);
-  var code = 'fillLEDMatrix(' + red + ', ' + green + ', ' + blue + ');\n';
+  var code = 'fillLEDMatrix(' + red + ', ' + green + ', ' + blue + ');  // Fill entire matrix with color\n';
   return code;
 };
 
 Blockly.Arduino.led_matrix_show = function() {
   Blockly.Arduino.definitions_['include_ledmatrix_h'] = '#include "LEDMatrix.h"\n';
-  var code = 'showLEDMatrix();\n';
+  var code = 'showLEDMatrix();  // Display the current buffer on the matrix\n';
   return code;
 };
 
 Blockly.Arduino.led_matrix_off = function() {
   Blockly.Arduino.definitions_['include_ledmatrix_h'] = '#include "LEDMatrix.h"\n';
-  var code = 'turnOffLEDMatrix();\n';
+  var code = 'turnOffLEDMatrix();  // Turn off all LEDs in the matrix\n';
   return code;
 };
 

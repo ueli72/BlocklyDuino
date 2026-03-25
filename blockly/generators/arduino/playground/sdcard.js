@@ -23,7 +23,7 @@
 
 Blockly.Arduino.sdcard_init = function() {
   Blockly.Arduino.definitions_['include_sdcard_h'] = '#include "sdcard.h"\n';
-  var code = 'initSDCard();\n';
+  var code = 'initSDCard();  // Initialize SD card module\n';
   return code;
 };
 
@@ -31,14 +31,14 @@ Blockly.Arduino.sdcard_write = function() {
   Blockly.Arduino.definitions_['include_sdcard_h'] = '#include "sdcard.h"\n';
   var path = Blockly.Arduino.valueToCode(this, 'PATH', Blockly.Arduino.ORDER_ATOMIC) || '"/default.txt"';
   var content = Blockly.Arduino.valueToCode(this, 'CONTENT', Blockly.Arduino.ORDER_ATOMIC) || '""';
-  var code = 'sdWriteFile(' + path + ', ' + content + ');\n';
+  var code = 'sdWriteFile(' + path + ', ' + content + ');  // Write to SD card file\n';
   return code;
 };
 
 Blockly.Arduino.sdcard_read = function() {
   Blockly.Arduino.definitions_['include_sdcard_h'] = '#include "sdcard.h"\n';
   var path = Blockly.Arduino.valueToCode(this, 'PATH', Blockly.Arduino.ORDER_ATOMIC) || '"/default.txt"';
-  var code = 'sdReadFile(' + path + ')';
+  var code = 'sdReadFile(' + path + ')  // Read SD card file content';
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 
@@ -46,7 +46,7 @@ Blockly.Arduino.sdcard_append = function() {
   Blockly.Arduino.definitions_['include_sdcard_h'] = '#include "sdcard.h"\n';
   var path = Blockly.Arduino.valueToCode(this, 'PATH', Blockly.Arduino.ORDER_ATOMIC) || '"/default.txt"';
   var content = Blockly.Arduino.valueToCode(this, 'CONTENT', Blockly.Arduino.ORDER_ATOMIC) || '""';
-  var code = 'sdAppendFile(' + path + ', ' + content + ');\n';
+  var code = 'sdAppendFile(' + path + ', ' + content + ');  // Append to SD card file\n';
   return code;
 };
 

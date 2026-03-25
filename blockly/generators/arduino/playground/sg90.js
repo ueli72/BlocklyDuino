@@ -30,7 +30,7 @@ var sg90_servo_constants = {
 
 Blockly.Arduino.servo_sg90_init = function() {
   Blockly.Arduino.definitions_['include_servos_h'] = '#include "servos.h"\n';
-  var code = 'initializeServos();\n';
+  var code = 'initializeServos();  // Initialize servo motors\n';
   return code;
 };
 

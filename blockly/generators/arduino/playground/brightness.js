@@ -24,6 +24,6 @@
 Blockly.Arduino.brightness_read = function() {
   var dropdown_pin = this.getFieldValue('PIN');
   Blockly.Arduino.definitions_['include_brightness_h'] = '#include "brightness.h"\n';
-  var code = 'readBrightness(' + dropdown_pin + ')';
+  var code = 'readBrightness(' + dropdown_pin + ')  // Read ambient light level (0-4095)';
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };

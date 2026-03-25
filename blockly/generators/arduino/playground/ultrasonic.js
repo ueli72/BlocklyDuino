@@ -24,7 +24,7 @@
 Blockly.Arduino.ultrasonic_read = function() {
   var sensor = this.getFieldValue('SENSOR');
   Blockly.Arduino.definitions_['include_ultrasonic_h'] = '#include "ultrasonic.h"\n';
-  var code = 'measureDistance(' + sensor + ')';
+  var code = 'measureDistance(' + sensor + ')  // Read distance from ultrasonic sensor ' + sensor + ' (in cm)';
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 

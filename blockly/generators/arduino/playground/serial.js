@@ -26,7 +26,7 @@ Blockly.Arduino.serial_init = function() {
   
   Blockly.Arduino.definitions_['include_serial_h'] = '#include "serial.h"\n';
   
-  var code = 'initSerial(' + baud + ');\n';
+  var code = 'initSerial(' + baud + ');  // Initialize Serial communication at ' + baud + ' baud\n';
   return code;
 };
 

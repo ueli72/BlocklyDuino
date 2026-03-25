@@ -57,11 +57,12 @@ Blockly.Arduino.async_timer = function() {
   // Include Ticker library
   Blockly.Arduino.definitions_['include_ticker'] = '#include <Ticker.h>\n';
   
-  // Create Ticker object
-  Blockly.Arduino.definitions_[timerName + '_obj'] = 'Ticker ' + timerName + ';\n';
+  // Create Ticker object for this timer
+  Blockly.Arduino.definitions_[timerName + '_obj'] = 'Ticker ' + timerName + ';  // Timer object for periodic/repeated execution\n';
 
   // Create callback function (returned to be placed in Interrupts block)
-  var callbackCode = 'void ' + callbackName + '() {\n' + branch + '}\n';
+  var callbackCode = '// Timer callback - executed every ' + delay + 'ms (' + (mode === 'once' ? 'once' : 'repeated') + ')\n';
+  callbackCode += 'void ' + callbackName + '() {\n' + branch + '}\n';
   
   // Store the function code so we can return it on subsequent calls
   Blockly.Arduino.generated_[blockKey] = callbackCode;
@@ -69,9 +70,11 @@ Blockly.Arduino.async_timer = function() {
   // Setup code to attach the timer (goes to setup)
   var setupCode = '';
   if (mode === 'once') {
-    setupCode = timerName + '.once_ms(' + delay + ', ' + callbackName + ');\n';
+    setupCode = '// Start one-shot timer: ' + callbackName + ' after ' + delay + 'ms\n';
+    setupCode += timerName + '.once_ms(' + delay + ', ' + callbackName + ');\n';
   } else {
-    setupCode = timerName + '.attach_ms(' + delay + ', ' + callbackName + ');\n';
+    setupCode = '// Start periodic timer: ' + callbackName + ' every ' + delay + 'ms\n';
+    setupCode += timerName + '.attach_ms(' + delay + ', ' + callbackName + ');\n';
   }
   Blockly.Arduino.setups_['timer_' + timerName] = setupCode;
 

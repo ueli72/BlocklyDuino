@@ -28,25 +28,25 @@ Blockly.Arduino.ky023_init = function() {
   
   Blockly.Arduino.definitions_['include_ky023_h'] = '#include "ky023.h"\n';
   
-  var code = 'initKY023(' + x_pin + ', ' + y_pin + ', ' + button_pin + ');\n';
+  var code = 'initKY023(' + x_pin + ', ' + y_pin + ', ' + button_pin + ');  // Initialize joystick (X:' + x_pin + ', Y:' + y_pin + ', Button:' + button_pin + ')\n';
   return code;
 };
 
 Blockly.Arduino.ky023_read_x = function() {
   Blockly.Arduino.definitions_['include_ky023_h'] = '#include "ky023.h"\n';
-  var code = 'readKY023X()';
+  var code = 'readKY023X()  // Read joystick X-axis (0-4095)';
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 
 Blockly.Arduino.ky023_read_y = function() {
   Blockly.Arduino.definitions_['include_ky023_h'] = '#include "ky023.h"\n';
-  var code = 'readKY023Y()';
+  var code = 'readKY023Y()  // Read joystick Y-axis (0-4095)';
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 
 Blockly.Arduino.ky023_read_button = function() {
   Blockly.Arduino.definitions_['include_ky023_h'] = '#include "ky023.h"\n';
-  var code = 'isKY023ButtonPressed()';
+  var code = 'isKY023ButtonPressed()  // Check if joystick button is pressed';
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 

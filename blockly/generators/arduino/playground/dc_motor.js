@@ -35,7 +35,15 @@ Blockly.Arduino.dc_motor_init = function() {
   if (motor3) mask |= 4;
   if (motor4) mask |= 8;
   
-  var code = 'initDCMotors(' + mask + ');\n';
+  // Build comment showing which motors are enabled
+  var motors = [];
+  if (motor1) motors.push('M1');
+  if (motor2) motors.push('M2');
+  if (motor3) motors.push('M3');
+  if (motor4) motors.push('M4');
+  var motorList = motors.length > 0 ? motors.join(', ') : 'none';
+  
+  var code = 'initDCMotors(' + mask + ');  // Initialize DC motors: ' + motorList + '\n';
   return code;
 };
 
@@ -44,14 +52,14 @@ Blockly.Arduino.dc_motor_set = function() {
   var dropdown_direction = this.getFieldValue('DIRECTION');
   var value_speed = Blockly.Arduino.valueToCode(this, 'SPEED', Blockly.Arduino.ORDER_ATOMIC);
   Blockly.Arduino.definitions_['include_dcmotor_h'] = '#include "dcmotor.h"\n';
-  var code = 'setDCSpeed(' + dropdown_motor + ', ' + dropdown_direction + ', ' + value_speed + ');\n';
+  var code = 'setDCSpeed(' + dropdown_motor + ', ' + dropdown_direction + ', ' + value_speed + ');  // Set motor ' + dropdown_motor + ' direction and speed\n';
   return code;
 };
 
 Blockly.Arduino.dc_motor_stop = function() {
   var dropdown_motor = this.getFieldValue('MOTOR');
   Blockly.Arduino.definitions_['include_dcmotor_h'] = '#include "dcmotor.h"\n';
-  var code = 'setDCSpeed(' + dropdown_motor + ', FORWARD, 0);\n';
+  var code = 'setDCSpeed(' + dropdown_motor + ', FORWARD, 0);  // Stop motor ' + dropdown_motor + '\n';
   return code;
 };
 

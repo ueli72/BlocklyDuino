@@ -23,7 +23,7 @@
 
 Blockly.Arduino.oled_init = function() {
   Blockly.Arduino.definitions_['include_oled_h'] = '#include "oled.h"\n';
-  var code = 'initOLED();\n';
+  var code = 'initOLED();  // Initialize OLED display\n';
   return code;
 };
 

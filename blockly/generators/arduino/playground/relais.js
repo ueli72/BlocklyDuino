@@ -25,7 +25,8 @@ Blockly.Arduino.relais_set = function() {
   var dropdown_relay = this.getFieldValue('RELAY');
   var dropdown_state = this.getFieldValue('STATE');
   Blockly.Arduino.definitions_['include_relais_h'] = '#include "relais.h"\n';
-  var code = 'setRelay(' + dropdown_relay + ', ' + dropdown_state + ');\n';
+  var stateText = dropdown_state === 'true' ? 'ON' : 'OFF';
+  var code = 'setRelay(' + dropdown_relay + ', ' + dropdown_state + ');  // Turn relay ' + dropdown_relay + ' ' + stateText + '\n';
   return code;
 };
 

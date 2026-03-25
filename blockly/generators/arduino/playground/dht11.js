@@ -23,7 +23,7 @@
 
 Blockly.Arduino.dht11_init = function() {
   Blockly.Arduino.definitions_['include_dht11_h'] = '#include "dht11.h"\n';
-  var code = 'initDHT11();\n';
+  var code = 'initDHT11();  // Initialize DHT11 temperature/humidity sensor\n';
   return code;
 };
 

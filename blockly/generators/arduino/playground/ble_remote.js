@@ -25,7 +25,7 @@ Blockly.Arduino.ble_remote_init = function() {
   var name = this.getFieldValue('NAME');
   Blockly.Arduino.definitions_['include_ble_remote_h'] = '#include "ble_remote.h"\n';
   
-  var code = 'initBLERemote("' + name + '");\n';
+  var code = 'initBLERemote("' + name + '");  // Initialize BLE with device name: ' + name + '\n';
   return code;
 };
 
@@ -35,10 +35,11 @@ Blockly.Arduino.ble_remote_on_direction = function() {
   
   var callbackName = Blockly.Arduino.variableDB_.getDistinctName('ble_direction_callback', Blockly.Procedures.NAME_TYPE);
   
-  var callbackCode = 'void ' + callbackName + '(int8_t direction) {\n' + branch + '}\n';
+  var callbackCode = '// BLE callback: called when direction changes from remote\n';
+  callbackCode += 'void ' + callbackName + '(int8_t direction) {\n' + branch + '}\n';
   Blockly.Arduino.definitions_[callbackName] = callbackCode;
   
-  var code = 'setBLEDirectionCallback(' + callbackName + ');\n';
+  var code = 'setBLEDirectionCallback(' + callbackName + ');  // Register direction callback\n';
   return code;
 };
 
@@ -48,10 +49,11 @@ Blockly.Arduino.ble_remote_on_speed = function() {
   
   var callbackName = Blockly.Arduino.variableDB_.getDistinctName('ble_speed_callback', Blockly.Procedures.NAME_TYPE);
   
-  var callbackCode = 'void ' + callbackName + '(uint8_t speed) {\n' + branch + '}\n';
+  var callbackCode = '// BLE callback: called when speed changes from remote\n';
+  callbackCode += 'void ' + callbackName + '(uint8_t speed) {\n' + branch + '}\n';
   Blockly.Arduino.definitions_[callbackName] = callbackCode;
   
-  var code = 'setBLESpeedCallback(' + callbackName + ');\n';
+  var code = 'setBLESpeedCallback(' + callbackName + ');  // Register speed callback\n';
   return code;
 };
 
@@ -61,10 +63,11 @@ Blockly.Arduino.ble_remote_on_command = function() {
   
   var callbackName = Blockly.Arduino.variableDB_.getDistinctName('ble_command_callback', Blockly.Procedures.NAME_TYPE);
   
-  var callbackCode = 'void ' + callbackName + '(uint8_t command) {\n' + branch + '}\n';
+  var callbackCode = '// BLE callback: called when command is received from remote\n';
+  callbackCode += 'void ' + callbackName + '(uint8_t command) {\n' + branch + '}\n';
   Blockly.Arduino.definitions_[callbackName] = callbackCode;
   
-  var code = 'setBLECommandCallback(' + callbackName + ');\n';
+  var code = 'setBLECommandCallback(' + callbackName + ');  // Register command callback\n';
   return code;
 };
 

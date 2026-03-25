@@ -130,7 +130,10 @@ Blockly.Arduino.init = function(workspace) {
         Blockly.Arduino.variableDB_.getName(variables[x],
         Blockly.Variables.NAME_TYPE) + ';\n';
   }
-  Blockly.Arduino.definitions_['variables'] = defvars.join('\n');
+  // Only add variables definition if there are variables
+  if (defvars.length > 0) {
+    Blockly.Arduino.definitions_['variables'] = defvars.join('\n');
+  }
 };
 
 /**
@@ -169,10 +172,12 @@ Blockly.Arduino.finish = function(code) {
   var definitions = [];
   for (var name in Blockly.Arduino.definitions_) {
     var def = Blockly.Arduino.definitions_[name];
-    if (def.match(/^#include/)) {
-      imports.push(def);
-    } else {
-      definitions.push(def);
+    if (def && def.trim()) {
+      if (def.match(/^#include/)) {
+        imports.push(def);
+      } else {
+        definitions.push(def);
+      }
     }
   }
 
@@ -206,8 +211,13 @@ Blockly.Arduino.finish = function(code) {
   if (setupBlock) {
     setupCode = Blockly.Arduino.statementToCode(setupBlock, 'SETUP_CODE');
   }
-  // Always add setups_ code (for blocks like interrupt that need setup code)
-  setupCode += setups.join('\n');
+  // Add setups_ code with proper indentation
+  if (setups.length > 0) {
+    var setupsCode = setups.join('\n');
+    // Indent each line of the setups code
+    setupsCode = setupsCode.replace(/\n/g, '\n  ');
+    setupCode += '  ' + setupsCode + '\n';
+  }
 
   // Generate loop function
   var loopCode = '';
@@ -225,46 +235,77 @@ Blockly.Arduino.finish = function(code) {
   for (var name in Blockly.Arduino.loops_) {
     loops.push(Blockly.Arduino.loops_[name]);
   }
-  // Always add loops_ code (for blocks like timer that need loop code)
-  loopCode += loops.join('\n');
+  // Add loops_ code with proper indentation
+  if (loops.length > 0) {
+    var loopsCode = loops.join('\n');
+    // Indent each line of the loops code
+    loopsCode = loopsCode.replace(/\n/g, '\n  ');
+    loopCode += '  ' + loopsCode + '\n';
+  }
 
-  var setupFunc = 'void setup() \n{\n  ' + setupCode + '\n}\n\n';
-  var loopFunc = 'void loop() \n{\n  ' + loopCode + '\n}\n';
+  var setupFunc = 'void setup() {\n  // Initialize hardware and peripherals\n' + setupCode + '}\n\n';
+  var loopFunc = 'void loop() {\n  // Main program loop\n' + loopCode + '}\n';
 
   // Combine: header code (user) + auto-includes + auto-definitions + setup + loop
   var result = '';
   
   // Header block content (user-placed includes, defines, global variables)
   if (headerCode) {
-    result += '// === Header (user-placed code) ===\n';
+    result += '// ============================================\n';
+    result += '// Header - User-defined includes and globals\n';
+    result += '// ============================================\n';
     result += headerCode + '\n';
   }
   
   // Auto-generated includes
   if (imports.length > 0) {
-    result += '\n// === Auto-includes (from blocks) ===\n';
+    result += '// ============================================\n';
+    result += '// Includes - Auto-generated from blocks\n';
+    result += '// ============================================\n';
     result += imports.join('\n') + '\n';
   }
   
   // Auto-generated definitions (global variables, objects)
   if (definitions.length > 0) {
-    result += '\n// === Auto-definitions (global variables) ===\n';
+    result += '\n// ============================================\n';
+    result += '// Global Variables and Objects\n';
+    result += '// ============================================\n';
     result += definitions.join('\n') + '\n';
   }
   
   // Interrupts block content (timer and interrupt callbacks)
   if (interruptsCode) {
-    result += '\n// === Interrupts (callbacks) ===\n';
+    result += '\n// ============================================\n';
+    result += '// Interrupt Handlers and Timer Callbacks\n';
+    result += '// These functions are called automatically\n';
+    result += '// by hardware interrupts or timers\n';
+    result += '// ============================================\n';
     result += interruptsCode + '\n';
   }
   
   // Functions block content (user-defined functions)
   if (functionsCode) {
-    result += '\n// === Functions ===\n';
+    result += '\n// ============================================\n';
+    result += '// User-defined Functions\n';
+    result += '// ============================================\n';
     result += functionsCode + '\n';
   }
   
-  result += '\n' + setupFunc + loopFunc;
+  result += '\n// ============================================\n';
+  result += '// Arduino Entry Points\n';
+  result += '// ============================================\n\n';
+  result += setupFunc + loopFunc;
+  
+  // Format code with AStyle.js if available
+  if (typeof beautify === 'function') {
+    try {
+      result = beautify(result, 'kr', 2, 0);
+    } catch (e) {
+      // If formatting fails, return unformatted code
+      console.warn('Code formatting failed:', e);
+    }
+  }
+  
   return result;
 };
 

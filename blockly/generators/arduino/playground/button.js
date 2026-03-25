@@ -30,7 +30,7 @@ var button_constants = {
 
 Blockly.Arduino.button_init = function() {
   Blockly.Arduino.definitions_['include_buttons_h'] = '#include "buttons.h"\n';
-  var code = 'initializeButtons();\n';
+  var code = 'initializeButtons();  // Initialize button inputs with pull-up resistors\n';
   return code;
 };
 
@@ -79,7 +79,9 @@ Blockly.Arduino.button_interrupt = function() {
   var branch = Blockly.Arduino.statementToCode(this, 'HANDLER_CODE');
   var isrName = Blockly.Arduino.variableDB_.getDistinctName('isr_handler', Blockly.Procedures.NAME_TYPE);
 
-  var isrCode = 'void IRAM_ATTR ' + isrName + '() {\n' + branch + '}\n';
+  var isrCode = '// Interrupt Service Routine for button on pin ' + pin + '\n';
+  isrCode += '// Triggered on ' + (mode === 'RISING' ? 'rising edge (button released)' : mode === 'FALLING' ? 'falling edge (button pressed)' : mode) + '\n';
+  isrCode += 'void IRAM_ATTR ' + isrName + '() {\n' + branch + '}\n';
   
   // Store the function code so we can return it on subsequent calls
   Blockly.Arduino.generated_[blockKey] = isrCode;
@@ -87,7 +89,8 @@ Blockly.Arduino.button_interrupt = function() {
   var button_constant = button_constants[pin];
   var pinCode = button_constant ? button_constant : pin;
 
-  var setupCode = 'pinMode(' + pinCode + ', INPUT_PULLUP);\n';
+  var setupCode = '// Configure button interrupt on pin ' + pin + '\n';
+  setupCode += 'pinMode(' + pinCode + ', INPUT_PULLUP);\n';
   setupCode += 'attachInterrupt(digitalPinToInterrupt(' + pinCode + '), ' + isrName + ', ' + mode + ');\n';
   Blockly.Arduino.setups_['isr_' + isrName] = setupCode;
 
