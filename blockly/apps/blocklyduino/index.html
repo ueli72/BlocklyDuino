@@ -37,6 +37,7 @@
   <script type="text/javascript" src="../../blocks/playground/ky023.js"></script>
   <script type="text/javascript" src="../../blocks/playground/serial.js"></script>
   <script type="text/javascript" src="../../blocks/playground/global_variable.js"></script>
+  <script type="text/javascript" src="../../blocks/playground/global_array.js"></script>
   <script type="text/javascript" src="../../generators/arduino.js"></script>
   <script type="text/javascript" src="../../generators/arduino/base.js"></script>
   <script type="text/javascript" src="../../generators/arduino/control.js"></script>
@@ -66,6 +67,7 @@
   <script type="text/javascript" src="../../generators/arduino/playground/ky023.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/serial.js"></script>
   <script type="text/javascript" src="../../generators/arduino/playground/global_variable.js"></script>
+  <script type="text/javascript" src="../../generators/arduino/playground/global_array.js"></script>
   <script type="text/javascript" src="../../msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
@@ -1179,6 +1181,29 @@ function initBlockly() {
       <block type="global_variable"></block>
       <block type="global_variable_get"></block>
       <block type="global_variable_set"></block>
+      <block type="global_array">
+        <value name="SIZE">
+          <block type="math_number">
+            <field name="NUM">10</field>
+          </block>
+        </value>
+      </block>
+      <block type="global_array_get">
+        <value name="INDEX">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+      </block>
+      <block type="global_array_set">
+        <value name="INDEX">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+      </block>
+      <block type="global_array_length"></block>
+      <block type="global_array_fill"></block>
       <block type="variables_get">
         <field name="VAR">item</field>
       </block>

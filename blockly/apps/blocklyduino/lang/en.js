@@ -166,7 +166,12 @@ i18n.registerTranslations('en', {
     "testAll": "Test All",
     "globalVariable": "Declare Variable",
     "globalVariableGet": "Get Variable",
-    "globalVariableSet": "Set Variable"
+    "globalVariableSet": "Set Variable",
+    "globalArray": "Create Array",
+    "globalArrayGet": "Get Array Element",
+    "globalArraySet": "Set Array Element",
+    "globalArrayLength": "Array Length",
+    "globalArrayFill": "Fill Array"
   },
   "blockInfo": {
     "internalLED": {
