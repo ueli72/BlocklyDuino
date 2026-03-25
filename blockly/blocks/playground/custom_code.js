@@ -77,7 +77,7 @@ var CustomCodeEditor = {
 
 Blockly.Blocks['custom_code_statement'] = {
   init: function() {
-    this.setColour(290);
+    this.setColour(210);
     this.appendDummyInput()
         .appendField("Custom Code")
         .appendField(new Blockly.FieldLabel("✏️"), "EDIT_BTN");
@@ -128,7 +128,7 @@ Blockly.Blocks['custom_code_statement'] = {
 
 Blockly.Blocks['custom_code_expression'] = {
   init: function() {
-    this.setColour(290);
+    this.setColour(210);
     this.appendDummyInput()
         .appendField("Custom Expression")
         .appendField(new Blockly.FieldLabel("✏️"), "EDIT_BTN");
@@ -176,6 +176,18 @@ Blockly.Blocks['custom_code_expression'] = {
   }
 };
 
+function isInHeaderBlock(block) {
+  if (!block) return false;
+  var parent = block.getParent();
+  while (parent) {
+    if (parent.type === 'arduino_header') {
+      return true;
+    }
+    parent = parent.getParent();
+  }
+  return false;
+}
+
 Blockly.Blocks['custom_code_include'] = {
   init: function() {
     this.setColour(300);
@@ -206,6 +218,14 @@ Blockly.Blocks['custom_code_include'] = {
     }
   },
   onchange: function() {
+    if (!this.workspace) return;
+    
+    if (!isInHeaderBlock(this)) {
+      this.setWarningText('⚠️ This block must be placed inside the Header block!\n\nDrag this block into the Header block to use it properly.');
+    } else {
+      this.setWarningText(null);
+    }
+    
     if (this.editorInitialized_) return;
     this.editorInitialized_ = true;
     

@@ -37,7 +37,23 @@ Blockly.Arduino.custom_code_expression = function() {
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 
+function isInHeaderBlock(block) {
+  if (!block) return false;
+  var parent = block.getParent();
+  while (parent) {
+    if (parent.type === 'arduino_header') {
+      return true;
+    }
+    parent = parent.getParent();
+  }
+  return false;
+}
+
 Blockly.Arduino.custom_code_include = function() {
+  if (!isInHeaderBlock(this)) {
+    return '';
+  }
+  
   var code = this.getFieldValue('CODE');
   if (code) {
     var key = 'custom_include_' + code.hashCode();
