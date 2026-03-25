@@ -137,9 +137,10 @@ Blockly.Arduino.init = function(workspace) {
  * @return {string} Completed code.
  */
 Blockly.Arduino.finish = function(code) {
-  // Find setup and loop blocks in the workspace
+  // Find setup, loop, and header blocks in the workspace
   var setupBlock = null;
   var loopBlock = null;
+  var headerBlock = null;
   var blocks = Blockly.mainWorkspace.getAllBlocks();
   for (var i = 0; i < blocks.length; i++) {
     if (blocks[i].type === 'arduino_setup') {
@@ -147,6 +148,9 @@ Blockly.Arduino.finish = function(code) {
     }
     if (blocks[i].type === 'arduino_loop') {
       loopBlock = blocks[i];
+    }
+    if (blocks[i].type === 'arduino_header') {
+      headerBlock = blocks[i];
     }
   }
 
@@ -168,7 +172,11 @@ Blockly.Arduino.finish = function(code) {
     setups.push(Blockly.Arduino.setups_[name]);
   }
 
-  var allDefs = imports.join('\n') + '\n\n' + definitions.join('\n');
+  // Generate header code (user-placed includes, defines, global variables)
+  var headerCode = '';
+  if (headerBlock) {
+    headerCode = Blockly.Arduino.statementToCode(headerBlock, 'HEADER_CODE');
+  }
 
   // Generate setup function
   var setupCode = '';
@@ -200,7 +208,29 @@ Blockly.Arduino.finish = function(code) {
   var setupFunc = 'void setup() \n{\n  ' + setupCode + '\n}\n\n';
   var loopFunc = 'void loop() \n{\n  ' + loopCode + '\n}\n';
 
-  return allDefs + '\n' + setupFunc + loopFunc;
+  // Combine: header code (user) + auto-includes + auto-definitions + setup + loop
+  var result = '';
+  
+  // Header block content (user-placed includes, defines, global variables)
+  if (headerCode) {
+    result += '// === Header (user-placed code) ===\n';
+    result += headerCode + '\n';
+  }
+  
+  // Auto-generated includes
+  if (imports.length > 0) {
+    result += '\n// === Auto-includes (from blocks) ===\n';
+    result += imports.join('\n') + '\n';
+  }
+  
+  // Auto-generated definitions (global variables, objects)
+  if (definitions.length > 0) {
+    result += '\n// === Auto-definitions (global variables) ===\n';
+    result += definitions.join('\n') + '\n';
+  }
+  
+  result += '\n' + setupFunc + loopFunc;
+  return result;
 };
 
 /**

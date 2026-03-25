@@ -512,7 +512,7 @@ function setupBlockInfoListener() {
 }
 
 /**
- * Ensure setup and loop blocks are present in the workspace.
+ * Ensure setup, loop, and header blocks are present in the workspace.
  */
 function ensureProgramStructure() {
   if (!Blockly.mainWorkspace) {
@@ -522,6 +522,7 @@ function ensureProgramStructure() {
   var blocks = Blockly.mainWorkspace.getAllBlocks();
   var hasSetup = false;
   var hasLoop = false;
+  var hasHeader = false;
 
   for (var i = 0; i < blocks.length; i++) {
     if (blocks[i].type === 'arduino_setup') {
@@ -530,14 +531,25 @@ function ensureProgramStructure() {
     if (blocks[i].type === 'arduino_loop') {
       hasLoop = true;
     }
+    if (blocks[i].type === 'arduino_header') {
+      hasHeader = true;
+    }
   }
 
-  // Create setup block if missing
+  // Create header block if missing - positioned at top
+  if (!hasHeader) {
+    var headerBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'arduino_header');
+    headerBlock.initSvg();
+    headerBlock.render();
+    headerBlock.moveBy(50, 50);
+  }
+
+  // Create setup block if missing - positioned below header
   if (!hasSetup) {
     var setupBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'arduino_setup');
     setupBlock.initSvg();
     setupBlock.render();
-    setupBlock.moveBy(50, 50);
+    setupBlock.moveBy(50, 200);
   }
 
   // Create loop block if missing - positioned horizontally next to setup
@@ -545,7 +557,7 @@ function ensureProgramStructure() {
     var loopBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'arduino_loop');
     loopBlock.initSvg();
     loopBlock.render();
-    loopBlock.moveBy(350, 50);
+    loopBlock.moveBy(350, 200);
   }
 }
 

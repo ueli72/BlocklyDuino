@@ -30,3 +30,8 @@ Blockly.Arduino.arduino_loop = function() {
   var loopCode = Blockly.Arduino.statementToCode(this, 'LOOP_CODE');
   return loopCode;
 };
+
+Blockly.Arduino.arduino_header = function() {
+  var headerCode = Blockly.Arduino.statementToCode(this, 'HEADER_CODE');
+  return headerCode;
+};

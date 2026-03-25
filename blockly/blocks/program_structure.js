@@ -48,3 +48,15 @@ Blockly.Blocks['arduino_loop'] = {
     this.setTooltip('Code here runs repeatedly');
   }
 };
+
+Blockly.Blocks['arduino_header'] = {
+  init: function() {
+    this.setColour(300);
+    this.appendDummyInput()
+        .appendField("Header");
+    this.appendStatementInput("HEADER_CODE")
+        .setCheck(null);
+    this.setDeletable(false);
+    this.setTooltip('Code here is placed at the top of the file (includes, defines, global variables)');
+  }
+};
