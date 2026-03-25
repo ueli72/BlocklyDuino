@@ -27,7 +27,7 @@ Blockly.Blocks.ledmatrix = {};
 
 Blockly.Blocks['led_matrix_init'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(30);
     this.appendDummyInput()
         .appendField("LED Matrix")
         .appendField(new Blockly.FieldImage("../../media/ledmatrix.jpg", 64, 64))

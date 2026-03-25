@@ -64,7 +64,7 @@ function getWS2812Pins() {
 
 Blockly.Blocks['ws2812_init'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(30);
     this.appendDummyInput()
         .appendField("WS2812 Strip")
         .appendField(new Blockly.FieldImage("../../media/ws2812strip.png", 64, 64))

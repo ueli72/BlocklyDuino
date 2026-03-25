@@ -97,7 +97,7 @@ function checkBLEBlocks(block) {
 
 Blockly.Blocks['ble_remote_init'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(30);
     this.appendDummyInput()
         .appendField("BLE Remote")
         .appendField(new Blockly.FieldImage("../../media/ble.png", 64, 64))

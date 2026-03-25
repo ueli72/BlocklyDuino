@@ -27,7 +27,7 @@ Blockly.Blocks.dc_motor = {};
 
 Blockly.Blocks['dc_motor_init'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(30);
     this.appendDummyInput()
         .appendField("DC Motor")
         .appendField(new Blockly.FieldImage("../../media/motor.jpg", 64, 64))

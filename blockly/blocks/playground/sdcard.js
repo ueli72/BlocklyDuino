@@ -27,7 +27,7 @@ Blockly.Blocks.sdcard = {};
 
 Blockly.Blocks['sdcard_init'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(30);
     this.appendDummyInput()
         .appendField("SD Card")
         .appendField(new Blockly.FieldImage("../../media/sdcard.jpg", 64, 64))

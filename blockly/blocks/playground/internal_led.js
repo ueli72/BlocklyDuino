@@ -27,7 +27,7 @@ Blockly.Blocks.internal_led = {};
 
 Blockly.Blocks['internal_led_init'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(30);
     this.appendDummyInput()
         .appendField("Internal LED")
         .appendField(new Blockly.FieldImage("../../media/internalled.png", 64, 64))

@@ -40,7 +40,7 @@ function getSg90Pins() {
 Blockly.Blocks['servo_sg90_init'] = {
   helpUrl: 'http://www.arduino.cc/playground/ComponentLib/servo',
   init: function() {
-    this.setColour(190);
+    this.setColour(30);
     this.appendDummyInput()
         .appendField("SG90 Servo")
         .appendField(new Blockly.FieldImage("../../media/sg90.jpg", 64, 64))

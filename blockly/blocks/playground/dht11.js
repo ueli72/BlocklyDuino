@@ -27,7 +27,7 @@ Blockly.Blocks.dht11 = {};
 
 Blockly.Blocks['dht11_init'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(30);
     this.appendDummyInput()
         .appendField("DHT11 Sensor")
         .appendField(new Blockly.FieldImage("../../media/dht11.jpg", 64, 64))

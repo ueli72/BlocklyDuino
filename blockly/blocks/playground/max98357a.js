@@ -27,7 +27,7 @@ Blockly.Blocks.max98357a = {};
 
 Blockly.Blocks['max98357a_init'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(30);
     this.appendDummyInput()
         .appendField("MAX98357A")
         .appendField(new Blockly.FieldImage("../../media/max98357a.png", 64, 64))

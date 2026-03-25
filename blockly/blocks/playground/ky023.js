@@ -77,7 +77,7 @@ function getKY023AnalogPins() {
 
 Blockly.Blocks['ky023_init'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(30);
     this.appendDummyInput()
         .appendField("KY023 Joystick")
         .appendField(new Blockly.FieldImage("../../media/ky023jm.png", 64, 64))

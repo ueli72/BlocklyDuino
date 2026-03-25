@@ -40,7 +40,7 @@ function getBaudRates() {
 
 Blockly.Blocks['serial_init'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(30);
     this.appendDummyInput()
         .appendField("Serial")
         .appendField(new Blockly.FieldImage("../../media/cli.png", 64, 64))

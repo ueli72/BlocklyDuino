@@ -27,7 +27,7 @@ Blockly.Blocks.oled = {};
 
 Blockly.Blocks['oled_init'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(30);
     this.appendDummyInput()
         .appendField("OLED Display")
         .appendField(new Blockly.FieldImage("../../media/oled.png", 64, 64))

@@ -36,7 +36,7 @@ function getButtonPins() {
 
 Blockly.Blocks['button_init'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(30);
     this.appendDummyInput()
         .appendField("Button")
         .appendField(new Blockly.FieldImage("../../media/button.png", 64, 64))
