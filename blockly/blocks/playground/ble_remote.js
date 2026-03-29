@@ -117,14 +117,32 @@ Blockly.Blocks['ble_remote_on_direction'] = {
         .appendField("BLE Remote")
         .appendField(new Blockly.FieldImage("../../media/ble.png", 64, 64))
         .appendField("On Direction");
+    this.appendValueInput("DIRECTION")
+        .setCheck('Number')
+        .appendField("direction");
     this.appendStatementInput("CALLBACK_CODE")
         .appendField("do");
     this.setPreviousStatement(true, "interrupts");
     this.setNextStatement(true, "interrupts");
-    this.setTooltip('Place in Interrupts block. Callback when direction command received. Use "Direction Value" block to get the value. ISR restrictions apply.');
+    this.setTooltip('Place in Interrupts block. Callback when direction command received. Drag the direction value to use it. ISR restrictions apply.');
   },
-  onchange: function() {
+  onchange: function(event) {
     checkBLEBlocks(this);
+    if (!this.workspace) return;
+    var directionInput = this.getInput('DIRECTION');
+    if (directionInput && directionInput.connection && !directionInput.connection.targetConnection) {
+      var block = this;
+      setTimeout(function() {
+        if (directionInput.connection && !directionInput.connection.targetConnection) {
+          try {
+            var newBlock = Blockly.Block.obtain(block.workspace, 'ble_remote_direction_value');
+            newBlock.initSvg();
+            newBlock.render();
+            directionInput.connection.connect(newBlock.outputConnection);
+          } catch(e) {}
+        }
+      }, 10);
+    }
   }
 };
 
@@ -135,14 +153,32 @@ Blockly.Blocks['ble_remote_on_speed'] = {
         .appendField("BLE Remote")
         .appendField(new Blockly.FieldImage("../../media/ble.png", 64, 64))
         .appendField("On Speed");
+    this.appendValueInput("SPEED")
+        .setCheck('Number')
+        .appendField("speed");
     this.appendStatementInput("CALLBACK_CODE")
         .appendField("do");
     this.setPreviousStatement(true, "interrupts");
     this.setNextStatement(true, "interrupts");
-    this.setTooltip('Place in Interrupts block. Callback when speed command received. Use "Speed Value" block to get the value. ISR restrictions apply.');
+    this.setTooltip('Place in Interrupts block. Callback when speed command received. Drag the speed value to use it. ISR restrictions apply.');
   },
-  onchange: function() {
+  onchange: function(event) {
     checkBLEBlocks(this);
+    if (!this.workspace) return;
+    var speedInput = this.getInput('SPEED');
+    if (speedInput && speedInput.connection && !speedInput.connection.targetConnection) {
+      var block = this;
+      setTimeout(function() {
+        if (speedInput.connection && !speedInput.connection.targetConnection) {
+          try {
+            var newBlock = Blockly.Block.obtain(block.workspace, 'ble_remote_speed_value');
+            newBlock.initSvg();
+            newBlock.render();
+            speedInput.connection.connect(newBlock.outputConnection);
+          } catch(e) {}
+        }
+      }, 10);
+    }
   }
 };
 
@@ -153,14 +189,32 @@ Blockly.Blocks['ble_remote_on_command'] = {
         .appendField("BLE Remote")
         .appendField(new Blockly.FieldImage("../../media/ble.png", 64, 64))
         .appendField("On Command");
+    this.appendValueInput("COMMAND")
+        .setCheck('Number')
+        .appendField("command");
     this.appendStatementInput("CALLBACK_CODE")
         .appendField("do");
     this.setPreviousStatement(true, "interrupts");
     this.setNextStatement(true, "interrupts");
-    this.setTooltip('Place in Interrupts block. Callback for custom commands (0-255). Use "Command Value" block to get the value. ISR restrictions apply.');
+    this.setTooltip('Place in Interrupts block. Callback for custom commands (0-255). Drag the command value to use it. ISR restrictions apply.');
   },
-  onchange: function() {
+  onchange: function(event) {
     checkBLEBlocks(this);
+    if (!this.workspace) return;
+    var commandInput = this.getInput('COMMAND');
+    if (commandInput && commandInput.connection && !commandInput.connection.targetConnection) {
+      var block = this;
+      setTimeout(function() {
+        if (commandInput.connection && !commandInput.connection.targetConnection) {
+          try {
+            var newBlock = Blockly.Block.obtain(block.workspace, 'ble_remote_command_value');
+            newBlock.initSvg();
+            newBlock.render();
+            commandInput.connection.connect(newBlock.outputConnection);
+          } catch(e) {}
+        }
+      }, 10);
+    }
   }
 };
 

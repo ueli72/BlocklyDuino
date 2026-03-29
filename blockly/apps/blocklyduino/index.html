@@ -107,7 +107,9 @@ function showConfirmModal(message, onConfirm) {
   
   var handleOk = function() {
     document.activeElement.blur();
-    modal.hide();
+    if (modalEl && document.body.contains(modalEl)) {
+      modal.hide();
+    }
     if (onConfirm) onConfirm();
   };
   
@@ -195,7 +197,9 @@ function showBlockWarningModal(message, onContinue) {
   
   var handleOk = function() {
     document.activeElement.blur();
-    modal.hide();
+    if (modalEl && document.body.contains(modalEl)) {
+      modal.hide();
+    }
     if (onContinue) onContinue();
   };
   
@@ -238,7 +242,9 @@ function showPromptModal(message, defaultValue, onConfirm) {
   var handleOk = function() {
     var value = input.value;
     document.activeElement.blur();
-    modal.hide();
+    if (modalEl && document.body.contains(modalEl)) {
+      modal.hide();
+    }
     if (onConfirm && value) onConfirm(value);
   };
   
@@ -1326,17 +1332,26 @@ function initBlockly() {
       </category>
       <category name="Bluetooth LE" data-i18n-name="categories.bluetoothLE" data-board="esp32-s3-devkitc1">
         <block type="ble_remote_init"></block>
-        <block type="ble_remote_on_direction"></block>
-        <block type="ble_remote_on_speed"></block>
-        <block type="ble_remote_on_command"></block>
-        <block type="ble_remote_direction_value"></block>
-        <block type="ble_remote_speed_value"></block>
-        <block type="ble_remote_command_value"></block>
+        <block type="ble_remote_on_direction">
+          <value name="DIRECTION">
+            <block type="ble_remote_direction_value"></block>
+          </value>
+        </block>
+        <block type="ble_remote_on_speed">
+          <value name="SPEED">
+            <block type="ble_remote_speed_value"></block>
+          </value>
+        </block>
+        <block type="ble_remote_on_command">
+          <value name="COMMAND">
+            <block type="ble_remote_command_value"></block>
+          </value>
+        </block>
         <block type="ble_remote_send">
           <value name="VALUE">
-            <block type="text">
+            <shadow type="text">
               <field name="TEXT">sensor data</field>
-            </block>
+            </shadow>
           </value>
         </block>
         <block type="ble_remote_is_connected"></block>
