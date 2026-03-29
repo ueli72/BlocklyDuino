@@ -148,3 +148,83 @@ Blockly.Blocks['global_variable_set'] = {
     this.setTooltip('Set the value of a variable');
   }
 };
+
+Blockly.Blocks['variable_define'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("#define");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("name")
+        .appendField(new Blockly.FieldTextInput("MY_CONSTANT"), "NAME");
+    this.appendValueInput("VALUE")
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .setCheck(null)
+        .appendField("value");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Define a preprocessor constant. Replaced at compile time, uses no memory.');
+  }
+};
+
+Blockly.Blocks['variable_cast'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("Cast to")
+        .appendField(new Blockly.FieldDropdown([
+          ["int", "int"],
+          ["long", "long"],
+          ["float", "float"],
+          ["byte", "byte"],
+          ["bool", "bool"],
+          ["char", "char"]
+        ]), "TYPE");
+    this.appendValueInput("VALUE")
+        .setCheck(null)
+        .appendField("value");
+    this.setOutput(true, null);
+    this.setInputsInline(true);
+    this.setTooltip('Convert a value to a different type.');
+  }
+};
+
+Blockly.Blocks['variable_increment'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown(variableDropdownGenerator), "NAME");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([
+          ["++ (increment)", "++"],
+          ["-- (decrement)", "--"]
+        ]), "OPERATION");
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
+    this.setInputsInline(true);
+    this.setTooltip('Increment or decrement a variable by 1.');
+  }
+};
+
+Blockly.Blocks['variable_compound_set'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown(variableDropdownGenerator), "NAME");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldDropdown([
+          ["+=", "+="],
+          ["-=", "-="],
+          ["*=", "*="],
+          ["/=", "/="]
+        ]), "OPERATOR");
+    this.appendValueInput("VALUE")
+        .setCheck(null)
+        .appendField("");
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
+    this.setInputsInline(true);
+    this.setTooltip('Compound assignment: var += value is same as var = var + value');
+  }
+};

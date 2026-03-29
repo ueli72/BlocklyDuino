@@ -81,3 +81,33 @@ Blockly.Arduino.global_variable_set = function() {
   var code = name + ' = ' + value + ';\n';
   return code;
 };
+
+Blockly.Arduino.variable_define = function() {
+  var name = this.getFieldValue('NAME');
+  var value = Blockly.Arduino.valueToCode(this, 'VALUE', Blockly.Arduino.ORDER_ATOMIC) || '0';
+  var code = '#define ' + name + ' ' + value + '\n';
+  Blockly.Arduino.definitions_['define_' + name] = code;
+  return '';
+};
+
+Blockly.Arduino.variable_cast = function() {
+  var type = this.getFieldValue('TYPE');
+  var value = Blockly.Arduino.valueToCode(this, 'VALUE', Blockly.Arduino.ORDER_ATOMIC) || '0';
+  var code = '(' + type + ')(' + value + ')';
+  return [code, Blockly.Arduino.ORDER_CAST];
+};
+
+Blockly.Arduino.variable_increment = function() {
+  var name = this.getFieldValue('NAME');
+  var operation = this.getFieldValue('OPERATION');
+  var code = name + operation + ';\n';
+  return code;
+};
+
+Blockly.Arduino.variable_compound_set = function() {
+  var name = this.getFieldValue('NAME');
+  var operator = this.getFieldValue('OPERATOR');
+  var value = Blockly.Arduino.valueToCode(this, 'VALUE', Blockly.Arduino.ORDER_ASSIGNMENT) || '0';
+  var code = name + ' ' + operator + ' ' + value + ';\n';
+  return code;
+};

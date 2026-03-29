@@ -1114,6 +1114,13 @@ function initBlockly() {
       <block type="logic_null"></block>
     </category>
     <category name="Constants" data-i18n-name="categories.constants">
+      <block type="variable_define">
+        <value name="VALUE">
+          <block type="math_number">
+            <field name="NUM">100</field>
+          </block>
+        </value>
+      </block>
       <block type="constants_true"></block>
       <block type="constants_false"></block>
       <block type="constants_pi"></block>
@@ -1191,6 +1198,21 @@ function initBlockly() {
       <block type="global_variable"></block>
       <block type="global_variable_get"></block>
       <block type="global_variable_set"></block>
+      <block type="variable_cast">
+        <value name="VALUE">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+      </block>
+      <block type="variable_increment"></block>
+      <block type="variable_compound_set">
+        <value name="VALUE">
+          <block type="math_number">
+            <field name="NUM">1</field>
+          </block>
+        </value>
+      </block>
       <block type="global_array">
         <value name="SIZE">
           <block type="math_number">
