@@ -17,9 +17,31 @@
  */
 
 /**
- * @fileoverview Generating Arduino for Global Variable blocks.
+ * @fileoverview Generating Arduino for Variable blocks.
  */
 'use strict';
+
+function isInsideFunction(block) {
+  if (!block) return false;
+  var parent = block.getParent();
+  while (parent) {
+    if (parent.type === 'arduino_setup' ||
+        parent.type === 'arduino_loop' ||
+        parent.type === 'procedures_defreturn' ||
+        parent.type === 'procedures_defnoreturn') {
+      return true;
+    }
+    if (parent.type === 'ble_remote_on_direction' ||
+        parent.type === 'ble_remote_on_speed' ||
+        parent.type === 'ble_remote_on_command' ||
+        parent.type === 'button_on_press' ||
+        parent.type === 'timer_callback') {
+      return true;
+    }
+    parent = parent.getParent();
+  }
+  return false;
+}
 
 Blockly.Arduino.global_variable = function() {
   var isVolatile = this.getFieldValue('VOLATILE') === 'TRUE';
@@ -39,9 +61,12 @@ Blockly.Arduino.global_variable = function() {
   }
   declaration += ';\n';
   
-  Blockly.Arduino.definitions_['global_var_' + name] = declaration;
-  
-  return '';
+  if (isInsideFunction(this)) {
+    return declaration;
+  } else {
+    Blockly.Arduino.definitions_['global_var_' + name] = declaration;
+    return '';
+  }
 };
 
 Blockly.Arduino.global_variable_get = function() {

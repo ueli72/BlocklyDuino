@@ -21,6 +21,28 @@
  */
 'use strict';
 
+function isInsideFunction(block) {
+  if (!block) return false;
+  var parent = block.getParent();
+  while (parent) {
+    if (parent.type === 'arduino_setup' ||
+        parent.type === 'arduino_loop' ||
+        parent.type === 'procedures_defreturn' ||
+        parent.type === 'procedures_defnoreturn') {
+      return true;
+    }
+    if (parent.type === 'ble_remote_on_direction' ||
+        parent.type === 'ble_remote_on_speed' ||
+        parent.type === 'ble_remote_on_command' ||
+        parent.type === 'button_on_press' ||
+        parent.type === 'timer_callback') {
+      return true;
+    }
+    parent = parent.getParent();
+  }
+  return false;
+}
+
 Blockly.Arduino.global_array = function() {
   var isVolatile = this.getFieldValue('VOLATILE') === 'TRUE';
   var type = this.getFieldValue('TYPE');
@@ -35,12 +57,14 @@ Blockly.Arduino.global_array = function() {
   }
   declaration += ';\n';
   
-  Blockly.Arduino.definitions_['global_array_' + name] = declaration;
-  
-  Blockly.Arduino.definitions_['global_array_size_' + name] = 
-    'const int ' + name + '_SIZE = ' + size + ';\n';
-  
-  return '';
+  if (isInsideFunction(this)) {
+    return declaration;
+  } else {
+    Blockly.Arduino.definitions_['global_array_' + name] = declaration;
+    Blockly.Arduino.definitions_['global_array_size_' + name] = 
+      'const int ' + name + '_SIZE = ' + size + ';\n';
+    return '';
+  }
 };
 
 Blockly.Arduino.global_array_get = function() {

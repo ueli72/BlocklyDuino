@@ -18,14 +18,14 @@
  */
 
 /**
- * @fileoverview Global Variable declaration and access blocks.
+ * @fileoverview Variable declaration and access blocks.
  */
 'use strict';
 
 Blockly.Blocks = Blockly.Blocks || {};
-Blockly.Blocks.global_variable = {};
+Blockly.Blocks.variable = {};
 
-var globalVariableDropdownGenerator = function() {
+var variableDropdownGenerator = function() {
   var names = [["myVar", "myVar"]];
   try {
     if (Blockly.mainWorkspace) {
@@ -52,7 +52,7 @@ var globalVariableDropdownGenerator = function() {
   return names;
 };
 
-var globalVariableRenameHandler = function(oldName, newName) {
+var variableRenameHandler = function(oldName, newName) {
   if (!Blockly.mainWorkspace || oldName === newName) return;
   
   try {
@@ -72,7 +72,7 @@ var globalVariableRenameHandler = function(oldName, newName) {
 
 Blockly.Blocks['global_variable'] = {
   init: function() {
-    this.setColour(300);
+    this.setColour(190);
     this.appendDummyInput()
         .appendField("Declare")
         .appendField(new Blockly.FieldCheckbox("FALSE"), "VOLATILE")
@@ -87,7 +87,8 @@ Blockly.Blocks['global_variable'] = {
           ["long", "long"],
           ["float", "float"],
           ["bool", "bool"],
-          ["char*", "char*"]
+          ["char*", "char*"],
+          ["String", "String"]
         ]), "TYPE");
     
     this.appendDummyInput()
@@ -100,9 +101,9 @@ Blockly.Blocks['global_variable'] = {
         .setCheck(null)
         .appendField("initial value");
     
-    this.setPreviousStatement(true, "header");
-    this.setNextStatement(true, "header");
-    this.setTooltip('Declare a global variable. Use volatile for variables shared with interrupts/timers.');
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Declare a variable. Use volatile for variables shared with interrupts/timers.');
     
     this.oldName_ = "myVar";
   },
@@ -113,7 +114,7 @@ Blockly.Blocks['global_variable'] = {
     try {
       var newName = this.getFieldValue('NAME');
       if (this.oldName_ && this.oldName_ !== newName) {
-        globalVariableRenameHandler(this.oldName_, newName);
+        variableRenameHandler(this.oldName_, newName);
       }
       this.oldName_ = newName;
     } catch (e) {
@@ -127,9 +128,9 @@ Blockly.Blocks['global_variable_get'] = {
     this.setColour(190);
     this.appendDummyInput()
         .appendField("Get")
-        .appendField(new Blockly.FieldDropdown(globalVariableDropdownGenerator), "NAME");
+        .appendField(new Blockly.FieldDropdown(variableDropdownGenerator), "NAME");
     this.setOutput(true, null);
-    this.setTooltip('Get the value of a global variable');
+    this.setTooltip('Get the value of a variable');
   }
 };
 
@@ -138,12 +139,12 @@ Blockly.Blocks['global_variable_set'] = {
     this.setColour(190);
     this.appendDummyInput()
         .appendField("Set")
-        .appendField(new Blockly.FieldDropdown(globalVariableDropdownGenerator), "NAME");
+        .appendField(new Blockly.FieldDropdown(variableDropdownGenerator), "NAME");
     this.appendValueInput("VALUE")
         .setCheck(null)
         .appendField("to");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Set the value of a global variable');
+    this.setTooltip('Set the value of a variable');
   }
 };

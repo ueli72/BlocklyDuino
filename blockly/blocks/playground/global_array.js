@@ -73,7 +73,7 @@ var globalArrayRenameHandler = function(oldName, newName) {
 
 Blockly.Blocks['global_array'] = {
   init: function() {
-    this.setColour(300);
+    this.setColour(190);
     this.appendDummyInput()
         .appendField("Create Array")
         .appendField(new Blockly.FieldCheckbox("FALSE"), "VOLATILE")
@@ -88,7 +88,8 @@ Blockly.Blocks['global_array'] = {
           ["long", "long"],
           ["float", "float"],
           ["bool", "bool"],
-          ["char", "char"]
+          ["char", "char"],
+          ["String", "String"]
         ]), "TYPE");
     
     this.appendDummyInput()
@@ -101,9 +102,9 @@ Blockly.Blocks['global_array'] = {
         .setCheck("Number")
         .appendField("size");
     
-    this.setPreviousStatement(true, "header");
-    this.setNextStatement(true, "header");
-    this.setTooltip('Declare a global array. Use volatile for arrays shared with interrupts/timers.');
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('Declare an array. Use volatile for arrays shared with interrupts/timers.');
     
     this.oldName_ = "myArray";
   },
