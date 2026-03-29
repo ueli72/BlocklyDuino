@@ -96,3 +96,31 @@ Blockly.Arduino.logic_null = function() {
   var code = 'NULL';
   return [code ,Blockly.Arduino.ORDER_ATOMIC];
 };
+
+Blockly.Arduino.controls_switch = function() {
+  var switchValue = Blockly.Arduino.valueToCode(this, 'SWITCH', Blockly.Arduino.ORDER_NONE) || '0';
+  var casesCode = Blockly.Arduino.statementToCode(this, 'CASES');
+  var code = 'switch (' + switchValue + ') {\n' + casesCode + '}\n';
+  return code;
+};
+
+Blockly.Arduino.switch_case = function() {
+  var caseValue = Blockly.Arduino.valueToCode(this, 'CASE_VALUE', Blockly.Arduino.ORDER_NONE) || '0';
+  var branch = Blockly.Arduino.statementToCode(this, 'DO');
+  var addBreak = this.getFieldValue('BREAK') === 'TRUE';
+  var code = 'case ' + caseValue + ':\n' + branch;
+  if (addBreak) {
+    code += '  break;\n';
+  }
+  return code;
+};
+
+Blockly.Arduino.switch_default = function() {
+  var branch = Blockly.Arduino.statementToCode(this, 'DO');
+  var code = 'default:\n' + branch;
+  return code;
+};
+
+Blockly.Arduino.switch_break = function() {
+  return 'break;\n';
+};

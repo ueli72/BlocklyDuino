@@ -1108,6 +1108,21 @@ function initBlockly() {
   <xml id="toolbox" style="display: none">
     <category name="Logic" data-i18n-name="categories.logic">
       <block type="controls_if"></block>
+      <block type="controls_switch">
+        <value name="SWITCH">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+      </block>
+      <block type="switch_case">
+        <value name="CASE_VALUE">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+      </block>
+      <block type="switch_default"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
       <block type="logic_negate"></block>

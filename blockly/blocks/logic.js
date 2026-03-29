@@ -462,3 +462,148 @@ Blockly.Blocks['logic_ternary'] = {
     this.prevParentConnection_ = parentConnection;
   }
 };
+
+Blockly.Blocks['controls_switch'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.logic.HUE);
+    this.appendValueInput('SWITCH')
+        .appendField("switch");
+    this.appendStatementInput('CASES')
+        .appendField("");
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
+    this.setTooltip('Switch statement for multi-way branching. Add case blocks inside.');
+    this.caseCount_ = 0;
+    this.defaultCount_ = 0;
+  },
+  mutationToDom: function() {
+    if (!this.caseCount_ && !this.defaultCount_) {
+      return null;
+    }
+    var container = document.createElement('mutation');
+    if (this.caseCount_) {
+      container.setAttribute('case', this.caseCount_);
+    }
+    if (this.defaultCount_) {
+      container.setAttribute('default', 1);
+    }
+    return container;
+  },
+  domToMutation: function(xmlElement) {
+    this.caseCount_ = parseInt(xmlElement.getAttribute('case'), 10) || 0;
+    this.defaultCount_ = parseInt(xmlElement.getAttribute('default'), 10) || 0;
+  },
+  decompose: function(workspace) {
+    var containerBlock = Blockly.Block.obtain(workspace, 'controls_switch_switch');
+    containerBlock.initSvg();
+    var connection = containerBlock.getInput('STACK').connection;
+    for (var i = 1; i <= this.caseCount_; i++) {
+      var caseBlock = Blockly.Block.obtain(workspace, 'controls_switch_case');
+      caseBlock.initSvg();
+      connection.connect(caseBlock.previousConnection);
+      connection = caseBlock.nextConnection;
+    }
+    if (this.defaultCount_) {
+      var defaultBlock = Blockly.Block.obtain(workspace, 'controls_switch_default');
+      defaultBlock.initSvg();
+      connection.connect(defaultBlock.previousConnection);
+    }
+    return containerBlock;
+  },
+  compose: function(containerBlock) {
+    this.defaultCount_ = 0;
+    this.caseCount_ = 0;
+    var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+    while (clauseBlock) {
+      switch (clauseBlock.type) {
+        case 'controls_switch_case':
+          this.caseCount_++;
+          break;
+        case 'controls_switch_default':
+          this.defaultCount_++;
+          break;
+        default:
+          throw 'Unknown block type.';
+      }
+      clauseBlock = clauseBlock.nextConnection &&
+          clauseBlock.nextConnection.targetBlock();
+    }
+  },
+  saveConnections: function(containerBlock) {
+    var clauseBlock = containerBlock.getInputTargetBlock('STACK');
+    while (clauseBlock) {
+      clauseBlock = clauseBlock.nextConnection &&
+          clauseBlock.nextConnection.targetBlock();
+    }
+  }
+};
+
+Blockly.Blocks['controls_switch_switch'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.logic.HUE);
+    this.appendDummyInput()
+        .appendField("switch");
+    this.appendStatementInput('STACK');
+    this.setTooltip('Add case or default blocks inside.');
+    this.contextMenu = false;
+  }
+};
+
+Blockly.Blocks['controls_switch_case'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.logic.HUE);
+    this.appendDummyInput()
+        .appendField("case");
+    this.setPreviousStatement(true);
+    this.setNextStatement(true);
+    this.setTooltip('A case in a switch statement.');
+    this.contextMenu = false;
+  }
+};
+
+Blockly.Blocks['controls_switch_default'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.logic.HUE);
+    this.appendDummyInput()
+        .appendField("default");
+    this.setPreviousStatement(true);
+    this.setTooltip('The default case in a switch statement.');
+    this.contextMenu = false;
+  }
+};
+
+Blockly.Blocks['switch_case'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.logic.HUE);
+    this.appendValueInput('CASE_VALUE')
+        .appendField("case");
+    this.appendStatementInput('DO')
+        .appendField("do");
+    this.appendDummyInput()
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "BREAK")
+        .appendField("break");
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
+    this.setTooltip('Execute code when value matches this case. Uncheck break for fall-through.');
+  }
+};
+
+Blockly.Blocks['switch_default'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.logic.HUE);
+    this.appendStatementInput('DO')
+        .appendField("default");
+    this.setPreviousStatement(true, "general");
+    this.setTooltip('Execute code when no case matches.');
+  }
+};
+
+Blockly.Blocks['switch_break'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.logic.HUE);
+    this.appendDummyInput()
+        .appendField("break");
+    this.setPreviousStatement(true, "general");
+    this.setTooltip('Exit the switch statement.');
+  }
+};
