@@ -1141,8 +1141,26 @@ function initBlockly() {
             <field name="NUM">10</field>
           </block>
         </value>
+        <value name="BY">
+          <block type="math_number">
+            <field name="NUM">1</field>
+          </block>
+        </value>
       </block>
-      <block type="controls_whileUntil"></block>
+      <block type="controls_while">
+        <value name="BOOL">
+          <block type="logic_boolean">
+            <field name="BOOL">TRUE</field>
+          </block>
+        </value>
+      </block>
+      <block type="controls_do_while">
+        <value name="BOOL">
+          <block type="logic_boolean">
+            <field name="BOOL">TRUE</field>
+          </block>
+        </value>
+      </block>
     </category>
     <category name="Timed" data-i18n-name="categories.timed">
       <block type="base_delay">

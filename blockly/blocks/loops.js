@@ -119,6 +119,34 @@ Blockly.Blocks['controls_whileUntil'] = {
   }
 };
 
+Blockly.Blocks['controls_while'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.loops.HUE);
+    this.appendValueInput('BOOL')
+        .setCheck('Boolean')
+        .appendField("while");
+    this.appendStatementInput('DO')
+        .appendField("do");
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
+    this.setTooltip('Repeat while condition is true. Condition is checked before each iteration.');
+  }
+};
+
+Blockly.Blocks['controls_do_while'] = {
+  init: function() {
+    this.setColour(Blockly.Blocks.loops.HUE);
+    this.appendStatementInput('DO')
+        .appendField("do");
+    this.appendValueInput('BOOL')
+        .setCheck('Boolean')
+        .appendField("while");
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
+    this.setTooltip('Repeat while condition is true. Code runs at least once, condition is checked after each iteration.');
+  }
+};
+
 Blockly.Blocks['controls_for'] = {
   /**
    * Block for 'for' loop.

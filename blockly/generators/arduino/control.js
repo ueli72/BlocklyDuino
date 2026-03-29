@@ -89,4 +89,26 @@ Blockly.Arduino.controls_whileUntil = function() {
     argument0 = '!' + argument0;
   }
   return 'while (' + argument0 + ') {\n' + branch + '}\n';
+};
+
+Blockly.Arduino.controls_while = function() {
+  var argument0 = Blockly.Arduino.valueToCode(this, 'BOOL',
+      Blockly.Arduino.ORDER_NONE) || 'false';
+  var branch = Blockly.Arduino.statementToCode(this, 'DO');
+  if (Blockly.Arduino.INFINITE_LOOP_TRAP) {
+    branch = Blockly.Arduino.INFINITE_LOOP_TRAP.replace(/%1/g,
+        '\'' + this.id + '\'') + branch;
+  }
+  return 'while (' + argument0 + ') {\n' + branch + '}\n';
+};
+
+Blockly.Arduino.controls_do_while = function() {
+  var argument0 = Blockly.Arduino.valueToCode(this, 'BOOL',
+      Blockly.Arduino.ORDER_NONE) || 'false';
+  var branch = Blockly.Arduino.statementToCode(this, 'DO');
+  if (Blockly.Arduino.INFINITE_LOOP_TRAP) {
+    branch = Blockly.Arduino.INFINITE_LOOP_TRAP.replace(/%1/g,
+        '\'' + this.id + '\'') + branch;
+  }
+  return 'do {\n' + branch + '} while (' + argument0 + ');\n';
 }
