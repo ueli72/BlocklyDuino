@@ -19,7 +19,7 @@ void initializeGyro() {
   
   mpu6500_init();
   
-  bmp280.begin(BMP280_ADDRESS);
+  bmp280.begin(BMP280_ADDR);
   bmp280.setSampling(Adafruit_BMP280::MODE_NORMAL,
                      Adafruit_BMP280::SAMPLING_X2,
                      Adafruit_BMP280::SAMPLING_X16,

@@ -12,7 +12,7 @@
 
 // I2C Addresses
 #define MPU9250_ADDRESS 0x68    // MPU9250 default I2C address (same as MPU6050)
-#define BMP280_ADDRESS 0x76     // BMP280 default address
+#define BMP280_ADDR 0x76     // BMP280 default address (avoid conflict with library)
 
 // Button pin for test
 #define TEST_BUTTON_PIN 1       // SW1 button

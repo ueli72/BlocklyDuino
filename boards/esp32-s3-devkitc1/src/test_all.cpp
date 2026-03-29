@@ -43,6 +43,10 @@ static bool checkHoldExit(int pin, unsigned long holdStart) {
     return false;
 }
 
+static void testDCMotorsWrapper() {
+    testDCMotors(0x0F);
+}
+
 void runTestMenu(uint16_t testMask) {
     initOLED();
     
@@ -52,7 +56,7 @@ void runTestMenu(uint16_t testMask) {
     TestItem tests[] = {
         {"LED Matrix", TEST_LED_MATRIX, runLEDMatrixTest},
         {"Relais", TEST_RELAIS, testRelaisSequence},
-        {"DC Motor", TEST_DC_MOTOR, testDCMotors},
+        {"DC Motor", TEST_DC_MOTOR, testDCMotorsWrapper},
         {"DHT11", TEST_DHT11, testDHT11},
         {"Ultrasonic", TEST_ULTRASONIC, testUltrasonicOLED},
         {"SD Card", TEST_SD_CARD, testSDCard},

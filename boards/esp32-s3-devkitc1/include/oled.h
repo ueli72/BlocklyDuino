@@ -16,6 +16,9 @@ void initOLED();
 // Write text to OLED display (supports printf-style formatting)
 void writeToOled(const char* format, ...);
 
+// Write integer to OLED display
+void writeToOled(int value);
+
 // Clear the OLED display
 void clearOled();
 

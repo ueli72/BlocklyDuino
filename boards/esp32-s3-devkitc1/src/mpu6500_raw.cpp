@@ -22,7 +22,7 @@ void i2c_read_bytes(uint8_t addr, uint8_t reg, uint8_t* buf, uint8_t len) {
     
     delay(2);
     
-    int bytesRequested = Wire.requestFrom((int)addr, (int)len, (uint8_t)1);
+    size_t bytesRequested = Wire.requestFrom((uint8_t)addr, (size_t)len, true);
     
     if (bytesRequested == 0) {
       if (attempt < 2) {

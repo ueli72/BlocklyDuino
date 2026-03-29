@@ -41,6 +41,12 @@ void writeToOled(const char* format, ...) {
   writeToOledInternal(buf);
 }
 
+void writeToOled(int value) {
+  char buf[256];
+  snprintf(buf, sizeof(buf), "%d", value);
+  writeToOledInternal(buf);
+}
+
 void clearOled() {
   u8g2.clearBuffer();
   u8g2.sendBuffer();
