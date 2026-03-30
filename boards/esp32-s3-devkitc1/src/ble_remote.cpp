@@ -2,11 +2,11 @@
 #include "oled.h"
 #include <NimBLEDevice.h>
 
-#define SERVICE_UUID           "8001"
-#define CHARACTERISTIC_DIRECTION "8002"
-#define CHARACTERISTIC_SPEED     "8003"
-#define CHARACTERISTIC_COMMAND   "8004"
-#define CHARACTERISTIC_SENSOR    "8005"
+#define SERVICE_UUID           "00008610-0000-0000-0000-000000000001"  // 8610 = school zip code
+#define CHARACTERISTIC_DIRECTION "00008610-0000-0000-0000-000000000002"
+#define CHARACTERISTIC_SPEED     "00008610-0000-0000-0000-000000000003"
+#define CHARACTERISTIC_COMMAND   "00008610-0000-0000-0000-000000000004"
+#define CHARACTERISTIC_SENSOR    "00008610-0000-0000-0000-000000000005"
 
 static NimBLEServer* pServer = nullptr;
 static NimBLECharacteristic* pDirectionCharacteristic = nullptr;
@@ -215,7 +215,7 @@ void testBLERemote() {
     clearOled(); return;
   }
   
-  if (!showWizardPage("LightBlue Setup\n\n4. Find service:\n   0x8001\n5. Tap to expand\n\nSW1:Next SW2:Skip")) {
+  if (!showWizardPage("LightBlue Setup\n\n4. Find service:\n   8610-0001\n5. Tap to expand\n\nSW1:Next SW2:Skip")) {
     clearOled(); return;
   }
   
@@ -223,7 +223,7 @@ void testBLERemote() {
     clearOled(); return;
   }
   
-  writeToOled("Waiting for\nconnection...\n\nService: 0x8001\n\nSW2:Exit");
+  writeToOled("Waiting for\nconnection...\n\nService: 8610-0001\n\nSW2:Exit");
   
   unsigned long startTime = millis();
   while (!isBLEConnected() && millis() - startTime < 60000) {
@@ -279,7 +279,7 @@ void testBLERemote() {
       waitForButtonRelease(BLE_TEST_SW2_PIN);
       
       if (selectedIndex == 0) {
-        writeToOled("Direction Test\n\nChar: 0x8002\nHex: 00-FF\n(80-FF=neg)\nSW2:Back");
+        writeToOled("Direction Test\n\nChar: 8610-0002\nHex: 00-FF\n(80-FF=neg)\nSW2:Back");
         newDirection = false;
         while (!readButton(BLE_TEST_SW2_PIN)) {
           if (newDirection) {
@@ -293,7 +293,7 @@ void testBLERemote() {
         waitForButtonRelease(BLE_TEST_SW2_PIN);
       }
       else if (selectedIndex == 1) {
-        writeToOled("Speed Test\n\nChar: 0x8003\nHex: 00 to FF\n\nSW2:Back");
+        writeToOled("Speed Test\n\nChar: 8610-0003\nHex: 00 to FF\n\nSW2:Back");
         newSpeed = false;
         while (!readButton(BLE_TEST_SW2_PIN)) {
           if (newSpeed) {
@@ -307,7 +307,7 @@ void testBLERemote() {
         waitForButtonRelease(BLE_TEST_SW2_PIN);
       }
       else if (selectedIndex == 2) {
-        writeToOled("Command Test\n\nChar: 0x8004\nHex: 00 to FF\n\nSW2:Back");
+        writeToOled("Command Test\n\nChar: 8610-0004\nHex: 00 to FF\n\nSW2:Back");
         newCommand = false;
         while (!readButton(BLE_TEST_SW2_PIN)) {
           if (newCommand) {
