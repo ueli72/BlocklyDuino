@@ -9,7 +9,7 @@ import json
 import os
 
 BOARDS_JSON = "boards/boards.json"
-OUTPUT_FILE = "blockly/apps/blocklyduino/templates.js"
+OUTPUT_FILE = "blocklyduino/templates.js"
 
 FILES_TO_INCLUDE = [
     "platformio.ini",

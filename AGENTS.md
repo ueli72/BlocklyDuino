@@ -11,43 +11,43 @@ BlocklyDuino is a visual programming tool for Arduino, using Blockly to generate
 python3 generate_templates.py
 ```
 
-This regenerates `blockly/apps/blocklyduino/templates.js` which is used for project downloads. **DO NOT edit templates.js manually!**
+This regenerates `blocklyduino/templates.js` which is used for project downloads. **DO NOT edit templates.js manually!**
 
 ## Key Directories
 
 ### Block Definitions
-- `blockly/blocks/playground/*.js` - Block visual definitions for Playground components
+- `blocklyduino/blocks/playground/*.js` - Block visual definitions for Playground components
 - Each component has its own file (e.g., `oled.js`, `sg90.js`, `relais.js`)
 
 ### Code Generators
-- `blockly/generators/arduino/playground/*.js` - Arduino code generation for blocks
+- `blocklyduino/generators/arduino/playground/*.js` - Arduino code generation for blocks
 - Must match block definitions
 
 ### Main Application
-- `blockly/apps/blocklyduino/index.html` - Main HTML with toolbox definition and script includes
-- `blockly/apps/blocklyduino/block_info.js` - Block info, warnings, and dependencies
-- `blockly/apps/blocklyduino/lang/en.js` - English translations
-- `blockly/apps/blocklyduino/lang/de.js` - German translations
-- `blockly/apps/blocklyduino/templates.js` - Board templates (auto-generated, DO NOT EDIT)
+- `blocklyduino/index.html` - Main HTML with toolbox definition and script includes
+- `blocklyduino/block_info.js` - Block info, warnings, and dependencies
+- `blocklyduino/lang/en.js` - English translations
+- `blocklyduino/lang/de.js` - German translations
+- `blocklyduino/templates.js` - Board templates (auto-generated, DO NOT EDIT)
 
 ### Board Source Files
 - `boards/esp32-s3-devkitc1/include/*.h` - Header files
 - `boards/esp32-s3-devkitc1/src/*.cpp` - Implementation files
 
 ### Media
-- `blockly/media/` - Images for blocks (64x64 recommended)
+- `blocklyduino/media/` - Images for blocks (64x64 recommended)
 
 ## Adding a New Block (e.g., "Relais")
 
 ### 1. Create Block Definition
-File: `blockly/blocks/playground/relais.js`
+File: `blocklyduino/blocks/playground/relais.js`
 ```javascript
 Blockly.Blocks['relais_set'] = {
   init: function() {
     this.setColour(190);
     this.appendDummyInput()
         .appendField("Relais")
-        .appendField(new Blockly.FieldImage("../../media/relais.jpg", 64, 64))
+        .appendField(new Blockly.FieldImage("media/relais.jpg", 64, 64))
         .appendField("Relay#")
         .appendField(new Blockly.FieldDropdown([["Relay1", "1"], ["Relay2", "2"]]), "RELAY")
         .appendField("State")
@@ -60,7 +60,7 @@ Blockly.Blocks['relais_set'] = {
 ```
 
 ### 2. Create Code Generator
-File: `blockly/generators/arduino/playground/relais.js`
+File: `blocklyduino/generators/arduino/playground/relais.js`
 ```javascript
 Blockly.Arduino.relais_set = function() {
   var dropdown_relay = this.getFieldValue('RELAY');
@@ -74,8 +74,8 @@ Blockly.Arduino.relais_set = function() {
 ### 3. Register in index.html
 Add script includes:
 ```html
-<script type="text/javascript" src="../../blocks/playground/relais.js"></script>
-<script type="text/javascript" src="../../generators/arduino/playground/relais.js"></script>
+<script type="text/javascript" src="blocks/playground/relais.js"></script>
+<script type="text/javascript" src="generators/arduino/playground/relais.js"></script>
 ```
 
 Add to toolbox:
