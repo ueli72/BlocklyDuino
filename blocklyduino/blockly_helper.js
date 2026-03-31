@@ -722,7 +722,18 @@ function proceedWithDownload() {
 * Internal function to save project.
 */
 async function doSaveProject(fileName) {
-  var boardId = document.getElementById('boardSelector').value;
+  var boardSelector = document.getElementById('boardSelector');
+  var savedBoard = selectedBoard;
+  if (!savedBoard && typeof getSelectedBoard === 'function') {
+    savedBoard = getSelectedBoard();
+  }
+  var boardId = savedBoard || (boardSelector ? boardSelector.value : null);
+  if (!boardId || !BOARD_TEMPLATES[boardId]) {
+    boardId = (boardSelector && boardSelector.value) ? boardSelector.value : 'esp32-s3-devkitc1';
+  }
+  if (boardSelector && boardSelector.value !== boardId) {
+    boardSelector.value = boardId;
+  }
   var arduinoCode = Blockly.Arduino.workspaceToCode(Blockly.mainWorkspace);
 
   var zip = new JSZip();
