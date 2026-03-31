@@ -68,10 +68,17 @@ A web-based visual programming editor for Arduino, specialized for educational b
 ### Option 1: Use Online Demo
 Visit [blockly.bws-uster.ch](https://blockly.bws-uster.ch) - no installation required.
 
-### Option 2: Local Development
+### Option 2: Open Directly in Browser
+1. Clone or download the repository
+2. Open `blocklyduino/index.html` directly in your browser
+3. That's it - no server required!
+
+### Option 3: Local Development Server (Optional)
+If you prefer using a local server:
+
 1. Clone the repository:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/BlocklyDuino.git
+   git clone https://github.com/ueli72/BlocklyDuino.git
    cd BlocklyDuino
    ```
 
@@ -89,11 +96,11 @@ Visit [blockly.bws-uster.ch](https://blockly.bws-uster.ch) - no installation req
 
 3. Open http://localhost:8080 in your browser
 
-### Option 3: Deploy to GitHub Pages
+### Option 4: Deploy to GitHub Pages
 1. Fork this repository
 2. Go to Settings → Pages
 3. Set Source to `main` branch, folder `/ (root)`
-4. Your app will be available at `https://YOUR_USERNAME.github.io/BlocklyDuino/blocklyduino/`
+4. Your app will be available at `https://ueli72.github.io/BlocklyDuino/blocklyduino/`
 
 ### Option 4: Deploy to Web Server
 Copy the `blocklyduino/` directory to your web server's public folder:
