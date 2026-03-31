@@ -161,17 +161,46 @@ function createPinReferencePanel() {
   header.innerHTML = '<span>' + (typeof i18n !== 'undefined' ? i18n.t('pinReference.title') : 'Pin Reference') + '</span><button class="pin-reference-close" onclick="togglePinReference()">×</button>';
   panel.appendChild(header);
   
+  var filterContainer = document.createElement('div');
+  filterContainer.className = 'pin-reference-filter';
+  filterContainer.innerHTML = '<input type="text" id="pinFilterInput" placeholder="' + (typeof i18n !== 'undefined' ? i18n.t('pinReference.filter') : 'Filter pins...') + '" oninput="filterPinReference()">';
+  panel.appendChild(filterContainer);
+  
+  var capFilterContainer = document.createElement('div');
+  capFilterContainer.className = 'pin-reference-cap-filters';
+  capFilterContainer.id = 'pinCapFilters';
+  var capabilities = ['digital', 'pwm', 'analog', 'interrupt', 'adc1', 'adc2'];
+  capabilities.forEach(function(cap) {
+    var badge = document.createElement('span');
+    badge.className = 'pin-cap pin-cap-' + cap + ' pin-cap-filter';
+    badge.textContent = cap;
+    badge.onclick = function() { filterByCapability(cap); };
+    badge.style.cursor = 'pointer';
+    capFilterContainer.appendChild(badge);
+  });
+  var clearBtn = document.createElement('span');
+  clearBtn.className = 'pin-cap-filter-clear';
+  clearBtn.textContent = '✕';
+  clearBtn.onclick = function() { clearCapabilityFilter(); };
+  clearBtn.style.cursor = 'pointer';
+  clearBtn.title = typeof i18n !== 'undefined' ? i18n.t('pinReference.clearFilter') : 'Clear filter';
+  capFilterContainer.appendChild(clearBtn);
+  panel.appendChild(capFilterContainer);
+  
   var content = document.createElement('div');
   content.className = 'pin-reference-content';
+  content.id = 'pinReferenceContent';
   
   var table = document.createElement('table');
   table.className = 'pin-reference-table';
+  table.id = 'pinReferenceTable';
   
   var thead = document.createElement('thead');
   thead.innerHTML = '<tr><th>' + (typeof i18n !== 'undefined' ? i18n.t('pinReference.pin') : 'Pin') + '</th><th>' + (typeof i18n !== 'undefined' ? i18n.t('pinReference.capabilities') : 'Capabilities') + '</th><th>' + (typeof i18n !== 'undefined' ? i18n.t('pinReference.special') : 'Special') + '</th><th>' + (typeof i18n !== 'undefined' ? i18n.t('pinReference.notes') : 'Notes') + '</th></tr>';
   table.appendChild(thead);
   
   var tbody = document.createElement('tbody');
+  tbody.id = 'pinReferenceBody';
   var pins = boardData.pins;
   var pinKeys = Object.keys(pins).sort(function(a, b) {
     var aNum = parseInt(a.replace(/\D/g, '')) || 0;
@@ -185,7 +214,12 @@ function createPinReferencePanel() {
   pinKeys.forEach(function(pinKey) {
     var pin = pins[pinKey];
     var tr = document.createElement('tr');
-    if (pin.reserved) tr.className = 'pin-reserved';
+    tr.className = 'pin-row';
+    tr.dataset.pin = pin.name.toLowerCase();
+    tr.dataset.capabilities = pin.capabilities.join(' ').toLowerCase();
+    tr.dataset.special = (pin.special || []).join(' ').toLowerCase();
+    tr.dataset.notes = (pin.notes || '').toLowerCase();
+    if (pin.reserved) tr.classList.add('pin-reserved');
     
     var capHtml = pin.capabilities.map(function(cap) {
       return '<span class="pin-cap pin-cap-' + cap + '">' + cap + '</span>';
@@ -200,6 +234,81 @@ function createPinReferencePanel() {
   panel.appendChild(content);
   
   document.body.appendChild(panel);
+}
+
+var currentCapabilityFilter = null;
+
+function filterByCapability(cap) {
+  currentCapabilityFilter = cap;
+  document.getElementById('pinFilterInput').value = '';
+  
+  var badges = document.querySelectorAll('.pin-cap-filter');
+  badges.forEach(function(badge) {
+    badge.classList.remove('active');
+    if (badge.textContent === cap) {
+      badge.classList.add('active');
+    }
+  });
+  
+  var rows = document.querySelectorAll('#pinReferenceBody tr.pin-row');
+  rows.forEach(function(row) {
+    var capabilities = row.dataset.capabilities || '';
+    row.style.display = capabilities.includes(cap) ? '' : 'none';
+  });
+}
+
+function clearCapabilityFilter() {
+  currentCapabilityFilter = null;
+  document.getElementById('pinFilterInput').value = '';
+  
+  var badges = document.querySelectorAll('.pin-cap-filter');
+  badges.forEach(function(badge) {
+    badge.classList.remove('active');
+  });
+  
+  var rows = document.querySelectorAll('#pinReferenceBody tr.pin-row');
+  rows.forEach(function(row) {
+    row.style.display = '';
+  });
+}
+
+function filterPinReference() {
+  var input = document.getElementById('pinFilterInput');
+  var filter = input.value.toLowerCase();
+  
+  currentCapabilityFilter = null;
+  var badges = document.querySelectorAll('.pin-cap-filter');
+  badges.forEach(function(badge) {
+    badge.classList.remove('active');
+  });
+  
+  var rows = document.querySelectorAll('#pinReferenceBody tr.pin-row');
+  
+  rows.forEach(function(row) {
+    var pin = row.dataset.pin || '';
+    var capabilities = row.dataset.capabilities || '';
+    var special = row.dataset.special || '';
+    var notes = row.dataset.notes || '';
+    
+    var match = pin.includes(filter) || capabilities.includes(filter) || special.includes(filter) || notes.includes(filter);
+    row.style.display = match ? '' : 'none';
+  });
+}
+
+function filterPinReference() {
+  var input = document.getElementById('pinFilterInput');
+  var filter = input.value.toLowerCase();
+  var rows = document.querySelectorAll('#pinReferenceBody tr.pin-row');
+  
+  rows.forEach(function(row) {
+    var pin = row.dataset.pin || '';
+    var capabilities = row.dataset.capabilities || '';
+    var special = row.dataset.special || '';
+    var notes = row.dataset.notes || '';
+    
+    var match = pin.includes(filter) || capabilities.includes(filter) || special.includes(filter) || notes.includes(filter);
+    row.style.display = match ? '' : 'none';
+  });
 }
 
 function updatePinReferencePanel() {

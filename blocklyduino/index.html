@@ -974,6 +974,62 @@ function initBlockly() {
     .pin-cap-interrupt { background: #f8d7da; color: #721c24; }
     .pin-cap-adc1 { background: #d1ecf1; color: #0c5460; }
     .pin-cap-adc2 { background: #e2e3e5; color: #383d41; }
+    
+    .pin-reference-filter {
+      padding: 8px 12px;
+      border-bottom: 1px solid #dee2e6;
+    }
+    
+    .pin-reference-filter input {
+      width: 100%;
+      padding: 6px 10px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    
+    .pin-reference-filter input:focus {
+      outline: none;
+      border-color: #80bdff;
+      box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+    }
+    
+    .pin-reference-cap-filters {
+      padding: 6px 12px;
+      border-bottom: 1px solid #dee2e6;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      align-items: center;
+    }
+    
+    .pin-cap-filter {
+      opacity: 0.7;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    
+    .pin-cap-filter:hover {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    
+    .pin-cap-filter.active {
+      opacity: 1;
+      transform: scale(1.1);
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.3);
+    }
+    
+    .pin-cap-filter-clear {
+      margin-left: 8px;
+      padding: 2px 8px;
+      font-size: 14px;
+      color: #6c757d;
+      font-weight: bold;
+    }
+    
+    .pin-cap-filter-clear:hover {
+      color: #dc3545;
+    }
   </style>
 </head>
 <body onload="init()">

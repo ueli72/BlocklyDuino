@@ -360,6 +360,8 @@ i18n.registerTranslations('de', {
     "pin": "Pin",
     "capabilities": "Funktionen",
     "special": "Spezial",
-    "notes": "Hinweise"
+    "notes": "Hinweise",
+    "filter": "Pins filtern...",
+    "clearFilter": "Filter löschen"
   }
 });
