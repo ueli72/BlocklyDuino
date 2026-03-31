@@ -1079,6 +1079,7 @@ function initBlockly() {
           </div>
           <select class="form-select form-select-sm" id="boardSelector">
             <option value="esp32-s3-devkitc1">BWS Playground Master</option>
+            <option value="playground-brumbrum-esp32-s3-devkitc1">Playground BrumBrum (esp32-s3-devkitc1)</option>
             <option value="arduino-uno">Arduino Uno</option>
           </select>
           <div class="btn-group btn-group-sm" role="group">
@@ -1242,7 +1243,7 @@ function initBlockly() {
         <div class="modal-body">
           <p class="text-muted mb-4" data-i18n="boardSelection.description">Choose your board to start a new project:</p>
           <div class="row g-4">
-            <div class="col-md-6">
+            <div class="col-md-6 col-lg-4">
               <div class="card h-100 board-card" data-board="esp32-s3-devkitc1" onclick="selectBoard('esp32-s3-devkitc1')">
                 <img src="media/playground.png" class="card-img-top" alt="BWS Playground Master" style="object-fit: contain; height: 200px; padding: 1rem;">
                 <div class="card-body text-center">
@@ -1251,7 +1252,16 @@ function initBlockly() {
                 </div>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 col-lg-4">
+              <div class="card h-100 board-card" data-board="playground-brumbrum-esp32-s3-devkitc1" onclick="selectBoard('playground-brumbrum-esp32-s3-devkitc1')">
+                <img src="media/brumbrum.png" class="card-img-top" alt="Playground BrumBrum (esp32-s3-devkitc1)" style="object-fit: contain; height: 200px; padding: 1rem;">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Playground BrumBrum (esp32-s3-devkitc1)</h5>
+                  <p class="card-text text-muted" data-i18n="boardSelection.brumbrumDesc">Specialized Board of BWS Uster for a RC car.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
               <div class="card h-100 board-card" data-board="arduino-uno" onclick="selectBoard('arduino-uno')">
                 <img src="media/uno.jpg" class="card-img-top" alt="Arduino Uno" style="object-fit: contain; height: 200px; padding: 1rem;">
                 <div class="card-body text-center">

@@ -29,6 +29,7 @@ i18n.registerTranslations('en', {
   "boardSelection": {
     "title": "Select Board",
     "description": "Choose your board to start a new project:",
+    "brumbrumDesc": "Specialized Board of BWS Uster for a RC car.",
     "playgroundDesc": "Specialized development board by BWS Uster for learning projects.",
     "unoDesc": "Classic Arduino board for basic projects"
   },

@@ -1,0 +1,70 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "PlatformIO Build",
+			"type": "shell",
+			"command": "${env:HOME}/.platformio/penv/bin/pio",
+			"args": ["run"],
+			"isBackground": false,
+			"problemMatcher": [
+				"$platformio"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "PlatformIO Upload",
+			"type": "shell",
+			"command": "${env:HOME}/.platformio/penv/bin/pio",
+			"args": ["run", "--target", "upload"],
+			"isBackground": false,
+			"problemMatcher": [
+				"$platformio"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "PlatformIO Serial Monitor",
+			"type": "shell",
+			"command": "${env:HOME}/.platformio/penv/bin/pio",
+			"args": ["device", "monitor"],
+			"isBackground": true,
+			"problemMatcher": [],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "new"
+			}
+		},
+		{
+			"label": "PlatformIO Clean",
+			"type": "shell", 
+			"command": "${env:HOME}/.platformio/penv/bin/pio",
+			"args": ["run", "--target", "clean"],
+			"isBackground": false,
+			"problemMatcher": [
+				"$platformio"
+			],
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		}
+	]
+}

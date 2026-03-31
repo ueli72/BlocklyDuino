@@ -20,6 +20,10 @@ var BOARD_INFO = {
     name: 'BWS Playground Master',
     image: 'media/playground.png'
   },
+  'playground-brumbrum-esp32-s3-devkitc1': {
+    name: 'Playground BrumBrum (esp32-s3-devkitc1)',
+    image: 'media/brumbrum.png'
+  },
   'arduino-uno': {
     name: 'Arduino Uno',
     image: 'media/uno.jpg'
@@ -107,6 +111,17 @@ var PIN_DATA = {
     }
   }
 };
+
+var brumbrumPins = JSON.parse(JSON.stringify(PIN_DATA['esp32-s3-devkitc1']));
+brumbrumPins.board = 'playground-brumbrum-esp32-s3-devkitc1';
+brumbrumPins.name = 'Playground BrumBrum (esp32-s3-devkitc1)';
+Object.keys(brumbrumPins.pins).forEach(function(pinKey) {
+  var pinNotes = brumbrumPins.pins[pinKey].notes;
+  if (typeof pinNotes === 'string') {
+    brumbrumPins.pins[pinKey].notes = pinNotes.split('Playground Master').join('Playground BrumBrum');
+  }
+});
+PIN_DATA['playground-brumbrum-esp32-s3-devkitc1'] = brumbrumPins;
 
 function getPinInfo(boardId, pin) {
   var boardData = PIN_DATA[boardId];
@@ -371,7 +386,7 @@ function selectBoard(boardId) {
   updateBoardInfoDisplay(boardId);
   updatePinReferencePanel();
   
-  if (boardId === 'esp32-s3-devkitc1') {
+  if (boardId === 'esp32-s3-devkitc1' || boardId === 'playground-brumbrum-esp32-s3-devkitc1') {
     profile['default'] = profile['esp32'];
   } else if (boardId === 'arduino-uno') {
     profile['default'] = profile['arduino'];
@@ -442,7 +457,7 @@ function initBoardSelection() {
       boardSelector.style.display = 'none';
     }
     updateBoardInfoDisplay(savedBoard);
-    if (savedBoard === 'esp32-s3-devkitc1') {
+    if (savedBoard === 'esp32-s3-devkitc1' || savedBoard === 'playground-brumbrum-esp32-s3-devkitc1') {
       profile['default'] = profile['esp32'];
     } else if (savedBoard === 'arduino-uno') {
       profile['default'] = profile['arduino'];

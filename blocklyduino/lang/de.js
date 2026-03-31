@@ -29,6 +29,7 @@ i18n.registerTranslations('de', {
   "boardSelection": {
     "title": "Board auswählen",
     "description": "Wählen Sie Ihr Board, um ein neues Projekt zu starten:",
+    "brumbrumDesc": "Spezialisiertes Board der BWS Uster für ein RC-Auto.",
     "playgroundDesc": "Spezialisiertes Entwicklungsboard von BWS Uster für Lernprojekte.",
     "unoDesc": "Klassisches Arduino-Board für einfache Projekte"
   },

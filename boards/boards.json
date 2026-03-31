@@ -7,6 +7,12 @@
       "directory": "boards/esp32-s3-devkitc1"
     },
     {
+      "id": "playground-brumbrum-esp32-s3-devkitc1",
+      "name": "Playground BrumBrum (esp32-s3-devkitc1)",
+      "profile": "esp32",
+      "directory": "boards/playground-brumbrum-esp32-s3-devkitc1"
+    },
+    {
       "id": "arduino-uno",
       "name": "Arduino Uno",
       "profile": "arduino",

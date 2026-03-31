@@ -70,6 +70,8 @@ var KY023_ANALOG_PINS = {
   ]
 };
 
+KY023_ANALOG_PINS['playground-brumbrum-esp32-s3-devkitc1'] = KY023_ANALOG_PINS['esp32-s3-devkitc1'];
+
 function getKY023AnalogPins() {
   var boardId = window.currentBoardId || 'esp32-s3-devkitc1';
   return KY023_ANALOG_PINS[boardId] || KY023_ANALOG_PINS['esp32-s3-devkitc1'];
