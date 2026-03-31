@@ -184,8 +184,8 @@ Blockly.Blocks['inout_pinmode'] = {
         .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
         .appendField("Mode")
         .appendField(new Blockly.FieldDropdown([["INPUT", "INPUT"], ["OUTPUT", "OUTPUT"], ["INPUT_PULLUP", "INPUT_PULLUP"], ["INPUT_PULLDOWN", "INPUT_PULLDOWN"]]), "MODE");
-    this.setPreviousStatement(true, "setup");
-    this.setNextStatement(true, "setup");
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
     this.setTooltip('Set the mode of a digital pin (typically used in Setup)');
   }
 };
