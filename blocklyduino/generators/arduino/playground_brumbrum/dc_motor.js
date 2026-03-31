@@ -1,0 +1,82 @@
+/**
+ * Visual Blocks Language
+ *
+ * Copyright 2024
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * @fileoverview Generating Arduino for DC Motor blocks.
+ */
+'use strict';
+
+Blockly.Arduino.dc_motor_init = function() {
+  var motor1 = this.getFieldValue('MOTOR1') === 'TRUE';
+  var motor2 = this.getFieldValue('MOTOR2') === 'TRUE';
+  var motor3 = this.getFieldValue('MOTOR3') === 'TRUE';
+  var motor4 = this.getFieldValue('MOTOR4') === 'TRUE';
+  
+  Blockly.Arduino.definitions_['include_dcmotor_h'] = '#include "dcmotor.h"\n';
+  
+  var mask = 0;
+  if (motor1) mask |= 1;
+  if (motor2) mask |= 2;
+  if (motor3) mask |= 4;
+  if (motor4) mask |= 8;
+  
+  // Build comment showing which motors are enabled
+  var motors = [];
+  if (motor1) motors.push('M1');
+  if (motor2) motors.push('M2');
+  if (motor3) motors.push('M3');
+  if (motor4) motors.push('M4');
+  var motorList = motors.length > 0 ? motors.join(', ') : 'none';
+  
+  var code = 'initDCMotors(' + mask + ');  // Initialize DC motors: ' + motorList + '\n';
+  return code;
+};
+
+Blockly.Arduino.dc_motor_set = function() {
+  var dropdown_motor = this.getFieldValue('MOTOR');
+  var dropdown_direction = this.getFieldValue('DIRECTION');
+  var value_speed = Blockly.Arduino.valueToCode(this, 'SPEED', Blockly.Arduino.ORDER_ATOMIC);
+  Blockly.Arduino.definitions_['include_dcmotor_h'] = '#include "dcmotor.h"\n';
+  var code = 'setDCSpeed(' + dropdown_motor + ', ' + dropdown_direction + ', ' + value_speed + ');  // Set motor ' + dropdown_motor + ' direction and speed\n';
+  return code;
+};
+
+Blockly.Arduino.dc_motor_stop = function() {
+  var dropdown_motor = this.getFieldValue('MOTOR');
+  Blockly.Arduino.definitions_['include_dcmotor_h'] = '#include "dcmotor.h"\n';
+  var code = 'setDCSpeed(' + dropdown_motor + ', FORWARD, 0);  // Stop motor ' + dropdown_motor + '\n';
+  return code;
+};
+
+Blockly.Arduino.dc_motor_test = function() {
+  var motor1 = this.getFieldValue('MOTOR1') === 'TRUE';
+  var motor2 = this.getFieldValue('MOTOR2') === 'TRUE';
+  var motor3 = this.getFieldValue('MOTOR3') === 'TRUE';
+  var motor4 = this.getFieldValue('MOTOR4') === 'TRUE';
+  
+  Blockly.Arduino.definitions_['include_dcmotor_h'] = '#include "dcmotor.h"\n';
+  
+  var mask = 0;
+  if (motor1) mask |= 1;
+  if (motor2) mask |= 2;
+  if (motor3) mask |= 4;
+  if (motor4) mask |= 8;
+  
+  var code = 'testDCMotors(' + mask + ');\n';
+  return code;
+};

@@ -15,6 +15,35 @@ var sessionWarnings = [];
 
 var selectedBoard = null;
 
+var GENERATOR_SETS = {};
+var CURRENT_GENERATOR_SET = null;
+var GENERATOR_SET_TARGET = null;
+var loadedExternalScripts = {};
+var BRUMBRUM_GENERATOR_SCRIPTS = [
+  'generators/arduino/playground_brumbrum/sg90.js',
+  'generators/arduino/playground_brumbrum/internal_led.js',
+  'generators/arduino/playground_brumbrum/button.js',
+  'generators/arduino/playground_brumbrum/ledmatrix.js',
+  'generators/arduino/playground_brumbrum/oled.js',
+  'generators/arduino/playground_brumbrum/relais.js',
+  'generators/arduino/playground_brumbrum/dc_motor.js',
+  'generators/arduino/playground_brumbrum/dht11.js',
+  'generators/arduino/playground_brumbrum/ultrasonic.js',
+  'generators/arduino/playground_brumbrum/sdcard.js',
+  'generators/arduino/playground_brumbrum/max98357a.js',
+  'generators/arduino/playground_brumbrum/brightness.js',
+  'generators/arduino/playground_brumbrum/ws2812.js',
+  'generators/arduino/playground_brumbrum/ble_remote.js',
+  'generators/arduino/playground_brumbrum/test_all.js',
+  'generators/arduino/playground_brumbrum/timer.js',
+  'generators/arduino/playground_brumbrum/ky023.js',
+  'generators/arduino/playground_brumbrum/serial.js',
+  'generators/arduino/playground_brumbrum/variable.js',
+  'generators/arduino/playground_brumbrum/global_array.js',
+  'generators/arduino/playground_brumbrum/custom_code.js'
+];
+var brumbrumGeneratorsLoading = null;
+
 var BOARD_INFO = {
   'esp32-s3-devkitc1': {
     name: 'BWS Playground Master',
@@ -122,6 +151,98 @@ Object.keys(brumbrumPins.pins).forEach(function(pinKey) {
   }
 });
 PIN_DATA['playground-brumbrum-esp32-s3-devkitc1'] = brumbrumPins;
+
+function captureGeneratorSet(name) {
+  if (typeof Blockly === 'undefined' || !Blockly.Arduino) return;
+  var set = {};
+  Object.keys(Blockly.Arduino).forEach(function(key) {
+    var value = Blockly.Arduino[key];
+    if (typeof value === 'function') {
+      set[key] = value;
+    }
+  });
+  GENERATOR_SETS[name] = set;
+}
+
+function applyGeneratorSet(name) {
+  var set = GENERATOR_SETS[name];
+  if (!set || typeof Blockly === 'undefined' || !Blockly.Arduino) return;
+  Object.keys(set).forEach(function(key) {
+    Blockly.Arduino[key] = set[key];
+  });
+  CURRENT_GENERATOR_SET = name;
+}
+
+function ensureMasterGeneratorSetCaptured() {
+  if (!GENERATOR_SETS.master) {
+    captureGeneratorSet('master');
+    if (!CURRENT_GENERATOR_SET) {
+      CURRENT_GENERATOR_SET = 'master';
+    }
+  }
+}
+
+function ensureBrumbrumGeneratorsLoaded() {
+  ensureMasterGeneratorSetCaptured();
+  if (GENERATOR_SETS.brumbrum) {
+    return Promise.resolve();
+  }
+  if (brumbrumGeneratorsLoading) {
+    return brumbrumGeneratorsLoading;
+  }
+
+  var previousSet = CURRENT_GENERATOR_SET || 'master';
+  brumbrumGeneratorsLoading = loadScriptsSequential(BRUMBRUM_GENERATOR_SCRIPTS).then(function() {
+    captureGeneratorSet('brumbrum');
+    applyGeneratorSet(previousSet);
+  }).catch(function(error) {
+    console.error('Failed to load BrumBrum generator scripts', error);
+  }).finally(function() {
+    brumbrumGeneratorsLoading = null;
+  });
+
+  return brumbrumGeneratorsLoading;
+}
+
+function updateGeneratorsForBoard(boardId) {
+  ensureMasterGeneratorSetCaptured();
+  GENERATOR_SET_TARGET = boardId;
+  if (boardId === 'playground-brumbrum-esp32-s3-devkitc1') {
+    ensureBrumbrumGeneratorsLoaded().then(function() {
+      if (GENERATOR_SET_TARGET === 'playground-brumbrum-esp32-s3-devkitc1') {
+        applyGeneratorSet('brumbrum');
+      }
+    });
+  } else {
+    applyGeneratorSet('master');
+  }
+}
+
+function loadScriptsSequential(paths) {
+  return paths.reduce(function(prev, path) {
+    return prev.then(function() {
+      return loadScript(path);
+    });
+  }, Promise.resolve());
+}
+
+function loadScript(path) {
+  if (loadedExternalScripts[path]) {
+    return Promise.resolve();
+  }
+  return new Promise(function(resolve, reject) {
+    var script = document.createElement('script');
+    script.src = path;
+    script.onload = function() {
+      loadedExternalScripts[path] = true;
+      resolve();
+    };
+    script.onerror = function() {
+      reject(new Error('Unable to load script: ' + path));
+    };
+    document.head.appendChild(script);
+  });
+}
 
 function getPinInfo(boardId, pin) {
   var boardData = PIN_DATA[boardId];
@@ -376,6 +497,7 @@ function showBoardSelectionModal() {
 }
 
 function selectBoard(boardId) {
+  ensureMasterGeneratorSetCaptured();
   setSelectedBoard(boardId);
   
   var boardSelector = document.getElementById('boardSelector');
@@ -393,6 +515,7 @@ function selectBoard(boardId) {
   }
   
   updateToolboxForBoard(boardId);
+  updateGeneratorsForBoard(boardId);
   
   var modalEl = document.getElementById('boardSelectionModal');
   var modal = bootstrap.Modal.getInstance(modalEl);

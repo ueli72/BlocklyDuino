@@ -57,6 +57,7 @@ i18n.registerTranslations('de', {
     "functions": "Funktionen",
     "customCode": "Eigener Code",
     "inputOutput": "Eingabe/Ausgabe",
+    "brumbrum": "BrumBrum",
     "playground": "Playground",
     "sg90Servo": "SG90 Servo",
     "internalLED": "Interne LED",

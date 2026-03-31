@@ -413,17 +413,18 @@ function addToolboxIcons() {
     var serialText = i18n.t('categories.serial');
     var basicText = i18n.t('categories.basic');
     var playgroundText = i18n.t('categories.playground');
+    var brumbrumText = i18n.t('categories.brumbrum');
     var inputOutputText = i18n.t('categories.inputOutput');
-    
+
     var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText || text === sdcardText || text === max98357aText || text === brightnessText || text === ws2812Text || text === bluetoothLEText || text === testAllText || text === ky023Text || text === serialText || text === basicText;
-    
+
     // Add class for subcategories
     if (isSubcategory) {
       row.classList.add('subcategory');
     }
-    
-    // Playground and Input/Output have subcategories - add arrow
-    if (text === playgroundText || text === inputOutputText) {
+
+    // Categories with subcategories - add arrow
+    if (text === playgroundText || text === brumbrumText || text === inputOutputText) {
       var arrow = row.querySelector('.tree-arrow');
       if (!arrow) {
         var rowContainer = row.parentElement;
@@ -491,12 +492,13 @@ function addToolboxIcons() {
 
 function updateTreeArrows() {
   var playgroundText = i18n.t('categories.playground');
+  var brumbrumText = i18n.t('categories.brumbrum');
   var inputOutputText = i18n.t('categories.inputOutput');
-  
+
   var labels = document.querySelectorAll('.blocklyTreeLabel');
   labels.forEach(function(l) {
     var text = l.textContent.trim();
-    if (text === playgroundText || text === inputOutputText) {
+    if (text === playgroundText || text === brumbrumText || text === inputOutputText) {
       var row = l.closest('.blocklyTreeRow');
       var arrow = row ? row.querySelector('.tree-arrow') : null;
       if (arrow) {
@@ -1587,6 +1589,193 @@ function initBlockly() {
       </category>
     </category>
     <category name="Playground" data-i18n-name="categories.playground" data-board="esp32-s3-devkitc1">
+      <category name="SG90 Servo" data-i18n-name="categories.sg90Servo">
+        <block type="servo_sg90_init"></block>
+        <block type="servo_sg90_move">
+          <value name="DEGREE">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+        </block>
+        <block type="servo_sg90_read_degrees"></block>
+        <block type="servo_sg90_test_sweep"></block>
+      </category>
+      <category name="Internal LED" data-i18n-name="categories.internalLED">
+        <block type="internal_led_init"></block>
+        <block type="internal_led_set">
+          <value name="RED">
+            <block type="math_number">
+              <field name="NUM">255</field>
+            </block>
+          </value>
+          <value name="GREEN">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+          <value name="BLUE">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+        </block>
+        <block type="internal_led_off"></block>
+        <block type="internal_led_test"></block>
+      </category>
+      <category name="Button" data-i18n-name="categories.button">
+        <block type="button_init"></block>
+        <block type="button_read"></block>
+      </category>
+      <category name="LED Matrix" data-i18n-name="categories.ledMatrix">
+        <block type="led_matrix_init"></block>
+        <block type="led_matrix_set_pixel">
+          <value name="INDEX">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+          <value name="RED">
+            <block type="math_number">
+              <field name="NUM">255</field>
+            </block>
+          </value>
+          <value name="GREEN">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+          <value name="BLUE">
+            <block type="math_number">
+              <field name="NUM">0</field>
+            </block>
+          </value>
+        </block>
+        <block type="led_matrix_show"></block>
+        <block type="led_matrix_off"></block>
+        <block type="led_matrix_test"></block>
+      </category>
+      <category name="OLED Display" data-i18n-name="categories.oled">
+        <block type="oled_init"></block>
+        <block type="oled_write">
+          <value name="TEXT">
+            <block type="text">
+              <field name="TEXT">Hello</field>
+            </block>
+          </value>
+        </block>
+        <block type="oled_clear"></block>
+        <block type="oled_test"></block>
+      </category>
+      <category name="Relais" data-i18n-name="categories.relais">
+        <block type="relais_set"></block>
+        <block type="relais_test"></block>
+      </category>
+      <category name="DC Motor" data-i18n-name="categories.dcMotor">
+        <block type="dc_motor_init"></block>
+        <block type="dc_motor_set">
+          <value name="SPEED">
+            <block type="math_number">
+              <field name="NUM">100</field>
+            </block>
+          </value>
+        </block>
+        <block type="dc_motor_stop"></block>
+        <block type="dc_motor_test"></block>
+      </category>
+      <category name="DHT11" data-i18n-name="categories.dht11">
+        <block type="dht11_init"></block>
+        <block type="dht11_read_temp"></block>
+        <block type="dht11_read_humidity"></block>
+        <block type="dht11_test"></block>
+      </category>
+      <category name="Ultrasonic" data-i18n-name="categories.ultrasonic">
+        <block type="ultrasonic_read"></block>
+        <block type="ultrasonic_test"></block>
+      </category>
+      <category name="SD Card" data-i18n-name="categories.sdcard">
+        <block type="sdcard_init"></block>
+        <block type="sdcard_write">
+          <value name="PATH">
+            <block type="text">
+              <field name="TEXT">/test.txt</field>
+            </block>
+          </value>
+          <value name="CONTENT">
+            <block type="text">
+              <field name="TEXT">Hello World</field>
+            </block>
+          </value>
+        </block>
+        <block type="sdcard_read">
+          <value name="PATH">
+            <block type="text">
+              <field name="TEXT">/test.txt</field>
+            </block>
+          </value>
+        </block>
+        <block type="sdcard_append">
+          <value name="PATH">
+            <block type="text">
+              <field name="TEXT">/test.txt</field>
+            </block>
+          </value>
+          <value name="CONTENT">
+            <block type="text">
+              <field name="TEXT">More data</field>
+            </block>
+          </value>
+        </block>
+        <block type="sdcard_exists">
+          <value name="PATH">
+            <block type="text">
+              <field name="TEXT">/test.txt</field>
+            </block>
+          </value>
+        </block>
+        <block type="sdcard_delete">
+          <value name="PATH">
+            <block type="text">
+              <field name="TEXT">/test.txt</field>
+            </block>
+          </value>
+        </block>
+        <block type="sdcard_test"></block>
+      </category>
+      <category name="MAX98357A" data-i18n-name="categories.max98357a">
+        <block type="max98357a_init"></block>
+        <block type="max98357a_play_tone">
+          <value name="FREQUENCY">
+            <block type="math_number">
+              <field name="NUM">440</field>
+            </block>
+          </value>
+          <value name="DURATION">
+            <block type="math_number">
+              <field name="NUM">1000</field>
+            </block>
+          </value>
+        </block>
+        <block type="max98357a_play_file">
+          <value name="FILENAME">
+            <block type="text">
+              <field name="TEXT">audio.wav</field>
+            </block>
+          </value>
+        </block>
+        <block type="max98357a_is_playing"></block>
+        <block type="max98357a_wait_until_done"></block>
+        <block type="max98357a_stop"></block>
+        <block type="max98357a_test"></block>
+      </category>
+      <category name="Brightness" data-i18n-name="categories.brightness">
+        <block type="brightness_read"></block>
+      </category>
+      <category name="Test All" data-i18n-name="categories.testAll">
+        <block type="test_all"></block>
+      </category>
+    </category>
+    <category name="BrumBrum" data-i18n-name="categories.brumbrum" data-board="playground-brumbrum-esp32-s3-devkitc1">
       <category name="SG90 Servo" data-i18n-name="categories.sg90Servo">
         <block type="servo_sg90_init"></block>
         <block type="servo_sg90_move">
