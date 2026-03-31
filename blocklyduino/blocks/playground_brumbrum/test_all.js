@@ -80,6 +80,6 @@ Blockly.Blocks['test_all'] = {
     
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Run interactive test menu for selected components. Use SW1/SW2 to navigate, SW3 to select, SW4 to exit.');
+    this.setTooltip('Run interactive test menu for selected components. Use SW1 to navigate (hold to exit) and SW2 to run/back.');
   }
 };

@@ -11,9 +11,6 @@
 #include "internalLED.h"
 #include "servos.h"
 
-#define SW1_PIN 1
-#define SW2_PIN 4
-
 typedef struct {
     const char* name;
     uint16_t bit;

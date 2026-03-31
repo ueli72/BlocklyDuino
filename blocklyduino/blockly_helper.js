@@ -150,6 +150,14 @@ Object.keys(brumbrumPins.pins).forEach(function(pinKey) {
     brumbrumPins.pins[pinKey].notes = pinNotes.split('Playground Master').join('Playground BrumBrum');
   }
 });
+brumbrumPins.pins['1'].special = ['Button SW1'];
+brumbrumPins.pins['1'].notes = 'Button1 on Playground BrumBrum';
+brumbrumPins.pins['2'].special = ['Button SW2'];
+brumbrumPins.pins['2'].notes = 'Button2 on Playground BrumBrum';
+['3', '4'].forEach(function(pinKey) {
+  brumbrumPins.pins[pinKey].special = [];
+  brumbrumPins.pins[pinKey].notes = null;
+});
 PIN_DATA['playground-brumbrum-esp32-s3-devkitc1'] = brumbrumPins;
 
 function captureGeneratorSet(name) {

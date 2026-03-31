@@ -19,23 +19,23 @@
     "2": {
       "name": "GPIO2",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": ["Button SW4"],
+      "special": ["Button SW2"],
       "reserved": false,
-      "notes": "Button4 on Playground BrumBrum"
+      "notes": "Button2 on Playground BrumBrum"
     },
     "3": {
       "name": "GPIO3",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": ["Button SW3"],
+      "special": [],
       "reserved": false,
-      "notes": "Button3 on Playground BrumBrum"
+      "notes": null
     },
     "4": {
       "name": "GPIO4",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": ["Button SW2"],
+      "special": [],
       "reserved": false,
-      "notes": "Button2 on Playground BrumBrum"
+      "notes": null
     },
     "5": {
       "name": "GPIO5",

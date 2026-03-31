@@ -5,11 +5,9 @@
 
 // Button pin definitions
 #define SW1_PIN 1
-#define SW2_PIN 4
-#define SW3_PIN 3
-#define SW4_PIN 2
+#define SW2_PIN 2
 
-void initializeButtons(bool sw1, bool sw2, bool sw3, bool sw4);
+void initializeButtons(bool sw1, bool sw2);
 
 void testButtons();
 

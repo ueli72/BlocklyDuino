@@ -1,5 +1,6 @@
 #include "ble_remote.h"
 #include "oled.h"
+#include "buttons.h"
 #include <NimBLEDevice.h>
 
 #define SERVICE_UUID           "00008610-0000-0000-0000-000000000001"  // 8610 = school zip code
@@ -126,8 +127,8 @@ bool isBLEConnected() {
   return pServer && pServer->getConnectedCount() > 0;
 }
 
-#define BLE_TEST_SW1_PIN 1
-#define BLE_TEST_SW2_PIN 4
+#define BLE_TEST_SW1_PIN SW1_PIN
+#define BLE_TEST_SW2_PIN SW2_PIN
 
 static int8_t lastDirection = 0;
 static uint8_t lastSpeed = 0;
