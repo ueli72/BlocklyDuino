@@ -195,7 +195,7 @@ i18n.registerTranslations('de', {
     },
     "button": {
       "title": "Taster",
-      "initMessage": "Dieser Block initialisiert alle 4 Taster.\n\nVerwendete Pins:\n• Taster1: GPIO1\n• Taster2: GPIO4\n• Taster3: GPIO3\n• Taster4: GPIO2",
+      "initMessage": "Dieser Block initialisiert die ausgewählten Taster.\n\nVerwendete Pins:\n• Taster1: GPIO1\n• Taster2: GPIO4\n• Taster3: GPIO3\n• Taster4: GPIO2",
       "readMessage": "Dieser Block liest den Status eines Tasters.\n\nGibt true zurück wenn gedrückt, false wenn nicht gedrückt.",
       "interruptMessage": "ISR Einschränkungen:\n• Kein delay() oder delayMicroseconds()\n• Kein Serial.print() oder Serial.write()\n• Code kurz und schnell halten\n• 'volatile' für Variablen verwenden, die mit der Hauptschleife geteilt werden\n• Funktionsaufrufe vermeiden, die blockieren könnten\n\nDer Interrupt läuft asynchron und nicht-blockierend."
     },

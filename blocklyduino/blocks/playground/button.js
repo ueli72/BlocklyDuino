@@ -41,9 +41,18 @@ Blockly.Blocks['button_init'] = {
         .appendField("Button")
         .appendField(new Blockly.FieldImage("media/button.png", 64, 64))
         .appendField("Initialize");
+    this.appendDummyInput("BUTTONS")
+        .appendField("SW1")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "SW1")
+        .appendField("  SW2")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "SW2")
+        .appendField("  SW3")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "SW3")
+        .appendField("  SW4")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "SW4");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Initialize all buttons');
+    this.setTooltip('Initialize selected buttons');
   }
 };
 

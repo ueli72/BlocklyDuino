@@ -30,7 +30,11 @@ var button_constants = {
 
 Blockly.Arduino.button_init = function() {
   Blockly.Arduino.definitions_['include_buttons_h'] = '#include "buttons.h"\n';
-  var code = 'initializeButtons();  // Initialize button inputs with pull-up resistors\n';
+  var sw1 = this.getFieldValue('SW1') === 'TRUE' ? 'true' : 'false';
+  var sw2 = this.getFieldValue('SW2') === 'TRUE' ? 'true' : 'false';
+  var sw3 = this.getFieldValue('SW3') === 'TRUE' ? 'true' : 'false';
+  var sw4 = this.getFieldValue('SW4') === 'TRUE' ? 'true' : 'false';
+  var code = 'initializeButtons(' + sw1 + ', ' + sw2 + ', ' + sw3 + ', ' + sw4 + ');\n';
   return code;
 };
 
