@@ -47,7 +47,7 @@ Blockly.Arduino.button_read = function() {
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 
-Blockly.Arduino.button_interrupt = function() {
+Blockly.Arduino.external_interrupt = function() {
   // Check if this block is inside the arduino_interrupts block
   var parent = this.getParent();
   var isInInterruptsBlock = false;

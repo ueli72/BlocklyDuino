@@ -77,6 +77,8 @@ i18n.registerTranslations('en', {
     "testAll": "Test All"
   },
   "blocks": {
+    "pinMode": "Set Pin Mode",
+    "pulseIn": "Measure Pulse",
     "constantsTrue": "true",
     "constantsFalse": "false",
     "constantsPi": "π",
@@ -102,7 +104,7 @@ i18n.registerTranslations('en', {
     "ledTest": "Test RGB",
     "buttonInit": "Initialize",
     "buttonRead": "Read",
-    "buttonInterrupt": "On Interrupt",
+    "externalInterrupt": "On Interrupt",
     "asyncTimer": "After",
     "oledInit": "Initialize",
     "oledWrite": "Write",

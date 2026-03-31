@@ -175,6 +175,39 @@ Blockly.Blocks['inout_highlow'] = {
   }
 };
 
+Blockly.Blocks['inout_pinmode'] = {
+  helpUrl: 'http://arduino.cc/en/Reference/PinMode',
+  init: function() {
+    this.setColour(30);
+    this.appendDummyInput()
+        .appendField("PinMode PIN#")
+        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+        .appendField("Mode")
+        .appendField(new Blockly.FieldDropdown([["INPUT", "INPUT"], ["OUTPUT", "OUTPUT"], ["INPUT_PULLUP", "INPUT_PULLUP"], ["INPUT_PULLDOWN", "INPUT_PULLDOWN"]]), "MODE");
+    this.setPreviousStatement(true, "setup");
+    this.setNextStatement(true, "setup");
+    this.setTooltip('Set the mode of a digital pin (typically used in Setup)');
+  }
+};
+
+Blockly.Blocks['inout_pulsein'] = {
+  helpUrl: 'http://arduino.cc/en/Reference/PulseIn',
+  init: function() {
+    this.setColour(230);
+    this.appendDummyInput()
+        .appendField("PulseIn PIN#")
+        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+        .appendField("Value")
+        .appendField(new Blockly.FieldDropdown([["HIGH", "HIGH"], ["LOW", "LOW"]]), "VALUE");
+    this.appendValueInput("TIMEOUT", 'Number')
+        .appendField("Timeout (μs)")
+        .setCheck('Number');
+    this.setInputsInline(true);
+    this.setOutput(true, 'Number');
+    this.setTooltip('Measures the length of a pulse in microseconds');
+  }
+};
+
 Blockly.Blocks['serial_print'] = {
   helpUrl: 'http://www.arduino.cc/en/Serial/Print',
   init: function() {

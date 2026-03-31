@@ -128,7 +128,7 @@ function checkISRBlocks(block) {
   }
 }
 
-Blockly.Blocks['button_interrupt'] = {
+Blockly.Blocks['external_interrupt'] = {
   init: function() {
     this.setColour(0);
     this.appendDummyInput()

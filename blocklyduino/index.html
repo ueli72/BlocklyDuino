@@ -6,7 +6,9 @@
   <title>BWS Uster - BlocklyDuino - Visual Programming for Arduino</title>
   <link href="lib/bootstrap.min.css" rel="stylesheet">
   <link href="lib/bootstrap-icons.min.css" rel="stylesheet">
-  <link rel="icon" type="image/png" href="media/bwsblockly.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="media/bwsblockly.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="media/bwsblockly.png">
+  <link rel="apple-touch-icon" href="media/bwsblockly.png">
   <script type="text/javascript" src="blockly_compressed.js"></script>
   <script type="text/javascript" src="blocks/base.js"></script>
   <script type="text/javascript" src="blocks/colour.js"></script>
@@ -1186,7 +1188,7 @@ function initBlockly() {
           </block>
         </value>
       </block>
-      <block type="button_interrupt"></block>
+      <block type="external_interrupt"></block>
       <block type="async_timer">
         <value name="DELAY">
           <block type="math_number">
@@ -1280,6 +1282,14 @@ function initBlockly() {
     <sep></sep>
     <category name="Input/Output" data-i18n-name="categories.inputOutput">
       <category name="Basic" data-i18n-name="categories.basic">
+        <block type="inout_pinmode"></block>
+        <block type="inout_pulsein">
+          <value name="TIMEOUT">
+            <block type="math_number">
+              <field name="NUM">1000000</field>
+            </block>
+          </value>
+        </block>
         <block type="inout_highlow"></block>
         <block type="inout_digital_write"></block>
         <block type="inout_digital_read"></block>
