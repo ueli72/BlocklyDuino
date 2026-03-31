@@ -1,0 +1,168 @@
+{
+  "board": "arduino-uno",
+  "name": "Arduino Uno",
+  "pins": {
+    "0": {
+      "name": "D0",
+      "capabilities": ["digital", "interrupt"],
+      "special": ["Serial RX"],
+      "reserved": true,
+      "notes": "Hardware Serial RX - avoid using"
+    },
+    "1": {
+      "name": "D1",
+      "capabilities": ["digital", "pwm", "interrupt"],
+      "special": ["Serial TX"],
+      "reserved": true,
+      "notes": "Hardware Serial TX - avoid using"
+    },
+    "2": {
+      "name": "D2",
+      "capabilities": ["digital", "interrupt"],
+      "special": ["External Interrupt 0"],
+      "reserved": false,
+      "notes": "Best for external interrupts"
+    },
+    "3": {
+      "name": "D3",
+      "capabilities": ["digital", "pwm", "interrupt"],
+      "special": ["External Interrupt 1", "PWM Timer 2"],
+      "reserved": false,
+      "notes": "PWM + Interrupt capable"
+    },
+    "4": {
+      "name": "D4",
+      "capabilities": ["digital"],
+      "special": [],
+      "reserved": false,
+      "notes": null
+    },
+    "5": {
+      "name": "D5",
+      "capabilities": ["digital", "pwm"],
+      "special": ["PWM Timer 0"],
+      "reserved": false,
+      "notes": "PWM - affects delay() timing"
+    },
+    "6": {
+      "name": "D6",
+      "capabilities": ["digital", "pwm"],
+      "special": ["PWM Timer 0"],
+      "reserved": false,
+      "notes": "PWM - affects delay() timing"
+    },
+    "7": {
+      "name": "D7",
+      "capabilities": ["digital"],
+      "special": [],
+      "reserved": false,
+      "notes": null
+    },
+    "8": {
+      "name": "D8",
+      "capabilities": ["digital"],
+      "special": [],
+      "reserved": false,
+      "notes": null
+    },
+    "9": {
+      "name": "D9",
+      "capabilities": ["digital", "pwm"],
+      "special": ["PWM Timer 1"],
+      "reserved": false,
+      "notes": "PWM capable"
+    },
+    "10": {
+      "name": "D10",
+      "capabilities": ["digital", "pwm"],
+      "special": ["SPI SS", "PWM Timer 1"],
+      "reserved": false,
+      "notes": "SPI Chip Select (can use other pins)"
+    },
+    "11": {
+      "name": "D11",
+      "capabilities": ["digital", "pwm"],
+      "special": ["SPI MOSI", "PWM Timer 2"],
+      "reserved": false,
+      "notes": "SPI MOSI"
+    },
+    "12": {
+      "name": "D12",
+      "capabilities": ["digital"],
+      "special": ["SPI MISO"],
+      "reserved": false,
+      "notes": "SPI MISO"
+    },
+    "13": {
+      "name": "D13",
+      "capabilities": ["digital"],
+      "special": ["SPI SCK", "Built-in LED"],
+      "reserved": false,
+      "notes": "Built-in LED + SPI Clock"
+    },
+    "A0": {
+      "name": "A0",
+      "capabilities": ["digital", "analog"],
+      "special": ["Analog Input 0"],
+      "reserved": false,
+      "notes": "ADC0 - can also be used as D14"
+    },
+    "A1": {
+      "name": "A1",
+      "capabilities": ["digital", "analog"],
+      "special": ["Analog Input 1"],
+      "reserved": false,
+      "notes": "ADC1 - can also be used as D15"
+    },
+    "A2": {
+      "name": "A2",
+      "capabilities": ["digital", "analog"],
+      "special": ["Analog Input 2"],
+      "reserved": false,
+      "notes": "ADC2 - can also be used as D16"
+    },
+    "A3": {
+      "name": "A3",
+      "capabilities": ["digital", "analog"],
+      "special": ["Analog Input 3"],
+      "reserved": false,
+      "notes": "ADC3 - can also be used as D17"
+    },
+    "A4": {
+      "name": "A4",
+      "capabilities": ["digital", "analog"],
+      "special": ["I2C SDA", "Analog Input 4"],
+      "reserved": false,
+      "notes": "I2C Data - can also be used as D18"
+    },
+    "A5": {
+      "name": "A5",
+      "capabilities": ["digital", "analog"],
+      "special": ["I2C SCL", "Analog Input 5"],
+      "reserved": false,
+      "notes": "I2C Clock - can also be used as D19"
+    }
+  },
+  "legend": {
+    "digital": "Digital I/O",
+    "pwm": "PWM Output (~)",
+    "analog": "Analog Read (ADC)",
+    "interrupt": "External Interrupt",
+    "i2c_sda": "I2C Data",
+    "i2c_scl": "I2C Clock",
+    "spi_mosi": "SPI MOSI",
+    "spi_miso": "SPI MISO",
+    "spi_sck": "SPI Clock",
+    "spi_ss": "SPI Chip Select",
+    "uart_tx": "Serial TX",
+    "uart_rx": "Serial RX"
+  },
+  "notes": {
+    "pwm_timer0": "Timer0 PWM pins (5,6) affect delay() and millis()",
+    "pwm_pins": "PWM available on pins: 3, 5, 6, 9, 10, 11",
+    "interrupt_pins": "External interrupts only on pins 2, 3",
+    "i2c_pins": "I2C on A4 (SDA) and A5 (SCL)",
+    "spi_pins": "SPI on 10 (SS), 11 (MOSI), 12 (MISO), 13 (SCK)",
+    "serial_pins": "Serial on 0 (RX) and 1 (TX) - used for USB"
+  }
+}

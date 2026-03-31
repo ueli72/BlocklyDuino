@@ -26,6 +26,190 @@ var BOARD_INFO = {
   }
 };
 
+var PIN_DATA = {
+  'esp32-s3-devkitc1': {
+    "board": "esp32-s3-devkitc1",
+    "name": "BWS Playground Master",
+    "pins": {
+      "0": {"name": "GPIO0", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["DC Motor 3 IN1"], "reserved": false, "notes": "Boot pin - hold LOW during boot for download mode"},
+      "1": {"name": "GPIO1", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["Button SW1"], "reserved": false, "notes": "Button1 on Playground Master"},
+      "2": {"name": "GPIO2", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["Button SW4"], "reserved": false, "notes": "Button4 on Playground Master"},
+      "3": {"name": "GPIO3", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["Button SW3"], "reserved": false, "notes": "Button3 on Playground Master"},
+      "4": {"name": "GPIO4", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["Button SW2"], "reserved": false, "notes": "Button2 on Playground Master"},
+      "5": {"name": "GPIO5", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["SPI CS (SD Card)"], "reserved": false, "notes": "SD Card Chip Select"},
+      "6": {"name": "GPIO6", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["DHT11 Sensor"], "reserved": false, "notes": "Temperature/Humidity sensor"},
+      "7": {"name": "GPIO7", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["DC Motor 3 IN2"], "reserved": false, "notes": null},
+      "8": {"name": "GPIO8", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["I2C SDA (OLED)"], "reserved": false, "notes": "I2C Data - OLED Display"},
+      "9": {"name": "GPIO9", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["I2C SCL (OLED)"], "reserved": false, "notes": "I2C Clock - OLED Display"},
+      "10": {"name": "GPIO10", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["LED Matrix (16 LEDs)"], "reserved": false, "notes": "WS2812B LED Matrix data pin"},
+      "11": {"name": "GPIO11", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": [], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
+      "12": {"name": "GPIO12", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["DC Motor 4 IN1"], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
+      "13": {"name": "GPIO13", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["DC Motor 4 IN2"], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
+      "14": {"name": "GPIO14", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["Ultrasonic Back TRIG"], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
+      "15": {"name": "GPIO15", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["DC Motor 1 IN1"], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
+      "16": {"name": "GPIO16", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["DC Motor 1 IN2"], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
+      "17": {"name": "GPIO17", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["Ultrasonic Front TRIG"], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
+      "18": {"name": "GPIO18", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["SPI CLK (SD Card)"], "reserved": false, "notes": "SD Card SPI Clock"},
+      "19": {"name": "GPIO19", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["SPI MISO (SD Card)"], "reserved": false, "notes": "SD Card SPI MISO"},
+      "20": {"name": "GPIO20", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["SPI MOSI (SD Card)"], "reserved": false, "notes": "SD Card SPI MOSI"},
+      "21": {"name": "GPIO21", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["Ultrasonic Back ECHO"], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
+      "35": {"name": "GPIO35", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Ultrasonic Front ECHO"], "reserved": false, "notes": null},
+      "37": {"name": "GPIO37", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Servo 1"], "reserved": false, "notes": "SG90 Servo signal pin"},
+      "38": {"name": "GPIO38", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Servo 2"], "reserved": false, "notes": "SG90 Servo signal pin"},
+      "39": {"name": "GPIO39", "capabilities": ["digital", "pwm", "interrupt"], "special": ["MAX98357A SD_MODE"], "reserved": false, "notes": "Audio amplifier shutdown mode"},
+      "40": {"name": "GPIO40", "capabilities": ["digital", "pwm", "interrupt"], "special": ["I2S DIN (Audio)"], "reserved": false, "notes": "MAX98357A audio data"},
+      "41": {"name": "GPIO41", "capabilities": ["digital", "pwm", "interrupt"], "special": ["I2S BCLK (Audio)"], "reserved": false, "notes": "MAX98357A bit clock"},
+      "42": {"name": "GPIO42", "capabilities": ["digital", "pwm", "interrupt"], "special": ["I2S LRC (Audio)"], "reserved": false, "notes": "MAX98357A left/right clock"},
+      "43": {"name": "GPIO43", "capabilities": ["digital", "pwm", "interrupt"], "special": ["DC Motor 2 IN1", "UART0 TX"], "reserved": false, "notes": "USB Serial TX - also DC Motor"},
+      "44": {"name": "GPIO44", "capabilities": ["digital", "pwm", "interrupt"], "special": ["DC Motor 2 IN2", "UART0 RX"], "reserved": false, "notes": "USB Serial RX - also DC Motor"},
+      "45": {"name": "GPIO45", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Servo 3"], "reserved": false, "notes": "SG90 Servo signal pin"},
+      "47": {"name": "GPIO47", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Relay 2"], "reserved": false, "notes": null},
+      "48": {"name": "GPIO48", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Internal RGB LED", "Relay 1"], "reserved": false, "notes": "WS2812B NeoPixel - also Relay 1"}
+    },
+    "legend": {
+      "digital": "Digital I/O",
+      "pwm": "PWM Output (LEDC)",
+      "adc1": "Analog Read (ADC1)",
+      "adc2": "Analog Read (ADC2 - not with WiFi)",
+      "interrupt": "External Interrupt"
+    }
+  },
+  'arduino-uno': {
+    "board": "arduino-uno",
+    "name": "Arduino Uno",
+    "pins": {
+      "0": {"name": "D0", "capabilities": ["digital", "interrupt"], "special": ["Serial RX"], "reserved": true, "notes": "Hardware Serial RX - avoid using"},
+      "1": {"name": "D1", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Serial TX"], "reserved": true, "notes": "Hardware Serial TX - avoid using"},
+      "2": {"name": "D2", "capabilities": ["digital", "interrupt"], "special": ["External Interrupt 0"], "reserved": false, "notes": "Best for external interrupts"},
+      "3": {"name": "D3", "capabilities": ["digital", "pwm", "interrupt"], "special": ["External Interrupt 1", "PWM"], "reserved": false, "notes": "PWM + Interrupt capable"},
+      "4": {"name": "D4", "capabilities": ["digital"], "special": [], "reserved": false, "notes": null},
+      "5": {"name": "D5", "capabilities": ["digital", "pwm"], "special": ["PWM"], "reserved": false, "notes": "PWM - affects delay() timing"},
+      "6": {"name": "D6", "capabilities": ["digital", "pwm"], "special": ["PWM"], "reserved": false, "notes": "PWM - affects delay() timing"},
+      "7": {"name": "D7", "capabilities": ["digital"], "special": [], "reserved": false, "notes": null},
+      "8": {"name": "D8", "capabilities": ["digital"], "special": [], "reserved": false, "notes": null},
+      "9": {"name": "D9", "capabilities": ["digital", "pwm"], "special": ["PWM"], "reserved": false, "notes": "PWM capable"},
+      "10": {"name": "D10", "capabilities": ["digital", "pwm"], "special": ["SPI SS", "PWM"], "reserved": false, "notes": "SPI Chip Select"},
+      "11": {"name": "D11", "capabilities": ["digital", "pwm"], "special": ["SPI MOSI", "PWM"], "reserved": false, "notes": "SPI MOSI"},
+      "12": {"name": "D12", "capabilities": ["digital"], "special": ["SPI MISO"], "reserved": false, "notes": "SPI MISO"},
+      "13": {"name": "D13", "capabilities": ["digital"], "special": ["SPI SCK", "Built-in LED"], "reserved": false, "notes": "Built-in LED + SPI Clock"},
+      "A0": {"name": "A0", "capabilities": ["digital", "analog"], "special": ["Analog Input 0"], "reserved": false, "notes": "ADC0"},
+      "A1": {"name": "A1", "capabilities": ["digital", "analog"], "special": ["Analog Input 1"], "reserved": false, "notes": "ADC1"},
+      "A2": {"name": "A2", "capabilities": ["digital", "analog"], "special": ["Analog Input 2"], "reserved": false, "notes": "ADC2"},
+      "A3": {"name": "A3", "capabilities": ["digital", "analog"], "special": ["Analog Input 3"], "reserved": false, "notes": "ADC3"},
+      "A4": {"name": "A4", "capabilities": ["digital", "analog"], "special": ["I2C SDA", "Analog Input 4"], "reserved": false, "notes": "I2C Data"},
+      "A5": {"name": "A5", "capabilities": ["digital", "analog"], "special": ["I2C SCL", "Analog Input 5"], "reserved": false, "notes": "I2C Clock"}
+    },
+    "legend": {
+      "digital": "Digital I/O",
+      "pwm": "PWM Output (~)",
+      "analog": "Analog Read (ADC)",
+      "interrupt": "External Interrupt"
+    }
+  }
+};
+
+function getPinInfo(boardId, pin) {
+  var boardData = PIN_DATA[boardId];
+  if (!boardData || !boardData.pins[pin]) return null;
+  return boardData.pins[pin];
+}
+
+function getPinTooltip(boardId, pin) {
+  var pinInfo = getPinInfo(boardId, pin);
+  if (!pinInfo) return '';
+  
+  var tooltip = pinInfo.name;
+  if (pinInfo.capabilities && pinInfo.capabilities.length > 0) {
+    tooltip += '\n' + pinInfo.capabilities.join(', ').toUpperCase();
+  }
+  if (pinInfo.special && pinInfo.special.length > 0) {
+    tooltip += '\nSpecial: ' + pinInfo.special.join(', ');
+  }
+  if (pinInfo.notes) {
+    tooltip += '\n' + pinInfo.notes;
+  }
+  if (pinInfo.reserved) {
+    tooltip += '\n⚠️ RESERVED - avoid using';
+  }
+  return tooltip;
+}
+
+function togglePinReference() {
+  var panel = document.getElementById('pinReferencePanel');
+  if (!panel) {
+    createPinReferencePanel();
+    panel = document.getElementById('pinReferencePanel');
+  }
+  if (panel) {
+    panel.classList.toggle('show');
+  }
+}
+
+function createPinReferencePanel() {
+  if (document.getElementById('pinReferencePanel')) return;
+  
+  var boardId = getSelectedBoard() || 'esp32-s3-devkitc1';
+  var boardData = PIN_DATA[boardId];
+  if (!boardData) return;
+  
+  var panel = document.createElement('div');
+  panel.id = 'pinReferencePanel';
+  panel.className = 'pin-reference-panel';
+  
+  var header = document.createElement('div');
+  header.className = 'pin-reference-header';
+  header.innerHTML = '<span>' + (typeof i18n !== 'undefined' ? i18n.t('pinReference.title') : 'Pin Reference') + '</span><button class="pin-reference-close" onclick="togglePinReference()">×</button>';
+  panel.appendChild(header);
+  
+  var content = document.createElement('div');
+  content.className = 'pin-reference-content';
+  
+  var table = document.createElement('table');
+  table.className = 'pin-reference-table';
+  
+  var thead = document.createElement('thead');
+  thead.innerHTML = '<tr><th>' + (typeof i18n !== 'undefined' ? i18n.t('pinReference.pin') : 'Pin') + '</th><th>' + (typeof i18n !== 'undefined' ? i18n.t('pinReference.capabilities') : 'Capabilities') + '</th><th>' + (typeof i18n !== 'undefined' ? i18n.t('pinReference.special') : 'Special') + '</th><th>' + (typeof i18n !== 'undefined' ? i18n.t('pinReference.notes') : 'Notes') + '</th></tr>';
+  table.appendChild(thead);
+  
+  var tbody = document.createElement('tbody');
+  var pins = boardData.pins;
+  var pinKeys = Object.keys(pins).sort(function(a, b) {
+    var aNum = parseInt(a.replace(/\D/g, '')) || 0;
+    var bNum = parseInt(b.replace(/\D/g, '')) || 0;
+    if (isNaN(aNum) && isNaN(bNum)) return a.localeCompare(b);
+    if (isNaN(aNum)) return 1;
+    if (isNaN(bNum)) return -1;
+    return aNum - bNum;
+  });
+  
+  pinKeys.forEach(function(pinKey) {
+    var pin = pins[pinKey];
+    var tr = document.createElement('tr');
+    if (pin.reserved) tr.className = 'pin-reserved';
+    
+    var capHtml = pin.capabilities.map(function(cap) {
+      return '<span class="pin-cap pin-cap-' + cap + '">' + cap + '</span>';
+    }).join(' ');
+    
+    tr.innerHTML = '<td><strong>' + pin.name + '</strong></td><td>' + capHtml + '</td><td>' + (pin.special ? pin.special.join('<br>') : '') + '</td><td>' + (pin.notes || '') + '</td>';
+    tbody.appendChild(tr);
+  });
+  
+  table.appendChild(tbody);
+  content.appendChild(table);
+  panel.appendChild(content);
+  
+  document.body.appendChild(panel);
+}
+
+function updatePinReferencePanel() {
+  var existingPanel = document.getElementById('pinReferencePanel');
+  if (existingPanel) {
+    existingPanel.remove();
+  }
+  createPinReferencePanel();
+}
+
 function updateBoardInfoDisplay(boardId) {
   var boardInfo = document.getElementById('boardInfo');
   var boardImage = document.getElementById('boardImage');
@@ -76,6 +260,7 @@ function selectBoard(boardId) {
   }
   
   updateBoardInfoDisplay(boardId);
+  updatePinReferencePanel();
   
   if (boardId === 'esp32-s3-devkitc1') {
     profile['default'] = profile['esp32'];

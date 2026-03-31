@@ -1,0 +1,267 @@
+{
+  "board": "esp32-s3-devkitc1",
+  "name": "BWS Playground Master",
+  "pins": {
+    "0": {
+      "name": "GPIO0",
+      "capabilities": ["digital", "pwm", "interrupt", "adc2"],
+      "special": ["DC Motor 3 IN1"],
+      "reserved": false,
+      "notes": "Boot pin - hold LOW during boot for download mode"
+    },
+    "1": {
+      "name": "GPIO1",
+      "capabilities": ["digital", "pwm", "interrupt", "adc1"],
+      "special": ["Button SW1"],
+      "reserved": false,
+      "notes": "Button1 on Playground Master"
+    },
+    "2": {
+      "name": "GPIO2",
+      "capabilities": ["digital", "pwm", "interrupt", "adc1"],
+      "special": ["Button SW4"],
+      "reserved": false,
+      "notes": "Button4 on Playground Master"
+    },
+    "3": {
+      "name": "GPIO3",
+      "capabilities": ["digital", "pwm", "interrupt", "adc1"],
+      "special": ["Button SW3"],
+      "reserved": false,
+      "notes": "Button3 on Playground Master"
+    },
+    "4": {
+      "name": "GPIO4",
+      "capabilities": ["digital", "pwm", "interrupt", "adc1"],
+      "special": ["Button SW2"],
+      "reserved": false,
+      "notes": "Button2 on Playground Master"
+    },
+    "5": {
+      "name": "GPIO5",
+      "capabilities": ["digital", "pwm", "interrupt", "adc1"],
+      "special": ["SPI CS (SD Card)"],
+      "reserved": false,
+      "notes": "SD Card Chip Select"
+    },
+    "6": {
+      "name": "GPIO6",
+      "capabilities": ["digital", "pwm", "interrupt", "adc1"],
+      "special": ["DHT11 Sensor"],
+      "reserved": false,
+      "notes": "Temperature/Humidity sensor"
+    },
+    "7": {
+      "name": "GPIO7",
+      "capabilities": ["digital", "pwm", "interrupt", "adc1"],
+      "special": ["DC Motor 3 IN2"],
+      "reserved": false,
+      "notes": null
+    },
+    "8": {
+      "name": "GPIO8",
+      "capabilities": ["digital", "pwm", "interrupt", "adc1"],
+      "special": ["I2C SDA (OLED)"],
+      "reserved": false,
+      "notes": "I2C Data - OLED Display"
+    },
+    "9": {
+      "name": "GPIO9",
+      "capabilities": ["digital", "pwm", "interrupt", "adc1"],
+      "special": ["I2C SCL (OLED)"],
+      "reserved": false,
+      "notes": "I2C Clock - OLED Display"
+    },
+    "10": {
+      "name": "GPIO10",
+      "capabilities": ["digital", "pwm", "interrupt", "adc1"],
+      "special": ["LED Matrix (16 LEDs)"],
+      "reserved": false,
+      "notes": "WS2812B LED Matrix data pin"
+    },
+    "11": {
+      "name": "GPIO11",
+      "capabilities": ["digital", "pwm", "interrupt", "adc2"],
+      "special": [],
+      "reserved": false,
+      "notes": "ADC2 - not usable with WiFi"
+    },
+    "12": {
+      "name": "GPIO12",
+      "capabilities": ["digital", "pwm", "interrupt", "adc2"],
+      "special": ["DC Motor 4 IN1"],
+      "reserved": false,
+      "notes": "ADC2 - not usable with WiFi"
+    },
+    "13": {
+      "name": "GPIO13",
+      "capabilities": ["digital", "pwm", "interrupt", "adc2"],
+      "special": ["DC Motor 4 IN2"],
+      "reserved": false,
+      "notes": "ADC2 - not usable with WiFi"
+    },
+    "14": {
+      "name": "GPIO14",
+      "capabilities": ["digital", "pwm", "interrupt", "adc2"],
+      "special": ["Ultrasonic Back TRIG"],
+      "reserved": false,
+      "notes": "ADC2 - not usable with WiFi"
+    },
+    "15": {
+      "name": "GPIO15",
+      "capabilities": ["digital", "pwm", "interrupt", "adc2"],
+      "special": ["DC Motor 1 IN1"],
+      "reserved": false,
+      "notes": "ADC2 - not usable with WiFi"
+    },
+    "16": {
+      "name": "GPIO16",
+      "capabilities": ["digital", "pwm", "interrupt", "adc2"],
+      "special": ["DC Motor 1 IN2"],
+      "reserved": false,
+      "notes": "ADC2 - not usable with WiFi"
+    },
+    "17": {
+      "name": "GPIO17",
+      "capabilities": ["digital", "pwm", "interrupt", "adc2"],
+      "special": ["Ultrasonic Front TRIG"],
+      "reserved": false,
+      "notes": "ADC2 - not usable with WiFi"
+    },
+    "18": {
+      "name": "GPIO18",
+      "capabilities": ["digital", "pwm", "interrupt", "adc2"],
+      "special": ["SPI CLK (SD Card)"],
+      "reserved": false,
+      "notes": "SD Card SPI Clock"
+    },
+    "19": {
+      "name": "GPIO19",
+      "capabilities": ["digital", "pwm", "interrupt", "adc2"],
+      "special": ["SPI MISO (SD Card)"],
+      "reserved": false,
+      "notes": "SD Card SPI MISO"
+    },
+    "20": {
+      "name": "GPIO20",
+      "capabilities": ["digital", "pwm", "interrupt", "adc2"],
+      "special": ["SPI MOSI (SD Card)"],
+      "reserved": false,
+      "notes": "SD Card SPI MOSI"
+    },
+    "21": {
+      "name": "GPIO21",
+      "capabilities": ["digital", "pwm", "interrupt", "adc2"],
+      "special": ["Ultrasonic Back ECHO"],
+      "reserved": false,
+      "notes": "ADC2 - not usable with WiFi"
+    },
+    "35": {
+      "name": "GPIO35",
+      "capabilities": ["digital", "pwm", "interrupt"],
+      "special": ["Ultrasonic Front ECHO"],
+      "reserved": false,
+      "notes": null
+    },
+    "37": {
+      "name": "GPIO37",
+      "capabilities": ["digital", "pwm", "interrupt"],
+      "special": ["Servo 1"],
+      "reserved": false,
+      "notes": "SG90 Servo signal pin"
+    },
+    "38": {
+      "name": "GPIO38",
+      "capabilities": ["digital", "pwm", "interrupt"],
+      "special": ["Servo 2"],
+      "reserved": false,
+      "notes": "SG90 Servo signal pin"
+    },
+    "39": {
+      "name": "GPIO39",
+      "capabilities": ["digital", "pwm", "interrupt"],
+      "special": ["MAX98357A SD_MODE"],
+      "reserved": false,
+      "notes": "Audio amplifier shutdown mode"
+    },
+    "40": {
+      "name": "GPIO40",
+      "capabilities": ["digital", "pwm", "interrupt"],
+      "special": ["I2S DIN (Audio)"],
+      "reserved": false,
+      "notes": "MAX98357A audio data"
+    },
+    "41": {
+      "name": "GPIO41",
+      "capabilities": ["digital", "pwm", "interrupt"],
+      "special": ["I2S BCLK (Audio)"],
+      "reserved": false,
+      "notes": "MAX98357A bit clock"
+    },
+    "42": {
+      "name": "GPIO42",
+      "capabilities": ["digital", "pwm", "interrupt"],
+      "special": ["I2S LRC (Audio)"],
+      "reserved": false,
+      "notes": "MAX98357A left/right clock"
+    },
+    "43": {
+      "name": "GPIO43",
+      "capabilities": ["digital", "pwm", "interrupt"],
+      "special": ["DC Motor 2 IN1", "UART0 TX"],
+      "reserved": false,
+      "notes": "USB Serial TX - also DC Motor"
+    },
+    "44": {
+      "name": "GPIO44",
+      "capabilities": ["digital", "pwm", "interrupt"],
+      "special": ["DC Motor 2 IN2", "UART0 RX"],
+      "reserved": false,
+      "notes": "USB Serial RX - also DC Motor"
+    },
+    "45": {
+      "name": "GPIO45",
+      "capabilities": ["digital", "pwm", "interrupt"],
+      "special": ["Servo 3"],
+      "reserved": false,
+      "notes": "SG90 Servo signal pin"
+    },
+    "47": {
+      "name": "GPIO47",
+      "capabilities": ["digital", "pwm", "interrupt"],
+      "special": ["Relay 2"],
+      "reserved": false,
+      "notes": null
+    },
+    "48": {
+      "name": "GPIO48",
+      "capabilities": ["digital", "pwm", "interrupt"],
+      "special": ["Internal RGB LED", "Relay 1"],
+      "reserved": false,
+      "notes": "WS2812B NeoPixel - also Relay 1 (check jumper)"
+    }
+  },
+  "legend": {
+    "digital": "Digital I/O",
+    "pwm": "PWM Output (LEDC)",
+    "adc1": "Analog Read (ADC1)",
+    "adc2": "Analog Read (ADC2 - not with WiFi)",
+    "interrupt": "External Interrupt",
+    "i2c_sda": "I2C Data",
+    "i2c_scl": "I2C Clock",
+    "spi_mosi": "SPI MOSI",
+    "spi_miso": "SPI MISO",
+    "spi_clk": "SPI Clock",
+    "spi_cs": "SPI Chip Select",
+    "i2s_din": "I2S Audio Data",
+    "i2s_bclk": "I2S Bit Clock",
+    "i2s_lrc": "I2S Left/Right Clock",
+    "uart_tx": "UART Transmit",
+    "uart_rx": "UART Receive"
+  },
+  "notes": {
+    "adc2_warning": "ADC2 pins cannot be used when WiFi is active",
+    "boot_pins": "GPIO0, GPIO45, GPIO46 are boot configuration pins",
+    "usb_pins": "GPIO43/44 are USB Serial - avoid for other uses if debugging"
+  }
+}
