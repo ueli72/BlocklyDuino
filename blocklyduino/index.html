@@ -6,6 +6,7 @@
   <title>BWS Uster - BlocklyDuino - Visual Programming for Arduino</title>
   <link href="lib/bootstrap.min.css" rel="stylesheet">
   <link href="lib/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="icon" type="image/png" href="media/bwsblockly.png">
   <script type="text/javascript" src="blockly_compressed.js"></script>
   <script type="text/javascript" src="blocks/base.js"></script>
   <script type="text/javascript" src="blocks/colour.js"></script>
@@ -873,14 +874,14 @@ function initBlockly() {
   </style>
 </head>
 <body onload="init()">
-  <nav class="navbar navbar-expand navbar-light bg-white shadow-sm">
+  <nav class="navbar navbar-expand navbar-dark bg-dark shadow-sm">
     <div class="container-fluid">
-      <a class="navbar-brand text-primary" href="https://github.com/ueli72/BlocklyDuino" target="_blank">
-        <i class="bi bi-cpu"></i> <span data-i18n="app.title">BlocklyDuino - BWS Uster</span>
+      <a class="navbar-brand text-light" href="https://github.com/ueli72/BlocklyDuino" target="_blank">
+        <img src="media/bwsblockly.png" alt="BWS Blockly" style="height: 40px; margin-right: 8px;"> <span data-i18n="app.title">BlocklyDuino - BWS Uster</span>
       </a>
-      <span class="navbar-text text-muted small d-none d-md-inline">
+      <span class="navbar-text text-light small d-none d-md-inline">
         <span data-i18n="app.subtitle">Visual Programming for Arduino</span>
-        <span class="ms-2 text-secondary" id="versionInfo"></span>
+        <span class="ms-2 text-white-50" id="versionInfo"></span>
       </span>
       <div class="ms-auto d-flex align-items-center gap-2">
         <select class="form-select form-select-sm" id="languageSelector" onchange="setLanguage(this.value)" style="width: auto;">
