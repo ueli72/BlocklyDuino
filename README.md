@@ -1,99 +1,178 @@
-### Welcome to BlocklyDuino
+# BlocklyDuino - BWS Uster Edition
 
-> Check [BlockDuino v2](https://github.com/BlocklyDuino/BlocklyDuino-v2)
+A web-based visual programming editor for Arduino, specialized for educational boards created by **Berufswahlschule Uster, Switzerland** ([www.bws-uster.ch](https://www.bws-uster.ch)).
 
-BlocklyDuino is a **web-based visual programming editor for [Arduino](http://www.arduino.cc/)**.
+> **Fork of [BlocklyDuino](https://github.com/gasolin/BlocklyDuino)** - Updated for modern browsers (Chrome, Firefox, Edge) with enhanced features for educational use.
 
-BlocklyDuino is based on [Blockly](https://developers.google.com/blockly/), the web-based, graphical programming editor. Provide static type language blocks and code generators for Arduino programming.
+**Live Demo:** [blockly.bws-uster.ch](https://blockly.bws-uster.ch)
 
-BlocklyDuino also support [Grove](http://www.seeedstudio.com/wiki/GROVE_System) blocks to easily get started with microcontroller-based experimentation and learning.
+## Features
 
-### Features
+### Visual Programming
+- Drag-and-drop block programming for Arduino
+- Real-time Arduino code generation
+- XML save/load for sharing projects
+- Bilingual interface (English/German)
 
-* Programming Arduino with visually drag and drop code blocks
-* Generate fully compatible Arduino source code
-* Interactive Arduino board with 10+ predefined Grove sensor blocks
-* Load different on-site examples with url parameters
+### Supported Boards
+- **BWS Playground Master** (ESP32-S3 DevKitC-1) - Custom educational board
+- **Arduino Uno** - Classic Arduino board
 
-### Demo
+### Component Blocks
 
-BlocklyDuino is a web tool. You can give it a try at
-[Web](http://blocklyduino.github.io/BlocklyDuino/blockly/apps/blocklyduino/) to see the working BlocklyDuino.
+| Category | Components |
+|----------|------------|
+| **Output** | Internal RGB LED, LED Matrix, OLED Display, WS2812 LED Strip, Relays, DC Motors, SG90 Servos |
+| **Input** | Buttons (with interrupt support), KY023 Joystick, Brightness Sensor (LDR) |
+| **Sensors** | DHT11 (Temperature/Humidity), Ultrasonic Distance |
+| **Audio** | MAX98357A I2S Amplifier (tone playback, WAV files) |
+| **Storage** | SD Card (read/write/delete files) |
+| **Communication** | Serial (USB), Bluetooth LE Remote Control |
+| **Programming** | Variables, Arrays, Functions, Custom Code blocks |
 
-You can link directly to examples
-* [demo 1](http://blocklyduino.github.io/BlocklyDuino/blockly/apps/blocklyduino/index.html?url=examples/blink.xml) make default LED blink
-* [demo 2](http://blocklyduino.github.io/BlocklyDuino/blockly/apps/blocklyduino/index.html?url=examples/servo_potentio.xml) control servo with potentio rotator
-* [demo 3](http://blocklyduino.github.io/BlocklyDuino/blockly/apps/blocklyduino/index.html?url=examples/click_color.xml) click button to change LED colors
+### Educational Features
+- **Test blocks** for every component - verify hardware connections
+- **Dependency checking** - warns when components need initialization
+- **ISR restrictions** - prevents invalid code in interrupts/timers
+- **Interactive test menu** - test all components via OLED menu
 
-Or watch the [video demos](http://www.youtube.com/watch?v=_swiyXcUvNY)
+### Project Export
+- **One-click download** creates a complete **VSCode/PlatformIO project** as ZIP
+- Includes all source files, headers, `platformio.ini`, and VSCode settings
+- **Ready to use:** Extract, open in VSCode, and compile/upload immediately
+- Perfect for students to continue coding in a professional IDE
 
-### Run locally on your web browser
-If you want to install it locally. Get code from github and open `blockly/apps/blocklyduino/index.html` in your browser. 
+## BWS Playground Master Pinout
 
-The preffered way is to put the `BlocklyDuino/web` folder into a web server and open the url like `localhost/public/blockly/apps/blocklyduino/index.html` for use.
+| Component | Pin(s) | Notes |
+|-----------|--------|-------|
+| **Internal RGB LED** | GPIO 48 | WS2812B NeoPixel |
+| **LED Matrix (16 LEDs)** | GPIO 10 | WS2812B NeoPixel |
+| **OLED Display** | SDA: GPIO 8, SCL: GPIO 9 | I2C (0x78) |
+| **Buttons** | SW1: GPIO 1, SW2: GPIO 4, SW3: GPIO 3, SW4: GPIO 2 | Active LOW |
+| **SG90 Servos** | Servo1: GPIO 37, Servo2: GPIO 38, Servo3: GPIO 45 | External 5-6V required |
+| **DC Motors** | M1: GPIO 15/16, M2: GPIO 43/44, M3: GPIO 0/7, M4: GPIO 12/13 | External power required |
+| **Relays** | Relay1: GPIO 48, Relay2: GPIO 47 | External 5V required |
+| **DHT11** | GPIO 6 | Temperature & Humidity |
+| **Ultrasonic** | Front: TRIG 17/ECHO 35, Back: TRIG 14/ECHO 21 | External 5V required |
+| **SD Card** | CS: GPIO 5, MOSI: GPIO 20, CLK: GPIO 18, MISO: GPIO 19 | SPI |
+| **MAX98357A Audio** | BCLK: GPIO 41, LRC: GPIO 42, DIN: GPIO 40, SD_MODE: GPIO 39 | I2S |
+| **WS2812 LED Strip** | Configurable | External power for long strips |
+| **KY023 Joystick** | Configurable (X, Y, Button pins) | Analog + Digital |
+| **Brightness Sensor** | Configurable (analog pin) | GL5546 LDR |
 
-### Development: Updating Board Templates
+> ⚠️ **Note:** Some components require external 5V power. See block tooltips in the app for details.
 
-The board templates in `blockly/apps/blocklyduino/templates.js` are generated from the actual source files in the `boards/` directory. 
+## Quick Start
 
-To update templates after modifying board source files:
+### Option 1: Use Online Demo
+Visit [blockly.bws-uster.ch](https://blockly.bws-uster.ch) - no installation required.
+
+### Option 2: Local Development
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/BlocklyDuino.git
+   cd BlocklyDuino
+   ```
+
+2. Serve the `blocklyduino/` directory:
+   ```bash
+   # Using Python
+   python3 -m http.server 8080 --directory blocklyduino
+   
+   # Using Node.js
+   npx serve blocklyduino
+   
+   # Using PHP
+   php -S localhost:8080 -t blocklyduino
+   ```
+
+3. Open http://localhost:8080 in your browser
+
+### Option 3: Deploy to GitHub Pages
+1. Fork this repository
+2. Go to Settings → Pages
+3. Set Source to `main` branch, folder `/ (root)`
+4. Your app will be available at `https://YOUR_USERNAME.github.io/BlocklyDuino/blocklyduino/`
+
+### Option 4: Deploy to Web Server
+Copy the `blocklyduino/` directory to your web server's public folder:
+```bash
+cp -r blocklyduino/ /var/www/html/blocklyduino/
+# Access at: http://your-server.com/blocklyduino/
 ```
+
+## Usage
+
+1. Open the app in your browser
+2. Select your board (BWS Playground Master or Arduino Uno)
+3. Drag blocks from the toolbox to create your program
+4. Click the **Arduino** tab to see generated code
+5. Click **Download** to get a complete PlatformIO project as ZIP
+6. Extract the ZIP and open in VSCode:
+   ```bash
+   unzip MyProject.zip -d MyProject
+   code MyProject
+   ```
+7. Compile and upload with PlatformIO:
+   ```bash
+   pio run -t upload
+   ```
+
+The downloaded project includes:
+- `src/main.cpp` - Your generated Arduino code
+- `include/*.h` - Header files for all components
+- `src/*.cpp` - Implementation files
+- `platformio.ini` - Board configuration
+- `.vscode/` - VSCode settings for IntelliSense
+
+## Development
+
+### Project Structure
+```
+blocklyduino/          # Web app (self-contained, serve this)
+├── index.html         # Main application
+├── blocks/            # Block definitions
+│   └── playground/    # Component-specific blocks
+├── generators/        # Arduino code generators
+│   └── arduino/playground/
+├── media/             # Block images
+├── lang/              # Translations (en.js, de.js)
+└── templates.js       # Board templates (auto-generated)
+
+boards/                # PlatformIO source files
+├── esp32-s3-devkitc1/ # BWS Playground Master
+│   ├── include/       # Header files
+│   └── src/           # Implementation files
+└── arduino-uno/       # Arduino Uno template
+```
+
+### Regenerate Templates
+After modifying board source files:
+```bash
 python3 generate_templates.py
 ```
 
-This script reads files from `boards/esp32-s3-devkitc1/` and `boards/arduino-uno/` and generates the `templates.js` file used for project downloads.
+### Add a New Block
+1. Create block definition: `blocklyduino/blocks/playground/myblock.js`
+2. Create code generator: `blocklyduino/generators/arduino/playground/myblock.js`
+3. Register in `index.html` (script includes + toolbox)
+4. Add translations in `lang/en.js` and `lang/de.js`
+5. Add block info in `block_info.js`
 
-### Integrated Arduino upload
-To avoid the tedious step of manually pasting code to the Arduino IDE, you can run a mini webserver that uses
-the [Arduino IDE](https://www.arduino.cc/en/Main/Software) to upload the code to a connected Arduino board on Windows, Mac OS X and Linux systems.
-Invoke this command from the BlocklyDuino root folder:
-```
-python arduino_web_server.py 
-```
+See [AGENTS.md](AGENTS.md) for detailed instructions.
 
-You can optionally specify the port with `--port=COM3` (or `--port=/dev/tty.foo` on Linux and Mac); 
-if you don't, it will try and guess which port to use.
+## Requirements
 
-When the webserver is running, you can access BlocklyDuino itself on [http://127.0.0.1:8080/](http://127.0.0.1:8080/).
+- **Browser:** Chrome, Firefox, or Edge (modern versions)
+- **Upload:** PlatformIO or Arduino IDE
 
-### Usage
-1. Open browser to BlocklyDuino, drag and drop blocks to make an Arduino program
-2. Select the `Arduino` tab and copy all of the source code into an existing or new project in the Arduino IDE
-3. Press the `Upload` button in the Arduino IDE to burn the code into a connected Arduino board
+## Credits
 
-OR (if running `arduino_web_server.py`):
-1. Open browser to BlocklyDuino, drag and drop blocks to make an Arduino program.
-2. Select the `Arduino` tab and press the `Upload` button. (press the `Reset` button to upload an empty program)
+- Original BlocklyDuino by [Fred Lin (@gasolin)](https://github.com/gasolin)
+- Google [Blockly](https://developers.google.com/blockly/) visual programming library
+- BWS Uster enhancements and ESP32-S3 board support
 
-In GNU/Linux OS (i.e. Ubuntu 18.04x64) 
-1. Open one terminal, go the BlocklyDuino path and run:   
-python arduino_web_server.py --port=/dev/ttyUSB0   
-2. Open a new terminal and run:   
-firefox http://127.0.0.1:8080/ 
-3. Once BlocklyDuino is open in the browser, drag and drop blocks to make an Arduino program or 
-load an example by clicking on `LoadXML` (e.g. /blocky/apps/blockyduino/examples/blink.xml or other in the same path)
-4. Press `Upload` and wait until you see `Program uploaded ok` and press OK!
-5. Close terminals with `Ctrl+c` or `Ctrl+d`
+## License
 
-### ChangeLog
-
-Check changelog [here](https://github.com/BlocklyDuino/BlocklyDuino/blob/master/CHANGELOG.txt)
-
-### Authors and Contributors
-Fred Lin (@gasolin).
-
-Thanks Neil Fraser, Q.Neutron from Blockly https://developers.google.com/blockly/
-Thanks Dale Low (gumbypp) for contribute the python server to pipe BlocklyDuino source to arduino board.
-Thanks Arduino and Seeeduino guys for Arduino and Grove blocks.
-
-The project is also inspired by [arduiblock](https://github.com/taweili/ardublock) and [modkit](http://www.modk.it/)
-
-### License
-
-Copyright (C) 2012~2015 Fred Lin gasolin+blockly@gmail.com
-
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
+Apache License 2.0
