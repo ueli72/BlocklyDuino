@@ -15,6 +15,47 @@ var sessionWarnings = [];
 
 var selectedBoard = null;
 
+function getActiveBoardId() {
+  if (selectedBoard) {
+    return selectedBoard;
+  }
+  if (typeof getSelectedBoard === 'function') {
+    var storedBoard = getSelectedBoard();
+    if (storedBoard) {
+      return storedBoard;
+    }
+  }
+  if (typeof document !== 'undefined') {
+    var boardSelector = document.getElementById('boardSelector');
+    if (boardSelector && boardSelector.value) {
+      return boardSelector.value;
+    }
+  }
+  return null;
+}
+
+function annotateXmlWithBoard(xmlDom) {
+  if (!xmlDom || typeof xmlDom.setAttribute !== 'function') {
+    return xmlDom;
+  }
+  var boardId = getActiveBoardId();
+  if (boardId) {
+    xmlDom.setAttribute('board', boardId);
+  }
+  return xmlDom;
+}
+
+function applyBoardSelectionFromXml(xmlDom) {
+  if (!xmlDom || typeof xmlDom.getAttribute !== 'function') {
+    return;
+  }
+  var boardId = xmlDom.getAttribute('board');
+  if (!boardId || boardId === getActiveBoardId() || !BOARD_TEMPLATES[boardId]) {
+    return;
+  }
+  selectBoard(boardId);
+}
+
 var GENERATOR_SETS = {};
 var CURRENT_GENERATOR_SET = null;
 var GENERATOR_SET_TARGET = null;
@@ -653,6 +694,7 @@ function showWarningsModal() {
 function backup_blocks() {
   if ('localStorage' in window) {
     var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    annotateXmlWithBoard(xml);
     window.localStorage.setItem('arduino', Blockly.Xml.domToText(xml));
   }
 }
@@ -663,6 +705,7 @@ function backup_blocks() {
 function restore_blocks() {
   if ('localStorage' in window && window.localStorage.arduino) {
     var xml = Blockly.Xml.textToDom(window.localStorage.arduino);
+    applyBoardSelectionFromXml(xml);
     Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
   }
 }
@@ -792,6 +835,7 @@ async function doSaveProject(fileName) {
  */
 function save() {
   var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+  annotateXmlWithBoard(xml);
   var data = Blockly.Xml.domToText(xml);
   showPromptModal(i18n.t('messages.fileName'), 'BlocklyDuino', function(fileName) {
     var blob = new Blob([data], {type: 'text/xml'});
@@ -842,6 +886,7 @@ function load(event) {
  * Load XML to workspace.
  */
 function loadXmlToWorkspace(xml) {
+  applyBoardSelectionFromXml(xml);
   Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
 }
 
