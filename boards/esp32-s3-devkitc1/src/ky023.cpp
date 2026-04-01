@@ -1,3 +1,4 @@
+// Made for esp32-s3-devkitc1
 #include "ky023.h"
 #include "oled.h"
 

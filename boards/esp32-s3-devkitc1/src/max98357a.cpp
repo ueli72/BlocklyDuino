@@ -1,3 +1,4 @@
+// Made for esp32-s3-devkitc1
 #include "max98357a.h"
 #include "oled.h"
 #include "sdcard.h"

@@ -1,3 +1,4 @@
+// Made for playground-brumbrum-esp32-s3-devkitc1
 #include "i2c_raw_reader.h"
 
 void resetI2CBus(uint8_t sda_pin, uint8_t scl_pin) {

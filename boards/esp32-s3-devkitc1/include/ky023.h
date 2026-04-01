@@ -1,3 +1,4 @@
+// Made for esp32-s3-devkitc1
 #ifndef KY023_H
 #define KY023_H
 

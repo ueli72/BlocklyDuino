@@ -1,3 +1,4 @@
+// Made for esp32-s3-devkitc1
 #ifndef GYRO_H
 #define GYRO_H
 

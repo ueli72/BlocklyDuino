@@ -1,3 +1,4 @@
+// Made for playground-brumbrum-esp32-s3-devkitc1
 #include "internalLED.h"
 
 Adafruit_NeoPixel pixel(NUM_PIXELS, RGB_LED_PIN, NEO_GRB + NEO_KHZ800);

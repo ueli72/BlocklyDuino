@@ -1,3 +1,4 @@
+// Made for esp32-s3-devkitc1
 #include "ws2812.h"
 
 static Adafruit_NeoPixel* ws2812Strip = nullptr;

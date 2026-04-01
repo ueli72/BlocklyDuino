@@ -1,3 +1,4 @@
+// Made for playground-brumbrum-esp32-s3-devkitc1
 #ifndef MAX98357A_H
 #define MAX98357A_H
 

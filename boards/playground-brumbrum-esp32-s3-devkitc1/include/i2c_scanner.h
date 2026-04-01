@@ -1,3 +1,4 @@
+// Made for playground-brumbrum-esp32-s3-devkitc1
 #ifndef I2C_SCANNER_H
 #define I2C_SCANNER_H
 
