@@ -395,7 +395,13 @@ void testBLERemote() {
         while (!readButton(BLE_TEST_SW2_PIN)) {
           if (newDirection) {
             serialPrint("                 Received: 0x");
-            serialPrint((uint8_t)lastDirection, HEX);
+            // Convert to hex manually
+            char hexBuf[4];
+            uint8_t val = (uint8_t)lastDirection;
+            hexBuf[0] = (val >> 4) < 10 ? '0' + (val >> 4) : 'A' + (val >> 4) - 10;
+            hexBuf[1] = (val & 0x0F) < 10 ? '0' + (val & 0x0F) : 'A' + (val & 0x0F) - 10;
+            hexBuf[2] = '\0';
+            serialPrint(hexBuf);
             serialPrint(" (");
             serialPrint((int)lastDirection);
             serialPrintln(")");
@@ -413,7 +419,12 @@ void testBLERemote() {
         while (!readButton(BLE_TEST_SW2_PIN)) {
           if (newSpeed) {
             serialPrint("             Received: 0x");
-            serialPrint(lastSpeed, HEX);
+            // Convert to hex manually
+            char hexBuf[4];
+            hexBuf[0] = (lastSpeed >> 4) < 10 ? '0' + (lastSpeed >> 4) : 'A' + (lastSpeed >> 4) - 10;
+            hexBuf[1] = (lastSpeed & 0x0F) < 10 ? '0' + (lastSpeed & 0x0F) : 'A' + (lastSpeed & 0x0F) - 10;
+            hexBuf[2] = '\0';
+            serialPrint(hexBuf);
             serialPrint(" (");
             serialPrint((int)lastSpeed);
             serialPrintln(")");
@@ -431,7 +442,12 @@ void testBLERemote() {
         while (!readButton(BLE_TEST_SW2_PIN)) {
           if (newCommand) {
             serialPrint("               Received: 0x");
-            serialPrint(lastCommand, HEX);
+            // Convert to hex manually
+            char hexBuf[4];
+            hexBuf[0] = (lastCommand >> 4) < 10 ? '0' + (lastCommand >> 4) : 'A' + (lastCommand >> 4) - 10;
+            hexBuf[1] = (lastCommand & 0x0F) < 10 ? '0' + (lastCommand & 0x0F) : 'A' + (lastCommand & 0x0F) - 10;
+            hexBuf[2] = '\0';
+            serialPrint(hexBuf);
             serialPrint(" (");
             serialPrint((int)lastCommand);
             serialPrintln(")");
