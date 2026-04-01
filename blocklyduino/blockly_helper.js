@@ -65,7 +65,6 @@ var BRUMBRUM_GENERATOR_SCRIPTS = [
   'generators/arduino/playground_brumbrum/internal_led.js',
   'generators/arduino/playground_brumbrum/button.js',
   'generators/arduino/playground_brumbrum/oled.js',
-  'generators/arduino/playground_brumbrum/relais.js',
   'generators/arduino/playground_brumbrum/dc_motor.js',
   'generators/arduino/playground_brumbrum/ultrasonic.js',
   'generators/arduino/playground_brumbrum/sdcard.js',

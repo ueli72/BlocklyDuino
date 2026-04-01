@@ -35,11 +35,6 @@ Blockly.Blocks['test_all'] = {
     
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Relais")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "RELAIS");
-    
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("DC Motor")
         .appendField(new Blockly.FieldCheckbox("TRUE"), "DC_MOTOR");
     

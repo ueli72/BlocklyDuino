@@ -2,7 +2,6 @@
 #include "test_all.h"
 #include "oled.h"
 #include "buttons.h"
-#include "relais.h"
 #include "dcmotor.h"
 #include "ultrasonic.h"
 #include "sdcard.h"
@@ -50,7 +49,6 @@ void runTestMenu(uint16_t testMask) {
     pinMode(SW2_PIN, INPUT_PULLUP);
     
     TestItem tests[] = {
-        {"Relais", TEST_RELAIS, testRelaisSequence},
         {"DC Motor", TEST_DC_MOTOR, testDCMotorsWrapper},
         {"Ultrasonic", TEST_ULTRASONIC, testUltrasonicOLED},
         {"SD Card", TEST_SD_CARD, testSDCard},
