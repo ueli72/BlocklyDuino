@@ -25,7 +25,6 @@ Blockly.Arduino.test_all = function() {
   var ledMatrix = this.getFieldValue('LED_MATRIX') === 'TRUE';
   var relais = this.getFieldValue('RELAIS') === 'TRUE';
   var dcMotor = this.getFieldValue('DC_MOTOR') === 'TRUE';
-  var dht11 = this.getFieldValue('DHT11') === 'TRUE';
   var ultrasonic = this.getFieldValue('ULTRASONIC') === 'TRUE';
   var sdCard = this.getFieldValue('SD_CARD') === 'TRUE';
   var max98357a = this.getFieldValue('MAX98357A') === 'TRUE';
@@ -38,7 +37,6 @@ Blockly.Arduino.test_all = function() {
   if (ledMatrix) mask |= 1;
   if (relais) mask |= 2;
   if (dcMotor) mask |= 4;
-  if (dht11) mask |= 8;
   if (ultrasonic) mask |= 16;
   if (sdCard) mask |= 32;
   if (max98357a) mask |= 64;

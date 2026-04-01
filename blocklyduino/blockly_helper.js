@@ -68,7 +68,6 @@ var BRUMBRUM_GENERATOR_SCRIPTS = [
   'generators/arduino/playground_brumbrum/oled.js',
   'generators/arduino/playground_brumbrum/relais.js',
   'generators/arduino/playground_brumbrum/dc_motor.js',
-  'generators/arduino/playground_brumbrum/dht11.js',
   'generators/arduino/playground_brumbrum/ultrasonic.js',
   'generators/arduino/playground_brumbrum/sdcard.js',
   'generators/arduino/playground_brumbrum/max98357a.js',
@@ -199,6 +198,9 @@ brumbrumPins.pins['2'].notes = 'Button2 on Playground BrumBrum';
   brumbrumPins.pins[pinKey].special = [];
   brumbrumPins.pins[pinKey].notes = null;
 });
+// Remove DHT11 sensor pin for BrumBrum
+brumbrumPins.pins['6'].special = [];
+brumbrumPins.pins['6'].notes = null;
 PIN_DATA['playground-brumbrum-esp32-s3-devkitc1'] = brumbrumPins;
 
 function captureGeneratorSet(name) {
