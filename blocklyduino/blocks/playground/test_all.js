@@ -33,25 +33,29 @@ Blockly.Blocks['test_all'] = {
         .appendField(new Blockly.FieldImage("media/test_all.jpg", 64, 64))
         .appendField(" (Interactive Menu)");
     
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("LED Matrix")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "LED_MATRIX");
-    
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Relais")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "RELAIS");
-    
+    // Test options: skip unavailable ones on BrumBrum
+    var boardId = getActiveBoardId();
+    var isBrum = boardId === 'playground-brumbrum-esp32-s3-devkitc1';
+    if (!isBrum) {
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("LED Matrix")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "LED_MATRIX");
+
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Relais")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "RELAIS");
+
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("DHT11")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "DHT11");
+    }
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("DC Motor")
         .appendField(new Blockly.FieldCheckbox("TRUE"), "DC_MOTOR");
-    
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("DHT11")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "DHT11");
     
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
