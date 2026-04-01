@@ -2,7 +2,6 @@
 #include "test_all.h"
 #include "oled.h"
 #include "buttons.h"
-#include "LEDMatrix.h"
 #include "relais.h"
 #include "dcmotor.h"
 #include "ultrasonic.h"
@@ -51,7 +50,6 @@ void runTestMenu(uint16_t testMask) {
     pinMode(SW2_PIN, INPUT_PULLUP);
     
     TestItem tests[] = {
-        {"LED Matrix", TEST_LED_MATRIX, runLEDMatrixTest},
         {"Relais", TEST_RELAIS, testRelaisSequence},
         {"DC Motor", TEST_DC_MOTOR, testDCMotorsWrapper},
         {"Ultrasonic", TEST_ULTRASONIC, testUltrasonicOLED},

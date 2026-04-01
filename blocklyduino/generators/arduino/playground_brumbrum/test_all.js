@@ -22,7 +22,6 @@
 'use strict';
 
 Blockly.Arduino.test_all = function() {
-  var ledMatrix = this.getFieldValue('LED_MATRIX') === 'TRUE';
   var relais = this.getFieldValue('RELAIS') === 'TRUE';
   var dcMotor = this.getFieldValue('DC_MOTOR') === 'TRUE';
   var ultrasonic = this.getFieldValue('ULTRASONIC') === 'TRUE';
@@ -34,14 +33,13 @@ Blockly.Arduino.test_all = function() {
   Blockly.Arduino.definitions_['include_test_all_h'] = '#include "test_all.h"\n';
   
   var mask = 0;
-  if (ledMatrix) mask |= 1;
-  if (relais) mask |= 2;
-  if (dcMotor) mask |= 4;
-  if (ultrasonic) mask |= 16;
-  if (sdCard) mask |= 32;
-  if (max98357a) mask |= 64;
-  if (internalLed) mask |= 128;
-  if (sg90Servo) mask |= 256;
+  if (relais) mask |= 1;
+  if (dcMotor) mask |= 2;
+  if (ultrasonic) mask |= 4;
+  if (sdCard) mask |= 8;
+  if (max98357a) mask |= 16;
+  if (internalLed) mask |= 32;
+  if (sg90Servo) mask |= 64;
   
   var code = 'runTestMenu(' + mask + ');\n';
   return code;

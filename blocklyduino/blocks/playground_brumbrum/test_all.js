@@ -35,11 +35,6 @@ Blockly.Blocks['test_all'] = {
     
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("LED Matrix")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "LED_MATRIX");
-    
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("Relais")
         .appendField(new Blockly.FieldCheckbox("TRUE"), "RELAIS");
     

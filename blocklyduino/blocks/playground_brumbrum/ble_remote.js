@@ -27,7 +27,6 @@ Blockly.Blocks.ble_remote = {};
 
 var BLE_BLOCKED_IN_CALLBACK = [
   'internal_led_init', 'internal_led_set', 'internal_led_off', 'internal_led_test',
-  'led_matrix_init', 'led_matrix_set_pixel', 'led_matrix_fill', 'led_matrix_show', 'led_matrix_off', 'led_matrix_test',
   'base_delay', 'serial_print', 'inout_tone', 'inout_notone',
   'max98357a_init', 'max98357a_play_tone', 'max98357a_stop', 'max98357a_test',
   'max98357a_play_file', 'max98357a_is_playing', 'max98357a_wait_until_done',

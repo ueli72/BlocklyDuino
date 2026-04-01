@@ -1,6 +1,6 @@
 // Made for playground-brumbrum-esp32-s3-devkitc1
 #include "buttons.h"
-#include "LEDMatrix.h"
+#include "oled.h"
 
 bool sw1Pressed = false;
 bool sw2Pressed = false;
@@ -17,25 +17,25 @@ void testButtons() {
   pinMode(SW1_PIN, INPUT_PULLUP);
   pinMode(SW2_PIN, INPUT_PULLUP);
 
-  turnOffLEDMatrix();
+  writeToOled("Button test\nPress SW1 & SW2");
 
   while (!(sw1Pressed && sw2Pressed)) {
     if (!sw1Pressed && digitalRead(SW1_PIN) == LOW) {
       sw1Pressed = true;
-      setLEDMatrixPixel(0, 255, 255, 255);
-      showLEDMatrix();
-      delay(200);
+      writeToOled("SW1 pressed\nHold SW2");
+      delay(300);
     }
 
     if (!sw2Pressed && digitalRead(SW2_PIN) == LOW) {
       sw2Pressed = true;
-      setLEDMatrixPixel(1, 255, 255, 255);
-      showLEDMatrix();
-      delay(200);
+      writeToOled("SW2 pressed\nHold SW1");
+      delay(300);
     }
 
-    delay(10);
+    delay(20);
   }
 
-  turnOffLEDMatrix();
+  writeToOled("Buttons ready!\nRelease to end");
+  delay(800);
+  clearOled();
 }

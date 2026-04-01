@@ -64,7 +64,6 @@ var BRUMBRUM_GENERATOR_SCRIPTS = [
   'generators/arduino/playground_brumbrum/sg90.js',
   'generators/arduino/playground_brumbrum/internal_led.js',
   'generators/arduino/playground_brumbrum/button.js',
-  'generators/arduino/playground_brumbrum/ledmatrix.js',
   'generators/arduino/playground_brumbrum/oled.js',
   'generators/arduino/playground_brumbrum/relais.js',
   'generators/arduino/playground_brumbrum/dc_motor.js',
@@ -198,6 +197,10 @@ brumbrumPins.pins['2'].notes = 'Button2 on Playground BrumBrum';
   brumbrumPins.pins[pinKey].special = [];
   brumbrumPins.pins[pinKey].notes = null;
 });
+if (brumbrumPins.pins['10']) {
+  brumbrumPins.pins['10'].special = [];
+  brumbrumPins.pins['10'].notes = null;
+}
 // Remove DHT11 sensor pin for BrumBrum
 brumbrumPins.pins['6'].special = [];
 brumbrumPins.pins['6'].notes = null;
