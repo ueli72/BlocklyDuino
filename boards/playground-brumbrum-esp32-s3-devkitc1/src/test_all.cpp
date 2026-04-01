@@ -5,7 +5,6 @@
 #include "LEDMatrix.h"
 #include "relais.h"
 #include "dcmotor.h"
-#include "dht11.h"
 #include "ultrasonic.h"
 #include "sdcard.h"
 #include "max98357a.h"
@@ -55,7 +54,6 @@ void runTestMenu(uint16_t testMask) {
         {"LED Matrix", TEST_LED_MATRIX, runLEDMatrixTest},
         {"Relais", TEST_RELAIS, testRelaisSequence},
         {"DC Motor", TEST_DC_MOTOR, testDCMotorsWrapper},
-        {"DHT11", TEST_DHT11, testDHT11},
         {"Ultrasonic", TEST_ULTRASONIC, testUltrasonicOLED},
         {"SD Card", TEST_SD_CARD, testSDCard},
         {"MAX98357A", TEST_MAX98357A, testMAX98357A},

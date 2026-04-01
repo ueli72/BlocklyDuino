@@ -7,7 +7,6 @@
 #define TEST_LED_MATRIX    (1 << 0)
 #define TEST_RELAIS        (1 << 1)
 #define TEST_DC_MOTOR      (1 << 2)
-#define TEST_DHT11         (1 << 3)
 #define TEST_ULTRASONIC    (1 << 4)
 #define TEST_SD_CARD       (1 << 5)
 #define TEST_MAX98357A     (1 << 6)

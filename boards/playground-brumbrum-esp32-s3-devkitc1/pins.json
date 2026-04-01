@@ -47,9 +47,9 @@
     "6": {
       "name": "GPIO6",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": ["DHT11 Sensor"],
+      "special": [],
       "reserved": false,
-      "notes": "Temperature/Humidity sensor"
+      "notes": null
     },
     "7": {
       "name": "GPIO7",
