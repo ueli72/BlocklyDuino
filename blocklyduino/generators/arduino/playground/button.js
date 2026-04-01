@@ -51,6 +51,13 @@ Blockly.Arduino.button_read = function() {
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 
+Blockly.Arduino.button_test = function() {
+  Blockly.Arduino.definitions_['include_buttons_h'] = '#include "buttons.h"\n';
+  Blockly.Arduino.definitions_['include_oled_h'] = '#include "oled.h"\n';
+  var code = 'testButtons();\n';
+  return code;
+};
+
 Blockly.Arduino.external_interrupt = function() {
   // Check if this block is inside the arduino_interrupts block
   var parent = this.getParent();

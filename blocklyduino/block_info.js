@@ -26,6 +26,29 @@ var BLOCK_INFO = {
     warningKey: 'interrupt',
     includes: []
   },
+  'button_init': {
+    title: 'blockInfo.button.title',
+    message: 'blockInfo.button.initMessage',
+    includes: ['buttons.h']
+  },
+  'button_test': {
+    title: 'blockInfo.button.title',
+    message: 'blockInfo.button.initMessage',
+    testMessage: 'blockInfo.button.testMessage',
+    includes: ['buttons.h', 'oled.h']
+  },
+  // BrumBrum-specific button blocks (only 2 buttons)
+  'button_init_brumbrum': {
+    title: 'blockInfo.buttonBrumbrum.title',
+    message: 'blockInfo.buttonBrumbrum.initMessage',
+    includes: ['buttons.h']
+  },
+  'button_test_brumbrum': {
+    title: 'blockInfo.buttonBrumbrum.title',
+    message: 'blockInfo.buttonBrumbrum.initMessage',
+    testMessage: 'blockInfo.buttonBrumbrum.testMessage',
+    includes: ['buttons.h', 'oled.h']
+  },
   'async_timer': {
     title: 'blockInfo.timer.title',
     message: 'blockInfo.timer.message',
@@ -639,10 +662,46 @@ var seenBlocks = {
 };
 
 function getBlockInfo(blockType) {
+  // Check if we're on BrumBrum board
+  var isBrumbrum = false;
+  if (typeof selectedBoard === 'string' && selectedBoard === 'playground-brumbrum-esp32-s3-devkitc1') {
+    isBrumbrum = true;
+  } else if (typeof localStorage !== 'undefined') {
+    try {
+      isBrumbrum = localStorage.getItem('blocklyduino_board') === 'playground-brumbrum-esp32-s3-devkitc1';
+    } catch (e) {}
+  }
+  
+  // If on BrumBrum, try to get board-specific info first
+  if (isBrumbrum) {
+    var brumbrumKey = blockType + '_brumbrum';
+    if (BLOCK_INFO.hasOwnProperty(brumbrumKey)) {
+      return BLOCK_INFO[brumbrumKey];
+    }
+  }
+  
   return BLOCK_INFO[blockType] || null;
 }
 
 function hasBlockInfo(blockType) {
+  // Check if we're on BrumBrum board
+  var isBrumbrum = false;
+  if (typeof selectedBoard === 'string' && selectedBoard === 'playground-brumbrum-esp32-s3-devkitc1') {
+    isBrumbrum = true;
+  } else if (typeof localStorage !== 'undefined') {
+    try {
+      isBrumbrum = localStorage.getItem('blocklyduino_board') === 'playground-brumbrum-esp32-s3-devkitc1';
+    } catch (e) {}
+  }
+  
+  // If on BrumBrum, check for board-specific info first
+  if (isBrumbrum) {
+    var brumbrumKey = blockType + '_brumbrum';
+    if (BLOCK_INFO.hasOwnProperty(brumbrumKey)) {
+      return true;
+    }
+  }
+  
   return BLOCK_INFO.hasOwnProperty(blockType);
 }
 

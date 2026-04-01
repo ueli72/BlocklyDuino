@@ -199,7 +199,14 @@ i18n.registerTranslations('en', {
       "title": "Button",
       "initMessage": "This block initializes the selected buttons.\n\nPins used:\n• Button1: GPIO1\n• Button2: GPIO4\n• Button3: GPIO3\n• Button4: GPIO2",
       "readMessage": "This block reads the state of a button.\n\nReturns true when pressed, false when not pressed.",
-      "interruptMessage": "ISR Restrictions:\n• No delay() or delayMicroseconds()\n• No Serial.print() or Serial.write()\n• Keep code short and fast\n• Use 'volatile' for variables shared with main loop\n• Avoid function calls that may block\n\nThe interrupt runs asynchronously and non-blocking."
+      "interruptMessage": "ISR Restrictions:\n• No delay() or delayMicroseconds()\n• No Serial.print() or Serial.write()\n• Keep code short and fast\n• Use 'volatile' for variables shared with main loop\n• Avoid function calls that may block\n\nThe interrupt runs asynchronously and non-blocking.",
+      "testMessage": "This block tests all buttons sequentially. Displays 'Buttontest' on OLED, then waits for each button to be pressed (Button 1-4). Shows which button to press and confirms when pressed."
+    },
+    "buttonBrumbrum": {
+      "title": "Button",
+      "initMessage": "This block initializes the selected buttons.\n\nPins used:\n• Button1: GPIO1\n• Button2: GPIO2",
+      "readMessage": "This block reads the state of a button.\n\nReturns true when pressed, false when not pressed.",
+      "testMessage": "This block tests all buttons sequentially. Displays 'Buttontest' on OLED, then waits for each button to be pressed (Button 1-2). Shows which button to press and confirms when pressed."
     },
     "oled": {
       "title": "OLED Display",

@@ -69,6 +69,19 @@ Blockly.Blocks['button_read'] = {
   }
 };
 
+Blockly.Blocks['button_test'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("Button")
+        .appendField(new Blockly.FieldImage("media/button.png", 64, 64))
+        .appendField("Test");
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
+    this.setTooltip('Test all buttons sequentially. Displays instructions on OLED.');
+  }
+};
+
 function getInterruptPins() {
   var pins = getButtonPins();
   for (var i = 0; i <= 48; i++) {

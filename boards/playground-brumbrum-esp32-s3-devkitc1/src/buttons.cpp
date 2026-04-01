@@ -2,40 +2,47 @@
 #include "buttons.h"
 #include "oled.h"
 
-bool sw1Pressed = false;
-bool sw2Pressed = false;
-
 void initializeButtons(bool sw1, bool sw2) {
   if (sw1) pinMode(SW1_PIN, INPUT_PULLUP);
   if (sw2) pinMode(SW2_PIN, INPUT_PULLUP);
 }
 
 void testButtons() {
-  sw1Pressed = false;
-  sw2Pressed = false;
-
   pinMode(SW1_PIN, INPUT_PULLUP);
   pinMode(SW2_PIN, INPUT_PULLUP);
 
-  writeToOled("Button test\nPress SW1 & SW2");
+  // Show test title
+  writeToOled("Buttontest");
+  delay(1000);
 
-  while (!(sw1Pressed && sw2Pressed)) {
-    if (!sw1Pressed && digitalRead(SW1_PIN) == LOW) {
-      sw1Pressed = true;
-      writeToOled("SW1 pressed\nHold SW2");
-      delay(300);
-    }
-
-    if (!sw2Pressed && digitalRead(SW2_PIN) == LOW) {
-      sw2Pressed = true;
-      writeToOled("SW2 pressed\nHold SW1");
-      delay(300);
-    }
-
-    delay(20);
+  // Test Button 1
+  writeToOled("Buttontest\nPress Button 1");
+  while (digitalRead(SW1_PIN) == HIGH) {
+    delay(10);
   }
+  writeToOled("Buttontest\nButton 1 OK");
+  delay(500);
+  // Wait for button release
+  while (digitalRead(SW1_PIN) == LOW) {
+    delay(10);
+  }
+  delay(200);
 
-  writeToOled("Buttons ready!\nRelease to end");
-  delay(800);
+  // Test Button 2
+  writeToOled("Buttontest\nPress Button 2");
+  while (digitalRead(SW2_PIN) == HIGH) {
+    delay(10);
+  }
+  writeToOled("Buttontest\nButton 2 OK");
+  delay(500);
+  // Wait for button release
+  while (digitalRead(SW2_PIN) == LOW) {
+    delay(10);
+  }
+  delay(200);
+
+  // Final message
+  writeToOled("Buttontest\nAll OK!");
+  delay(1000);
   clearOled();
 }
