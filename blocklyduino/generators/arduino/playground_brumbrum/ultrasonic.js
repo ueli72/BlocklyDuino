@@ -30,7 +30,6 @@ Blockly.Arduino.ultrasonic_read = function() {
 
 Blockly.Arduino.ultrasonic_test = function() {
   Blockly.Arduino.definitions_['include_ultrasonic_h'] = '#include "ultrasonic.h"\n';
-  Blockly.Arduino.definitions_['include_oled_h'] = '#include "oled.h"\n';
   var code = 'testUltrasonicOLED();\n';
   return code;
 };

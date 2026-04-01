@@ -1,7 +1,17 @@
 // Made for playground-brumbrum-esp32-s3-devkitc1
 #include "relais.h"
 #include "buttons.h"
-#include "oled.h"
+#include "serial.h"
+
+static bool serialInitialized = false;
+
+static void ensureSerialInit() {
+    if (!serialInitialized) {
+        initSerial(115200);
+        serialInitialized = true;
+        serialPrintln("\n[Relais] Serial initialized");
+    }
+}
 
 void setRelay(int relayNum, bool state) {
   int pin;
@@ -19,19 +29,30 @@ void setRelay(int relayNum, bool state) {
 
 
 void testRelaisSequence() {
+  ensureSerialInit();
+  
+  serialPrintln("\n========================================");
+  serialPrintln("         RELAY TEST");
+  serialPrintln("========================================");
+  
   for (int i = 0; i < 5; i++) {
-    writeToOled("Relay 1: ON");
+    serialPrint("[");
+    serialPrint(i + 1);
+    serialPrintln("/5] Relay 1: ON");
     setRelay(1, true);
     delay(500);
-    writeToOled("Relay 1: OFF");
+    serialPrintln("       Relay 1: OFF");
     setRelay(1, false);
     delay(500);
-    writeToOled("Relay 2: ON");
+    serialPrintln("       Relay 2: ON");
     setRelay(2, true);
     delay(500);
-    writeToOled("Relay 2: OFF");
+    serialPrintln("       Relay 2: OFF");
     setRelay(2, false);
     delay(500);
   }
-  clearOled();
+  
+  serialPrintln("========================================");
+  serialPrintln("      Relay test complete!");
+  serialPrintln("========================================");
 }

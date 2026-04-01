@@ -1,6 +1,15 @@
 // Made for playground-brumbrum-esp32-s3-devkitc1
 #include "ultrasonic.h"
-#include "oled.h"
+#include "serial.h"
+
+static bool serialInitialized = false;
+
+static void ensureSerialInit() {
+    if (!serialInitialized) {
+        initSerial(115200);
+        serialInitialized = true;
+    }
+}
 
 float measureDistance(int sensor) {
   int trigPin, echoPin;
@@ -31,17 +40,31 @@ float measureDistance(int sensor) {
 }
 
 void testUltrasonicOLED() {
-  initOLED();
+  ensureSerialInit();
   
-  char buffer[80];
+  serialPrintln("\n========================================");
+  serialPrintln("       ULTRASONIC SENSOR TEST");
+  serialPrintln("========================================");
+  serialPrintln("WARNING: Connect 5V external power!");
+  serialPrintln("Reading Front and Back sensors...");
+  serialPrintln("----------------------------------------");
   
   for (int i = 0; i < 20; i++) {
     float distFront = measureDistance(SENSOR_FRONT);
     float distBack = measureDistance(SENSOR_BACK);
-    snprintf(buffer, sizeof(buffer), "! 5V external !\n%d/20\nFront: %.1f cm\nBack: %.1f cm", i + 1, distFront, distBack);
-    writeToOled(buffer);
+    
+    serialPrint("[");
+    serialPrint(i + 1);
+    serialPrint("/20] Front: ");
+    serialPrint((int)distFront);
+    serialPrint(" cm, Back: ");
+    serialPrint((int)distBack);
+    serialPrintln(" cm");
+    
     delay(200);
   }
   
-  clearOled();
+  serialPrintln("----------------------------------------");
+  serialPrintln("Ultrasonic test complete!");
+  serialPrintln("========================================");
 }

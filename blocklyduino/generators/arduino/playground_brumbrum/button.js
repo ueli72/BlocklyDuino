@@ -137,7 +137,6 @@ Blockly.Arduino.button_read = function() {
 
 Blockly.Arduino.button_test = function() {
   Blockly.Arduino.definitions_['include_buttons_h'] = '#include "buttons.h"\n';
-  Blockly.Arduino.definitions_['include_oled_h'] = '#include "oled.h"\n';
   var code = 'testButtons();\n';
   return code;
 };

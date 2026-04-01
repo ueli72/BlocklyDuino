@@ -1,6 +1,6 @@
 // Made for playground-brumbrum-esp32-s3-devkitc1
 #include "max98357a.h"
-#include "oled.h"
+#include "serial.h"
 #include "sdcard.h"
 #include <driver/i2s.h>
 #include <string.h>
@@ -9,6 +9,16 @@
 #include <freertos/queue.h>
 
 static bool i2sInitialized = false;
+
+static bool serialInitialized = false;
+
+static void ensureSerialInit() {
+    if (!serialInitialized) {
+        initSerial(115200);
+        serialInitialized = true;
+        serialPrintln("\n[MAX98357A] Serial initialized");
+    }
+}
 
 #define I2S_NUM         I2S_NUM_0
 #define I2S_DMA_BUF_COUNT 32
@@ -50,10 +60,9 @@ static volatile bool isCurrentlyPlaying = false;
 static void initI2S() {
     if (i2sInitialized) return;
 
-    Serial.begin(115200);
+    ensureSerialInit();
     delay(100);
 
-    initOLED();
     initSDCard();
 
     pinMode(I2S_SD_MODE, OUTPUT);
@@ -155,7 +164,8 @@ static bool parseWavHeader(uint8_t* buffer, int bufLen, WavHeader* header) {
 static void playAudioFileBlocking(const char* filename) {
     int handle = openAudioFile(filename);
     if (handle < 0) {
-        writeToOled("File not found:\n%s", filename);
+        serialPrint("[Audio] File not found: ");
+        serialPrintln(filename);
         return;
     }
 
@@ -332,19 +342,20 @@ static void audioTask(void* parameter) {
             isCurrentlyPlaying = true;
             
             if (cmd.isFile) {
-                writeToOled("Playing:\n%s", cmd.filename);
+                serialPrint("[Audio] Playing file: ");
+                serialPrintln(cmd.filename);
                 playAudioFileBlocking(cmd.filename);
             } else {
-                writeToOled("Tone: %dHz\n%dms", cmd.frequency, cmd.duration);
+                serialPrint("[Audio] Tone: ");
+                serialPrint(cmd.frequency);
+                serialPrint("Hz, Duration: ");
+                serialPrint(cmd.duration);
+                serialPrintln("ms");
                 playToneBlocking(cmd.frequency, cmd.duration);
             }
             
             isCurrentlyPlaying = false;
             stopRequested = false;
-            
-            if (!cmd.isFile || !stopRequested) {
-                clearOled();
-            }
         }
     }
 }
@@ -411,8 +422,6 @@ void stopAudio() {
         vTaskDelay(1);
         timeout--;
     }
-    
-    clearOled();
 }
 
 bool isPlaying() {
@@ -420,12 +429,17 @@ bool isPlaying() {
 }
 
 void testMAX98357A() {
+    ensureSerialInit();
+    
     if (!i2sInitialized) {
         initMAX98357A();
     }
 
-    writeToOled("Test: SD Card");
-    delay(1000);
+    serialPrintln("\n========================================");
+    serialPrintln("       MAX98357A AUDIO TEST");
+    serialPrintln("========================================");
+
+    serialPrintln("[Audio] Testing SD Card for test.wav...");
 
     uint32_t dummySize;
     bool sdAvailable = getAudioFileInfo("test.wav", &dummySize);
@@ -439,21 +453,30 @@ void testMAX98357A() {
     }
 
     if (wavExists) {
+        serialPrintln("[Audio] Playing test.wav from SD card...");
         playAudioFile("test.wav");
         while (isPlaying()) {
             delay(100);
         }
     } else {
-        writeToOled("Test: Triad");
+        serialPrintln("[Audio] No test.wav found, playing triad tones...");
+        serialPrintln("        Tone 1: 262Hz (C4)");
         playTone(262, 500);
         while (isPlaying()) delay(10);
+        serialPrintln("        Tone 2: 330Hz (E4)");
         playTone(330, 500);
         while (isPlaying()) delay(10);
+        serialPrintln("        Tone 3: 392Hz (G4)");
         playTone(392, 500);
         while (isPlaying()) delay(10);
+        serialPrintln("        Tone 4: 523Hz (C5)");
         playTone(523, 500);
         while (isPlaying()) delay(10);
     }
 
     stopAudio();
+    
+    serialPrintln("========================================");
+    serialPrintln("      MAX98357A test complete!");
+    serialPrintln("========================================");
 }

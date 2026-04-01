@@ -72,7 +72,7 @@ Blockly.Blocks['button_test'] = {
         .appendField("Test");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Test all buttons sequentially. Displays instructions on OLED.');
+    this.setTooltip('Test all buttons sequentially. Displays instructions on Serial Monitor.');
   }
 };
 

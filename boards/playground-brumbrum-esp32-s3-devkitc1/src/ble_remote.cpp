@@ -1,8 +1,18 @@
 // Made for playground-brumbrum-esp32-s3-devkitc1
 #include "ble_remote.h"
-#include "oled.h"
+#include "serial.h"
 #include "buttons.h"
 #include <NimBLEDevice.h>
+
+static bool serialInitialized = false;
+
+static void ensureSerialInit() {
+    if (!serialInitialized) {
+        initSerial(115200);
+        serialInitialized = true;
+        serialPrintln("\n[BLE] Serial initialized");
+    }
+}
 
 #define SERVICE_UUID           "00008610-0000-0000-0000-000000000001"  // 8610 = school zip code
 #define CHARACTERISTIC_DIRECTION "00008610-0000-0000-0000-000000000002"
@@ -23,11 +33,11 @@ static const char* bleDeviceName = nullptr;
 
 class ServerCallbacks : public NimBLEServerCallbacks {
   void onConnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo) {
-    Serial.println("BLE client connected");
+    serialPrintln("[BLE] Client connected");
   };
   
   void onDisconnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo, int reason) {
-    Serial.println("BLE client disconnected - restarting advertising");
+    serialPrintln("[BLE] Client disconnected - restarting advertising");
     NimBLEDevice::startAdvertising();
   };
 };
@@ -102,7 +112,7 @@ void initBLERemote(const char* deviceName) {
   pAdvertising->addServiceUUID(SERVICE_UUID);
   pAdvertising->start();
   
-  Serial.println("BLE Remote initialized - waiting for connection...");
+  serialPrintln("[BLE] BLE Remote initialized - waiting for connection...");
 }
 
 void setBLEDirectionCallback(BLEDirectionCallback callback) {
@@ -141,16 +151,22 @@ static bool newCommand = false;
 static void bleTestDirectionCallback(int8_t dir) {
   lastDirection = dir;
   newDirection = true;
+  serialPrint("[BLE] Direction received: ");
+  serialPrintln((int)dir);
 }
 
 static void bleTestSpeedCallback(uint8_t speed) {
   lastSpeed = speed;
   newSpeed = true;
+  serialPrint("[BLE] Speed received: ");
+  serialPrintln((int)speed);
 }
 
 static void bleTestCommandCallback(uint8_t cmd) {
   lastCommand = cmd;
   newCommand = true;
+  serialPrint("[BLE] Command received: ");
+  serialPrintln((int)cmd);
 }
 
 static void waitForButtonRelease(int pin) {
@@ -174,31 +190,8 @@ static bool checkHoldExit(int pin, unsigned long holdStart) {
   return false;
 }
 
-static bool showWizardPage(const char* text) {
-  writeToOled(text);
-  delay(20);
-  
-  while (true) {
-    if (readButton(BLE_TEST_SW1_PIN)) {
-      unsigned long holdStart = millis();
-      if (checkHoldExit(BLE_TEST_SW1_PIN, holdStart)) {
-        return false;
-      }
-      waitForButtonRelease(BLE_TEST_SW1_PIN);
-      return true;
-    }
-    
-    if (readButton(BLE_TEST_SW2_PIN)) {
-      waitForButtonRelease(BLE_TEST_SW2_PIN);
-      return false;
-    }
-    
-    delay(10);
-  }
-}
-
 void testBLERemote() {
-  initOLED();
+  ensureSerialInit();
   
   pinMode(BLE_TEST_SW1_PIN, INPUT_PULLUP);
   pinMode(BLE_TEST_SW2_PIN, INPUT_PULLUP);
@@ -207,42 +200,146 @@ void testBLERemote() {
   setBLESpeedCallback(bleTestSpeedCallback);
   setBLECommandCallback(bleTestCommandCallback);
   
-  if (!showWizardPage("BLE Test\n\nOpen LightBlue\napp on phone\n\nSW1:Next SW2:Skip\n(hold SW1=Exit)")) {
-    clearOled(); return;
+  serialPrintln("\n========================================");
+  serialPrintln("         BLE REMOTE TEST");
+  serialPrintln("========================================");
+  serialPrintln("This test requires the LightBlue app");
+  serialPrintln("Controls:");
+  serialPrintln("  SW1: Next step / Hold 1s to Exit");
+  serialPrintln("  SW2: Skip / Exit");
+  serialPrintln("----------------------------------------");
+  
+  serialPrintln("\n[Step 1] Open LightBlue app on your phone");
+  serialPrintln("         then press SW1 to continue...");
+  
+  // Wait for SW1 or hold to exit
+  while (true) {
+    if (readButton(BLE_TEST_SW1_PIN)) {
+      unsigned long holdStart = millis();
+      if (checkHoldExit(BLE_TEST_SW1_PIN, holdStart)) {
+        serialPrintln("\n[Exit] Test aborted.");
+        return;
+      }
+      waitForButtonRelease(BLE_TEST_SW1_PIN);
+      break;
+    }
+    if (readButton(BLE_TEST_SW2_PIN)) {
+      waitForButtonRelease(BLE_TEST_SW2_PIN);
+      serialPrintln("\n[Skip] Skipping test.");
+      return;
+    }
+    delay(10);
   }
   
-  char connectBuffer[128];
-  snprintf(connectBuffer, sizeof(connectBuffer), "LightBlue Setup\n\n1. Scan devices\n2. Find %s\n3. Tap Connect\n\nSW1:Next SW2:Skip", bleDeviceName ? bleDeviceName : "Device");
-  if (!showWizardPage(connectBuffer)) {
-    clearOled(); return;
+  serialPrintln("\n[Step 2] LightBlue Setup:");
+  serialPrint("         1. Scan devices and find: ");
+  serialPrintln(bleDeviceName ? bleDeviceName : "Device");
+  serialPrintln("         2. Tap 'Connect'");
+  serialPrintln("         Press SW1 to continue...");
+  
+  while (true) {
+    if (readButton(BLE_TEST_SW1_PIN)) {
+      unsigned long holdStart = millis();
+      if (checkHoldExit(BLE_TEST_SW1_PIN, holdStart)) {
+        serialPrintln("\n[Exit] Test aborted.");
+        return;
+      }
+      waitForButtonRelease(BLE_TEST_SW1_PIN);
+      break;
+    }
+    if (readButton(BLE_TEST_SW2_PIN)) {
+      waitForButtonRelease(BLE_TEST_SW2_PIN);
+      serialPrintln("\n[Skip] Skipping test.");
+      return;
+    }
+    delay(10);
   }
   
-  if (!showWizardPage("LightBlue Setup\n\n4. Find service:\n   8610-0001\n5. Tap to expand\n\nSW1:Next SW2:Skip")) {
-    clearOled(); return;
+  serialPrintln("\n[Step 3] Find service 8610-0001 and expand it");
+  serialPrintln("         Press SW1 to continue...");
+  
+  while (true) {
+    if (readButton(BLE_TEST_SW1_PIN)) {
+      unsigned long holdStart = millis();
+      if (checkHoldExit(BLE_TEST_SW1_PIN, holdStart)) {
+        serialPrintln("\n[Exit] Test aborted.");
+        return;
+      }
+      waitForButtonRelease(BLE_TEST_SW1_PIN);
+      break;
+    }
+    if (readButton(BLE_TEST_SW2_PIN)) {
+      waitForButtonRelease(BLE_TEST_SW2_PIN);
+      serialPrintln("\n[Skip] Skipping test.");
+      return;
+    }
+    delay(10);
   }
   
-  if (!showWizardPage("LightBlue Setup\n\n6. Tap characteristic\n7. Write hex value\n   (no 0x, e.g. 7F)\n\nSW1:Next SW2:Skip")) {
-    clearOled(); return;
+  serialPrintln("\n[Step 4] Tap characteristic and write hex value");
+  serialPrintln("         (no 0x prefix, e.g., 7F)");
+  serialPrintln("         Press SW1 when ready to test...");
+  
+  while (true) {
+    if (readButton(BLE_TEST_SW1_PIN)) {
+      unsigned long holdStart = millis();
+      if (checkHoldExit(BLE_TEST_SW1_PIN, holdStart)) {
+        serialPrintln("\n[Exit] Test aborted.");
+        return;
+      }
+      waitForButtonRelease(BLE_TEST_SW1_PIN);
+      break;
+    }
+    if (readButton(BLE_TEST_SW2_PIN)) {
+      waitForButtonRelease(BLE_TEST_SW2_PIN);
+      serialPrintln("\n[Skip] Skipping test.");
+      return;
+    }
+    delay(10);
   }
   
-  writeToOled("Waiting for\nconnection...\n\nService: 8610-0001\n\nSW2:Exit");
+  serialPrintln("\n[Connect] Waiting for BLE connection...");
+  serialPrintln("          Service: 8610-0001");
+  serialPrintln("          (Press SW2 to cancel)");
   
   unsigned long startTime = millis();
   while (!isBLEConnected() && millis() - startTime < 60000) {
-    if (readButton(BLE_TEST_SW2_PIN)) { waitForButtonRelease(BLE_TEST_SW2_PIN); clearOled(); return; }
+    if (readButton(BLE_TEST_SW2_PIN)) { 
+      waitForButtonRelease(BLE_TEST_SW2_PIN); 
+      serialPrintln("\n[Cancel] Connection wait cancelled.");
+      return; 
+    }
     delay(100);
   }
   
   if (!isBLEConnected()) {
-    writeToOled("Connection\nTimeout!\n\nSW2:Exit");
+    serialPrintln("\n[Timeout] Connection timeout!");
+    serialPrintln("          Press SW2 to exit...");
     while (!readButton(BLE_TEST_SW2_PIN)) { delay(10); }
     waitForButtonRelease(BLE_TEST_SW2_PIN);
-    clearOled();
     return;
   }
   
-  if (!showWizardPage("Connected!\n\nNow test each\ncharacteristic\n\nSW1:Start SW2:Exit")) {
-    clearOled(); return;
+  serialPrintln("\n[Connected] BLE client connected!");
+  serialPrintln("            Ready to test characteristics.");
+  serialPrintln("            Press SW1 to start testing...");
+  
+  while (true) {
+    if (readButton(BLE_TEST_SW1_PIN)) {
+      unsigned long holdStart = millis();
+      if (checkHoldExit(BLE_TEST_SW1_PIN, holdStart)) {
+        serialPrintln("\n[Exit] Test aborted.");
+        return;
+      }
+      waitForButtonRelease(BLE_TEST_SW1_PIN);
+      break;
+    }
+    if (readButton(BLE_TEST_SW2_PIN)) {
+      waitForButtonRelease(BLE_TEST_SW2_PIN);
+      serialPrintln("\n[Exit] Test cancelled.");
+      return;
+    }
+    delay(10);
   }
   
   const char* testItems[] = {"Direction", "Speed", "Command"};
@@ -253,10 +350,20 @@ void testBLERemote() {
   bool sw1WasPressed = false;
   
   while (inTestMenu) {
-    char menuBuffer[128];
-    snprintf(menuBuffer, sizeof(menuBuffer), "Test Menu\n> %s\n  %s\n\nSW1:Scroll SW2:Run\n(hold SW1=Exit)", 
-             testItems[selectedIndex], testItems[(selectedIndex + 1) % numItems]);
-    writeToOled(menuBuffer);
+    serialPrintln("\n----------------------------------------");
+    serialPrintln("         TEST MENU");
+    serialPrintln("----------------------------------------");
+    for (int i = 0; i < numItems; i++) {
+      if (i == selectedIndex) {
+        serialPrint(" > ");
+      } else {
+        serialPrint("   ");
+      }
+      serialPrintln(testItems[i]);
+    }
+    serialPrintln("----------------------------------------");
+    serialPrintln("SW1: Next / Hold 1s to Exit");
+    serialPrintln("SW2: Run selected test");
     
     delay(20);
     
@@ -281,13 +388,17 @@ void testBLERemote() {
       waitForButtonRelease(BLE_TEST_SW2_PIN);
       
       if (selectedIndex == 0) {
-        writeToOled("Direction Test\n\nChar: 8610-0002\nHex: 00-FF\n(80-FF=neg)\nSW2:Back");
+        serialPrintln("\n[DIRECTION TEST] Characteristic: 8610-0002");
+        serialPrintln("                 Write hex: 00-FF (80-FF = negative)");
+        serialPrintln("                 Press SW2 to exit this test...");
         newDirection = false;
         while (!readButton(BLE_TEST_SW2_PIN)) {
           if (newDirection) {
-            char buf[64];
-            snprintf(buf, sizeof(buf), "Direction Test\n\nReceived:\n0x%02X (%d)\n\nSW2:Back", (uint8_t)lastDirection, lastDirection);
-            writeToOled(buf);
+            serialPrint("                 Received: 0x");
+            serialPrint((uint8_t)lastDirection, HEX);
+            serialPrint(" (");
+            serialPrint((int)lastDirection);
+            serialPrintln(")");
             newDirection = false;
           }
           delay(50);
@@ -295,13 +406,17 @@ void testBLERemote() {
         waitForButtonRelease(BLE_TEST_SW2_PIN);
       }
       else if (selectedIndex == 1) {
-        writeToOled("Speed Test\n\nChar: 8610-0003\nHex: 00 to FF\n\nSW2:Back");
+        serialPrintln("\n[SPEED TEST] Characteristic: 8610-0003");
+        serialPrintln("             Write hex: 00-FF");
+        serialPrintln("             Press SW2 to exit this test...");
         newSpeed = false;
         while (!readButton(BLE_TEST_SW2_PIN)) {
           if (newSpeed) {
-            char buf[64];
-            snprintf(buf, sizeof(buf), "Speed Test\n\nReceived:\n0x%02X (%d)\n\nSW2:Back", lastSpeed, lastSpeed);
-            writeToOled(buf);
+            serialPrint("             Received: 0x");
+            serialPrint(lastSpeed, HEX);
+            serialPrint(" (");
+            serialPrint((int)lastSpeed);
+            serialPrintln(")");
             newSpeed = false;
           }
           delay(50);
@@ -309,13 +424,17 @@ void testBLERemote() {
         waitForButtonRelease(BLE_TEST_SW2_PIN);
       }
       else if (selectedIndex == 2) {
-        writeToOled("Command Test\n\nChar: 8610-0004\nHex: 00 to FF\n\nSW2:Back");
+        serialPrintln("\n[COMMAND TEST] Characteristic: 8610-0004");
+        serialPrintln("               Write hex: 00-FF");
+        serialPrintln("               Press SW2 to exit this test...");
         newCommand = false;
         while (!readButton(BLE_TEST_SW2_PIN)) {
           if (newCommand) {
-            char buf[64];
-            snprintf(buf, sizeof(buf), "Command Test\n\nReceived:\n0x%02X (%d)\n\nSW2:Back", lastCommand, lastCommand);
-            writeToOled(buf);
+            serialPrint("               Received: 0x");
+            serialPrint(lastCommand, HEX);
+            serialPrint(" (");
+            serialPrint((int)lastCommand);
+            serialPrintln(")");
             newCommand = false;
           }
           delay(50);
@@ -325,8 +444,8 @@ void testBLERemote() {
     }
   }
   
-  clearOled();
-  writeToOled("BLE Test\nComplete!");
+  serialPrintln("\n========================================");
+  serialPrintln("      BLE Test Complete!");
+  serialPrintln("========================================");
   delay(1500);
-  clearOled();
 }

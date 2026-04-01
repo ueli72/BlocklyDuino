@@ -1,6 +1,6 @@
 // Made for playground-brumbrum-esp32-s3-devkitc1
 #include <Arduino.h>
-#include "oled.h"
+#include "serial.h"
 
 // ============================================
 // Header - User-defined includes and globals
@@ -10,8 +10,6 @@
 // Includes - Auto-generated from blocks
 // ============================================
 #include "ble_remote.h"
-
-#include "oled.h"
 
 
 // ============================================
@@ -35,10 +33,14 @@ void ble_direction_callback(int8_t direction)
 void setup()
 {
   // Initialize hardware and peripherals
+  initSerial(115200);  // Initialize Serial for debugging
   initBLERemote("UelisCar");  // Initialize BLE with device name: UelisCar
-  initOLED();  // Initialize OLED display
   setBLEDirectionCallback(ble_direction_callback);
 
+  serialPrintln("\n========================================");
+  serialPrintln("   BrumBrum BLE Car Initialized");
+  serialPrintln("========================================");
+  serialPrintln("Waiting for BLE connection...");
 }
 
 void loop()
@@ -46,8 +48,8 @@ void loop()
   // Main program loop
   if (lastdir != dir) {
     lastdir = dir;
-    writeToOled("%d", dir);
-
+    serialPrint("Direction changed: ");
+    serialPrintln(dir);
   }
   delay(100);
 }

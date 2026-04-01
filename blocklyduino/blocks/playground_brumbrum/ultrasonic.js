@@ -48,6 +48,6 @@ Blockly.Blocks['ultrasonic_test'] = {
         .appendField("Test");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Test both ultrasonic sensors and display on OLED');
+    this.setTooltip('Test both ultrasonic sensors and display on Serial Monitor');
   }
 };

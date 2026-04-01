@@ -1,11 +1,21 @@
 // Made for playground-brumbrum-esp32-s3-devkitc1
 #include "servos.h"
-#include "oled.h"
+#include "serial.h"
 #include <ESP32Servo.h>
 
 Servo servo1;
 Servo servo2;
 Servo servo3;
+
+static bool serialInitialized = false;
+
+static void ensureSerialInit() {
+    if (!serialInitialized) {
+        initSerial(115200);
+        serialInitialized = true;
+        serialPrintln("\n[Servos] Serial initialized");
+    }
+}
 
 void initializeServos() {
   servo1.attach(SERVO1_PIN);
@@ -44,10 +54,17 @@ void testServoSweep(int servoNum) {
 }
 
 void testServos() {
+  ensureSerialInit();
   initializeServos();
 
+  serialPrintln("\n========================================");
+  serialPrintln("         SG90 SERVO TEST");
+  serialPrintln("========================================");
+
   for (int i = 1; i <= NUM_SERVOS; i++) {
-    writeToOled("Servo %d\nSweep 0-180", i);
+    serialPrint("[Servo ");
+    serialPrint(i);
+    serialPrintln("] Sweeping 0-180 degrees...");
 
     for (int angle = 0; angle <= 180; angle++) {
       setServoAngle(i, angle);
@@ -56,6 +73,12 @@ void testServos() {
 
     setServoAngle(i, 0);
     delay(500);
+    serialPrint("[Servo ");
+    serialPrint(i);
+    serialPrintln("] Sweep complete");
   }
-  clearOled();
+
+  serialPrintln("========================================");
+  serialPrintln("      Servo test complete!");
+  serialPrintln("========================================");
 }

@@ -1,7 +1,17 @@
 // Made for playground-brumbrum-esp32-s3-devkitc1
 #include "dcmotor.h"
-#include "oled.h"
+#include "serial.h"
 #include "buttons.h"
+
+static bool serialInitialized = false;
+
+static void ensureSerialInit() {
+    if (!serialInitialized) {
+        initSerial(115200);
+        serialInitialized = true;
+        serialPrintln("\n[DC Motor] Serial initialized");
+    }
+}
 
 void initDCMotors(uint8_t mask) {
   if (mask & 1) {
@@ -69,66 +79,73 @@ void setDCSpeed(int motorNum, int direction, int speedPercent) {
 }
 
 void testDCMotors(uint8_t mask) {
+    ensureSerialInit();
+    
+    serialPrintln("\n========================================");
+    serialPrintln("         DC MOTOR TEST");
+    serialPrintln("========================================");
+    
     if (mask & 1) {
-        writeToOled("Motor 1\nForward");
+        serialPrintln("[Motor 1] Forward...");
         setDCSpeed(1, FORWARD, 100);
         delay(1000);
-        writeToOled("Motor 1\nStop");
+        serialPrintln("[Motor 1] Stop");
         setDCSpeed(1, FORWARD, 0);
         delay(500);
-        writeToOled("Motor 1\nBackward");
+        serialPrintln("[Motor 1] Backward...");
         setDCSpeed(1, BACKWARD, 100);
         delay(1000);
-        writeToOled("Motor 1\nStop");
+        serialPrintln("[Motor 1] Stop");
         setDCSpeed(1, BACKWARD, 0);
         delay(500);
     }
     
     if (mask & 2) {
-        writeToOled("Motor 2\nForward");
+        serialPrintln("[Motor 2] Forward...");
         setDCSpeed(2, FORWARD, 100);
         delay(1000);
-        writeToOled("Motor 2\nStop");
+        serialPrintln("[Motor 2] Stop");
         setDCSpeed(2, FORWARD, 0);
         delay(500);
-        writeToOled("Motor 2\nBackward");
+        serialPrintln("[Motor 2] Backward...");
         setDCSpeed(2, BACKWARD, 100);
         delay(1000);
-        writeToOled("Motor 2\nStop");
+        serialPrintln("[Motor 2] Stop");
         setDCSpeed(2, BACKWARD, 0);
         delay(500);
     }
 
     if (mask & 4) {
-        writeToOled("Motor 3\nForward");
+        serialPrintln("[Motor 3] Forward...");
         setDCSpeed(3, FORWARD, 100);
         delay(1000);
-        writeToOled("Motor 3\nStop");
+        serialPrintln("[Motor 3] Stop");
         setDCSpeed(3, FORWARD, 0);
         delay(500);
-        writeToOled("Motor 3\nBackward");
+        serialPrintln("[Motor 3] Backward...");
         setDCSpeed(3, BACKWARD, 100);
         delay(1000);
-        writeToOled("Motor 3\nStop");
+        serialPrintln("[Motor 3] Stop");
         setDCSpeed(3, BACKWARD, 0);
         delay(500);
     }
 
     if (mask & 8) {
-        writeToOled("Motor 4\nForward");
+        serialPrintln("[Motor 4] Forward...");
         setDCSpeed(4, FORWARD, 100);
         delay(1000);
-        writeToOled("Motor 4\nStop");
+        serialPrintln("[Motor 4] Stop");
         setDCSpeed(4, FORWARD, 0);
         delay(500);
-        writeToOled("Motor 4\nBackward");
+        serialPrintln("[Motor 4] Backward...");
         setDCSpeed(4, BACKWARD, 100);
         delay(1000);
-        writeToOled("Motor 4\nStop");
+        serialPrintln("[Motor 4] Stop");
         setDCSpeed(4, BACKWARD, 0);
         delay(500);
     }
 
-    clearOled();
+    serialPrintln("========================================");
+    serialPrintln("      DC Motor test complete!");
+    serialPrintln("========================================");
 }
-

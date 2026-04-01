@@ -1,8 +1,17 @@
 // Made for playground-brumbrum-esp32-s3-devkitc1
 #include "sdcard.h"
-#include "oled.h"
+#include "serial.h"
 #include <SPI.h>
 #include <SD.h>
+
+static bool serialInitialized = false;
+
+static void ensureSerialInit() {
+    if (!serialInitialized) {
+        initSerial(115200);
+        serialInitialized = true;
+    }
+}
 
 #define SDCARD_DEBUG 0
 
@@ -1183,128 +1192,135 @@ void sdListFiles() {
 }
 
 void testSDCard() {
-  initOLED();
+  ensureSerialInit();
   
   char buffer[128];
   int passed = 0;
   int failed = 0;
   bool testResults[7] = {false};
   
-  DBG_PRINTLN("\n========================================");
-  DBG_PRINTLN("       SD CARD COMPREHENSIVE TEST");
-  DBG_PRINTLN("========================================\n");
-  
-  writeToOled("SD Card Test\nInitializing...");
+  serialPrintln("\n========================================");
+  serialPrintln("       SD CARD COMPREHENSIVE TEST");
+  serialPrintln("========================================");
+  serialPrintln("[SD Card] Initializing...");
   delay(500);
   
-  DBG_PRINTLN("TEST 1: SD Card Initialization");
-  DBG_PRINTLN("----------------------------------------");
+  serialPrintln("\nTEST 1: SD Card Initialization");
+  serialPrintln("----------------------------------------");
   bool success = initSDCard();
   
   if (!success) {
-    DBG_PRINTLN("RESULT: FAILED\n");
-    writeToOled("Init: FAILED\nCheck connection");
+    serialPrintln("RESULT: FAILED");
+    serialPrintln("[ERROR] Check SD card connection");
     delay(3000);
-    clearOled();
     return;
   }
   
-  DBG_PRINTLN("RESULT: PASSED\n");
+  serialPrintln("RESULT: PASSED");
   passed++;
   testResults[0] = true;
   
-  DBG_PRINTLN("TEST 2: Delete Old Test File");
-  DBG_PRINTLN("----------------------------------------");
+  serialPrintln("\nTEST 2: Delete Old Test File");
+  serialPrintln("----------------------------------------");
   deleteFileFromCard("testwrite.txt");
-  DBG_PRINTLN("RESULT: DONE\n");
+  serialPrintln("RESULT: DONE");
   
-  DBG_PRINTLN("TEST 3: List Files");
-  DBG_PRINTLN("----------------------------------------");
+  serialPrintln("\nTEST 3: List Files");
+  serialPrintln("----------------------------------------");
   listFilesFromCard();
-  DBG_PRINTLN("RESULT: PASSED\n");
+  serialPrintln("RESULT: PASSED");
   passed++;
   testResults[1] = true;
   
-  DBG_PRINTLN("TEST 4: Write New File");
-  DBG_PRINTLN("----------------------------------------");
+  serialPrintln("\nTEST 4: Write New File");
+  serialPrintln("----------------------------------------");
   bool writeOk = writeFileToCard("testwrite.txt", "Hello from SD Card!");
   if (writeOk) {
-    DBG_PRINTLN("RESULT: PASSED\n");
+    serialPrintln("RESULT: PASSED");
     passed++;
     testResults[2] = true;
   } else {
-    DBG_PRINTLN("RESULT: FAILED\n");
+    serialPrintln("RESULT: FAILED");
     failed++;
   }
   
-  DBG_PRINTLN("TEST 5: Read Written File");
-  DBG_PRINTLN("----------------------------------------");
+  serialPrintln("\nTEST 5: Read Written File");
+  serialPrintln("----------------------------------------");
   String readContent = readFileFromCard("testwrite.txt");
-  DBG_PRINTF("Content: \"%s\"\n", readContent.c_str());
+  serialPrint("Content: \"");
+  serialPrint(readContent.c_str());
+  serialPrintln("\"");
   if (readContent == "Hello from SD Card!") {
-    DBG_PRINTLN("RESULT: PASSED\n");
+    serialPrintln("RESULT: PASSED");
     passed++;
     testResults[3] = true;
   } else {
-    DBG_PRINTLN("RESULT: FAILED\n");
+    serialPrintln("RESULT: FAILED");
     failed++;
   }
   
-  DBG_PRINTLN("TEST 6: Append to File");
-  DBG_PRINTLN("----------------------------------------");
+  serialPrintln("\nTEST 6: Append to File");
+  serialPrintln("----------------------------------------");
   bool appendOk = writeFileToCard("testwrite.txt", " Appended!", true);
   if (appendOk) {
-    DBG_PRINTLN("RESULT: PASSED\n");
+    serialPrintln("RESULT: PASSED");
     passed++;
     testResults[4] = true;
   } else {
-    DBG_PRINTLN("RESULT: FAILED\n");
+    serialPrintln("RESULT: FAILED");
     failed++;
   }
   
-  DBG_PRINTLN("TEST 7: Verify Appended Content");
-  DBG_PRINTLN("----------------------------------------");
+  serialPrintln("\nTEST 7: Verify Appended Content");
+  serialPrintln("----------------------------------------");
   readContent = readFileFromCard("testwrite.txt");
-  DBG_PRINTF("Content: \"%s\"\n", readContent.c_str());
+  serialPrint("Content: \"");
+  serialPrint(readContent.c_str());
+  serialPrintln("\"");
   if (readContent == "Hello from SD Card! Appended!") {
-    DBG_PRINTLN("RESULT: PASSED\n");
+    serialPrintln("RESULT: PASSED");
     passed++;
     testResults[5] = true;
   } else {
-    DBG_PRINTLN("RESULT: FAILED\n");
+    serialPrintln("RESULT: FAILED");
     failed++;
   }
   
-  DBG_PRINTLN("TEST 8: List Files After Write");
-  DBG_PRINTLN("----------------------------------------");
+  serialPrintln("\nTEST 8: List Files After Write");
+  serialPrintln("----------------------------------------");
   listFilesFromCard();
-  DBG_PRINTLN("RESULT: PASSED\n");
+  serialPrintln("RESULT: PASSED");
   passed++;
   testResults[6] = true;
   
-  DBG_PRINTLN("========================================");
-  DBG_PRINTLN("           TEST SUMMARY");
-  DBG_PRINTLN("========================================");
-  DBG_PRINTF("PASSED: %d\n", passed);
-  DBG_PRINTF("FAILED: %d\n", failed);
-  DBG_PRINTLN("========================================\n");
+  serialPrintln("\n========================================");
+  serialPrintln("           TEST SUMMARY");
+  serialPrintln("========================================");
+  serialPrint("PASSED: ");
+  serialPrintln(passed);
+  serialPrint("FAILED: ");
+  serialPrintln(failed);
+  serialPrintln("========================================");
+  serialPrintln("");
+  serialPrintln("Test Results:");
+  serialPrint("  1.Init: "); serialPrintln(testResults[0] ? "OK" : "FAIL");
+  serialPrint("  2.Del: --\n");
+  serialPrint("  3.List: "); serialPrintln(testResults[1] ? "OK" : "FAIL");
+  serialPrint("  4.Write: "); serialPrintln(testResults[2] ? "OK" : "FAIL");
+  serialPrint("  5.Read: "); serialPrintln(testResults[3] ? "OK" : "FAIL");
+  serialPrint("  6.Append: "); serialPrintln(testResults[4] ? "OK" : "FAIL");
+  serialPrint("  7.Verify: "); serialPrintln(testResults[5] ? "OK" : "FAIL");
+  serialPrint("  8.List: "); serialPrintln(testResults[6] ? "OK" : "FAIL");
+  serialPrint("  Summary: ");
+  if (failed == 0) {
+    serialPrint("ALL PASSED ");
+  } else {
+    serialPrint("SUM ");
+  }
+  serialPrint(passed);
+  serialPrintln("/7");
   
-  snprintf(buffer, sizeof(buffer), 
-    "1.Init:%s 2.Del:--\n3.List:%s 4.Write:%s\n5.Read:%s 6.Append:%s\n7.Verify:%s 8.List:%s\n%s %d/7",
-    testResults[0] ? "OK" : "FAIL",
-    testResults[1] ? "OK" : "FAIL",
-    testResults[2] ? "OK" : "FAIL",
-    testResults[3] ? "OK" : "FAIL",
-    testResults[4] ? "OK" : "FAIL",
-    testResults[5] ? "OK" : "FAIL",
-    testResults[6] ? "OK" : "FAIL",
-    failed == 0 ? "ALL" : "SUM",
-    passed);
-  
-  writeToOled(buffer);
   delay(5000);
-  
-  clearOled();
 }
 
 int openAudioFile(const char* filename) {

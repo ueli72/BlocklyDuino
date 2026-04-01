@@ -1,6 +1,6 @@
 // Made for playground-brumbrum-esp32-s3-devkitc1
 #include "test_all.h"
-#include "oled.h"
+#include "serial.h"
 #include "buttons.h"
 #include "dcmotor.h"
 #include "ultrasonic.h"
@@ -8,6 +8,17 @@
 #include "max98357a.h"
 #include "internalLED.h"
 #include "servos.h"
+
+static bool serialInitialized = false;
+
+static void ensureSerialInit() {
+    if (!serialInitialized) {
+        initSerial(115200);
+        serialInitialized = true;
+        serialPrintln("\n=== BrumBrum Test System ===");
+        serialPrintln("Tests initialized. Use Serial Monitor to view output.");
+    }
+}
 
 typedef struct {
     const char* name;
@@ -43,7 +54,7 @@ static void testDCMotorsWrapper() {
 }
 
 void runTestMenu(uint16_t testMask) {
-    initOLED();
+    ensureSerialInit();
     
     pinMode(SW1_PIN, INPUT_PULLUP);
     pinMode(SW2_PIN, INPUT_PULLUP);
@@ -68,7 +79,7 @@ void runTestMenu(uint16_t testMask) {
     }
     
     if (numActive == 0) {
-        writeToOled("No tests\nselected!");
+        serialPrintln("\n[ERROR] No tests selected!");
         delay(2000);
         return;
     }
@@ -77,22 +88,32 @@ void runTestMenu(uint16_t testMask) {
     bool running = true;
     unsigned long sw1HoldStart = 0;
     bool sw1WasPressed = false;
+    bool menuNeedsRedraw = true;
     
     while (running) {
-        char menuBuffer[256];
-        char line1[64] = "";
-        char line2[64] = "";
-        
-        int testIdx1 = activeTests[selectedIndex];
-        int testIdx2 = (selectedIndex + 1 < numActive) ? activeTests[selectedIndex + 1] : -1;
-        
-        snprintf(line1, sizeof(line1), "> %s", tests[testIdx1].name);
-        if (testIdx2 >= 0) {
-            snprintf(line2, sizeof(line2), "  %s", tests[testIdx2].name);
+        if (menuNeedsRedraw) {
+            serialPrintln("\n========================================");
+            serialPrintln("          TEST MENU (Serial)");
+            serialPrintln("========================================");
+            
+            for (int i = 0; i < numActive; i++) {
+                int testIdx = activeTests[i];
+                if (i == selectedIndex) {
+                    serialPrint(" > ");
+                } else {
+                    serialPrint("   ");
+                }
+                serialPrintln(tests[testIdx].name);
+            }
+            
+            serialPrintln("----------------------------------------");
+            serialPrintln("Controls:");
+            serialPrintln("  SW1 (short): Next test");
+            serialPrintln("  SW1 (hold 1s): Exit menu");
+            serialPrintln("  SW2: Run selected test");
+            serialPrintln("========================================");
+            menuNeedsRedraw = false;
         }
-        
-        snprintf(menuBuffer, sizeof(menuBuffer), "Test Menu\n%s\n%s\n\nSW1:Scroll SW2:Run\n(hold SW1=Exit)", line1, line2);
-        writeToOled(menuBuffer);
         
         delay(20);
         
@@ -102,6 +123,7 @@ void runTestMenu(uint16_t testMask) {
                 sw1WasPressed = true;
                 
                 if (checkHoldExit(SW1_PIN, sw1HoldStart)) {
+                    serialPrintln("\n[Exit] Exiting test menu...");
                     running = false;
                     continue;
                 }
@@ -109,6 +131,7 @@ void runTestMenu(uint16_t testMask) {
                 waitForButtonRelease(SW1_PIN);
                 selectedIndex++;
                 if (selectedIndex >= numActive) selectedIndex = 0;
+                menuNeedsRedraw = true;
             }
         } else {
             sw1WasPressed = false;
@@ -118,23 +141,25 @@ void runTestMenu(uint16_t testMask) {
             waitForButtonRelease(SW2_PIN);
             
             int testIdx = activeTests[selectedIndex];
-            char runBuffer[64];
-            snprintf(runBuffer, sizeof(runBuffer), "Running:\n%s", tests[testIdx].name);
-            writeToOled(runBuffer);
+            serialPrintln("\n========================================");
+            serialPrint("[RUN] Starting test: ");
+            serialPrintln(tests[testIdx].name);
+            serialPrintln("========================================");
             delay(500);
             
             tests[testIdx].testFunc();
             
-            writeToOled("Test complete!\n\nSW2:Back");
+            serialPrintln("\n[OK] Test complete!");
+            serialPrintln("Press SW2 to return to menu...");
             
             while (!readButton(SW2_PIN)) {
                 delay(10);
             }
             waitForButtonRelease(SW2_PIN);
             
-            initOLED();
+            menuNeedsRedraw = true;
         }
     }
     
-    clearOled();
+    serialPrintln("\n[Exit] Test menu closed.");
 }

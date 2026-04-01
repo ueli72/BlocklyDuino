@@ -1,10 +1,20 @@
 // Made for playground-brumbrum-esp32-s3-devkitc1
 #include "ky023.h"
-#include "oled.h"
+#include "serial.h"
 
 static int _ky023_xPin = 0;
 static int _ky023_yPin = 0;
 static int _ky023_buttonPin = 0;
+
+static bool serialInitialized = false;
+
+static void ensureSerialInit() {
+    if (!serialInitialized) {
+        initSerial(115200);
+        serialInitialized = true;
+        serialPrintln("\n[KY023] Serial initialized");
+    }
+}
 
 void initKY023(int xPin, int yPin, int buttonPin) {
     _ky023_xPin = xPin;
@@ -31,18 +41,33 @@ bool isKY023ButtonPressed() {
 }
 
 void testKY023() {
-    writeToOled("KY023 Test\nMove joystick\nAuto-stops in 10s");
-    delay(2000);
+    ensureSerialInit();
+    
+    serialPrintln("\n========================================");
+    serialPrintln("       KY023 JOYSTICK TEST");
+    serialPrintln("========================================");
+    serialPrintln("Move joystick and press button...");
+    serialPrintln("Test runs for 10 seconds");
+    serialPrintln("----------------------------------------");
     
     for (int i = 0; i < 50; i++) {
         int x = readKY023X();
         int y = readKY023Y();
         bool button = isKY023ButtonPressed();
         
-        writeToOled("X: %d\nY: %d\nButton: %s", x, y, button ? "PRESSED" : "released");
+        serialPrint("[");
+        serialPrint(i / 5 + 1);
+        serialPrint("/10] X: ");
+        serialPrint(x);
+        serialPrint(" Y: ");
+        serialPrint(y);
+        serialPrint(" Button: ");
+        serialPrintln(button ? "PRESSED" : "released");
         
         delay(200);
     }
     
-    clearOled();
+    serialPrintln("----------------------------------------");
+    serialPrintln("KY023 Joystick test complete!");
+    serialPrintln("========================================");
 }
