@@ -141,7 +141,7 @@ Blockly.Arduino.init = function(workspace) {
  * @param {string} code Generated code.
  * @return {string} Completed code.
  */
-Blockly.Arduino.finish = function(code) {
+Blockly.Arduino.finish = function(code, boardId) {
   // Find setup, loop, header, interrupts, and functions blocks in the workspace
   var setupBlock = null;
   var loopBlock = null;
@@ -167,6 +167,26 @@ Blockly.Arduino.finish = function(code) {
     }
   }
 
+  // --- BOARD-SENSITIVE LOGIC START ---
+  // This section must be updated to route generation based on boardId.
+  // For now, we skip the complex routing and just pass the boardId through for future integration.
+  var currentBoardId = boardId; 
+  // --- BOARD-SENSITIVE LOGIC END ---
+
+  // Convert the definitions dictionary into a list.
+  var imports = [];
+  var definitions = [];
+  for (var name in Blockly.Arduino.definitions_) {
+    var def = Blockly.Arduino.definitions_[name];
+    if (def && def.trim()) {
+      if (def.match(/^#include/)) {
+        imports.push(def);
+      } else {
+        definitions.push(def);
+      }
+    }
+  }
+// ... (rest of the function body)
   // Convert the definitions dictionary into a list.
   var imports = [];
   var definitions = [];
