@@ -363,32 +363,6 @@ function loadScript(path) {
   });
 }
 
-function getPinInfo(boardId, pin) {
-  var boardData = PIN_DATA[boardId];
-  if (!boardData || !boardData.pins[pin]) return null;
-  return boardData.pins[pin];
-}
-
-function getPinTooltip(boardId, pin) {
-  var pinInfo = getPinInfo(boardId, pin);
-  if (!pinInfo) return '';
-  
-  var tooltip = pinInfo.name;
-  if (pinInfo.capabilities && pinInfo.capabilities.length > 0) {
-    tooltip += '\n' + pinInfo.capabilities.join(', ').toUpperCase();
-  }
-  if (pinInfo.special && pinInfo.special.length > 0) {
-    tooltip += '\nSpecial: ' + pinInfo.special.join(', ');
-  }
-  if (pinInfo.notes) {
-    tooltip += '\n' + pinInfo.notes;
-  }
-  if (pinInfo.reserved) {
-    tooltip += '\n⚠️ RESERVED - avoid using';
-  }
-  return tooltip;
-}
-
 function togglePinReference() {
   var panel = document.getElementById('pinReferencePanel');
   if (!panel) {
@@ -493,6 +467,134 @@ function createPinReferencePanel() {
 
 var currentCapabilityFilter = null;
 
+function createPinReferencePanel() {
+  if (document.getElementById('pinReferencePanel')) return;
+  
+  var boardId = getSelectedBoard() || 'esp32-s3-devkitc1';
+  var boardData = loadedPinData[boardId];
+  if (!boardData) return;
+  
+  var panel = document.createElement('div');
+  panel.id = 'pinReferencePanel';
+  panel.className = 'pin-reference-panel';
+  
+  var header = document.createElement('div');
+  header.className = 'pin-reference-header';
+  header.innerHTML = '<span>' + (typeof i18n !== 'undefined' ? i18n.t('pinReference.title') : 'Pin Reference') + '</span><button class="pin-reference-close" onclick="togglePinReference()">×</button>';
+  panel.appendChild(header);
+  
+  var filterContainer = document.createElement('div');
+  filterContainer.className = 'pin-reference-filter';
+  filterContainer.innerHTML = '<input type="text" id="pinFilterInput" placeholder="' + (typeof i18n !== 'undefined' ? i18n.t('pinReference.filter') : 'Filter pins...') + '" oninput="filterPinReference()">';
+  panel.appendChild(filterContainer);
+  
+  // Derive capabilities dynamically from pin data
+  var capFilterContainer = document.createElement('div');
+  capFilterContainer.className = 'pin-reference-cap-filters';
+  capFilterContainer.id = 'pinCapFilters';
+  
+  // Collect unique capabilities from all pins
+  var allCapabilities = new Set();
+  Object.values(boardData.pins).forEach(function(pin) {
+    if (pin.capabilities) {
+      pin.capabilities.forEach(function(cap) { allCapabilities.add(cap); });
+    }
+  });
+  
+  Array.from(allCapabilities).sort().forEach(function(cap) {
+    var badge = document.createElement('span');
+    badge.className = 'pin-cap pin-cap-' + cap + ' pin-cap-filter';
+    badge.textContent = cap;
+    badge.onclick = function() { filterByCapability(cap); };
+    badge.style.cursor = 'pointer';
+    capFilterContainer.appendChild(badge);
+  });
+  
+  var clearBtn = document.createElement('span');
+  clearBtn.className = 'pin-cap-filter-clear';
+  clearBtn.textContent = '✕';
+  clearBtn.onclick = function() { clearCapabilityFilter(); };
+  clearBtn.style.cursor = 'pointer';
+  clearBtn.title = typeof i18n !== 'undefined' ? i18n.t('pinReference.clearFilter') : 'Clear filter';
+  capFilterContainer.appendChild(clearBtn);
+  panel.appendChild(capFilterContainer);
+  
+  var content = document.createElement('div');
+  content.className = 'pin-reference-content';
+  content.id = 'pinReferenceContent';
+  
+  var table = document.createElement('table');
+  table.className = 'pin-reference-table';
+  table.id = 'pinReferenceTable';
+  
+  // Derive table headers from first pin's properties
+  var thead = document.createElement('thead');
+  var samplePin = Object.values(boardData.pins)[0];
+  var headers = ['Pin'];
+  if (samplePin && samplePin.capabilities) headers.push('Capabilities');
+  if (samplePin && samplePin.special) headers.push('Special');
+  if (samplePin && samplePin.notes !== undefined) headers.push('Notes');
+  
+  var headerRow = document.createElement('tr');
+  headers.forEach(function(h) {
+    var th = document.createElement('th');
+    var i18nKey = 'pinReference.' + h.toLowerCase();
+    th.textContent = typeof i18n !== 'undefined' ? i18n.t(i18nKey) : h;
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+  
+  var tbody = document.createElement('tbody');
+  tbody.id = 'pinReferenceBody';
+  var pins = boardData.pins;
+  var pinKeys = Object.keys(pins).sort(function(a, b) {
+    var aNum = parseInt(a.replace(/\D/g, '')) || 0;
+    var bNum = parseInt(b.replace(/\D/g, '')) || 0;
+    if (isNaN(aNum) && isNaN(bNum)) return a.localeCompare(b);
+    if (isNaN(aNum)) return 1;
+    if (isNaN(bNum)) return -1;
+    return aNum - bNum;
+  });
+  
+  pinKeys.forEach(function(pinKey) {
+    var pin = pins[pinKey];
+    var tr = document.createElement('tr');
+    tr.className = 'pin-row';
+    tr.dataset.pin = pin.name.toLowerCase();
+    tr.dataset.capabilities = (pin.capabilities || []).join(' ').toLowerCase();
+    tr.dataset.special = (pin.special || []).join(' ').toLowerCase();
+    tr.dataset.notes = (pin.notes || '').toLowerCase();
+    if (pin.reserved) tr.classList.add('pin-reserved');
+    
+    var html = '<td><strong>' + pin.name + '</strong></td>';
+    
+    if (pin.capabilities) {
+      var capHtml = pin.capabilities.map(function(cap) {
+        return '<span class="pin-cap pin-cap-' + cap + '">' + cap + '</span>';
+      }).join(' ');
+      html += '<td>' + capHtml + '</td>';
+    }
+    
+    if (samplePin.special !== undefined) {
+      html += '<td>' + (pin.special ? pin.special.join('<br>') : '') + '</td>';
+    }
+    
+    if (samplePin.notes !== undefined) {
+      html += '<td>' + (pin.notes || '') + '</td>';
+    }
+    
+    tr.innerHTML = html;
+    tbody.appendChild(tr);
+  });
+  
+  table.appendChild(tbody);
+  content.appendChild(table);
+  panel.appendChild(content);
+  
+  document.body.appendChild(panel);
+}
+
 function filterByCapability(cap) {
   currentCapabilityFilter = cap;
   document.getElementById('pinFilterInput').value = '';
@@ -537,22 +639,6 @@ function filterPinReference() {
     badge.classList.remove('active');
   });
   
-  var rows = document.querySelectorAll('#pinReferenceBody tr.pin-row');
-  
-  rows.forEach(function(row) {
-    var pin = row.dataset.pin || '';
-    var capabilities = row.dataset.capabilities || '';
-    var special = row.dataset.special || '';
-    var notes = row.dataset.notes || '';
-    
-    var match = pin.includes(filter) || capabilities.includes(filter) || special.includes(filter) || notes.includes(filter);
-    row.style.display = match ? '' : 'none';
-  });
-}
-
-function filterPinReference() {
-  var input = document.getElementById('pinFilterInput');
-  var filter = input.value.toLowerCase();
   var rows = document.querySelectorAll('#pinReferenceBody tr.pin-row');
   
   rows.forEach(function(row) {
