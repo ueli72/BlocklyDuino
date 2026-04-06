@@ -30,7 +30,31 @@ var sg90_servo_constants = {
 
 Blockly.Arduino.servo_sg90_init = function() {
   Blockly.Arduino.definitions_['include_servos_h'] = '#include "servos.h"\n';
-  var code = 'initializeServos();  // Initialize servo motors\n';
+  
+  var servo1Checked = this.getFieldValue('SERVO1') === 'TRUE';
+  var servo2Checked = this.getFieldValue('SERVO2') === 'TRUE';
+  var servo3Checked = this.getFieldValue('SERVO3') === 'TRUE';
+  var customPin = this.getFieldValue('CUSTOM_PIN');
+  
+  var code = '';
+  
+  // Initialize selected standard servos
+  if (servo1Checked) {
+    code += 'initializeServo(SERVO1, SERVO1_PIN);\n';
+  }
+  if (servo2Checked) {
+    code += 'initializeServo(SERVO2, SERVO2_PIN);\n';
+  }
+  if (servo3Checked) {
+    code += 'initializeServo(SERVO3, SERVO3_PIN);\n';
+  }
+  
+  // Initialize custom pin if selected (not "none")
+  if (customPin && customPin !== 'none') {
+    Blockly.Arduino.definitions_['var_custom_servo_' + customPin] = 'Servo customServo;\n';
+    code += 'customServo.attach(' + customPin + ');  // Initialize custom servo on pin ' + customPin + '\n';
+  }
+  
   return code;
 };
 

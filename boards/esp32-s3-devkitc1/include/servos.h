@@ -3,6 +3,7 @@
 #define SERVOS_H
 
 #include <Arduino.h>
+#include <ESP32Servo.h>
 
 // Servo pin definitions
 #define SERVO1_PIN 37
@@ -17,7 +18,15 @@
 // Number of servos
 #define NUM_SERVOS 3
 
-// Function to initialize servos
+// Servo objects (extern for use in generated code)
+extern Servo servo1;
+extern Servo servo2;
+extern Servo servo3;
+
+// Function to initialize a specific servo
+void initializeServo(int servoNum, int pin);
+
+// Function to initialize all servos (backward compatibility)
 void initializeServos();
 
 // Function to set servo angle

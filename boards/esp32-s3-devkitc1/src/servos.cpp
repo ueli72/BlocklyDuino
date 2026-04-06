@@ -1,11 +1,32 @@
 // Made for esp32-s3-devkitc1
 #include "servos.h"
 #include "oled.h"
-#include <ESP32Servo.h>
 
 Servo servo1;
 Servo servo2;
 Servo servo3;
+
+void initializeServo(int servoNum, int pin) {
+  switch (servoNum) {
+    case 1:
+      if (!servo1.attached()) {
+        servo1.attach(pin);
+      }
+      break;
+    case 2:
+      if (!servo2.attached()) {
+        servo2.attach(pin);
+      }
+      break;
+    case 3:
+      if (!servo3.attached()) {
+        servo3.attach(pin);
+      }
+      break;
+    default:
+      break;
+  }
+}
 
 void initializeServos() {
   servo1.attach(SERVO1_PIN);

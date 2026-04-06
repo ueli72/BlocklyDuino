@@ -37,6 +37,35 @@ function getSg90Pins() {
   return pins;
 }
 
+function getAllServoPins() {
+  var pins = [
+    ["none", "none"]
+  ];
+  // Add standard servo pins
+  pins.push(["GPIO37 (Servo1)", "37"]);
+  pins.push(["GPIO38 (Servo2)", "38"]);
+  pins.push(["GPIO45 (Servo3)", "45"]);
+  // Add all digital pins from profile if available
+  if (typeof getBrumbrumDigitalPinOptions === 'function') {
+    var digitalPins = getBrumbrumDigitalPinOptions();
+    // Filter out the servo pins we already added
+    digitalPins.forEach(function(pinOption) {
+      var pinNum = pinOption[1];
+      if (pinNum !== "37" && pinNum !== "38" && pinNum !== "45") {
+        pins.push(pinOption);
+      }
+    });
+  } else if (typeof profile !== 'undefined' && profile.default && profile.default.digital) {
+    profile.default.digital.forEach(function(pinOption) {
+      var pinNum = pinOption[1];
+      if (pinNum !== "37" && pinNum !== "38" && pinNum !== "45") {
+        pins.push(pinOption);
+      }
+    });
+  }
+  return pins;
+}
+
 Blockly.Blocks['servo_sg90_init'] = {
   helpUrl: 'http://www.arduino.cc/playground/ComponentLib/servo',
   init: function() {
@@ -45,9 +74,21 @@ Blockly.Blocks['servo_sg90_init'] = {
         .appendField("SG90 Servo")
         .appendField(new Blockly.FieldImage("media/sg90.jpg", 64, 64))
         .appendField("Initialize");
+    this.appendDummyInput()
+        .appendField("Servo1 (GPIO37)")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), 'SERVO1');
+    this.appendDummyInput()
+        .appendField("Servo2 (GPIO38)")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), 'SERVO2');
+    this.appendDummyInput()
+        .appendField("Servo3 (GPIO45)")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), 'SERVO3');
+    this.appendDummyInput()
+        .appendField("Custom Pin:")
+        .appendField(new Blockly.FieldDropdown(getAllServoPins), 'CUSTOM_PIN');
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Initialize all SG90 servos');
+    this.setTooltip('Initialize selected SG90 servos and optional custom pin');
   }
 };
 
