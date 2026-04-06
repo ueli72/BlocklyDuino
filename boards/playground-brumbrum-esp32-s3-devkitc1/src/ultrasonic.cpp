@@ -39,7 +39,7 @@ float measureDistance(int sensor) {
   return distance;
 }
 
-void testUltrasonicOLED() {
+void testUltrasonicSerial() {
   ensureSerialInit();
   
   serialPrintln("\n========================================");

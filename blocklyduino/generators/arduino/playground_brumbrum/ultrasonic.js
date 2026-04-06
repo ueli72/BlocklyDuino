@@ -30,6 +30,6 @@ Blockly.Arduino.ultrasonic_read = function() {
 
 Blockly.Arduino.ultrasonic_test = function() {
   Blockly.Arduino.definitions_['include_ultrasonic_h'] = '#include "ultrasonic.h"\n';
-  var code = 'testUltrasonicOLED();\n';
+  var code = 'testUltrasonicSerial();\n';
   return code;
 };
