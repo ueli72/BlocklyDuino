@@ -13,6 +13,12 @@
       "directory": "boards/playground-brumbrum-esp32-s3-devkitc1"
     },
     {
+      "id": "esp32-controller",
+      "name": "ESP32-Controller",
+      "profile": "esp32",
+      "directory": "boards/esp32-controller"
+    },
+    {
       "id": "arduino-uno",
       "name": "Arduino Uno",
       "profile": "arduino",

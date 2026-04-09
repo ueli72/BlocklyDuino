@@ -30,6 +30,7 @@ i18n.registerTranslations('de', {
     "title": "Board auswählen",
     "description": "Wählen Sie Ihr Board, um ein neues Projekt zu starten:",
     "brumbrumDesc": "Spezialisiertes Board der BWS Uster für ein RC-Auto.",
+    "esp32ControllerDesc": "ESP32 Game Controller mit OLED und Joysticks.",
     "playgroundDesc": "Spezialisiertes Entwicklungsboard von BWS Uster für Lernprojekte.",
     "unoDesc": "Klassisches Arduino-Board für einfache Projekte"
   },

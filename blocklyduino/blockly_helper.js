@@ -91,6 +91,10 @@ var BOARD_INFO = {
     name: 'Playground BrumBrum (esp32-s3-devkitc1)',
     image: 'media/brumbrum.png'
   },
+  'esp32-controller': {
+    name: 'ESP32-Controller',
+    image: 'media/esp32-controller.jpg'
+  },
   'arduino-uno': {
     name: 'Arduino Uno',
     image: 'media/uno.jpg'
@@ -100,6 +104,7 @@ var BOARD_INFO = {
 var PIN_DATA_FILES = {
   'esp32-s3-devkitc1': 'generators/arduino/playground/pins_playground.js',
   'playground-brumbrum-esp32-s3-devkitc1': 'generators/arduino/playground_brumbrum/pins_brumbrum.js',
+  'esp32-controller': 'generators/arduino/playground_brumbrum/pins_esp32_controller.js',
   'arduino-uno': 'generators/arduino/arduino-uno/pins_uno.js'
 };
 
@@ -128,6 +133,8 @@ function loadPinDataFile(boardId) {
         pinData = window.PIN_DATA_PLAYGROUND;
       } else if (boardId === 'playground-brumbrum-esp32-s3-devkitc1') {
         pinData = window.PIN_DATA_BRUMBRUM;
+      } else if (boardId === 'esp32-controller') {
+        pinData = window.PIN_DATA_ESP32_CONTROLLER;
       } else if (boardId === 'arduino-uno') {
         pinData = window.PIN_DATA_UNO;
       }
@@ -326,9 +333,9 @@ function ensureBrumbrumGeneratorsLoaded() {
 function updateGeneratorsForBoard(boardId) {
   ensureMasterGeneratorSetCaptured();
   GENERATOR_SET_TARGET = boardId;
-  if (boardId === 'playground-brumbrum-esp32-s3-devkitc1') {
+  if (boardId === 'playground-brumbrum-esp32-s3-devkitc1' || boardId === 'esp32-controller') {
     ensureBrumbrumGeneratorsLoaded().then(function() {
-      if (GENERATOR_SET_TARGET === 'playground-brumbrum-esp32-s3-devkitc1') {
+      if (GENERATOR_SET_TARGET === 'playground-brumbrum-esp32-s3-devkitc1' || GENERATOR_SET_TARGET === 'esp32-controller') {
         applyGeneratorSet('brumbrum');
       }
     });
@@ -720,7 +727,7 @@ function selectBoard(boardId) {
   
   updateBoardInfoDisplay(boardId);
   
-  if (boardId === 'esp32-s3-devkitc1' || boardId === 'playground-brumbrum-esp32-s3-devkitc1') {
+  if (boardId === 'esp32-s3-devkitc1' || boardId === 'playground-brumbrum-esp32-s3-devkitc1' || boardId === 'esp32-controller') {
     profile['default'] = profile['esp32'];
   } else if (boardId === 'arduino-uno') {
     profile['default'] = profile['arduino'];
@@ -753,7 +760,10 @@ function updateToolboxForBoard(boardId) {
   
   categories.forEach(function(category) {
     var requiredBoard = category.getAttribute('data-board');
-    if (requiredBoard !== boardId) {
+    // Treat esp32-controller the same as playground-brumbrum-esp32-s3-devkitc1 for BrumBrum categories
+    var isMatch = requiredBoard === boardId || 
+                  (requiredBoard === 'playground-brumbrum-esp32-s3-devkitc1' && boardId === 'esp32-controller');
+    if (!isMatch) {
       category.parentNode.removeChild(category);
     } else {
       category.removeAttribute('data-board');
@@ -800,7 +810,7 @@ function initBoardSelection() {
       console.warn('Could not load pin data for saved board:', error);
     });
     
-    if (savedBoard === 'esp32-s3-devkitc1' || savedBoard === 'playground-brumbrum-esp32-s3-devkitc1') {
+    if (savedBoard === 'esp32-s3-devkitc1' || savedBoard === 'playground-brumbrum-esp32-s3-devkitc1' || savedBoard === 'esp32-controller') {
       profile['default'] = profile['esp32'];
     } else if (savedBoard === 'arduino-uno') {
       profile['default'] = profile['arduino'];

@@ -1082,6 +1082,7 @@ function initBlockly() {
           <select class="form-select form-select-sm" id="boardSelector">
             <option value="esp32-s3-devkitc1">BWS Playground Master</option>
             <option value="playground-brumbrum-esp32-s3-devkitc1">Playground BrumBrum (esp32-s3-devkitc1)</option>
+            <option value="esp32-controller">ESP32-Controller</option>
             <option value="arduino-uno">Arduino Uno</option>
           </select>
           <div class="btn-group btn-group-sm" role="group">
@@ -1260,6 +1261,15 @@ function initBlockly() {
                 <div class="card-body text-center">
                   <h5 class="card-title">Playground BrumBrum (esp32-s3-devkitc1)</h5>
                   <p class="card-text text-muted" data-i18n="boardSelection.brumbrumDesc">Specialized Board of BWS Uster for a RC car.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card h-100 board-card" data-board="esp32-controller" onclick="selectBoard('esp32-controller')">
+                <img src="media/esp32-controller.jpg" class="card-img-top" alt="ESP32-Controller" style="object-fit: contain; height: 200px; padding: 1rem;">
+                <div class="card-body text-center">
+                  <h5 class="card-title">ESP32-Controller</h5>
+                  <p class="card-text text-muted" data-i18n="boardSelection.esp32ControllerDesc">ESP32 game controller with OLED and joysticks.</p>
                 </div>
               </div>
             </div>
