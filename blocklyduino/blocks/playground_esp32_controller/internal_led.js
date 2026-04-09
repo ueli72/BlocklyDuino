@@ -18,73 +18,36 @@
  */
 
 /**
- * @fileoverview Internal LED blocks.
+ * @fileoverview Internal LED blocks for ESP32-C3 0.42 OLED board.
+ * Simple on/off LED on GPIO8 (active LOW).
  */
 'use strict';
 
 Blockly.Blocks = Blockly.Blocks || {};
 Blockly.Blocks.internal_led = {};
 
-Blockly.Blocks['internal_led_init'] = {
+Blockly.Blocks['internal_led_on'] = {
   init: function() {
     this.setColour(30);
     this.appendDummyInput()
-        .appendField("Internal LED")
+        .appendField("LED")
         .appendField(new Blockly.FieldImage("media/internalled.png", 64, 64))
-        .appendField("Initialize");
+        .appendField("On");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Initialize the internal RGB LED');
-  }
-};
-
-Blockly.Blocks['internal_led_set'] = {
-  init: function() {
-    this.setColour(190);
-    this.appendDummyInput()
-        .appendField("Internal LED")
-        .appendField(new Blockly.FieldImage("media/internalled.png", 64, 64))
-        .appendField("Set Color");
-    this.appendValueInput("RED", 'Number')
-        .setCheck('Number')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Red (0-255)");
-    this.appendValueInput("GREEN", 'Number')
-        .setCheck('Number')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Green (0-255)");
-    this.appendValueInput("BLUE", 'Number')
-        .setCheck('Number')
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Blue (0-255)");
-    this.setPreviousStatement(true, "general");
-    this.setNextStatement(true, "general");
-    this.setTooltip('Set the internal RGB LED color');
+    this.setTooltip('Turn on the built-in LED (GPIO8)');
   }
 };
 
 Blockly.Blocks['internal_led_off'] = {
   init: function() {
-    this.setColour(190);
+    this.setColour(30);
     this.appendDummyInput()
-        .appendField("Internal LED")
+        .appendField("LED")
         .appendField(new Blockly.FieldImage("media/internalled.png", 64, 64))
-        .appendField("Turn Off");
+        .appendField("Off");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Turn off the internal RGB LED');
-  }
-};
-
-Blockly.Blocks['internal_led_test'] = {
-  init: function() {
-    this.setColour(190);
-    this.appendDummyInput()
-        .appendField("Internal LED")
-        .appendField(new Blockly.FieldImage("media/internalled.png", 64, 64))
-        .appendField("Test RGB");
-    this.setPreviousStatement(true, "general");
-    this.setNextStatement(true, "general");
-    this.setTooltip('Test the internal RGB LED: Red, Green, Blue (500ms each), then off');
+    this.setTooltip('Turn off the built-in LED (GPIO8)');
   }
 };

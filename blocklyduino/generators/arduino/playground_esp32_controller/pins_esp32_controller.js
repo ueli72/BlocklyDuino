@@ -1,54 +1,62 @@
 /**
- * Pin Data for ESP32-Controller
+ * Pin Data for ESP32-C3 0.42 OLED (ABRobot ESP32-C3 0.42 OLED)
  * 
- * This file contains pin definitions and capabilities for the ESP32-Controller board.
+ * This file contains pin definitions and capabilities for the ESP32-C3 0.42 OLED board.
  * It is used by common blocks to populate pin dropdowns and generate pin reference information.
+ * 
+ * Board features:
+ * - ESP32-C3FN4 with 4MB Flash
+ * - 0.42" OLED display (72x40 pixels, I2C on GPIO5/6)
+ * - Built-in LED on GPIO8 (active LOW)
+ * - BOOT button on GPIO9
+ * - Native USB-C
+ * - WiFi and Bluetooth 5.0
  */
 
 var BOARD_ID = 'esp32-controller';
-var BOARD_NAME = 'ESP32-Controller';
+var BOARD_NAME = 'ESP32-C3 0.42 OLED';
 
 var PIN_DATA = {
   "board": BOARD_ID,
   "name": BOARD_NAME,
   "pins": {
-    "0": {"name": "GPIO0", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["DC Motor 3 IN1"], "reserved": false, "notes": "Boot pin - hold LOW during boot for download mode"},
-    "1": {"name": "GPIO1", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["Button SW1"], "reserved": false, "notes": "Button 1"},
-    "2": {"name": "GPIO2", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["Button SW2"], "reserved": false, "notes": "Button 2"},
-    "3": {"name": "GPIO3", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": [], "reserved": false, "notes": null},
-    "4": {"name": "GPIO4", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": [], "reserved": false, "notes": null},
-    "5": {"name": "GPIO5", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["SPI CS (SD Card)"], "reserved": false, "notes": "SD Card Chip Select"},
-    "6": {"name": "GPIO6", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": [], "reserved": false, "notes": null},
-    "7": {"name": "GPIO7", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["DC Motor 3 IN2"], "reserved": false, "notes": null},
-    "8": {"name": "GPIO8", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["I2C SDA (OLED)"], "reserved": false, "notes": "I2C Data - OLED Display"},
-    "9": {"name": "GPIO9", "capabilities": ["digital", "pwm", "interrupt", "adc1"], "special": ["I2C SCL (OLED)"], "reserved": false, "notes": "I2C Clock - OLED Display"},
-    "11": {"name": "GPIO11", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": [], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
-    "12": {"name": "GPIO12", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["DC Motor 4 IN1"], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
-    "13": {"name": "GPIO13", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["DC Motor 4 IN2"], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
-    "14": {"name": "GPIO14", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["Ultrasonic Back TRIG"], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
-    "15": {"name": "GPIO15", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["DC Motor 1 IN1"], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
-    "16": {"name": "GPIO16", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["DC Motor 1 IN2"], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
-    "17": {"name": "GPIO17", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["Ultrasonic Front TRIG"], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
-    "18": {"name": "GPIO18", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["SPI CLK (SD Card)"], "reserved": false, "notes": "SD Card SPI Clock"},
-    "19": {"name": "GPIO19", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["SPI MISO (SD Card)"], "reserved": false, "notes": "SD Card SPI MISO"},
-    "20": {"name": "GPIO20", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["SPI MOSI (SD Card)"], "reserved": false, "notes": "SD Card SPI MOSI"},
-    "21": {"name": "GPIO21", "capabilities": ["digital", "pwm", "interrupt", "adc2"], "special": ["Ultrasonic Back ECHO"], "reserved": false, "notes": "ADC2 - not usable with WiFi"},
-    "35": {"name": "GPIO35", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Ultrasonic Front ECHO"], "reserved": false, "notes": null},
-    "37": {"name": "GPIO37", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Servo 1"], "reserved": false, "notes": "SG90 Servo signal pin"},
-    "38": {"name": "GPIO38", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Servo 2"], "reserved": false, "notes": "SG90 Servo signal pin"},
-    "39": {"name": "GPIO39", "capabilities": ["digital", "pwm", "interrupt"], "special": ["MAX98357A SD_MODE"], "reserved": false, "notes": "Audio amplifier shutdown mode"},
-    "40": {"name": "GPIO40", "capabilities": ["digital", "pwm", "interrupt"], "special": ["I2S DIN (Audio)"], "reserved": false, "notes": "MAX98357A audio data"},
-    "41": {"name": "GPIO41", "capabilities": ["digital", "pwm", "interrupt"], "special": ["I2S BCLK (Audio)"], "reserved": false, "notes": "MAX98357A bit clock"},
-    "42": {"name": "GPIO42", "capabilities": ["digital", "pwm", "interrupt"], "special": ["I2S LRC (Audio)"], "reserved": false, "notes": "MAX98357A left/right clock"},
-    "43": {"name": "GPIO43", "capabilities": ["digital", "pwm", "interrupt"], "special": ["DC Motor 2 IN1", "UART0 TX"], "reserved": false, "notes": "USB Serial TX - also DC Motor"},
-    "44": {"name": "GPIO44", "capabilities": ["digital", "pwm", "interrupt"], "special": ["DC Motor 2 IN2", "UART0 RX"], "reserved": false, "notes": "USB Serial RX - also DC Motor"},
-    "45": {"name": "GPIO45", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Servo 3"], "reserved": false, "notes": "SG90 Servo signal pin"}
+    "0": {"name": "GPIO0", "capabilities": ["digital", "pwm", "interrupt", "adc"], "special": [], "reserved": false, "notes": "Boot pin - hold LOW during boot for download mode"},
+    "1": {"name": "GPIO1", "capabilities": ["digital", "pwm", "interrupt", "adc"], "special": [], "reserved": false, "notes": null},
+    "2": {"name": "GPIO2", "capabilities": ["digital", "pwm", "interrupt", "adc"], "special": [], "reserved": false, "notes": null},
+    "3": {"name": "GPIO3", "capabilities": ["digital", "pwm", "interrupt", "adc"], "special": [], "reserved": false, "notes": null},
+    "4": {"name": "GPIO4", "capabilities": ["digital", "pwm", "interrupt", "adc"], "special": [], "reserved": false, "notes": null},
+    "5": {"name": "GPIO5", "capabilities": ["digital", "pwm", "interrupt", "adc"], "special": ["I2C SDA (OLED)"], "reserved": true, "notes": "I2C Data to onboard OLED - shared with display"},
+    "6": {"name": "GPIO6", "capabilities": ["digital", "pwm", "interrupt", "adc"], "special": ["I2C SCL (OLED)"], "reserved": true, "notes": "I2C Clock to onboard OLED - shared with display"},
+    "7": {"name": "GPIO7", "capabilities": ["digital", "pwm", "interrupt"], "special": [], "reserved": false, "notes": null},
+    "8": {"name": "GPIO8", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Built-in LED"], "reserved": false, "notes": "Onboard LED (active LOW - set LOW to turn on)"},
+    "9": {"name": "GPIO9", "capabilities": ["digital", "interrupt"], "special": ["BOOT Button"], "reserved": false, "notes": "BOOT button - also usable as user input (pulled HIGH)"},
+    "10": {"name": "GPIO10", "capabilities": ["digital", "pwm", "interrupt"], "special": [], "reserved": false, "notes": null},
+    "20": {"name": "GPIO20", "capabilities": ["digital", "pwm", "interrupt"], "special": ["UART RX"], "reserved": false, "notes": "Hardware UART RX - available for application use"},
+    "21": {"name": "GPIO21", "capabilities": ["digital", "pwm", "interrupt"], "special": ["UART TX"], "reserved": false, "notes": "Hardware UART TX - available for application use"}
+  },
+  "oled": {
+    "width": 72,
+    "height": 40,
+    "bufferWidth": 128,
+    "bufferHeight": 64,
+    "xOffset": 28,
+    "yOffset": 24,
+    "i2cAddress": "0x3C",
+    "sdaPin": 5,
+    "sclPin": 6
+  },
+  "led": {
+    "pin": 8,
+    "activeLow": true
+  },
+  "button": {
+    "bootPin": 9,
+    "activeLow": true
   },
   "legend": {
     "digital": "Digital I/O",
-    "pwm": "PWM Output (LEDC)",
-    "adc1": "Analog Read (ADC1)",
-    "adc2": "Analog Read (ADC2 - not with WiFi)",
+    "pwm": "PWM Output",
+    "adc": "Analog Read (ADC)",
     "interrupt": "External Interrupt"
   }
 };
@@ -135,7 +143,7 @@ function getAnalogPinOptions() {
   var options = [];
   Object.keys(PIN_DATA.pins).forEach(function(pinKey) {
     var pin = PIN_DATA.pins[pinKey];
-    if (pin.capabilities && (pin.capabilities.includes('adc1') || pin.capabilities.includes('adc2'))) {
+    if (pin.capabilities && pin.capabilities.includes('adc')) {
       options.push([pin.name + (pin.special.length > 0 ? ' - ' + pin.special.join(', ') : ''), pinKey]);
     }
   });

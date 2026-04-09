@@ -18,36 +18,20 @@
 
 /**
  * @fileoverview Generating Arduino for Internal LED blocks.
+ * Simple on/off LED on GPIO8 (active LOW) for ESP32-C3 0.42 OLED board.
  */
 'use strict';
 
-Blockly.Arduino.internal_led_init = function() {
-  Blockly.Arduino.definitions_['include_internal_led_h'] = '#include "internalLED.h"\n';
-  var code = 'initializeLED();  // Initialize built-in RGB LED\n';
-  return code;
-};
-
-Blockly.Arduino.internal_led_set = function() {
-  var red = Blockly.Arduino.valueToCode(this, 'RED', Blockly.Arduino.ORDER_ATOMIC) || '0';
-  var green = Blockly.Arduino.valueToCode(this, 'GREEN', Blockly.Arduino.ORDER_ATOMIC) || '0';
-  var blue = Blockly.Arduino.valueToCode(this, 'BLUE', Blockly.Arduino.ORDER_ATOMIC) || '0';
-
-  Blockly.Arduino.definitions_['include_internal_led_h'] = '#include "internalLED.h"\n';
-
-  var code = 'setLED(' + red + ', ' + green + ', ' + blue + ');  // Set RGB color (R:' + red + ', G:' + green + ', B:' + blue + ')\n';
+Blockly.Arduino.internal_led_on = function() {
+  Blockly.Arduino.definitions_['led_pin'] = '#define LED_PIN 8\n';
+  Blockly.Arduino.definitions_['led_init'] = 'pinMode(LED_PIN, OUTPUT);\n';
+  var code = 'digitalWrite(LED_PIN, LOW);  // LED on (active LOW)\n';
   return code;
 };
 
 Blockly.Arduino.internal_led_off = function() {
-  Blockly.Arduino.definitions_['include_internal_led_h'] = '#include "internalLED.h"\n';
-
-  var code = 'turnOffLED();  // Turn off built-in LED\n';
-  return code;
-};
-
-Blockly.Arduino.internal_led_test = function() {
-  Blockly.Arduino.definitions_['include_internal_led_h'] = '#include "internalLED.h"\n';
-
-  var code = 'runLEDInitTest();\n';
+  Blockly.Arduino.definitions_['led_pin'] = '#define LED_PIN 8\n';
+  Blockly.Arduino.definitions_['led_init'] = 'pinMode(LED_PIN, OUTPUT);\n';
+  var code = 'digitalWrite(LED_PIN, HIGH);  // LED off (active LOW)\n';
   return code;
 };
