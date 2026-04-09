@@ -59,6 +59,7 @@ i18n.registerTranslations('en', {
     "customCode": "Custom Code",
     "inputOutput": "Input/Output",
     "brumbrum": "BrumBrum",
+    "esp32Controller": "ESP32-Controller",
     "playground": "Playground",
     "sg90Servo": "SG90 Servo",
     "internalLED": "Internal LED",

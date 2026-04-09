@@ -82,6 +82,28 @@ var BRUMBRUM_GENERATOR_SCRIPTS = [
 ];
 var brumbrumGeneratorsLoading = null;
 
+var ESP32_CONTROLLER_GENERATOR_SCRIPTS = [
+  'generators/arduino/playground_esp32_controller/pins_esp32_controller.js',
+  'generators/arduino/playground_esp32_controller/sg90.js',
+  'generators/arduino/playground_esp32_controller/internal_led.js',
+  'generators/arduino/playground_esp32_controller/button.js',
+  'generators/arduino/playground_esp32_controller/dc_motor.js',
+  'generators/arduino/playground_esp32_controller/ultrasonic.js',
+  'generators/arduino/playground_esp32_controller/sdcard.js',
+  'generators/arduino/playground_esp32_controller/max98357a.js',
+  'generators/arduino/playground_esp32_controller/brightness.js',
+  'generators/arduino/playground_esp32_controller/ws2812.js',
+  'generators/arduino/playground_esp32_controller/ble_remote.js',
+  'generators/arduino/playground_esp32_controller/test_all.js',
+  'generators/arduino/playground_esp32_controller/timer.js',
+  'generators/arduino/playground_esp32_controller/ky023.js',
+  'generators/arduino/playground_esp32_controller/serial.js',
+  'generators/arduino/playground_esp32_controller/variable.js',
+  'generators/arduino/playground_esp32_controller/global_array.js',
+  'generators/arduino/playground_esp32_controller/custom_code.js'
+];
+var esp32ControllerGeneratorsLoading = null;
+
 var BOARD_INFO = {
   'esp32-s3-devkitc1': {
     name: 'BWS Playground Master',
@@ -104,7 +126,7 @@ var BOARD_INFO = {
 var PIN_DATA_FILES = {
   'esp32-s3-devkitc1': 'generators/arduino/playground/pins_playground.js',
   'playground-brumbrum-esp32-s3-devkitc1': 'generators/arduino/playground_brumbrum/pins_brumbrum.js',
-  'esp32-controller': 'generators/arduino/playground_brumbrum/pins_esp32_controller.js',
+  'esp32-controller': 'generators/arduino/playground_esp32_controller/pins_esp32_controller.js',
   'arduino-uno': 'generators/arduino/arduino-uno/pins_uno.js'
 };
 
@@ -330,13 +352,39 @@ function ensureBrumbrumGeneratorsLoaded() {
   return brumbrumGeneratorsLoading;
 }
 
+function ensureESP32ControllerGeneratorsLoaded() {
+  ensureMasterGeneratorSetCaptured();
+  if (GENERATOR_SETS.esp32controller) {
+    return Promise.resolve();
+  }
+  if (esp32ControllerGeneratorsLoading) {
+    return esp32ControllerGeneratorsLoading;
+  }
+
+  esp32ControllerGeneratorsLoading = loadScriptsSequential(ESP32_CONTROLLER_GENERATOR_SCRIPTS).then(function() {
+    captureGeneratorSet('esp32controller');
+  }).catch(function(error) {
+    console.error('Failed to load ESP32-Controller generator scripts', error);
+  }).finally(function() {
+    esp32ControllerGeneratorsLoading = null;
+  });
+
+  return esp32ControllerGeneratorsLoading;
+}
+
 function updateGeneratorsForBoard(boardId) {
   ensureMasterGeneratorSetCaptured();
   GENERATOR_SET_TARGET = boardId;
-  if (boardId === 'playground-brumbrum-esp32-s3-devkitc1' || boardId === 'esp32-controller') {
+  if (boardId === 'playground-brumbrum-esp32-s3-devkitc1') {
     ensureBrumbrumGeneratorsLoaded().then(function() {
-      if (GENERATOR_SET_TARGET === 'playground-brumbrum-esp32-s3-devkitc1' || GENERATOR_SET_TARGET === 'esp32-controller') {
+      if (GENERATOR_SET_TARGET === 'playground-brumbrum-esp32-s3-devkitc1') {
         applyGeneratorSet('brumbrum');
+      }
+    });
+  } else if (boardId === 'esp32-controller') {
+    ensureESP32ControllerGeneratorsLoaded().then(function() {
+      if (GENERATOR_SET_TARGET === 'esp32-controller') {
+        applyGeneratorSet('esp32controller');
       }
     });
   } else {
@@ -760,9 +808,7 @@ function updateToolboxForBoard(boardId) {
   
   categories.forEach(function(category) {
     var requiredBoard = category.getAttribute('data-board');
-    // Treat esp32-controller the same as playground-brumbrum-esp32-s3-devkitc1 for BrumBrum categories
-    var isMatch = requiredBoard === boardId || 
-                  (requiredBoard === 'playground-brumbrum-esp32-s3-devkitc1' && boardId === 'esp32-controller');
+    var isMatch = requiredBoard === boardId;
     if (!isMatch) {
       category.parentNode.removeChild(category);
     } else {
