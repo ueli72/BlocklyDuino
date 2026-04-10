@@ -21,26 +21,28 @@
  */
 'use strict';
 
-// Override button block configuration for BrumBrum board while leaving
+// Override button block configuration for ESP32 Controller board while leaving
 // Playground Master behaviour untouched.
 (function() {
   if (typeof Blockly === 'undefined' || !Blockly.Blocks || !Blockly.Blocks['button_init']) {
     return;
   }
 
-  var BOARD_ID = 'playground-brumbrum-esp32-s3-devkitc1';
-  var BRUMBRUM_BUTTON_PINS = [
-    ["Button1 (GPIO1)", "1"],
-    ["Button2 (GPIO2)", "2"]
+  var BOARD_ID = 'esp32-controller';
+  var CONTROLLER_BUTTON_PINS = [
+    ["Button1 (GPIO6)", "6"],
+    ["Button2 (GPIO7)", "7"],
+    ["Button3 (GPIO8)", "8"],
+    ["Button4 (GPIO9)", "9"]
   ];
 
   var root = (typeof window !== 'undefined') ? window : (typeof globalThis !== 'undefined' ? globalThis : null);
-  if (!root || root.__brumbrumButtonPatched) {
+  if (!root || root.__controllerButtonPatched) {
     return;
   }
-  root.__brumbrumButtonPatched = true;
+  root.__controllerButtonPatched = true;
 
-  function isBrumbrumBoard() {
+  function isControllerBoard() {
     if (typeof selectedBoard === 'string' && selectedBoard === BOARD_ID) {
       return true;
     }
@@ -63,7 +65,7 @@
 
   if (originalButtonInit) {
     Blockly.Blocks['button_init'].init = function() {
-      if (!isBrumbrumBoard()) {
+      if (!isControllerBoard()) {
         originalButtonInit.call(this);
         return;
       }
@@ -77,7 +79,11 @@
           .appendField("SW1")
           .appendField(new Blockly.FieldCheckbox("TRUE"), "SW1")
           .appendField("  SW2")
-          .appendField(new Blockly.FieldCheckbox("TRUE"), "SW2");
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "SW2")
+          .appendField("  SW3")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "SW3")
+          .appendField("  SW4")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "SW4");
       this.setPreviousStatement(true, "general");
       this.setNextStatement(true, "general");
       this.setTooltip('Initialize selected buttons');
@@ -86,8 +92,8 @@
 
   if (originalGetButtonPins) {
     root.getButtonPins = function() {
-      if (isBrumbrumBoard()) {
-        return BRUMBRUM_BUTTON_PINS.slice();
+      if (isControllerBoard()) {
+        return CONTROLLER_BUTTON_PINS.slice();
       }
       return originalGetButtonPins();
     };
@@ -95,10 +101,10 @@
 
   if (originalGetInterruptPins) {
     root.getInterruptPins = function() {
-      if (isBrumbrumBoard()) {
-        var pins = BRUMBRUM_BUTTON_PINS.slice();
+      if (isControllerBoard()) {
+        var pins = CONTROLLER_BUTTON_PINS.slice();
         for (var i = 0; i <= 48; i++) {
-          if (i !== 1 && i !== 2) {
+          if (i !== 6 && i !== 7 && i !== 8 && i !== 9) {
             pins.push(["GPIO" + i, String(i)]);
           }
         }
@@ -110,15 +116,19 @@
 })();
 
 var button_constants = {
-  '1': 'SW1_PIN',
-  '2': 'SW2_PIN'
+  '6': 'SW1_PIN',
+  '7': 'SW2_PIN',
+  '8': 'SW3_PIN',
+  '9': 'SW4_PIN'
 };
 
 Blockly.Arduino.button_init = function() {
   Blockly.Arduino.definitions_['include_buttons_h'] = '#include "buttons.h"\n';
   var sw1 = this.getFieldValue('SW1') === 'TRUE' ? 'true' : 'false';
   var sw2 = this.getFieldValue('SW2') === 'TRUE' ? 'true' : 'false';
-  var code = 'initializeButtons(' + sw1 + ', ' + sw2 + ');\n';
+  var sw3 = this.getFieldValue('SW3') === 'TRUE' ? 'true' : 'false';
+  var sw4 = this.getFieldValue('SW4') === 'TRUE' ? 'true' : 'false';
+  var code = 'initializeButtons(' + sw1 + ', ' + sw2 + ', ' + sw3 + ', ' + sw4 + ');\n';
   return code;
 };
 

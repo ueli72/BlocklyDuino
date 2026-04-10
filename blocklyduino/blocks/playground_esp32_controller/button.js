@@ -27,8 +27,10 @@ Blockly.Blocks.button = {};
 
 function getButtonPins() {
   return [
-    ["Button1 (GPIO1)", "1"],
-    ["Button2 (GPIO2)", "2"]
+    ["Button1 (GPIO6)", "6"],
+    ["Button2 (GPIO7)", "7"],
+    ["Button3 (GPIO8)", "8"],
+    ["Button4 (GPIO9)", "9"]
   ];
 }
 
@@ -43,7 +45,11 @@ Blockly.Blocks['button_init'] = {
         .appendField("SW1")
         .appendField(new Blockly.FieldCheckbox("TRUE"), "SW1")
         .appendField("  SW2")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "SW2");
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "SW2")
+        .appendField("  SW3")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "SW3")
+        .appendField("  SW4")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "SW4");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
     this.setTooltip('Initialize selected buttons');
@@ -79,7 +85,7 @@ Blockly.Blocks['button_test'] = {
 function getInterruptPins() {
   var pins = getButtonPins();
   for (var i = 0; i <= 48; i++) {
-    if (i !== 1 && i !== 2) {
+    if (i !== 6 && i !== 7 && i !== 8 && i !== 9) {
       pins.push(["GPIO" + i, String(i)]);
     }
   }

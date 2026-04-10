@@ -1,14 +1,16 @@
-// Made for playground-brumbrum-esp32-s3-devkitc1
+// Made for esp32-controller
 #ifndef BUTTONS_H
 #define BUTTONS_H
 
 #include <Arduino.h>
 
 // Button pin definitions
-#define SW1_PIN 1
-#define SW2_PIN 2
+#define SW1_PIN 6
+#define SW2_PIN 7
+#define SW3_PIN 8
+#define SW4_PIN 9
 
-void initializeButtons(bool sw1, bool sw2);
+void initializeButtons(bool sw1, bool sw2, bool sw3, bool sw4);
 
 void testButtons();
 
