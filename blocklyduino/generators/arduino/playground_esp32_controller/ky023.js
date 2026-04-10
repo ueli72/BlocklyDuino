@@ -32,7 +32,7 @@ Blockly.Arduino.ky023_init = function() {
     code += 'initJoyLeft();  // Initialize JoyLeft: X=GPIO1, Y=GPIO2, SW=GPIO0\n';
   }
   if (init_right) {
-    code += 'initJoyRight();  // Initialize JoyRight: X=GPIO4, Y=GPIO5, SW=GPIO3\n';
+    code += 'initJoyRight();  // Initialize JoyRight: X=GPIO4, Y=GPIO10, SW=GPIO3\n';
   }
   return code;
 };

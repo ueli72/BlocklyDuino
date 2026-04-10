@@ -44,7 +44,7 @@ Blockly.Blocks['ky023_init'] = {
         .appendField("JoyRight");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Initialize KY023 dual joystick module. JoyLeft: X=GPIO1, Y=GPIO2, SW=GPIO0. JoyRight: X=GPIO4, Y=GPIO5, SW=GPIO3');
+    this.setTooltip('Initialize KY023 dual joystick module. JoyLeft: X=GPIO1, Y=GPIO2, SW=GPIO0. JoyRight: X=GPIO4, Y=GPIO10, SW=GPIO3');
   }
 };
 

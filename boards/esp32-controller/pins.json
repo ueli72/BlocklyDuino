@@ -4,80 +4,80 @@
   "pins": {
     "0": {
       "name": "GPIO0",
-      "capabilities": ["digital", "pwm", "interrupt", "adc2"],
-      "special": ["DC Motor 3 IN1"],
+      "capabilities": ["digital", "pwm", "interrupt", "adc1"],
+      "special": ["Joystick Left Button"],
       "reserved": false,
       "notes": "Boot pin - hold LOW during boot for download mode"
     },
     "1": {
       "name": "GPIO1",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": ["Button SW1"],
+      "special": ["Joystick Left X"],
       "reserved": false,
-      "notes": "Button1 on Playground BrumBrum"
+      "notes": "Analog input for left joystick X-axis"
     },
     "2": {
       "name": "GPIO2",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": ["Button SW2"],
+      "special": ["Joystick Left Y"],
       "reserved": false,
-      "notes": "Button2 on Playground BrumBrum"
+      "notes": "Analog input for left joystick Y-axis"
     },
     "3": {
       "name": "GPIO3",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": [],
+      "special": ["Joystick Right Button"],
       "reserved": false,
-      "notes": null
+      "notes": "Right joystick button"
     },
     "4": {
       "name": "GPIO4",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": [],
+      "special": ["Joystick Right X"],
       "reserved": false,
-      "notes": null
+      "notes": "Analog input for right joystick X-axis"
     },
     "5": {
       "name": "GPIO5",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": ["SPI CS (SD Card)"],
-      "reserved": false,
-      "notes": "SD Card Chip Select"
+      "special": ["I2C SDA (OLED)"],
+      "reserved": true,
+      "notes": "I2C Data - OLED Display (reserved)"
     },
     "6": {
       "name": "GPIO6",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": [],
-      "reserved": false,
-      "notes": null
+      "special": ["I2C SCL (OLED)"],
+      "reserved": true,
+      "notes": "I2C Clock - OLED Display (reserved)"
     },
     "7": {
       "name": "GPIO7",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": ["DC Motor 3 IN2"],
+      "special": ["Extra Button 2"],
       "reserved": false,
       "notes": null
     },
     "8": {
       "name": "GPIO8",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": ["I2C SDA (OLED)"],
+      "special": ["Internal LED", "Extra Button 3"],
       "reserved": false,
-      "notes": "I2C Data - OLED Display"
+      "notes": "Built-in LED (active LOW) - shared with Extra Button 3"
     },
     "9": {
       "name": "GPIO9",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": ["I2C SCL (OLED)"],
+      "special": ["BOOT Button", "Extra Button 4"],
       "reserved": false,
-      "notes": "I2C Clock - OLED Display"
+      "notes": "BOOT Button - shared with Extra Button 4"
     },
     "10": {
       "name": "GPIO10",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": ["LED Matrix (16 LEDs)"],
+      "special": ["Joystick Right Y"],
       "reserved": false,
-      "notes": "WS2812B LED Matrix data pin"
+      "notes": "Analog input for right joystick Y-axis"
     },
     "11": {
       "name": "GPIO11",
@@ -89,157 +89,92 @@
     "12": {
       "name": "GPIO12",
       "capabilities": ["digital", "pwm", "interrupt", "adc2"],
-      "special": ["DC Motor 4 IN1"],
+      "special": [],
       "reserved": false,
       "notes": "ADC2 - not usable with WiFi"
     },
     "13": {
       "name": "GPIO13",
       "capabilities": ["digital", "pwm", "interrupt", "adc2"],
-      "special": ["DC Motor 4 IN2"],
+      "special": [],
       "reserved": false,
       "notes": "ADC2 - not usable with WiFi"
     },
     "14": {
       "name": "GPIO14",
       "capabilities": ["digital", "pwm", "interrupt", "adc2"],
-      "special": ["Ultrasonic Back TRIG"],
+      "special": [],
       "reserved": false,
       "notes": "ADC2 - not usable with WiFi"
     },
     "15": {
       "name": "GPIO15",
       "capabilities": ["digital", "pwm", "interrupt", "adc2"],
-      "special": ["DC Motor 1 IN1"],
+      "special": [],
       "reserved": false,
       "notes": "ADC2 - not usable with WiFi"
     },
     "16": {
       "name": "GPIO16",
       "capabilities": ["digital", "pwm", "interrupt", "adc2"],
-      "special": ["DC Motor 1 IN2"],
+      "special": [],
       "reserved": false,
       "notes": "ADC2 - not usable with WiFi"
     },
     "17": {
       "name": "GPIO17",
       "capabilities": ["digital", "pwm", "interrupt", "adc2"],
-      "special": ["Ultrasonic Front TRIG"],
+      "special": [],
       "reserved": false,
       "notes": "ADC2 - not usable with WiFi"
     },
     "18": {
       "name": "GPIO18",
       "capabilities": ["digital", "pwm", "interrupt", "adc2"],
-      "special": ["SPI CLK (SD Card)"],
+      "special": [],
       "reserved": false,
-      "notes": "SD Card SPI Clock"
+      "notes": "ADC2 - not usable with WiFi"
     },
     "19": {
       "name": "GPIO19",
       "capabilities": ["digital", "pwm", "interrupt", "adc2"],
-      "special": ["SPI MISO (SD Card)"],
+      "special": [],
       "reserved": false,
-      "notes": "SD Card SPI MISO"
+      "notes": "ADC2 - not usable with WiFi"
     },
     "20": {
       "name": "GPIO20",
       "capabilities": ["digital", "pwm", "interrupt", "adc2"],
-      "special": ["SPI MOSI (SD Card)"],
+      "special": ["Haptic Motor", "UART RX"],
       "reserved": false,
-      "notes": "SD Card SPI MOSI"
+      "notes": "Haptic motor control - WARNING: Disables Serial RX when used"
     },
     "21": {
       "name": "GPIO21",
       "capabilities": ["digital", "pwm", "interrupt", "adc2"],
-      "special": ["Ultrasonic Back ECHO"],
+      "special": ["Extra Button 1", "UART TX"],
       "reserved": false,
-      "notes": "ADC2 - not usable with WiFi"
-    },
-    "35": {
-      "name": "GPIO35",
-      "capabilities": ["digital", "pwm", "interrupt"],
-      "special": ["Ultrasonic Front ECHO"],
-      "reserved": false,
-      "notes": null
-    },
-    "37": {
-      "name": "GPIO37",
-      "capabilities": ["digital", "pwm", "interrupt"],
-      "special": ["Servo 1"],
-      "reserved": false,
-      "notes": "SG90 Servo signal pin"
-    },
-    "38": {
-      "name": "GPIO38",
-      "capabilities": ["digital", "pwm", "interrupt"],
-      "special": ["Servo 2"],
-      "reserved": false,
-      "notes": "SG90 Servo signal pin"
-    },
-    "39": {
-      "name": "GPIO39",
-      "capabilities": ["digital", "pwm", "interrupt"],
-      "special": ["MAX98357A SD_MODE"],
-      "reserved": false,
-      "notes": "Audio amplifier shutdown mode"
-    },
-    "40": {
-      "name": "GPIO40",
-      "capabilities": ["digital", "pwm", "interrupt"],
-      "special": ["I2S DIN (Audio)"],
-      "reserved": false,
-      "notes": "MAX98357A audio data"
-    },
-    "41": {
-      "name": "GPIO41",
-      "capabilities": ["digital", "pwm", "interrupt"],
-      "special": ["I2S BCLK (Audio)"],
-      "reserved": false,
-      "notes": "MAX98357A bit clock"
-    },
-    "42": {
-      "name": "GPIO42",
-      "capabilities": ["digital", "pwm", "interrupt"],
-      "special": ["I2S LRC (Audio)"],
-      "reserved": false,
-      "notes": "MAX98357A left/right clock"
-    },
-    "43": {
-      "name": "GPIO43",
-      "capabilities": ["digital", "pwm", "interrupt"],
-      "special": ["DC Motor 2 IN1", "UART0 TX"],
-      "reserved": false,
-      "notes": "USB Serial TX - also DC Motor"
-    },
-    "44": {
-      "name": "GPIO44",
-      "capabilities": ["digital", "pwm", "interrupt"],
-      "special": ["DC Motor 2 IN2", "UART0 RX"],
-      "reserved": false,
-      "notes": "USB Serial RX - also DC Motor"
-    },
-    "45": {
-      "name": "GPIO45",
-      "capabilities": ["digital", "pwm", "interrupt"],
-      "special": ["Servo 3"],
-      "reserved": false,
-      "notes": "SG90 Servo signal pin"
-    },
-    "47": {
-      "name": "GPIO47",
-      "capabilities": ["digital", "pwm", "interrupt"],
-      "special": ["Relay 2"],
-      "reserved": false,
-      "notes": null
-    },
-    "48": {
-      "name": "GPIO48",
-      "capabilities": ["digital", "pwm", "interrupt"],
-      "special": ["Internal RGB LED", "Relay 1"],
-      "reserved": false,
-      "notes": "WS2812B NeoPixel - also Relay 1 (check jumper)"
+      "notes": "Extra Button 1 - WARNING: Disables Serial TX when used"
     }
+  },
+  "oled": {
+    "width": 72,
+    "height": 40,
+    "bufferWidth": 128,
+    "bufferHeight": 64,
+    "xOffset": 28,
+    "yOffset": 24,
+    "i2cAddress": "0x3C",
+    "sdaPin": 5,
+    "sclPin": 6
+  },
+  "led": {
+    "pin": 8,
+    "activeLow": true
+  },
+  "button": {
+    "bootPin": 9,
+    "activeLow": true
   },
   "legend": {
     "digital": "Digital I/O",
@@ -249,19 +184,12 @@
     "interrupt": "External Interrupt",
     "i2c_sda": "I2C Data",
     "i2c_scl": "I2C Clock",
-    "spi_mosi": "SPI MOSI",
-    "spi_miso": "SPI MISO",
-    "spi_clk": "SPI Clock",
-    "spi_cs": "SPI Chip Select",
-    "i2s_din": "I2S Audio Data",
-    "i2s_bclk": "I2S Bit Clock",
-    "i2s_lrc": "I2S Left/Right Clock",
     "uart_tx": "UART Transmit",
     "uart_rx": "UART Receive"
   },
   "notes": {
     "adc2_warning": "ADC2 pins cannot be used when WiFi is active",
-    "boot_pins": "GPIO0, GPIO45, GPIO46 are boot configuration pins",
-    "usb_pins": "GPIO43/44 are USB Serial - avoid for other uses if debugging"
+    "boot_pins": "GPIO0, GPIO9 are boot configuration pins",
+    "serial_warning": "GPIO20 (RX) and GPIO21 (TX) are shared with Serial - using them disables Serial"
   }
 }

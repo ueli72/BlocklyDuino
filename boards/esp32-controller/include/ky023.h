@@ -11,7 +11,7 @@
 
 // JoyRight pin definitions
 #define JOY_RIGHT_X_PIN   4
-#define JOY_RIGHT_Y_PIN   5
+#define JOY_RIGHT_Y_PIN   10
 #define JOY_RIGHT_SW_PIN  3
 
 // Initialization functions
