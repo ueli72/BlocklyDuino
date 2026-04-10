@@ -23,7 +23,7 @@
 
 Blockly.Arduino.haptic_init = function() {
   Blockly.Arduino.definitions_['include_haptic_h'] = '#include "haptic.h"\n';
-  var code = 'initHaptic();  // Initialize haptic actuator on GPIO 10\n';
+  var code = 'initHaptic();  // Initialize haptic actuator on GPIO 20 (UART RX)\n';
   return code;
 };
 

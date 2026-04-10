@@ -34,7 +34,7 @@ Blockly.Blocks['haptic_init'] = {
         .appendField(i18n.t('blocks.hapticInit'));
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Initialize haptic actuator on GPIO 10');
+    this.setTooltip('Initialize haptic actuator on GPIO 20 (UART RX). WARNING: Disables serial input!');
   }
 };
 

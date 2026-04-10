@@ -26,6 +26,12 @@ var BLOCK_INFO = {
     warningKey: 'interrupt',
     includes: []
   },
+  'external_interrupt': {
+    title: 'blockInfo.externalInterrupt.title',
+    message: 'blockInfo.externalInterrupt.message',
+    warningKey: 'external_interrupt',
+    includes: []
+  },
   'button_init': {
     title: 'blockInfo.button.title',
     message: 'blockInfo.button.initMessage',
@@ -47,6 +53,18 @@ var BLOCK_INFO = {
     title: 'blockInfo.buttonBrumbrum.title',
     message: 'blockInfo.buttonBrumbrum.initMessage',
     testMessage: 'blockInfo.buttonBrumbrum.testMessage',
+    includes: ['buttons.h', 'oled.h']
+  },
+  // ESP32-Controller specific button blocks (4 extra buttons)
+  'button_init_esp32_controller': {
+    title: 'blockInfo.buttonEsp32Controller.title',
+    message: 'blockInfo.buttonEsp32Controller.initMessage',
+    includes: ['buttons.h']
+  },
+  'button_test_esp32_controller': {
+    title: 'blockInfo.buttonEsp32Controller.title',
+    message: 'blockInfo.buttonEsp32Controller.initMessage',
+    testMessage: 'blockInfo.buttonEsp32Controller.testMessage',
     includes: ['buttons.h', 'oled.h']
   },
   'async_timer': {
@@ -693,14 +711,45 @@ var seenBlocks = {
   }
 };
 
+var seenPinWarnings = {
+  _data: null,
+  _init: function() {
+    if (this._data === null) {
+      try {
+        this._data = JSON.parse(sessionStorage.getItem('seenPinWarnings') || '[]');
+      } catch (e) {
+        this._data = [];
+      }
+    }
+  },
+  has: function(key) {
+    this._init();
+    return this._data.indexOf(key) !== -1;
+  },
+  add: function(key) {
+    this._init();
+    if (this._data.indexOf(key) === -1) {
+      this._data.push(key);
+      try {
+        sessionStorage.setItem('seenPinWarnings', JSON.stringify(this._data));
+      } catch (e) {}
+    }
+  }
+};
+
 function getBlockInfo(blockType) {
   // Check if we're on BrumBrum board
   var isBrumbrum = false;
-  if (typeof selectedBoard === 'string' && selectedBoard === 'playground-brumbrum-esp32-s3-devkitc1') {
-    isBrumbrum = true;
+  var isESP32Controller = false;
+  
+  if (typeof selectedBoard === 'string') {
+    isBrumbrum = selectedBoard === 'playground-brumbrum-esp32-s3-devkitc1';
+    isESP32Controller = selectedBoard === 'esp32-controller';
   } else if (typeof localStorage !== 'undefined') {
     try {
-      isBrumbrum = localStorage.getItem('blocklyduino_board') === 'playground-brumbrum-esp32-s3-devkitc1';
+      var board = localStorage.getItem('blocklyduino_board');
+      isBrumbrum = board === 'playground-brumbrum-esp32-s3-devkitc1';
+      isESP32Controller = board === 'esp32-controller';
     } catch (e) {}
   }
   
@@ -712,17 +761,30 @@ function getBlockInfo(blockType) {
     }
   }
   
+  // If on ESP32-Controller, try to get board-specific info first
+  if (isESP32Controller) {
+    var esp32Key = blockType + '_esp32_controller';
+    if (BLOCK_INFO.hasOwnProperty(esp32Key)) {
+      return BLOCK_INFO[esp32Key];
+    }
+  }
+  
   return BLOCK_INFO[blockType] || null;
 }
 
 function hasBlockInfo(blockType) {
   // Check if we're on BrumBrum board
   var isBrumbrum = false;
-  if (typeof selectedBoard === 'string' && selectedBoard === 'playground-brumbrum-esp32-s3-devkitc1') {
-    isBrumbrum = true;
+  var isESP32Controller = false;
+  
+  if (typeof selectedBoard === 'string') {
+    isBrumbrum = selectedBoard === 'playground-brumbrum-esp32-s3-devkitc1';
+    isESP32Controller = selectedBoard === 'esp32-controller';
   } else if (typeof localStorage !== 'undefined') {
     try {
-      isBrumbrum = localStorage.getItem('blocklyduino_board') === 'playground-brumbrum-esp32-s3-devkitc1';
+      var board = localStorage.getItem('blocklyduino_board');
+      isBrumbrum = board === 'playground-brumbrum-esp32-s3-devkitc1';
+      isESP32Controller = board === 'esp32-controller';
     } catch (e) {}
   }
   
@@ -730,6 +792,14 @@ function hasBlockInfo(blockType) {
   if (isBrumbrum) {
     var brumbrumKey = blockType + '_brumbrum';
     if (BLOCK_INFO.hasOwnProperty(brumbrumKey)) {
+      return true;
+    }
+  }
+  
+  // If on ESP32-Controller, check for board-specific info first
+  if (isESP32Controller) {
+    var esp32Key = blockType + '_esp32_controller';
+    if (BLOCK_INFO.hasOwnProperty(esp32Key)) {
       return true;
     }
   }
@@ -792,4 +862,28 @@ function checkAllDependencies() {
   }
   
   return unsatisfied;
+}
+
+var PIN_WARNINGS = {
+  'esp32-controller': {
+    '9': {
+      title: 'blockInfo.pinWarning.gpio9.title',
+      message: 'blockInfo.pinWarning.gpio9.message'
+    },
+    '20': {
+      title: 'blockInfo.pinWarning.haptic.title',
+      message: 'blockInfo.pinWarning.haptic.message'
+    },
+    '21': {
+      title: 'blockInfo.pinWarning.serialTx.title',
+      message: 'blockInfo.pinWarning.serialTx.message'
+    }
+  }
+};
+
+function getPinWarning(boardId, pin) {
+  if (PIN_WARNINGS && PIN_WARNINGS[boardId] && PIN_WARNINGS[boardId][pin]) {
+    return PIN_WARNINGS[boardId][pin];
+  }
+  return null;
 }

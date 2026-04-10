@@ -25,14 +25,14 @@ var PIN_DATA = {
     "2": {"name": "GPIO2", "capabilities": ["digital", "pwm", "interrupt", "adc"], "special": ["Joystick Right X"], "reserved": false, "notes": null},
     "3": {"name": "GPIO3", "capabilities": ["digital", "pwm", "interrupt", "adc"], "special": ["Joystick Right Y"], "reserved": false, "notes": null},
     "4": {"name": "GPIO4", "capabilities": ["digital", "pwm", "interrupt", "adc"], "special": ["Joystick Left Button"], "reserved": false, "notes": null},
-    "5": {"name": "GPIO5", "capabilities": ["digital", "pwm", "interrupt", "adc"], "special": ["I2C SDA (OLED)", "Joystick Right Button"], "reserved": true, "notes": "I2C Data to onboard OLED - shared with display"},
+    "5": {"name": "GPIO5", "capabilities": ["digital", "pwm", "interrupt", "adc"], "special": ["I2C SDA (OLED)"], "reserved": true, "notes": "I2C Data to onboard OLED - shared with display"},
     "6": {"name": "GPIO6", "capabilities": ["digital", "pwm", "interrupt", "adc"], "special": ["I2C SCL (OLED)"], "reserved": true, "notes": "I2C Clock to onboard OLED - shared with display"},
-    "7": {"name": "GPIO7", "capabilities": ["digital", "pwm", "interrupt"], "special": [], "reserved": false, "notes": null},
-    "8": {"name": "GPIO8", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Built-in LED"], "reserved": false, "notes": "Onboard LED (active LOW - set LOW to turn on)"},
-    "9": {"name": "GPIO9", "capabilities": ["digital", "interrupt"], "special": ["BOOT Button"], "reserved": false, "notes": "BOOT button - also usable as user input (pulled HIGH)"},
-    "10": {"name": "GPIO10", "capabilities": ["digital", "pwm", "interrupt"], "special": [], "reserved": false, "notes": null},
-    "20": {"name": "GPIO20", "capabilities": ["digital", "pwm", "interrupt"], "special": ["UART RX"], "reserved": false, "notes": "Hardware UART RX - available for application use"},
-    "21": {"name": "GPIO21", "capabilities": ["digital", "pwm", "interrupt"], "special": ["UART TX"], "reserved": false, "notes": "Hardware UART TX - available for application use"}
+    "7": {"name": "GPIO7", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Extra Button 2"], "reserved": false, "notes": null},
+    "8": {"name": "GPIO8", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Built-in LED", "Extra Button 3"], "reserved": false, "notes": "Onboard LED (active LOW - set LOW to turn on)"},
+    "9": {"name": "GPIO9", "capabilities": ["digital", "interrupt"], "special": ["BOOT Button", "Extra Button 4"], "reserved": false, "notes": "WARNING: BOOT Button and Extra Button 4 share this pin - only one can be used at a time"},
+    "10": {"name": "GPIO10", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Joystick Right Y"], "reserved": false, "notes": null},
+    "20": {"name": "GPIO20", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Haptic Motor", "UART RX"], "reserved": false, "notes": "WARNING: Haptic motor uses this pin - Serial RX unavailable when haptic is initialized"},
+    "21": {"name": "GPIO21", "capabilities": ["digital", "pwm", "interrupt"], "special": ["Extra Button 1", "UART TX"], "reserved": false, "notes": "WARNING: Extra Button 1 uses this pin - Serial TX unavailable when button is used"}
   },
   "oled": {
     "width": 72,

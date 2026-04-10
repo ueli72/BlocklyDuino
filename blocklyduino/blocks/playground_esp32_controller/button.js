@@ -27,10 +27,10 @@ Blockly.Blocks.button = {};
 
 function getButtonPins() {
   return [
-    ["Button1 (GPIO6)", "6"],
-    ["Button2 (GPIO7)", "7"],
-    ["Button3 (GPIO8)", "8"],
-    ["Button4 (GPIO9)", "9"]
+    ["Extra Button 1 (GPIO21)", "21"],
+    ["Extra Button 2 (GPIO7)", "7"],
+    ["Extra Button 3 (GPIO8)", "8"],
+    ["Extra Button 4 (GPIO9)", "9"]
   ];
 }
 
@@ -42,13 +42,13 @@ Blockly.Blocks['button_init'] = {
         .appendField(new Blockly.FieldImage("media/button.png", 64, 64))
         .appendField("Initialize");
     this.appendDummyInput("BUTTONS")
-        .appendField("SW1")
+        .appendField("Extra 1")
         .appendField(new Blockly.FieldCheckbox("TRUE"), "SW1")
-        .appendField("  SW2")
+        .appendField("  Extra 2")
         .appendField(new Blockly.FieldCheckbox("TRUE"), "SW2")
-        .appendField("  SW3")
+        .appendField("  Extra 3")
         .appendField(new Blockly.FieldCheckbox("TRUE"), "SW3")
-        .appendField("  SW4")
+        .appendField("  Extra 4")
         .appendField(new Blockly.FieldCheckbox("TRUE"), "SW4");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
@@ -91,7 +91,7 @@ function getInterruptPins() {
   }
   var pins = getButtonPins();
   for (var i = 0; i <= 48; i++) {
-    if (i !== 6 && i !== 7 && i !== 8 && i !== 9) {
+    if (i !== 21 && i !== 7 && i !== 8 && i !== 9) {
       pins.push(["GPIO" + i, String(i)]);
     }
   }
@@ -152,6 +152,22 @@ function checkISRBlocks(block) {
   } else {
     block.setWarningText(null);
     block.setColour(0);
+  }
+  
+  // Check for pin-specific warnings
+  var pin = block.getFieldValue('PIN');
+  var boardId = typeof selectedBoard === 'string' ? selectedBoard : (typeof localStorage !== 'undefined' ? localStorage.getItem('blocklyduino_board') : null);
+  if (typeof getPinWarning === 'function') {
+    var pinWarning = getPinWarning(boardId, pin);
+    if (pinWarning) {
+      var warningKey = boardId + '_' + pin;
+      if (typeof seenPinWarnings !== 'undefined' && !seenPinWarnings.has(warningKey)) {
+        seenPinWarnings.add(warningKey);
+        if (typeof showBlockInfoModal === 'function') {
+          showBlockInfoModal(i18n.t(pinWarning.title), i18n.t(pinWarning.message));
+        }
+      }
+    }
   }
 }
 

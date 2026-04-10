@@ -1,5 +1,6 @@
 // Haptic Actuator (Haptikmotor) for ESP32-Controller
-// GPIO 10 - Vibration motor control
+// GPIO 20 (UART RX) - Vibration motor control
+// WARNING: Using GPIO20 disables UART RX (Serial input)
 
 #ifndef HAPTIC_H
 #define HAPTIC_H
@@ -7,8 +8,8 @@
 #include <Arduino.h>
 #include <Ticker.h>
 
-// Haptic motor pin definition
-#define HAPTIC_PIN 10
+// Haptic motor pin definition (uses UART RX pin)
+#define HAPTIC_PIN 20
 
 // Function to initialize haptic actuator
 void initHaptic();

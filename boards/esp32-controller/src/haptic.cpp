@@ -1,5 +1,6 @@
 // Haptic Actuator (Haptikmotor) for ESP32-Controller
-// GPIO 10 - Vibration motor control
+// GPIO 20 (UART RX) - Vibration motor control
+// WARNING: Using GPIO20 disables UART RX (Serial input)
 
 #include "haptic.h"
 

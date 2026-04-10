@@ -216,6 +216,16 @@ i18n.registerTranslations('en', {
       "readMessage": "This block reads the state of a button.\n\nReturns true when pressed, false when not pressed.",
       "testMessage": "This block tests all buttons sequentially. Displays 'Buttontest' on OLED, then waits for each button to be pressed (Button 1-2). Shows which button to press and confirms when pressed."
     },
+    "buttonEsp32Controller": {
+      "title": "Extra Buttons",
+      "initMessage": "This block initializes the selected extra buttons.\n\nPins used:\n• Extra Button 1: GPIO21 (⚠️ disables Serial TX)\n• Extra Button 2: GPIO7\n• Extra Button 3: GPIO8 (shared with Built-in LED)\n• Extra Button 4: GPIO9 (shared with BOOT Button)",
+      "readMessage": "This block reads the state of an extra button.\n\nReturns true when pressed, false when not pressed.",
+      "testMessage": "This block tests all extra buttons sequentially. Displays instructions on Serial Monitor."
+    },
+    "externalInterrupt": {
+      "title": "On Interrupt",
+      "message": "External Interrupt block for GPIO pins.\n\nISR Restrictions:\n• No delay() or delayMicroseconds()\n• No Serial.print() or Serial.write()\n• Keep code short and fast\n• Use 'volatile' for variables shared with main loop\n• Avoid function calls that may block\n\nAvailable interrupt pins for ESP32-Controller:\n• GPIO0-4: Joystick pins\n• GPIO7: Extra Button 2\n• GPIO8: Extra Button 3 (shared with Built-in LED)\n• GPIO9: Extra Button 4 / BOOT Button (⚠️ conflict)\n• GPIO10: Joystick Right Y\n• GPIO20: Haptic Motor (⚠️ disables Serial RX)\n• GPIO21: Extra Button 1 (⚠️ disables Serial TX)"
+    },
     "oled": {
       "title": "OLED Display",
       "testMessage": "This block tests the OLED display by showing 'OLED Test' on the screen."
@@ -310,11 +320,25 @@ i18n.registerTranslations('en', {
     },
     "haptic": {
       "title": "Haptic Actuator",
-      "message": "Haptic actuator (vibration motor) connected to GPIO 10.\n\nMethods:\n• Initialize - Sets GPIO 10 as output\n• Turn On - Activates the motor (HIGH)\n• Turn Off - Deactivates the motor (LOW)\n• Vibrate - Non-blocking vibration for specified milliseconds",
-      "initMessage": "This block initializes the haptic actuator on GPIO 10.",
-      "onMessage": "This block turns the haptic actuator ON (GPIO 10 HIGH).",
-      "offMessage": "This block turns the haptic actuator OFF (GPIO 10 LOW).",
+      "message": "Haptic actuator (vibration motor) connected to GPIO 20 (UART RX).\n\n⚠️ WARNING: Using GPIO 20 disables Serial input (UART RX)!\n\nMethods:\n• Initialize - Sets GPIO 20 as output\n• Turn On - Activates the motor (HIGH)\n• Turn Off - Deactivates the motor (LOW)\n• Vibrate - Non-blocking vibration for specified milliseconds",
+      "initMessage": "This block initializes the haptic actuator on GPIO 20 (UART RX).\n\n⚠️ WARNING: Serial input (UART RX) will be unavailable when haptic is initialized!",
+      "onMessage": "This block turns the haptic actuator ON (GPIO 20 HIGH).",
+      "offMessage": "This block turns the haptic actuator OFF (GPIO 20 LOW).",
       "vibrateMessage": "This block activates the haptic actuator for the specified milliseconds (non-blocking using Ticker library)."
+    },
+    "pinWarning": {
+      "gpio9": {
+        "title": "GPIO 9 - BOOT Button / Extra Button 4",
+        "message": "⚠️ WARNING: GPIO 9 is shared between BOOT Button and Extra Button 4.\n\nOnly one can be used at a time! Using both simultaneously will cause conflicts."
+      },
+      "haptic": {
+        "title": "GPIO 20 - Haptic Motor",
+        "message": "⚠️ WARNING: GPIO 20 is used for the Haptic Motor.\n\nSerial input (UART RX) will be unavailable when haptic is initialized!"
+      },
+      "serialTx": {
+        "title": "GPIO 21 - Extra Button 1",
+        "message": "⚠️ WARNING: GPIO 21 is used for Extra Button 1.\n\nSerial output (UART TX) will be unavailable when this pin is used for interrupts!"
+      }
     }
   },
   "dependencies": {

@@ -82,6 +82,22 @@ function checkISRBlocks(block) {
     block.setWarningText(null);
     block.setColour(0);
   }
+  
+  // Check for pin-specific warnings
+  var pin = block.getFieldValue('PIN');
+  var boardId = typeof selectedBoard === 'string' ? selectedBoard : (typeof localStorage !== 'undefined' ? localStorage.getItem('blocklyduino_board') : null);
+  if (typeof getPinWarning === 'function') {
+    var pinWarning = getPinWarning(boardId, pin);
+    if (pinWarning) {
+      var warningKey = boardId + '_' + pin;
+      if (typeof seenPinWarnings !== 'undefined' && !seenPinWarnings.has(warningKey)) {
+        seenPinWarnings.add(warningKey);
+        if (typeof showBlockInfoModal === 'function') {
+          showBlockInfoModal(i18n.t(pinWarning.title), i18n.t(pinWarning.message));
+        }
+      }
+    }
+  }
 }
 
 Blockly.Blocks['external_interrupt'] = {

@@ -30,10 +30,10 @@
 
   var BOARD_ID = 'esp32-controller';
   var CONTROLLER_BUTTON_PINS = [
-    ["Button1 (GPIO6)", "6"],
-    ["Button2 (GPIO7)", "7"],
-    ["Button3 (GPIO8)", "8"],
-    ["Button4 (GPIO9)", "9"]
+    ["Extra Button 1 (GPIO21)", "21"],
+    ["Extra Button 2 (GPIO7)", "7"],
+    ["Extra Button 3 (GPIO8)", "8"],
+    ["Extra Button 4 (GPIO9)", "9"]
   ];
 
   var root = (typeof window !== 'undefined') ? window : (typeof globalThis !== 'undefined' ? globalThis : null);
@@ -76,13 +76,13 @@
           .appendField(new Blockly.FieldImage("media/button.png", 64, 64))
           .appendField("Initialize");
       this.appendDummyInput("BUTTONS")
-          .appendField("SW1")
+          .appendField("Extra 1")
           .appendField(new Blockly.FieldCheckbox("TRUE"), "SW1")
-          .appendField("  SW2")
+          .appendField("  Extra 2")
           .appendField(new Blockly.FieldCheckbox("TRUE"), "SW2")
-          .appendField("  SW3")
+          .appendField("  Extra 3")
           .appendField(new Blockly.FieldCheckbox("TRUE"), "SW3")
-          .appendField("  SW4")
+          .appendField("  Extra 4")
           .appendField(new Blockly.FieldCheckbox("TRUE"), "SW4");
       this.setPreviousStatement(true, "general");
       this.setNextStatement(true, "general");
@@ -110,7 +110,7 @@
         }
         var pins = CONTROLLER_BUTTON_PINS.slice();
         for (var i = 0; i <= 48; i++) {
-          if (i !== 6 && i !== 7 && i !== 8 && i !== 9) {
+          if (i !== 21 && i !== 7 && i !== 8 && i !== 9) {
             pins.push(["GPIO" + i, String(i)]);
           }
         }
@@ -122,7 +122,7 @@
 })();
 
 var button_constants = {
-  '6': 'SW1_PIN',
+  '21': 'SW1_PIN',
   '7': 'SW2_PIN',
   '8': 'SW3_PIN',
   '9': 'SW4_PIN'

@@ -216,6 +216,16 @@ i18n.registerTranslations('de', {
       "readMessage": "Dieser Block liest den Status eines Tasters.\n\nGibt true zurück wenn gedrückt, false wenn nicht gedrückt.",
       "testMessage": "Dieser Block testet alle Taster sequenziell. Zeigt 'Buttontest' auf OLED, dann wird auf jeden Taster gewartet (Taster 1-2). Zeigt an welcher Taster zu drücken ist und bestätigt wenn gedrückt."
     },
+    "buttonEsp32Controller": {
+      "title": "Zusätzliche Taster",
+      "initMessage": "Dieser Block initialisiert die ausgewählten zusätzlichen Taster.\n\nVerwendete Pins:\n• Zusätzlicher Taster 1: GPIO21 (⚠️ deaktiviert Serial TX)\n• Zusätzlicher Taster 2: GPIO7\n• Zusätzlicher Taster 3: GPIO8 (gemeinsam mit Built-in LED)\n• Zusätzlicher Taster 4: GPIO9 (gemeinsam mit BOOT Taster)",
+      "readMessage": "Dieser Block liest den Status eines zusätzlichen Tasters.\n\nGibt true zurück wenn gedrückt, false wenn nicht gedrückt.",
+      "testMessage": "Dieser Block testet alle zusätzlichen Taster sequenziell. Zeigt Anweisungen auf dem Serial Monitor."
+    },
+    "externalInterrupt": {
+      "title": "Bei Interrupt",
+      "message": "Externer Interrupt-Block für GPIO-Pins.\n\nISR-Einschränkungen:\n• Kein delay() oder delayMicroseconds()\n• Kein Serial.print() oder Serial.write()\n• Code kurz und schnell halten\n• 'volatile' für Variablen verwenden, die mit der Hauptschleife geteilt werden\n• Keine blockierenden Funktionsaufrufe\n\nVerfügbare Interrupt-Pins für ESP32-Controller:\n• GPIO0-4: Joystick-Pins\n• GPIO7: Zusätzlicher Taster 2\n• GPIO8: Zusätzlicher Taster 3 (gemeinsam mit Built-in LED)\n• GPIO9: Zusätzlicher Taster 4 / BOOT Taster (⚠️ Konflikt)\n• GPIO10: Joystick Right Y\n• GPIO20: Haptikmotor (⚠️ deaktiviert Serial RX)\n• GPIO21: Zusätzlicher Taster 1 (⚠️ deaktiviert Serial TX)"
+    },
     "oled": {
       "title": "OLED Display",
       "testMessage": "Dieser Block testet das OLED Display indem 'OLED Test' auf dem Bildschirm angezeigt wird."
@@ -310,11 +320,25 @@ i18n.registerTranslations('de', {
     },
     "haptic": {
       "title": "Haptikmotor",
-      "message": "Haptikmotor (Vibrationsmotor) verbunden mit GPIO 10.\n\nMethoden:\n• Initialisieren - Setzt GPIO 10 als Ausgang\n• Einschalten - Aktiviert den Motor (HIGH)\n• Ausschalten - Deaktiviert den Motor (LOW)\n• Vibrieren - Nicht-blockierende Vibration für angegebene Millisekunden",
-      "initMessage": "Dieser Block initialisiert den Haptikmotor auf GPIO 10.",
-      "onMessage": "Dieser Block schaltet den Haptikmotor EIN (GPIO 10 HIGH).",
-      "offMessage": "Dieser Block schaltet den Haptikmotor AUS (GPIO 10 LOW).",
+      "message": "Haptikmotor (Vibrationsmotor) verbunden mit GPIO 20 (UART RX).\n\n⚠️ WARNUNG: Die Verwendung von GPIO 20 deaktiviert die serielle Eingabe (UART RX)!\n\nMethoden:\n• Initialisieren - Setzt GPIO 20 als Ausgang\n• Einschalten - Aktiviert den Motor (HIGH)\n• Ausschalten - Deaktiviert den Motor (LOW)\n• Vibrieren - Nicht-blockierende Vibration für angegebene Millisekunden",
+      "initMessage": "Dieser Block initialisiert den Haptikmotor auf GPIO 20 (UART RX).\n\n⚠️ WARNUNG: Die serielle Eingabe (UART RX) ist nicht verfügbar, wenn der Haptikmotor initialisiert ist!",
+      "onMessage": "Dieser Block schaltet den Haptikmotor EIN (GPIO 20 HIGH).",
+      "offMessage": "Dieser Block schaltet den Haptikmotor AUS (GPIO 20 LOW).",
       "vibrateMessage": "Dieser Block aktiviert den Haptikmotor für die angegebenen Millisekunden (nicht-blockierend mit Ticker-Bibliothek)."
+    },
+    "pinWarning": {
+      "gpio9": {
+        "title": "GPIO 9 - BOOT Taster / Zusätzlicher Taster 4",
+        "message": "⚠️ WARNUNG: GPIO 9 wird gemeinsam von BOOT Taster und Zusätzlichem Taster 4 genutzt.\n\nNur einer kann gleichzeitig verwendet werden! Die gleichzeitige Nutzung führt zu Konflikten."
+      },
+      "haptic": {
+        "title": "GPIO 20 - Haptikmotor",
+        "message": "⚠️ WARNUNG: GPIO 20 wird für den Haptikmotor verwendet.\n\nDie serielle Eingabe (UART RX) ist nicht verfügbar, wenn der Haptikmotor initialisiert ist!"
+      },
+      "serialTx": {
+        "title": "GPIO 21 - Zusätzlicher Taster 1",
+        "message": "⚠️ WARNUNG: GPIO 21 wird für den zusätzlichen Taster 1 verwendet.\n\nDie serielle Ausgabe (UART TX) ist nicht verfügbar, wenn dieser Pin für Interrupts verwendet wird!"
+      }
     }
   },
   "dependencies": {
