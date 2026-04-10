@@ -104,6 +104,12 @@ var ESP32_CONTROLLER_GENERATOR_SCRIPTS = [
 ];
 var esp32ControllerGeneratorsLoading = null;
 
+var ARDUINO_UNO_GENERATOR_SCRIPTS = [
+  'generators/arduino/arduino-uno/pins_uno.js',
+  'generators/arduino/arduino-uno/button.js'
+];
+var arduinoUnoGeneratorsLoading = null;
+
 var BOARD_INFO = {
   'esp32-s3-devkitc1': {
     name: 'BWS Playground Master',
@@ -372,6 +378,26 @@ function ensureESP32ControllerGeneratorsLoaded() {
   return esp32ControllerGeneratorsLoading;
 }
 
+function ensureArduinoUnoGeneratorsLoaded() {
+  ensureMasterGeneratorSetCaptured();
+  if (GENERATOR_SETS.arduinouno) {
+    return Promise.resolve();
+  }
+  if (arduinoUnoGeneratorsLoading) {
+    return arduinoUnoGeneratorsLoading;
+  }
+
+  arduinoUnoGeneratorsLoading = loadScriptsSequential(ARDUINO_UNO_GENERATOR_SCRIPTS).then(function() {
+    captureGeneratorSet('arduinouno');
+  }).catch(function(error) {
+    console.error('Failed to load Arduino Uno generator scripts', error);
+  }).finally(function() {
+    arduinoUnoGeneratorsLoading = null;
+  });
+
+  return arduinoUnoGeneratorsLoading;
+}
+
 function updateGeneratorsForBoard(boardId) {
   ensureMasterGeneratorSetCaptured();
   GENERATOR_SET_TARGET = boardId;
@@ -385,6 +411,12 @@ function updateGeneratorsForBoard(boardId) {
     ensureESP32ControllerGeneratorsLoaded().then(function() {
       if (GENERATOR_SET_TARGET === 'esp32-controller') {
         applyGeneratorSet('esp32controller');
+      }
+    });
+  } else if (boardId === 'arduino-uno') {
+    ensureArduinoUnoGeneratorsLoaded().then(function() {
+      if (GENERATOR_SET_TARGET === 'arduino-uno') {
+        applyGeneratorSet('arduinouno');
       }
     });
   } else {

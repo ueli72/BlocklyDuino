@@ -75,7 +75,7 @@ i18n.registerTranslations('de', {
     "brightness": "Helligkeit",
     "ws2812": "WS2812 LED Streifen",
     "bluetoothLE": "Bluetooth LE",
-    "ky023": "KY023 Joystick",
+    "ky023": "KY023 Dual Joystick",
     "serial": "Serial",
     "basic": "Basis",
     "testAll": "Alle Testen",
@@ -289,9 +289,10 @@ i18n.registerTranslations('de', {
       "testInfo": "Siehe readme_ble_deu.txt für detaillierte Testanleitung mit der LightBlue App."
     },
     "ky023": {
-      "title": "KY023 Joystick",
-      "message": "Zweiachsiger analoger Joystick mit integriertem Taster. Gibt Werte von -128 bis +127 für jede Achse zurück (0 = Mittelstellung). Taster ist active LOW (gedrückt = true).",
-      "testMessage": "Dieser Block testet den KY023 Joystick, indem X/Y-Werte und Tasterstatus für 10 Sekunden auf dem OLED Display angezeigt werden."
+      "title": "KY023 Dual Joystick",
+      "initMessage": "Initialisiert einen oder beide KY023 Joysticks. JoyLeft: X=GPIO1, Y=GPIO2, SW=GPIO0. JoyRight: X=GPIO4, Y=GPIO5, SW=GPIO3. Taster-Pins verwenden internen Pullup.",
+      "message": "Zweiachsiger analoger Joystick mit integriertem Taster. Gibt rohe ADC-Werte von 0 bis 4095 für jede Achse zurück (~2000 = Mittelstellung). Taster ist active LOW (gedrückt = true wenn mit GND verbunden).",
+      "testMessage": "Dieser Block testet beide KY023 Joysticks (JoyLeft und JoyRight), indem X/Y-Werte und Tasterstatus für jeweils 10 Sekunden auf Serial ausgegeben werden."
     },
     "serial": {
       "title": "Serial Kommunikation",
@@ -364,10 +365,10 @@ i18n.registerTranslations('de', {
     "bleRemoteSend": "BLE muss initialisiert werden, bevor Daten gesendet werden können.",
     "bleRemoteIsConnected": "BLE muss initialisiert werden, bevor die Verbindung geprüft werden kann.",
     "bleRemoteTest": "BLE muss initialisiert werden, bevor der Test durchgeführt werden kann.",
-    "ky023ReadX": "KY023 Joystick muss initialisiert werden, bevor die X-Achse gelesen werden kann.",
-    "ky023ReadY": "KY023 Joystick muss initialisiert werden, bevor die Y-Achse gelesen werden kann.",
-    "ky023ReadButton": "KY023 Joystick muss initialisiert werden, bevor der Taster gelesen werden kann.",
-    "ky023Test": "KY023 Joystick muss initialisiert werden, bevor der Test durchgeführt werden kann.",
+    "ky023ReadX": "KY023 Joystick muss initialisiert werden, bevor die X-Achse gelesen werden kann. Stellen Sie sicher, dass der ausgewählte Joystick (Left oder Right) im Initialisierungsblock aktiviert ist.",
+    "ky023ReadY": "KY023 Joystick muss initialisiert werden, bevor die Y-Achse gelesen werden kann. Stellen Sie sicher, dass der ausgewählte Joystick (Left oder Right) im Initialisierungsblock aktiviert ist.",
+    "ky023ReadButton": "KY023 Joystick muss initialisiert werden, bevor der Taster gelesen werden kann. Stellen Sie sicher, dass der ausgewählte Joystick (Left oder Right) im Initialisierungsblock aktiviert ist.",
+    "ky023Test": "KY023 Joystick muss initialisiert werden, bevor der Test durchgeführt werden kann. Mindestens ein Joystick sollte im Initialisierungsblock aktiviert sein.",
     "serialPrint": "Serial muss initialisiert werden, bevor ausgegeben werden kann.",
     "serialPrintln": "Serial muss initialisiert werden, bevor ausgegeben werden kann.",
     "serialReadChar": "Serial muss initialisiert werden, bevor gelesen werden kann.",

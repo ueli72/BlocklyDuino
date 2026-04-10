@@ -352,7 +352,7 @@ var BLOCK_INFO = {
   },
   'ky023_init': {
     title: 'blockInfo.ky023.title',
-    message: 'blockInfo.ky023.message',
+    message: 'blockInfo.ky023.initMessage',
     includes: ['ky023.h']
   },
   'ky023_read_x': {
@@ -374,7 +374,7 @@ var BLOCK_INFO = {
     title: 'blockInfo.ky023.title',
     message: 'blockInfo.ky023.message',
     testMessage: 'blockInfo.ky023.testMessage',
-    includes: ['ky023.h', 'oled.h']
+    includes: ['ky023.h']
   },
   'serial_init': {
     title: 'blockInfo.serial.title',

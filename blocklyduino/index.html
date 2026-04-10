@@ -45,6 +45,8 @@
 <script type="text/javascript" src="blocks/playground_esp32_controller/internal_led.js"></script>
 <script type="text/javascript" src="blocks/playground_esp32_controller/oled.js"></script>
 <script type="text/javascript" src="blocks/playground_esp32_controller/haptic.js"></script>
+<script type="text/javascript" src="blocks/playground_esp32_controller/ky023.js"></script>
+<script type="text/javascript" src="blocks/arduino-uno/button.js"></script>
   <script type="text/javascript" src="generators/arduino.js"></script>
   <script type="text/javascript" src="generators/arduino/base.js"></script>
   <script type="text/javascript" src="generators/arduino/control.js"></script>
@@ -77,6 +79,7 @@
   <script type="text/javascript" src="generators/arduino/playground/global_array.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/custom_code.js"></script>
 <script type="text/javascript" src="generators/arduino/playground_esp32_controller/haptic.js"></script>
+<script type="text/javascript" src="generators/arduino/arduino-uno/button.js"></script>
   <script type="text/javascript" src="msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
@@ -1976,6 +1979,13 @@ function initBlockly() {
             </block>
           </value>
         </block>
+      </category>
+      <category name="KY023 Joystick" data-i18n-name="categories.ky023">
+        <block type="ky023_init"></block>
+        <block type="ky023_read_x"></block>
+        <block type="ky023_read_y"></block>
+        <block type="ky023_read_button"></block>
+        <block type="ky023_test"></block>
       </category>
       <category name="Test All" data-i18n-name="categories.testAll">
         <block type="test_all"></block>

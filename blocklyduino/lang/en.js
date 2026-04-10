@@ -75,7 +75,7 @@ i18n.registerTranslations('en', {
     "brightness": "Brightness",
     "ws2812": "WS2812 LED Strip",
     "bluetoothLE": "Bluetooth LE",
-    "ky023": "KY023 Joystick",
+    "ky023": "KY023 Dual Joystick",
     "serial": "Serial",
     "basic": "Basic",
     "testAll": "Test All",
@@ -289,9 +289,10 @@ i18n.registerTranslations('en', {
       "testInfo": "See readme_ble.txt for detailed testing instructions with LightBlue mobile app."
     },
     "ky023": {
-      "title": "KY023 Joystick",
-      "message": "Dual-axis analog joystick with integrated button. Returns values from -128 to +127 for each axis (0 = center). Button is active LOW (pressed = true).",
-      "testMessage": "This block tests the KY023 joystick by displaying X/Y values and button state on the OLED display for 10 seconds."
+      "title": "KY023 Dual Joystick",
+      "initMessage": "Initialize one or both KY023 joysticks. JoyLeft: X=GPIO1, Y=GPIO2, SW=GPIO0. JoyRight: X=GPIO4, Y=GPIO5, SW=GPIO3. Button pins use internal pullup.",
+      "message": "Dual-axis analog joystick with integrated button. Returns raw ADC values from 0 to 4095 for each axis (~2000 = center). Button is active LOW (pressed = true when connected to GND).",
+      "testMessage": "This block tests both KY023 joysticks (JoyLeft and JoyRight) by printing X/Y values and button state to Serial for 10 seconds each."
     },
     "serial": {
       "title": "Serial Communication",
@@ -364,10 +365,10 @@ i18n.registerTranslations('en', {
     "bleRemoteSend": "BLE must be initialized before sending data.",
     "bleRemoteIsConnected": "BLE must be initialized before checking connection.",
     "bleRemoteTest": "BLE must be initialized before running test.",
-    "ky023ReadX": "KY023 joystick must be initialized before reading X-axis.",
-    "ky023ReadY": "KY023 joystick must be initialized before reading Y-axis.",
-    "ky023ReadButton": "KY023 joystick must be initialized before reading button.",
-    "ky023Test": "KY023 joystick must be initialized before running test.",
+    "ky023ReadX": "KY023 joystick must be initialized before reading X-axis. Ensure the selected joystick (Left or Right) is checked in the Initialize block.",
+    "ky023ReadY": "KY023 joystick must be initialized before reading Y-axis. Ensure the selected joystick (Left or Right) is checked in the Initialize block.",
+    "ky023ReadButton": "KY023 joystick must be initialized before reading button. Ensure the selected joystick (Left or Right) is checked in the Initialize block.",
+    "ky023Test": "KY023 joystick must be initialized before running test. At least one joystick should be checked in the Initialize block.",
     "serialPrint": "Serial must be initialized before printing.",
     "serialPrintln": "Serial must be initialized before printing.",
     "serialReadChar": "Serial must be initialized before reading.",

@@ -83,6 +83,12 @@ Blockly.Blocks['button_test'] = {
 };
 
 function getInterruptPins() {
+  if (typeof getCurrentBoardInterruptPinOptions === 'function') {
+    var options = getCurrentBoardInterruptPinOptions();
+    if (options && options.length > 0) {
+      return options;
+    }
+  }
   var pins = getButtonPins();
   for (var i = 0; i <= 48; i++) {
     if (i !== 6 && i !== 7 && i !== 8 && i !== 9) {

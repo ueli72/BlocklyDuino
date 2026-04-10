@@ -18,65 +18,18 @@
  */
 
 /**
- * @fileoverview KY023 Joystick Module blocks.
+ * @fileoverview KY023 Dual Joystick Module blocks for esp32-controller.
  */
 'use strict';
 
 Blockly.Blocks = Blockly.Blocks || {};
 Blockly.Blocks.ky023 = {};
 
-var KY023_ANALOG_PINS = {
-  'esp32-s3-devkitc1': [
-    ["GPIO1", "1"],
-    ["GPIO2", "2"],
-    ["GPIO3", "3"],
-    ["GPIO4", "4"],
-    ["GPIO5", "5"],
-    ["GPIO6", "6"],
-    ["GPIO7", "7"],
-    ["GPIO8", "8"],
-    ["GPIO9", "9"],
-    ["GPIO10", "10"],
-    ["GPIO11", "11"],
-    ["GPIO12", "12"],
-    ["GPIO13", "13"],
-    ["GPIO14", "14"],
-    ["GPIO15", "15"],
-    ["GPIO16", "16"],
-    ["GPIO17", "17"],
-    ["GPIO18", "18"],
-    ["GPIO19", "19"],
-    ["GPIO20", "20"],
-    ["GPIO21", "21"],
-    ["GPIO36", "36"],
-    ["GPIO37", "37"],
-    ["GPIO38", "38"],
-    ["GPIO39", "39"],
-    ["GPIO40", "40"],
-    ["GPIO41", "41"],
-    ["GPIO42", "42"],
-    ["GPIO45", "45"],
-    ["GPIO46", "46"],
-    ["GPIO47", "47"],
-    ["GPIO48", "48"]
-  ],
-  'arduino-uno': [
-    ["A0", "A0"],
-    ["A1", "A1"],
-    ["A2", "A2"],
-    ["A3", "A3"],
-    ["A4", "A4"],
-    ["A5", "A5"]
-  ]
-};
-
-KY023_ANALOG_PINS['playground-brumbrum-esp32-s3-devkitc1'] = KY023_ANALOG_PINS['esp32-s3-devkitc1'];
-KY023_ANALOG_PINS['esp32-controller'] = KY023_ANALOG_PINS['esp32-s3-devkitc1'];
-
-function getKY023AnalogPins() {
-  var boardId = window.currentBoardId || 'esp32-s3-devkitc1';
-  return KY023_ANALOG_PINS[boardId] || KY023_ANALOG_PINS['esp32-s3-devkitc1'];
-}
+// Joystick selection dropdown
+var KY023_JOYSTICK_OPTIONS = [
+  ["JoyLeft", "LEFT"],
+  ["JoyRight", "RIGHT"]
+];
 
 Blockly.Blocks['ky023_init'] = {
   init: function() {
@@ -85,15 +38,13 @@ Blockly.Blocks['ky023_init'] = {
         .appendField("KY023 Joystick")
         .appendField(new Blockly.FieldImage("media/ky023jm.png", 64, 64))
         .appendField("Initialize")
-        .appendField(" X-Axis")
-        .appendField(new Blockly.FieldDropdown(getKY023AnalogPins), "X_PIN")
-        .appendField(" Y-Axis")
-        .appendField(new Blockly.FieldDropdown(getKY023AnalogPins), "Y_PIN")
-        .appendField(" Button")
-        .appendField(new Blockly.FieldDropdown(getKY023AnalogPins), "BUTTON_PIN");
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "INIT_LEFT")
+        .appendField("JoyLeft")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "INIT_RIGHT")
+        .appendField("JoyRight");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Initialize KY023 joystick module with configurable pins');
+    this.setTooltip('Initialize KY023 dual joystick module. JoyLeft: X=GPIO1, Y=GPIO2, SW=GPIO0. JoyRight: X=GPIO4, Y=GPIO5, SW=GPIO3');
   }
 };
 
@@ -103,9 +54,10 @@ Blockly.Blocks['ky023_read_x'] = {
     this.appendDummyInput()
         .appendField("KY023 Joystick")
         .appendField(new Blockly.FieldImage("media/ky023jm.png", 64, 64))
-        .appendField("Read X-Axis");
+        .appendField("Read X-Axis")
+        .appendField(new Blockly.FieldDropdown(KY023_JOYSTICK_OPTIONS), "JOYSTICK");
     this.setOutput(true, 'Number');
-    this.setTooltip('Read X-axis value (-128 to 127). 0 = center position.');
+    this.setTooltip('Read X-axis value (0-4095) from selected joystick. Center is ~2000.');
   }
 };
 
@@ -115,9 +67,10 @@ Blockly.Blocks['ky023_read_y'] = {
     this.appendDummyInput()
         .appendField("KY023 Joystick")
         .appendField(new Blockly.FieldImage("media/ky023jm.png", 64, 64))
-        .appendField("Read Y-Axis");
+        .appendField("Read Y-Axis")
+        .appendField(new Blockly.FieldDropdown(KY023_JOYSTICK_OPTIONS), "JOYSTICK");
     this.setOutput(true, 'Number');
-    this.setTooltip('Read Y-axis value (-128 to 127). 0 = center position.');
+    this.setTooltip('Read Y-axis value (0-4095) from selected joystick. Center is ~2000.');
   }
 };
 
@@ -127,9 +80,10 @@ Blockly.Blocks['ky023_read_button'] = {
     this.appendDummyInput()
         .appendField("KY023 Joystick")
         .appendField(new Blockly.FieldImage("media/ky023jm.png", 64, 64))
-        .appendField("Read Button");
+        .appendField("Switch Pressed")
+        .appendField(new Blockly.FieldDropdown(KY023_JOYSTICK_OPTIONS), "JOYSTICK");
     this.setOutput(true, 'Boolean');
-    this.setTooltip('Read button state (true = pressed, false = not pressed)');
+    this.setTooltip('Check if joystick button is pressed (returns true when pressed, false when released). Button is active LOW.');
   }
 };
 
@@ -142,6 +96,6 @@ Blockly.Blocks['ky023_test'] = {
         .appendField("Test");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Test the KY023 joystick by reading and printing values to Serial');
+    this.setTooltip('Test both joysticks by reading and printing values to Serial for 10 seconds each.');
   }
 };

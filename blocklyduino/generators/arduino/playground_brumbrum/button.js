@@ -96,6 +96,12 @@
   if (originalGetInterruptPins) {
     root.getInterruptPins = function() {
       if (isBrumbrumBoard()) {
+        if (typeof getCurrentBoardInterruptPinOptions === 'function') {
+          var options = getCurrentBoardInterruptPinOptions();
+          if (options && options.length > 0) {
+            return options;
+          }
+        }
         var pins = BRUMBRUM_BUTTON_PINS.slice();
         for (var i = 0; i <= 48; i++) {
           if (i !== 1 && i !== 2) {

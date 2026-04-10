@@ -1,10 +1,6 @@
-// Made for playground-brumbrum-esp32-s3-devkitc1
+// Made for esp32-controller
 #include "ky023.h"
 #include "serial.h"
-
-static int _ky023_xPin = 0;
-static int _ky023_yPin = 0;
-static int _ky023_buttonPin = 0;
 
 static bool serialInitialized = false;
 
@@ -16,44 +12,56 @@ static void ensureSerialInit() {
     }
 }
 
-void initKY023(int xPin, int yPin, int buttonPin) {
-    _ky023_xPin = xPin;
-    _ky023_yPin = yPin;
-    _ky023_buttonPin = buttonPin;
-    
-    pinMode(_ky023_buttonPin, INPUT_PULLUP);
+void initJoyLeft() {
+    pinMode(JOY_LEFT_X_PIN, INPUT);
+    pinMode(JOY_LEFT_Y_PIN, INPUT);
+    pinMode(JOY_LEFT_SW_PIN, INPUT_PULLUP);
 }
 
-int readKY023X() {
-    int rawValue = analogRead(_ky023_xPin);
-    int mappedValue = map(rawValue, 0, 4095, 0, 255);
-    return mappedValue - 128;
+void initJoyRight() {
+    pinMode(JOY_RIGHT_X_PIN, INPUT);
+    pinMode(JOY_RIGHT_Y_PIN, INPUT);
+    pinMode(JOY_RIGHT_SW_PIN, INPUT_PULLUP);
 }
 
-int readKY023Y() {
-    int rawValue = analogRead(_ky023_yPin);
-    int mappedValue = map(rawValue, 0, 4095, 0, 255);
-    return mappedValue - 128;
+int readJoyLeftX() {
+    return analogRead(JOY_LEFT_X_PIN);
 }
 
-bool isKY023ButtonPressed() {
-    return digitalRead(_ky023_buttonPin) == LOW;
+int readJoyLeftY() {
+    return analogRead(JOY_LEFT_Y_PIN);
 }
 
-void testKY023() {
+bool isJoyLeftPressed() {
+    return digitalRead(JOY_LEFT_SW_PIN) == LOW;
+}
+
+int readJoyRightX() {
+    return analogRead(JOY_RIGHT_X_PIN);
+}
+
+int readJoyRightY() {
+    return analogRead(JOY_RIGHT_Y_PIN);
+}
+
+bool isJoyRightPressed() {
+    return digitalRead(JOY_RIGHT_SW_PIN) == LOW;
+}
+
+void testJoyLeft() {
     ensureSerialInit();
     
     serialPrintln("\n========================================");
-    serialPrintln("       KY023 JOYSTICK TEST");
+    serialPrintln("       JOYLEFT KY023 TEST");
     serialPrintln("========================================");
-    serialPrintln("Move joystick and press button...");
+    serialPrintln("Move JoyLeft and press button...");
     serialPrintln("Test runs for 10 seconds");
     serialPrintln("----------------------------------------");
     
     for (int i = 0; i < 50; i++) {
-        int x = readKY023X();
-        int y = readKY023Y();
-        bool button = isKY023ButtonPressed();
+        int x = readJoyLeftX();
+        int y = readJoyLeftY();
+        bool button = isJoyLeftPressed();
         
         serialPrint("[");
         serialPrint(i / 5 + 1);
@@ -68,6 +76,44 @@ void testKY023() {
     }
     
     serialPrintln("----------------------------------------");
-    serialPrintln("KY023 Joystick test complete!");
+    serialPrintln("JoyLeft test complete!");
     serialPrintln("========================================");
+}
+
+void testJoyRight() {
+    ensureSerialInit();
+    
+    serialPrintln("\n========================================");
+    serialPrintln("       JOYRIGHT KY023 TEST");
+    serialPrintln("========================================");
+    serialPrintln("Move JoyRight and press button...");
+    serialPrintln("Test runs for 10 seconds");
+    serialPrintln("----------------------------------------");
+    
+    for (int i = 0; i < 50; i++) {
+        int x = readJoyRightX();
+        int y = readJoyRightY();
+        bool button = isJoyRightPressed();
+        
+        serialPrint("[");
+        serialPrint(i / 5 + 1);
+        serialPrint("/10] X: ");
+        serialPrint(x);
+        serialPrint(" Y: ");
+        serialPrint(y);
+        serialPrint(" Button: ");
+        serialPrintln(button ? "PRESSED" : "released");
+        
+        delay(200);
+    }
+    
+    serialPrintln("----------------------------------------");
+    serialPrintln("JoyRight test complete!");
+    serialPrintln("========================================");
+}
+
+void testKY023() {
+    testJoyLeft();
+    delay(500);
+    testJoyRight();
 }
