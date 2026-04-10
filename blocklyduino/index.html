@@ -42,8 +42,9 @@
   <script type="text/javascript" src="blocks/playground/variable.js"></script>
   <script type="text/javascript" src="blocks/playground/global_array.js"></script>
   <script type="text/javascript" src="blocks/playground/custom_code.js"></script>
-  <script type="text/javascript" src="blocks/playground_esp32_controller/internal_led.js"></script>
-  <script type="text/javascript" src="blocks/playground_esp32_controller/oled.js"></script>
+<script type="text/javascript" src="blocks/playground_esp32_controller/internal_led.js"></script>
+<script type="text/javascript" src="blocks/playground_esp32_controller/oled.js"></script>
+<script type="text/javascript" src="blocks/playground_esp32_controller/haptic.js"></script>
   <script type="text/javascript" src="generators/arduino.js"></script>
   <script type="text/javascript" src="generators/arduino/base.js"></script>
   <script type="text/javascript" src="generators/arduino/control.js"></script>
@@ -75,6 +76,7 @@
   <script type="text/javascript" src="generators/arduino/playground/variable.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/global_array.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/custom_code.js"></script>
+<script type="text/javascript" src="generators/arduino/playground_esp32_controller/haptic.js"></script>
   <script type="text/javascript" src="msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
@@ -414,12 +416,13 @@ function addToolboxIcons() {
     var ky023Text = i18n.t('categories.ky023');
     var serialText = i18n.t('categories.serial');
     var basicText = i18n.t('categories.basic');
+    var hapticText = i18n.t('categories.haptic');
     var playgroundText = i18n.t('categories.playground');
     var brumbrumText = i18n.t('categories.brumbrum');
     var esp32ControllerText = i18n.t('categories.esp32Controller');
     var inputOutputText = i18n.t('categories.inputOutput');
 
-    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText || text === sdcardText || text === max98357aText || text === brightnessText || text === ws2812Text || text === bluetoothLEText || text === testAllText || text === ky023Text || text === serialText || text === basicText;
+    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText || text === sdcardText || text === max98357aText || text === brightnessText || text === ws2812Text || text === bluetoothLEText || text === testAllText || text === ky023Text || text === serialText || text === basicText || text === hapticText;
 
     // Add class for subcategories
     if (isSubcategory) {
@@ -470,7 +473,8 @@ function addToolboxIcons() {
     else if (text === ky023Text) iconClass = 'bi-controller';
     else if (text === serialText) iconClass = 'bi-terminal';
     else if (text === basicText) iconClass = 'bi-plug';
-    
+    else if (text === hapticText) iconClass = 'bi-activity';
+
     if (iconClass || iconText) {
       var icon = row.querySelector('.toolbox-icon');
       if (!icon) {
@@ -1960,6 +1964,18 @@ function initBlockly() {
         <block type="button_init"></block>
         <block type="button_read"></block>
         <block type="button_test"></block>
+      </category>
+      <category name="Haptic Actuator" data-i18n-name="categories.haptic">
+        <block type="haptic_init"></block>
+        <block type="haptic_turn_on"></block>
+        <block type="haptic_turn_off"></block>
+        <block type="haptic_vibrate">
+          <value name="DURATION">
+            <block type="math_number">
+              <field name="NUM">500</field>
+            </block>
+          </value>
+        </block>
       </category>
       <category name="Test All" data-i18n-name="categories.testAll">
         <block type="test_all"></block>

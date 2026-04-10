@@ -72,13 +72,14 @@ i18n.registerTranslations('en', {
     "ultrasonic": "Ultrasonic",
     "sdcard": "SD Card",
     "max98357a": "MAX98357A",
-"brightness": "Brightness",
+    "brightness": "Brightness",
     "ws2812": "WS2812 LED Strip",
     "bluetoothLE": "Bluetooth LE",
     "ky023": "KY023 Joystick",
     "serial": "Serial",
     "basic": "Basic",
-    "testAll": "Test All"
+    "testAll": "Test All",
+    "haptic": "Haptic Actuator"
   },
   "blocks": {
     "pinMode": "Set Pin Mode",
@@ -181,7 +182,12 @@ i18n.registerTranslations('en', {
     "globalArrayFill": "Fill Array",
     "customCodeStatement": "Custom Code",
     "customCodeExpression": "Custom Expression",
-    "customCodeInclude": "Custom Include/Define"
+    "customCodeInclude": "Custom Include/Define",
+    "hapticInit": "Initialize",
+    "hapticTurnOn": "Turn On",
+    "hapticTurnOff": "Turn Off",
+    "hapticVibrate": "Vibrate for",
+    "hapticMs": "ms"
   },
   "blockInfo": {
     "internalLED": {
@@ -300,6 +306,14 @@ i18n.registerTranslations('en', {
     "globalVariable": {
       "title": "Global Variable",
       "message": "Declare a global variable accessible from all code blocks including interrupts and timers.\n\n• 'volatile': Required for variables shared with interrupts/timers\n• Types: int, byte, long, float, bool, char*\n• Initial value is optional\n\nUse volatile when the variable is modified in an interrupt handler and read in the main loop (or vice versa)."
+    },
+    "haptic": {
+      "title": "Haptic Actuator",
+      "message": "Haptic actuator (vibration motor) connected to GPIO 10.\n\nMethods:\n• Initialize - Sets GPIO 10 as output\n• Turn On - Activates the motor (HIGH)\n• Turn Off - Deactivates the motor (LOW)\n• Vibrate - Non-blocking vibration for specified milliseconds",
+      "initMessage": "This block initializes the haptic actuator on GPIO 10.",
+      "onMessage": "This block turns the haptic actuator ON (GPIO 10 HIGH).",
+      "offMessage": "This block turns the haptic actuator OFF (GPIO 10 LOW).",
+      "vibrateMessage": "This block activates the haptic actuator for the specified milliseconds (non-blocking using Ticker library)."
     }
   },
   "dependencies": {
@@ -358,7 +372,10 @@ i18n.registerTranslations('en', {
     "serialPrintln": "Serial must be initialized before printing.",
     "serialReadChar": "Serial must be initialized before reading.",
     "serialReadLine": "Serial must be initialized before reading.",
-    "serialAvailable": "Serial must be initialized before checking available bytes."
+    "serialAvailable": "Serial must be initialized before checking available bytes.",
+    "hapticTurnOn": "Haptic actuator must be initialized before turning on.",
+    "hapticTurnOff": "Haptic actuator must be initialized before turning off.",
+    "hapticVibrate": "Haptic actuator must be initialized before vibrating."
   },
   "warnings": {
     "mustBeInInterrupts": "This block must be placed inside the Interrupts block!",

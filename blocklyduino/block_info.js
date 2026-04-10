@@ -405,6 +405,26 @@ var BLOCK_INFO = {
     title: 'blockInfo.serial.title',
     message: 'blockInfo.serial.message',
     includes: ['serial.h']
+  },
+  'haptic_init': {
+    title: 'blockInfo.haptic.title',
+    message: 'blockInfo.haptic.initMessage',
+    includes: ['haptic.h']
+  },
+  'haptic_turn_on': {
+    title: 'blockInfo.haptic.title',
+    message: 'blockInfo.haptic.onMessage',
+    includes: ['haptic.h']
+  },
+  'haptic_turn_off': {
+    title: 'blockInfo.haptic.title',
+    message: 'blockInfo.haptic.offMessage',
+    includes: ['haptic.h']
+  },
+  'haptic_vibrate': {
+    title: 'blockInfo.haptic.title',
+    message: 'blockInfo.haptic.vibrateMessage',
+    includes: ['haptic.h']
   }
 };
 
@@ -632,6 +652,18 @@ var BLOCK_DEPENDENCIES = {
   'serial_available': {
     requires: 'serial_init',
     message: 'dependencies.serialAvailable'
+  },
+  'haptic_turn_on': {
+    requires: 'haptic_init',
+    message: 'dependencies.hapticTurnOn'
+  },
+  'haptic_turn_off': {
+    requires: 'haptic_init',
+    message: 'dependencies.hapticTurnOff'
+  },
+  'haptic_vibrate': {
+    requires: 'haptic_init',
+    message: 'dependencies.hapticVibrate'
   }
 };
 

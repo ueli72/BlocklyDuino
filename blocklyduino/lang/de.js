@@ -72,13 +72,14 @@ i18n.registerTranslations('de', {
     "ultrasonic": "Ultraschall",
     "sdcard": "SD Karte",
     "max98357a": "MAX98357A",
-"brightness": "Helligkeit",
+    "brightness": "Helligkeit",
     "ws2812": "WS2812 LED Streifen",
     "bluetoothLE": "Bluetooth LE",
     "ky023": "KY023 Joystick",
     "serial": "Serial",
     "basic": "Basis",
-    "testAll": "Alle Testen"
+    "testAll": "Alle Testen",
+    "haptic": "Haptikmotor"
   },
   "blocks": {
     "pinMode": "Pin Modus setzen",
@@ -181,7 +182,12 @@ i18n.registerTranslations('de', {
     "globalArrayFill": "Array füllen",
     "customCodeStatement": "Eigener Code",
     "customCodeExpression": "Eigener Ausdruck",
-    "customCodeInclude": "Eigener Include/Define"
+    "customCodeInclude": "Eigener Include/Define",
+    "hapticInit": "Initialisieren",
+    "hapticTurnOn": "Einschalten",
+    "hapticTurnOff": "Ausschalten",
+    "hapticVibrate": "Vibrieren für",
+    "hapticMs": "ms"
   },
   "blockInfo": {
     "internalLED": {
@@ -300,6 +306,14 @@ i18n.registerTranslations('de', {
     "globalVariable": {
       "title": "Globale Variable",
       "message": "Deklariert eine globale Variable, die aus allen Codeblöcken einschließlich Interrupts und Timern zugänglich ist.\n\n• 'volatile': Erforderlich für Variablen, die mit Interrupts/Timern geteilt werden\n• Typen: int, byte, long, float, bool, char*\n• Anfangswert ist optional\n\nVerwenden Sie volatile, wenn die Variable in einem Interrupt-Handler geändert und in der Hauptschleife gelesen wird (oder umgekehrt)."
+    },
+    "haptic": {
+      "title": "Haptikmotor",
+      "message": "Haptikmotor (Vibrationsmotor) verbunden mit GPIO 10.\n\nMethoden:\n• Initialisieren - Setzt GPIO 10 als Ausgang\n• Einschalten - Aktiviert den Motor (HIGH)\n• Ausschalten - Deaktiviert den Motor (LOW)\n• Vibrieren - Nicht-blockierende Vibration für angegebene Millisekunden",
+      "initMessage": "Dieser Block initialisiert den Haptikmotor auf GPIO 10.",
+      "onMessage": "Dieser Block schaltet den Haptikmotor EIN (GPIO 10 HIGH).",
+      "offMessage": "Dieser Block schaltet den Haptikmotor AUS (GPIO 10 LOW).",
+      "vibrateMessage": "Dieser Block aktiviert den Haptikmotor für die angegebenen Millisekunden (nicht-blockierend mit Ticker-Bibliothek)."
     }
   },
   "dependencies": {
@@ -358,7 +372,10 @@ i18n.registerTranslations('de', {
     "serialPrintln": "Serial muss initialisiert werden, bevor ausgegeben werden kann.",
     "serialReadChar": "Serial muss initialisiert werden, bevor gelesen werden kann.",
     "serialReadLine": "Serial muss initialisiert werden, bevor gelesen werden kann.",
-    "serialAvailable": "Serial muss initialisiert werden, bevor verfügbare Bytes geprüft werden können."
+    "serialAvailable": "Serial muss initialisiert werden, bevor verfügbare Bytes geprüft werden können.",
+    "hapticTurnOn": "Haptikmotor muss initialisiert werden, bevor er eingeschaltet werden kann.",
+    "hapticTurnOff": "Haptikmotor muss initialisiert werden, bevor er ausgeschaltet werden kann.",
+    "hapticVibrate": "Haptikmotor muss initialisiert werden, bevor er vibrieren kann."
   },
   "warnings": {
     "mustBeInInterrupts": "Dieser Block muss im Interrupts-Block platziert werden!",
