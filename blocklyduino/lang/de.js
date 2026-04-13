@@ -191,9 +191,9 @@ i18n.registerTranslations('de', {
   },
   "blockInfo": {
     "internalLED": {
-      "title": "Interne RGB-LED",
-      "message": "Achtung. Auf dem DEV-Board gibt es eine lötbare Brücke, die verbunden werden muss, damit die interne RGB-LED funktioniert.",
-      "testMessage": "Dieser Block testet die interne RGB-LED: Rot, Grün, Blau (je 500ms), dann aus."
+      "title": "Interne LED",
+      "message": "Die integrierte LED ist mit GPIO8 verbunden und ist active LOW (AN bei LOW, AUS bei HIGH).",
+      "testMessage": "Dieser Block testet die interne LED durch Ein- und Ausschalten."
     },
     "servo": {
       "title": "SG90 Servo",

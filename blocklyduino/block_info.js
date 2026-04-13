@@ -9,15 +9,20 @@ var BLOCK_INFO = {
     message: 'blockInfo.internalLED.message',
     includes: ['internalLED.h']
   },
-  'internal_led_off': {
-    title: 'blockInfo.internalLED.title',
-    message: 'blockInfo.internalLED.message',
-    includes: ['internalLED.h']
-  },
   'internal_led_test': {
     title: 'blockInfo.internalLED.title',
     message: 'blockInfo.internalLED.message',
     testMessage: 'blockInfo.internalLED.testMessage',
+    includes: ['internalLED.h']
+  },
+  'esp32_controller_led_init': {
+    title: 'blockInfo.internalLED.title',
+    message: 'blockInfo.internalLED.message',
+    includes: ['internalLED.h']
+  },
+  'esp32_controller_led_set': {
+    title: 'blockInfo.internalLED.title',
+    message: 'blockInfo.internalLED.message',
     includes: ['internalLED.h']
   },
   'button_interrupt': {
@@ -467,13 +472,13 @@ var BLOCK_DEPENDENCIES = {
     requires: 'internal_led_init',
     message: 'dependencies.ledSet'
   },
-  'internal_led_off': {
-    requires: 'internal_led_init',
-    message: 'dependencies.ledOff'
-  },
   'internal_led_test': {
     requires: 'internal_led_init',
     message: 'dependencies.ledTest'
+  },
+  'esp32_controller_led_set': {
+    requires: 'esp32_controller_led_init',
+    message: 'dependencies.ledSet'
   },
   'oled_write': {
     requires: 'oled_init',

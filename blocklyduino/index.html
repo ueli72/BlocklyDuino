@@ -78,6 +78,7 @@
   <script type="text/javascript" src="generators/arduino/playground/variable.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/global_array.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/custom_code.js"></script>
+<script type="text/javascript" src="generators/arduino/playground_esp32_controller/internal_led.js"></script>
 <script type="text/javascript" src="generators/arduino/playground_esp32_controller/haptic.js"></script>
 <script type="text/javascript" src="generators/arduino/arduino-uno/button.js"></script>
   <script type="text/javascript" src="msg/js/en.js"></script>
@@ -1937,8 +1938,8 @@ function initBlockly() {
     </category>
       <category name="ESP32-Controller" data-i18n-name="categories.esp32Controller" data-board="esp32-controller">
       <category name="Internal LED" data-i18n-name="categories.internalLED">
-        <block type="internal_led_on"></block>
-        <block type="internal_led_off"></block>
+        <block type="esp32_controller_led_init"></block>
+        <block type="esp32_controller_led_set"></block>
       </category>
       <category name="OLED Display" data-i18n-name="categories.oled">
         <block type="oled_init"></block>

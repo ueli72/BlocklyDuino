@@ -26,28 +26,28 @@
 Blockly.Blocks = Blockly.Blocks || {};
 Blockly.Blocks.internal_led = {};
 
-Blockly.Blocks['internal_led_on'] = {
+Blockly.Blocks['esp32_controller_led_init'] = {
   init: function() {
     this.setColour(30);
     this.appendDummyInput()
-        .appendField("LED")
+        .appendField("Internal LED")
         .appendField(new Blockly.FieldImage("media/internalled.png", 64, 64))
-        .appendField("On");
+        .appendField("Initialize");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Turn on the built-in LED (GPIO8)');
+    this.setTooltip('Initialize the built-in LED on GPIO8');
   }
 };
 
-Blockly.Blocks['internal_led_off'] = {
+Blockly.Blocks['esp32_controller_led_set'] = {
   init: function() {
     this.setColour(30);
     this.appendDummyInput()
-        .appendField("LED")
+        .appendField("Internal LED")
         .appendField(new Blockly.FieldImage("media/internalled.png", 64, 64))
-        .appendField("Off");
+        .appendField(new Blockly.FieldDropdown([["ON", "ON"], ["OFF", "OFF"]]), "STATE");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Turn off the built-in LED (GPIO8)');
+    this.setTooltip('Turn the built-in LED on or off (GPIO8)');
   }
 };

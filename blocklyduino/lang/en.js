@@ -191,9 +191,9 @@ i18n.registerTranslations('en', {
   },
   "blockInfo": {
     "internalLED": {
-      "title": "Internal RGB LED",
-      "message": "Be careful. On the DEV-Board there is a solderable jumper that needs to be connected to make the internal RGB-LED work.",
-      "testMessage": "This block tests the internal RGB LED: Red, Green, Blue (500ms each), then turns off."
+      "title": "Internal LED",
+      "message": "The built-in LED is connected to GPIO8 and is active LOW (ON when LOW, OFF when HIGH).",
+      "testMessage": "This block tests the internal LED by blinking it on and off."
     },
     "servo": {
       "title": "SG90 Servo",

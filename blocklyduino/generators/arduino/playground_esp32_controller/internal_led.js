@@ -22,16 +22,16 @@
  */
 'use strict';
 
-Blockly.Arduino.internal_led_on = function() {
+Blockly.Arduino.esp32_controller_led_init = function() {
   Blockly.Arduino.definitions_['led_pin'] = '#define LED_PIN 8\n';
-  Blockly.Arduino.definitions_['led_init'] = 'pinMode(LED_PIN, OUTPUT);\n';
-  var code = 'digitalWrite(LED_PIN, LOW);  // LED on (active LOW)\n';
+  Blockly.Arduino.setups_['led_init'] = 'pinMode(LED_PIN, OUTPUT);  // Initialize built-in LED pin\n';
+  var code = '';
   return code;
 };
 
-Blockly.Arduino.internal_led_off = function() {
+Blockly.Arduino.esp32_controller_led_set = function() {
+  var state = this.getFieldValue('STATE');
   Blockly.Arduino.definitions_['led_pin'] = '#define LED_PIN 8\n';
-  Blockly.Arduino.definitions_['led_init'] = 'pinMode(LED_PIN, OUTPUT);\n';
-  var code = 'digitalWrite(LED_PIN, HIGH);  // LED off (active LOW)\n';
+  var code = 'digitalWrite(LED_PIN, ' + (state === 'ON' ? 'LOW' : 'HIGH') + ');  // LED ' + state.toLowerCase() + ' (active LOW)\n';
   return code;
 };
