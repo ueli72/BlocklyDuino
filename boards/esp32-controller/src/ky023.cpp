@@ -1,16 +1,6 @@
 // Made for esp32-controller
 #include "ky023.h"
-#include "serial.h"
-
-static bool serialInitialized = false;
-
-static void ensureSerialInit() {
-    if (!serialInitialized) {
-        initSerial(115200);
-        serialInitialized = true;
-        serialPrintln("\n[KY023] Serial initialized");
-    }
-}
+#include "oled.h"
 
 void initJoyLeft() {
     pinMode(JOY_LEFT_X_PIN, INPUT);
@@ -49,71 +39,49 @@ bool isJoyRightPressed() {
 }
 
 void testJoyLeft() {
-    ensureSerialInit();
+    // Show instructions
+    writeToOled("JoyLeft Test\nMove joystick\nPress btn");
+    delay(1000);
     
-    serialPrintln("\n========================================");
-    serialPrintln("       JOYLEFT KY023 TEST");
-    serialPrintln("========================================");
-    serialPrintln("Move JoyLeft and press button...");
-    serialPrintln("Test runs for 10 seconds");
-    serialPrintln("----------------------------------------");
+    // Test until button pressed (max 60 seconds = 300 iterations at 200ms)
+    int maxIterations = 300;
+    int iteration = 0;
     
-    for (int i = 0; i < 50; i++) {
+    while (!isJoyLeftPressed() && iteration < maxIterations) {
         int x = readJoyLeftX();
         int y = readJoyLeftY();
-        bool button = isJoyLeftPressed();
         
-        serialPrint("[");
-        serialPrint(i / 5 + 1);
-        serialPrint("/10] X: ");
-        serialPrint(x);
-        serialPrint(" Y: ");
-        serialPrint(y);
-        serialPrint(" Button: ");
-        serialPrintln(button ? "PRESSED" : "released");
+        writeToOled("X:%d\nY:%d\nBtn:%s", x, y, isJoyLeftPressed() ? "YES" : "no");
         
         delay(200);
+        iteration++;
     }
-    
-    serialPrintln("----------------------------------------");
-    serialPrintln("JoyLeft test complete!");
-    serialPrintln("========================================");
 }
 
 void testJoyRight() {
-    ensureSerialInit();
+    // Show instructions
+    writeToOled("JoyRight Test\nMove joystick\nPress btn");
+    delay(1000);
     
-    serialPrintln("\n========================================");
-    serialPrintln("       JOYRIGHT KY023 TEST");
-    serialPrintln("========================================");
-    serialPrintln("Move JoyRight and press button...");
-    serialPrintln("Test runs for 10 seconds");
-    serialPrintln("----------------------------------------");
+    // Test until button pressed (max 60 seconds = 300 iterations at 200ms)
+    int maxIterations = 300;
+    int iteration = 0;
     
-    for (int i = 0; i < 50; i++) {
+    while (!isJoyRightPressed() && iteration < maxIterations) {
         int x = readJoyRightX();
         int y = readJoyRightY();
-        bool button = isJoyRightPressed();
         
-        serialPrint("[");
-        serialPrint(i / 5 + 1);
-        serialPrint("/10] X: ");
-        serialPrint(x);
-        serialPrint(" Y: ");
-        serialPrint(y);
-        serialPrint(" Button: ");
-        serialPrintln(button ? "PRESSED" : "released");
+        writeToOled("X:%d\nY:%d\nBtn:%s", x, y, isJoyRightPressed() ? "YES" : "no");
         
         delay(200);
+        iteration++;
     }
-    
-    serialPrintln("----------------------------------------");
-    serialPrintln("JoyRight test complete!");
-    serialPrintln("========================================");
 }
 
 void testKY023() {
+    initOLED();  // Initialize OLED display for testing
     testJoyLeft();
-    delay(500);
+    // No delay between tests
     testJoyRight();
+    clearOled();
 }

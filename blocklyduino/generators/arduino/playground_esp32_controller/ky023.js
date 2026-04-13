@@ -69,6 +69,7 @@ Blockly.Arduino.ky023_read_button = function() {
 
 Blockly.Arduino.ky023_test = function() {
   Blockly.Arduino.definitions_['include_ky023_h'] = '#include "ky023.h"\n';
-  var code = 'testKY023();  // Test both joysticks\n';
+  Blockly.Arduino.definitions_['include_oled_h'] = '#include "oled.h"\n';
+  var code = 'testKY023();  // Test both joysticks (initializes OLED internally)\n';
   return code;
 };

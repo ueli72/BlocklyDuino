@@ -300,9 +300,11 @@ i18n.registerTranslations('de', {
     },
     "ky023": {
       "title": "KY023 Dual Joystick",
-      "initMessage": "Initialisiert einen oder beide KY023 Joysticks. JoyLeft: X=GPIO1, Y=GPIO2, SW=GPIO0. JoyRight: X=GPIO4, Y=GPIO5, SW=GPIO3. Taster-Pins verwenden internen Pullup.",
+      "initMessage": "Initialisiert einen oder beide KY023 Joysticks. JoyLeft: X=GPIO1, Y=GPIO2, SW=GPIO0. JoyRight: X=GPIO4, Y=GPIO10, SW=GPIO3. Taster-Pins verwenden internen Pullup.",
+      "initMessageEsp32Controller": "Initialisiert einen oder beide eingebaute KY023 Joysticks. JoyLeft verwendet GPIO1 (X), GPIO2 (Y), GPIO0 (Taster). JoyRight verwendet GPIO4 (X), GPIO10 (Y), GPIO3 (Taster).",
       "message": "Zweiachsiger analoger Joystick mit integriertem Taster. Gibt rohe ADC-Werte von 0 bis 4095 für jede Achse zurück (~2000 = Mittelstellung). Taster ist active LOW (gedrückt = true wenn mit GND verbunden).",
-      "testMessage": "Dieser Block testet beide KY023 Joysticks (JoyLeft und JoyRight), indem X/Y-Werte und Tasterstatus für jeweils 10 Sekunden auf Serial ausgegeben werden."
+      "testMessage": "Dieser Block testet beide KY023 Joysticks (JoyLeft und JoyRight), indem X/Y-Werte und Tasterstatus für jeweils 10 Sekunden auf Serial ausgegeben werden.",
+      "testMessageEsp32Controller": "Testet beide Joysticks nacheinander auf OLED. Zuerst JoyLeft: bewegen und Taster drücken zum Fortfahren. Dann JoyRight: bewegen und Taster drücken zum Beenden. Stoppt automatisch nach 60 Sekunden pro Joystick."
     },
     "serial": {
       "title": "Serial Kommunikation",

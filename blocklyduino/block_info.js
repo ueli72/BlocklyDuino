@@ -378,6 +378,8 @@ var BLOCK_INFO = {
     message: 'blockInfo.ky023.initMessage',
     includes: ['ky023.h']
   },
+  // ESP32-Controller uses the same block type names but with different implementation
+  // Block info is looked up via getBlockInfo() which checks the board type
   'ky023_read_x': {
     title: 'blockInfo.ky023.title',
     message: 'blockInfo.ky023.message',
@@ -398,6 +400,13 @@ var BLOCK_INFO = {
     message: 'blockInfo.ky023.message',
     testMessage: 'blockInfo.ky023.testMessage',
     includes: ['ky023.h']
+  },
+  // ESP32-Controller specific - same block type name but different includes (needs oled.h)
+  'ky023_test_esp32_controller': {
+    title: 'blockInfo.ky023.title',
+    message: 'blockInfo.ky023.message',
+    testMessage: 'blockInfo.ky023.testMessageEsp32Controller',
+    includes: ['ky023.h', 'oled.h']
   },
   'serial_init': {
     title: 'blockInfo.serial.title',

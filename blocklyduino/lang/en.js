@@ -300,9 +300,11 @@ i18n.registerTranslations('en', {
     },
     "ky023": {
       "title": "KY023 Dual Joystick",
-      "initMessage": "Initialize one or both KY023 joysticks. JoyLeft: X=GPIO1, Y=GPIO2, SW=GPIO0. JoyRight: X=GPIO4, Y=GPIO5, SW=GPIO3. Button pins use internal pullup.",
+      "initMessage": "Initialize one or both KY023 joysticks. JoyLeft: X=GPIO1, Y=GPIO2, SW=GPIO0. JoyRight: X=GPIO4, Y=GPIO10, SW=GPIO3. Button pins use internal pullup.",
+      "initMessageEsp32Controller": "Initialize one or both built-in KY023 joysticks. JoyLeft uses GPIO1 (X), GPIO2 (Y), GPIO0 (button). JoyRight uses GPIO4 (X), GPIO10 (Y), GPIO3 (button).",
       "message": "Dual-axis analog joystick with integrated button. Returns raw ADC values from 0 to 4095 for each axis (~2000 = center). Button is active LOW (pressed = true when connected to GND).",
-      "testMessage": "This block tests both KY023 joysticks (JoyLeft and JoyRight) by printing X/Y values and button state to Serial for 10 seconds each."
+      "testMessage": "This block tests both KY023 joysticks (JoyLeft and JoyRight) by printing X/Y values and button state to Serial for 10 seconds each.",
+      "testMessageEsp32Controller": "Tests both joysticks sequentially on OLED. First JoyLeft: move and press its button to continue. Then JoyRight: move and press its button to finish. Auto-stops after 60 seconds per joystick."
     },
     "serial": {
       "title": "Serial Communication",
