@@ -89,3 +89,16 @@ Blockly.Blocks['oled_set_cursor'] = {
     this.setTooltip('Set cursor position for text (0-71, 0-39)');
   }
 };
+
+Blockly.Blocks['oled_test'] = {
+  init: function() {
+    this.setColour(30);
+    this.appendDummyInput()
+        .appendField("OLED Display")
+        .appendField(new Blockly.FieldImage("media/oled.png", 64, 64))
+        .appendField("Test All Lines");
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
+    this.setTooltip('Test OLED display by writing text to all 3 available lines');
+  }
+};

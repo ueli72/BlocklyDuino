@@ -70,3 +70,10 @@ Blockly.Arduino.oled_set_cursor = function() {
   var code = 'u8g2.setCursor(' + x + ', ' + y + ');\n';
   return code;
 };
+
+Blockly.Arduino.oled_test = function() {
+  Blockly.Arduino.definitions_['include_oled_h'] = '#include "oled.h"\n';
+  
+  var code = 'testOLED();\n';
+  return code;
+};
