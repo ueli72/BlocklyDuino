@@ -220,7 +220,7 @@ i18n.registerTranslations('en', {
       "title": "Extra Buttons",
       "initMessage": "This block initializes the selected extra buttons.\n\nPins used:\n• Extra Button 1: GPIO21 (⚠️ disables Serial TX)\n• Extra Button 2: GPIO7\n• Extra Button 3: GPIO8 (shared with Built-in LED)\n• Extra Button 4: GPIO9 (shared with BOOT Button)",
       "readMessage": "This block reads the state of an extra button.\n\nReturns true when pressed, false when not pressed.",
-      "testMessage": "This block tests all extra buttons sequentially. Displays instructions on Serial Monitor."
+      "testMessage": "This block tests all extra buttons sequentially. Displays instructions on OLED display."
     },
     "externalInterrupt": {
       "title": "On Interrupt",

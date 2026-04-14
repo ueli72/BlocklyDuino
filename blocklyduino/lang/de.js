@@ -220,7 +220,7 @@ i18n.registerTranslations('de', {
       "title": "Zusätzliche Taster",
       "initMessage": "Dieser Block initialisiert die ausgewählten zusätzlichen Taster.\n\nVerwendete Pins:\n• Zusätzlicher Taster 1: GPIO21 (⚠️ deaktiviert Serial TX)\n• Zusätzlicher Taster 2: GPIO7\n• Zusätzlicher Taster 3: GPIO8 (gemeinsam mit Built-in LED)\n• Zusätzlicher Taster 4: GPIO9 (gemeinsam mit BOOT Taster)",
       "readMessage": "Dieser Block liest den Status eines zusätzlichen Tasters.\n\nGibt true zurück wenn gedrückt, false wenn nicht gedrückt.",
-      "testMessage": "Dieser Block testet alle zusätzlichen Taster sequenziell. Zeigt Anweisungen auf dem Serial Monitor."
+      "testMessage": "Dieser Block testet alle zusätzlichen Taster sequenziell. Zeigt Anweisungen auf dem OLED Display."
     },
     "externalInterrupt": {
       "title": "Bei Interrupt",

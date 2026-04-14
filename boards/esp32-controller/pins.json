@@ -26,9 +26,9 @@
     "3": {
       "name": "GPIO3",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": ["Joystick Right Button"],
+      "special": ["Joystick Right Y"],
       "reserved": false,
-      "notes": "Right joystick button"
+      "notes": "Analog input for right joystick Y-axis"
     },
     "4": {
       "name": "GPIO4",
@@ -75,9 +75,9 @@
     "10": {
       "name": "GPIO10",
       "capabilities": ["digital", "pwm", "interrupt", "adc1"],
-      "special": ["Joystick Right Y"],
+      "special": ["Joystick Right Button"],
       "reserved": false,
-      "notes": "Analog input for right joystick Y-axis"
+      "notes": "Right joystick button (switch)"
     },
     "11": {
       "name": "GPIO11",

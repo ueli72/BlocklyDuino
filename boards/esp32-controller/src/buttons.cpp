@@ -1,16 +1,6 @@
 // Made for esp32-controller
 #include "buttons.h"
-#include "serial.h"
-
-static bool serialInitialized = false;
-
-static void ensureSerialInit() {
-    if (!serialInitialized) {
-        initSerial(115200);
-        serialInitialized = true;
-        serialPrintln("\n[Buttons] Serial initialized");
-    }
-}
+#include "oled.h"
 
 void initializeButtons(bool sw1, bool sw2, bool sw3, bool sw4) {
   if (sw1) pinMode(SW1_PIN, INPUT_PULLUP);
@@ -20,22 +10,23 @@ void initializeButtons(bool sw1, bool sw2, bool sw3, bool sw4) {
 }
 
 void testButtons() {
-  ensureSerialInit();
-  
+  initOLED();
+
   pinMode(SW1_PIN, INPUT_PULLUP);
   pinMode(SW2_PIN, INPUT_PULLUP);
   pinMode(SW3_PIN, INPUT_PULLUP);
   pinMode(SW4_PIN, INPUT_PULLUP);
 
-  serialPrintln("\n========================================");
-  serialPrintln("         BUTTON TEST");
-  serialPrintln("========================================");
+  // Show test title
+  writeToOled("Buttontest");
+  delay(1000);
 
-  serialPrintln("[Test] Press Button 1 (SW1)...");
+  // Test Button 1
+  writeToOled("Buttontest\nPress Button 1");
   while (digitalRead(SW1_PIN) == HIGH) {
     delay(10);
   }
-  serialPrintln("[OK] Button 1 detected!");
+  writeToOled("Buttontest\nButton 1 OK");
   delay(500);
   // Wait for button release
   while (digitalRead(SW1_PIN) == LOW) {
@@ -43,11 +34,12 @@ void testButtons() {
   }
   delay(200);
 
-  serialPrintln("[Test] Press Button 2 (SW2)...");
+  // Test Button 2
+  writeToOled("Buttontest\nPress Button 2");
   while (digitalRead(SW2_PIN) == HIGH) {
     delay(10);
   }
-  serialPrintln("[OK] Button 2 detected!");
+  writeToOled("Buttontest\nButton 2 OK");
   delay(500);
   // Wait for button release
   while (digitalRead(SW2_PIN) == LOW) {
@@ -55,11 +47,12 @@ void testButtons() {
   }
   delay(200);
 
-  serialPrintln("[Test] Press Button 3 (SW3)...");
+  // Test Button 3
+  writeToOled("Buttontest\nPress Button 3");
   while (digitalRead(SW3_PIN) == HIGH) {
     delay(10);
   }
-  serialPrintln("[OK] Button 3 detected!");
+  writeToOled("Buttontest\nButton 3 OK");
   delay(500);
   // Wait for button release
   while (digitalRead(SW3_PIN) == LOW) {
@@ -67,11 +60,12 @@ void testButtons() {
   }
   delay(200);
 
-  serialPrintln("[Test] Press Button 4 (SW4)...");
+  // Test Button 4
+  writeToOled("Buttontest\nPress Button 4");
   while (digitalRead(SW4_PIN) == HIGH) {
     delay(10);
   }
-  serialPrintln("[OK] Button 4 detected!");
+  writeToOled("Buttontest\nButton 4 OK");
   delay(500);
   // Wait for button release
   while (digitalRead(SW4_PIN) == LOW) {
@@ -79,8 +73,8 @@ void testButtons() {
   }
   delay(200);
 
-  serialPrintln("========================================");
-  serialPrintln("      Button test: ALL OK!");
-  serialPrintln("========================================");
+  // Final message
+  writeToOled("Buttontest\nAll OK!");
   delay(1000);
+  clearOled();
 }
