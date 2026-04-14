@@ -184,7 +184,39 @@ function loadPinDataFile(boardId) {
 function setCurrentPinData(boardId) {
   if (loadedPinData[boardId]) {
     currentPinData = loadedPinData[boardId];
+    updateProfileFromPinData(currentPinData);
   }
+}
+
+function updateProfileFromPinData(pinData) {
+  if (!pinData || !pinData.pins || typeof profile === 'undefined') return;
+  
+  var digitalPins = [];
+  var analogPins = [];
+  
+  Object.keys(pinData.pins).forEach(function(pinKey) {
+    var pin = pinData.pins[pinKey];
+    var label = pin.name;
+    if (pin.special && pin.special.length > 0) {
+      label += ' - ' + pin.special.join(', ');
+    }
+    
+    if (pin.capabilities) {
+      if (pin.capabilities.includes('digital')) {
+        digitalPins.push([label, pinKey]);
+      }
+      if (pin.capabilities.includes('adc') || pin.capabilities.includes('adc1') || pin.capabilities.includes('adc2') || pin.capabilities.includes('analog')) {
+        analogPins.push([label, pinKey]);
+      }
+    }
+  });
+  
+  if (!profile['default']) {
+    profile['default'] = {};
+  }
+  
+  profile['default'].digital = digitalPins;
+  profile['default'].analog = analogPins.length > 0 ? analogPins : digitalPins;
 }
 
 function getCurrentPinData() {

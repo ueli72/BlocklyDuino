@@ -27,6 +27,20 @@
 Blockly.Blocks = Blockly.Blocks || {};
 Blockly.Blocks.base = {};
 
+function getDigitalPins() {
+  if (typeof profile !== 'undefined' && profile.default && profile.default.digital) {
+    return profile.default.digital;
+  }
+  return [["0", "0"], ["1", "1"], ["2", "2"]];
+}
+
+function getAnalogPins() {
+  if (typeof profile !== 'undefined' && profile.default && profile.default.analog) {
+    return profile.default.analog;
+  }
+  return [["0", "0"], ["1", "1"], ["2", "2"]];
+}
+
 //To support syntax defined in http://arduino.cc/en/Reference/HomePage
 
 
@@ -83,7 +97,7 @@ Blockly.Blocks['inout_digital_write'] = {
     this.setColour(230);
     this.appendDummyInput()
 	      .appendField("DigitalWrite PIN#")
-	      .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+	      .appendField(new Blockly.FieldDropdown(getDigitalPins()), "PIN")
       	.appendField("Stat")
       	.appendField(new Blockly.FieldDropdown([["HIGH", "HIGH"], ["LOW", "LOW"]]), "STAT");
     this.setPreviousStatement(true, "general");
@@ -98,7 +112,7 @@ Blockly.Blocks['inout_digital_read'] = {
     this.setColour(230);
     this.appendDummyInput()
 	      .appendField("DigitalRead PIN#")
-	      .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+	      .appendField(new Blockly.FieldDropdown(getDigitalPins()), "PIN");
     this.setOutput(true, 'Boolean');
     this.setTooltip('');
   }
@@ -110,7 +124,7 @@ Blockly.Blocks['inout_analog_write'] = {
     this.setColour(230);
     this.appendDummyInput()
         .appendField("AnalogWrite PIN#")
-        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        .appendField(new Blockly.FieldDropdown(getDigitalPins()), "PIN");
     this.appendValueInput("NUM", 'Number')
         .appendField("value")
         .setCheck('Number');
@@ -127,7 +141,7 @@ Blockly.Blocks['inout_analog_read'] = {
     this.setColour(230);
     this.appendDummyInput()
         .appendField("AnalogRead PIN#")
-        .appendField(new Blockly.FieldDropdown(profile.default.analog), "PIN");
+        .appendField(new Blockly.FieldDropdown(getAnalogPins()), "PIN");
     this.setOutput(true, 'Number');
     this.setTooltip('Return value between 0 and 1024');
   }
@@ -139,7 +153,7 @@ Blockly.Blocks['inout_tone'] = {
     this.setColour(230);
     this.appendDummyInput()
         .appendField("Tone PIN#")
-        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        .appendField(new Blockly.FieldDropdown(getDigitalPins()), "PIN");
     this.appendValueInput("NUM", "Number")
         .appendField("frequency")
         .setCheck("Number");
@@ -156,7 +170,7 @@ Blockly.Blocks['inout_notone'] = {
     this.setColour(230);
     this.appendDummyInput()
         .appendField("No tone PIN#")
-        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN");
+        .appendField(new Blockly.FieldDropdown(getDigitalPins()), "PIN");
     this.setInputsInline(true);
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
@@ -181,7 +195,7 @@ Blockly.Blocks['inout_pinmode'] = {
     this.setColour(30);
     this.appendDummyInput()
         .appendField("PinMode PIN#")
-        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+        .appendField(new Blockly.FieldDropdown(getDigitalPins()), "PIN")
         .appendField("Mode")
         .appendField(new Blockly.FieldDropdown([["INPUT", "INPUT"], ["OUTPUT", "OUTPUT"], ["INPUT_PULLUP", "INPUT_PULLUP"], ["INPUT_PULLDOWN", "INPUT_PULLDOWN"]]), "MODE");
     this.setPreviousStatement(true, "general");
@@ -196,7 +210,7 @@ Blockly.Blocks['inout_pulsein'] = {
     this.setColour(230);
     this.appendDummyInput()
         .appendField("PulseIn PIN#")
-        .appendField(new Blockly.FieldDropdown(profile.default.digital), "PIN")
+        .appendField(new Blockly.FieldDropdown(getDigitalPins()), "PIN")
         .appendField("Value")
         .appendField(new Blockly.FieldDropdown([["HIGH", "HIGH"], ["LOW", "LOW"]]), "VALUE");
     this.appendValueInput("TIMEOUT", 'Number')
