@@ -367,6 +367,72 @@ var BLOCK_INFO = {
     testMessage: 'blockInfo.bleRemote.testInfo',
     includes: ['ble_remote.h']
   },
+  'ble_client_init': {
+    title: 'blockInfo.bleClient.title',
+    message: 'blockInfo.bleClient.message',
+    includes: ['ble_client.h']
+  },
+  'ble_client_scan': {
+    title: 'blockInfo.bleClient.title',
+    message: 'blockInfo.bleClient.scanMessage',
+    includes: ['ble_client.h']
+  },
+  'ble_client_connect': {
+    title: 'blockInfo.bleClient.title',
+    message: 'blockInfo.bleClient.connectMessage',
+    includes: ['ble_client.h']
+  },
+  'ble_client_disconnect': {
+    title: 'blockInfo.bleClient.title',
+    message: 'blockInfo.bleClient.message',
+    includes: ['ble_client.h']
+  },
+  'ble_client_is_connected': {
+    title: 'blockInfo.bleClient.title',
+    message: 'blockInfo.bleClient.message',
+    includes: ['ble_client.h']
+  },
+  'ble_client_write_string': {
+    title: 'blockInfo.bleClient.title',
+    message: 'blockInfo.bleClient.writeMessage',
+    includes: ['ble_client.h']
+  },
+  'ble_client_write_bytes': {
+    title: 'blockInfo.bleClient.title',
+    message: 'blockInfo.bleClient.writeMessage',
+    includes: ['ble_client.h']
+  },
+  'ble_client_read_string': {
+    title: 'blockInfo.bleClient.title',
+    message: 'blockInfo.bleClient.readMessage',
+    includes: ['ble_client.h']
+  },
+  'ble_client_read_bytes': {
+    title: 'blockInfo.bleClient.title',
+    message: 'blockInfo.bleClient.readMessage',
+    includes: ['ble_client.h']
+  },
+  'ble_client_notify': {
+    title: 'blockInfo.bleClient.title',
+    message: 'blockInfo.bleClient.notifyMessage',
+    includes: ['ble_client.h']
+  },
+  'ble_client_notify_value': {
+    title: 'blockInfo.bleClient.title',
+    message: 'blockInfo.bleClient.notifyValueMessage',
+    includes: ['ble_client.h']
+  },
+  'ble_client_notify_bytes': {
+    title: 'blockInfo.bleClient.title',
+    message: 'blockInfo.bleClient.notifyValueMessage',
+    includes: ['ble_client.h']
+  },
+  'ble_client_test': {
+    title: 'blockInfo.bleClient.title',
+    message: 'blockInfo.bleClient.testMessage',
+    testMessage: 'blockInfo.bleClient.testMessage',
+    includes: ['ble_client.h']
+  },
   'test_all': {
     title: 'blockInfo.testAll.title',
     message: 'blockInfo.testAll.message',
@@ -648,6 +714,54 @@ var BLOCK_DEPENDENCIES = {
   'ble_remote_test': {
     requires: 'ble_remote_init',
     message: 'dependencies.bleRemoteTest'
+  },
+  'ble_client_scan': {
+    requires: 'ble_client_init',
+    message: 'dependencies.bleClientScan'
+  },
+  'ble_client_connect': {
+    requires: 'ble_client_init',
+    message: 'dependencies.bleClientConnect'
+  },
+  'ble_client_disconnect': {
+    requires: 'ble_client_connect',
+    message: 'dependencies.bleClientDisconnect'
+  },
+  'ble_client_is_connected': {
+    requires: 'ble_client_init',
+    message: 'dependencies.bleClientIsConnected'
+  },
+  'ble_client_write_string': {
+    requires: 'ble_client_connect',
+    message: 'dependencies.bleClientWriteString'
+  },
+  'ble_client_write_bytes': {
+    requires: 'ble_client_connect',
+    message: 'dependencies.bleClientWriteBytes'
+  },
+  'ble_client_read_string': {
+    requires: 'ble_client_connect',
+    message: 'dependencies.bleClientReadString'
+  },
+  'ble_client_read_bytes': {
+    requires: 'ble_client_connect',
+    message: 'dependencies.bleClientReadBytes'
+  },
+  'ble_client_notify': {
+    requires: 'ble_client_connect',
+    message: 'dependencies.bleClientNotify'
+  },
+  'ble_client_notify_value': {
+    requires: 'ble_client_notify',
+    message: 'dependencies.bleClientNotifyValue'
+  },
+  'ble_client_notify_bytes': {
+    requires: 'ble_client_notify',
+    message: 'dependencies.bleClientNotifyBytes'
+  },
+  'ble_client_test': {
+    requires: 'ble_client_init',
+    message: 'dependencies.bleClientTest'
   },
   'ky023_read_x': {
     requires: 'ky023_init',

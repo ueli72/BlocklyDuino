@@ -35,6 +35,7 @@
   <script type="text/javascript" src="blocks/playground/brightness.js"></script>
   <script type="text/javascript" src="blocks/playground/ws2812.js"></script>
   <script type="text/javascript" src="blocks/playground/ble_remote.js"></script>
+  <script type="text/javascript" src="blocks/playground/ble_client.js"></script>
   <script type="text/javascript" src="blocks/playground/test_all.js"></script>
   <script type="text/javascript" src="blocks/playground/timer.js"></script>
   <script type="text/javascript" src="blocks/playground/ky023.js"></script>
@@ -71,6 +72,7 @@
   <script type="text/javascript" src="generators/arduino/playground/brightness.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/ws2812.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/ble_remote.js"></script>
+  <script type="text/javascript" src="generators/arduino/playground/ble_client.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/test_all.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/timer.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/ky023.js"></script>
@@ -416,6 +418,7 @@ function addToolboxIcons() {
     var brightnessText = i18n.t('categories.brightness');
     var ws2812Text = i18n.t('categories.ws2812');
     var bluetoothLEText = i18n.t('categories.bluetoothLE');
+    var bluetoothClientText = i18n.t('categories.bluetoothClient');
     var testAllText = i18n.t('categories.testAll');
     var ky023Text = i18n.t('categories.ky023');
     var serialText = i18n.t('categories.serial');
@@ -426,7 +429,7 @@ function addToolboxIcons() {
     var esp32ControllerText = i18n.t('categories.esp32Controller');
     var inputOutputText = i18n.t('categories.inputOutput');
 
-    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText || text === sdcardText || text === max98357aText || text === brightnessText || text === ws2812Text || text === bluetoothLEText || text === testAllText || text === ky023Text || text === serialText || text === basicText || text === hapticText;
+    var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText || text === sdcardText || text === max98357aText || text === brightnessText || text === ws2812Text || text === bluetoothLEText || text === bluetoothClientText || text === testAllText || text === ky023Text || text === serialText || text === basicText || text === hapticText;
 
     // Add class for subcategories
     if (isSubcategory) {
@@ -473,6 +476,7 @@ function addToolboxIcons() {
     else if (text === brightnessText) iconClass = 'bi-sun';
     else if (text === ws2812Text) iconClass = 'bi-lightbulb';
     else if (text === bluetoothLEText) iconClass = 'bi-bluetooth';
+    else if (text === bluetoothClientText) iconClass = 'bi-bluetooth';
     else if (text === testAllText) iconClass = 'bi-list-check';
     else if (text === ky023Text) iconClass = 'bi-controller';
     else if (text === serialText) iconClass = 'bi-terminal';
@@ -1608,6 +1612,68 @@ function initBlockly() {
         </block>
         <block type="ble_remote_is_connected"></block>
         <block type="ble_remote_test"></block>
+      </category>
+      <category name="Bluetooth Client" data-i18n-name="categories.bluetoothClient" data-board-exclude="arduino-uno">
+        <block type="ble_client_init"></block>
+        <block type="ble_client_scan">
+          <value name="DURATION">
+            <block type="math_number">
+              <field name="NUM">5000</field>
+            </block>
+          </value>
+        </block>
+        <block type="ble_client_connect">
+          <value name="DEVICE_NAME">
+            <block type="text">
+              <field name="TEXT">DeviceName</field>
+            </block>
+          </value>
+        </block>
+        <block type="ble_client_disconnect"></block>
+        <block type="ble_client_is_connected"></block>
+        <block type="ble_client_write_string">
+          <value name="UUID">
+            <block type="text">
+              <field name="TEXT">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</field>
+            </block>
+          </value>
+          <value name="VALUE">
+            <block type="text">
+              <field name="TEXT">Hello</field>
+            </block>
+          </value>
+        </block>
+        <block type="ble_client_write_bytes">
+          <value name="UUID">
+            <block type="text">
+              <field name="TEXT">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</field>
+            </block>
+          </value>
+        </block>
+        <block type="ble_client_read_string">
+          <value name="UUID">
+            <block type="text">
+              <field name="TEXT">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</field>
+            </block>
+          </value>
+        </block>
+        <block type="ble_client_read_bytes">
+          <value name="UUID">
+            <block type="text">
+              <field name="TEXT">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</field>
+            </block>
+          </value>
+        </block>
+        <block type="ble_client_notify">
+          <value name="UUID">
+            <block type="text">
+              <field name="TEXT">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</field>
+            </block>
+          </value>
+        </block>
+        <block type="ble_client_notify_value"></block>
+        <block type="ble_client_notify_bytes"></block>
+        <block type="ble_client_test"></block>
       </category>
     </category>
     <category name="Playground" data-i18n-name="categories.playground" data-board="esp32-s3-devkitc1">
