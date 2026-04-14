@@ -70,3 +70,9 @@ String serialReadLine() {
 int serialAvailable() {
     return Serial.available();
 }
+
+void serialPrintArray(const std::vector<String>& arr) {
+    for (size_t i = 0; i < arr.size(); i++) {
+        Serial.println(arr[i]);
+    }
+}

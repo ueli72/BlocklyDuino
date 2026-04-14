@@ -123,3 +123,19 @@ Blockly.Blocks['serial_available'] = {
     this.setTooltip('Returns number of bytes available to read');
   }
 };
+
+Blockly.Blocks['serial_print_array'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("Serial")
+        .appendField(new Blockly.FieldImage("media/cli.png", 64, 64))
+        .appendField("Print Array");
+    this.appendValueInput("ARRAY")
+        .setCheck('Array')
+        .appendField("array");
+    this.setPreviousStatement(true, "general");
+    this.setNextStatement(true, "general");
+    this.setTooltip('Print each array element on a new line');
+  }
+};

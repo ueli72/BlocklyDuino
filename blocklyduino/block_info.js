@@ -504,6 +504,11 @@ var BLOCK_INFO = {
     message: 'blockInfo.serial.message',
     includes: ['serial.h']
   },
+  'serial_print_array': {
+    title: 'blockInfo.serial.title',
+    message: 'blockInfo.serial.message',
+    includes: ['serial.h']
+  },
   'haptic_init': {
     title: 'blockInfo.haptic.title',
     message: 'blockInfo.haptic.initMessage',
@@ -798,6 +803,10 @@ var BLOCK_DEPENDENCIES = {
   'serial_available': {
     requires: 'serial_init',
     message: 'dependencies.serialAvailable'
+  },
+  'serial_print_array': {
+    requires: 'serial_init',
+    message: 'dependencies.serialPrintArray'
   },
   'haptic_turn_on': {
     requires: 'haptic_init',

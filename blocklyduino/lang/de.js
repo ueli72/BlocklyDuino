@@ -185,6 +185,7 @@ i18n.registerTranslations('de', {
     "serialReadChar": "Zeichen lesen",
     "serialReadLine": "Zeile lesen",
     "serialAvailable": "Verfügbar",
+    "serialPrintArray": "Array ausgeben",
     "testAll": "Alle Testen",
     "globalVariable": "Variable deklarieren",
     "globalVariableGet": "Variable lesen",
@@ -437,6 +438,7 @@ i18n.registerTranslations('de', {
     "serialReadChar": "Serial muss initialisiert werden, bevor gelesen werden kann.",
     "serialReadLine": "Serial muss initialisiert werden, bevor gelesen werden kann.",
     "serialAvailable": "Serial muss initialisiert werden, bevor verfügbare Bytes geprüft werden können.",
+    "serialPrintArray": "Serial muss initialisiert werden, bevor ein Array ausgegeben werden kann.",
     "hapticTurnOn": "Haptikmotor muss initialisiert werden, bevor er eingeschaltet werden kann.",
     "hapticTurnOff": "Haptikmotor muss initialisiert werden, bevor er ausgeschaltet werden kann.",
     "hapticVibrate": "Haptikmotor muss initialisiert werden, bevor er vibrieren kann."

@@ -70,3 +70,12 @@ Blockly.Arduino.serial_available = function() {
   var code = 'serialAvailable()';
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
+
+Blockly.Arduino.serial_print_array = function() {
+  var array = Blockly.Arduino.valueToCode(this, 'ARRAY', Blockly.Arduino.ORDER_ATOMIC) || '{}';
+  
+  Blockly.Arduino.definitions_['include_serial_h'] = '#include "serial.h"\n';
+  
+  var code = 'serialPrintArray(' + array + ');\n';
+  return code;
+};
