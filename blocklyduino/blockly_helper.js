@@ -848,7 +848,16 @@ function updateToolboxForBoard(boardId) {
     }
   });
   
-  // Apply translations to the toolbox
+  var excludedCategories = toolboxClone.querySelectorAll('category[data-board-exclude]');
+  excludedCategories.forEach(function(category) {
+    var excludedBoards = category.getAttribute('data-board-exclude');
+    if (excludedBoards && excludedBoards.split(',').map(function(b) { return b.trim(); }).indexOf(boardId) !== -1) {
+      category.parentNode.removeChild(category);
+    } else {
+      category.removeAttribute('data-board-exclude');
+    }
+  });
+  
   var allCategories = toolboxClone.querySelectorAll('category[data-i18n-name]');
   allCategories.forEach(function(category) {
     var key = category.getAttribute('data-i18n-name');
