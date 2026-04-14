@@ -33,10 +33,39 @@ Blockly.Blocks['test_all'] = {
         .appendField(new Blockly.FieldImage("media/test_all.jpg", 64, 64))
         .appendField(" (Interactive Menu)");
     
-    // Test options: skip unavailable ones on BrumBrum
+    // Test options: skip unavailable ones based on board type
     var boardId = getActiveBoardId();
     var isBrum = boardId === 'playground-brumbrum-esp32-s3-devkitc1';
-    if (!isBrum) {
+    var isEsp32Controller = boardId === 'esp32-controller';
+    
+    if (isEsp32Controller) {
+      // ESP32-Controller only has these devices
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("OLED Display")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "OLED");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Internal LED")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "INTERNAL_LED");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Buttons")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "BUTTONS");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Haptic Actuator")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "HAPTIC");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("KY023 Joysticks")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "KY023");
+    } else if (!isBrum) {
+      // Standard playground board with all devices
       this.appendDummyInput()
           .setAlign(Blockly.ALIGN_RIGHT)
           .appendField("LED Matrix")
@@ -51,36 +80,68 @@ Blockly.Blocks['test_all'] = {
           .setAlign(Blockly.ALIGN_RIGHT)
           .appendField("DHT11")
           .appendField(new Blockly.FieldCheckbox("TRUE"), "DHT11");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("DC Motor")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "DC_MOTOR");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Ultrasonic")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "ULTRASONIC");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("SD Card")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "SD_CARD");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("MAX98357A")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "MAX98357A");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Internal LED")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "INTERNAL_LED");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("SG90 Servo")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "SG90_SERVO");
+    } else {
+      // BrumBrum board - DC Motor, Ultrasonic, SD Card, MAX98357A, Internal LED, SG90 Servo
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("DC Motor")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "DC_MOTOR");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Ultrasonic")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "ULTRASONIC");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("SD Card")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "SD_CARD");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("MAX98357A")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "MAX98357A");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("Internal LED")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "INTERNAL_LED");
+      
+      this.appendDummyInput()
+          .setAlign(Blockly.ALIGN_RIGHT)
+          .appendField("SG90 Servo")
+          .appendField(new Blockly.FieldCheckbox("TRUE"), "SG90_SERVO");
     }
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("DC Motor")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "DC_MOTOR");
-    
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Ultrasonic")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "ULTRASONIC");
-    
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("SD Card")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "SD_CARD");
-    
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("MAX98357A")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "MAX98357A");
-    
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Internal LED")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "INTERNAL_LED");
-    
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("SG90 Servo")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "SG90_SERVO");
     
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");

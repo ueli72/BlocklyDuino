@@ -22,28 +22,48 @@
 'use strict';
 
 Blockly.Arduino.test_all = function() {
-  var ledMatrix = this.getFieldValue('LED_MATRIX') === 'TRUE';
-  var relais = this.getFieldValue('RELAIS') === 'TRUE';
-  var dcMotor = this.getFieldValue('DC_MOTOR') === 'TRUE';
-  var dht11 = this.getFieldValue('DHT11') === 'TRUE';
-  var ultrasonic = this.getFieldValue('ULTRASONIC') === 'TRUE';
-  var sdCard = this.getFieldValue('SD_CARD') === 'TRUE';
-  var max98357a = this.getFieldValue('MAX98357A') === 'TRUE';
-  var internalLed = this.getFieldValue('INTERNAL_LED') === 'TRUE';
-  var sg90Servo = this.getFieldValue('SG90_SERVO') === 'TRUE';
+  var boardId = getActiveBoardId ? getActiveBoardId() : 'esp32-s3-devkitc1';
+  var isEsp32Controller = boardId === 'esp32-controller';
   
   Blockly.Arduino.definitions_['include_test_all_h'] = '#include "test_all.h"\n';
   
   var mask = 0;
-  if (ledMatrix) mask |= 1;
-  if (relais) mask |= 2;
-  if (dcMotor) mask |= 4;
-  if (dht11) mask |= 8;
-  if (ultrasonic) mask |= 16;
-  if (sdCard) mask |= 32;
-  if (max98357a) mask |= 64;
-  if (internalLed) mask |= 128;
-  if (sg90Servo) mask |= 256;
+  
+  if (isEsp32Controller) {
+    // ESP32-Controller bit masks
+    var oled = this.getFieldValue('OLED') === 'TRUE';
+    var internalLed = this.getFieldValue('INTERNAL_LED') === 'TRUE';
+    var buttons = this.getFieldValue('BUTTONS') === 'TRUE';
+    var haptic = this.getFieldValue('HAPTIC') === 'TRUE';
+    var ky023 = this.getFieldValue('KY023') === 'TRUE';
+    
+    if (oled) mask |= 1;          // TEST_OLED (1 << 0)
+    if (internalLed) mask |= 2;   // TEST_INTERNAL_LED (1 << 1)
+    if (buttons) mask |= 4;       // TEST_BUTTONS (1 << 2)
+    if (haptic) mask |= 8;        // TEST_HAPTIC (1 << 3)
+    if (ky023) mask |= 16;        // TEST_KY023 (1 << 4)
+  } else {
+    // Standard playground board bit masks
+    var ledMatrix = this.getFieldValue('LED_MATRIX') === 'TRUE';
+    var relais = this.getFieldValue('RELAIS') === 'TRUE';
+    var dcMotor = this.getFieldValue('DC_MOTOR') === 'TRUE';
+    var dht11 = this.getFieldValue('DHT11') === 'TRUE';
+    var ultrasonic = this.getFieldValue('ULTRASONIC') === 'TRUE';
+    var sdCard = this.getFieldValue('SD_CARD') === 'TRUE';
+    var max98357a = this.getFieldValue('MAX98357A') === 'TRUE';
+    var internalLed = this.getFieldValue('INTERNAL_LED') === 'TRUE';
+    var sg90Servo = this.getFieldValue('SG90_SERVO') === 'TRUE';
+    
+    if (ledMatrix) mask |= 1;
+    if (relais) mask |= 2;
+    if (dcMotor) mask |= 4;
+    if (dht11) mask |= 8;
+    if (ultrasonic) mask |= 16;
+    if (sdCard) mask |= 32;
+    if (max98357a) mask |= 64;
+    if (internalLed) mask |= 128;
+    if (sg90Servo) mask |= 256;
+  }
   
   var code = 'runTestMenu(' + mask + ');\n';
   return code;

@@ -35,24 +35,8 @@ Blockly.Blocks['test_all'] = {
     
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("DC Motor")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "DC_MOTOR");
-    
-    
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("Ultrasonic")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "ULTRASONIC");
-    
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("SD Card")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "SD_CARD");
-    
-    this.appendDummyInput()
-        .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("MAX98357A")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "MAX98357A");
+        .appendField("OLED Display")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "OLED");
     
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
@@ -61,8 +45,18 @@ Blockly.Blocks['test_all'] = {
     
     this.appendDummyInput()
         .setAlign(Blockly.ALIGN_RIGHT)
-        .appendField("SG90 Servo")
-        .appendField(new Blockly.FieldCheckbox("TRUE"), "SG90_SERVO");
+        .appendField("Buttons")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "BUTTONS");
+    
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("Haptic Actuator")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "HAPTIC");
+    
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("KY023 Joysticks")
+        .appendField(new Blockly.FieldCheckbox("TRUE"), "KY023");
     
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");

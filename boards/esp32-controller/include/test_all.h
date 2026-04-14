@@ -1,15 +1,14 @@
-// Made for playground-brumbrum-esp32-s3-devkitc1
+// Made for esp32-controller
 #ifndef TEST_ALL_H
 #define TEST_ALL_H
 
 #include <Arduino.h>
 
-#define TEST_DC_MOTOR      (1 << 0)
-#define TEST_ULTRASONIC    (1 << 1)
-#define TEST_SD_CARD       (1 << 2)
-#define TEST_MAX98357A     (1 << 3)
-#define TEST_INTERNAL_LED  (1 << 4)
-#define TEST_SG90_SERVO    (1 << 5)
+#define TEST_OLED          (1 << 0)
+#define TEST_INTERNAL_LED  (1 << 1)
+#define TEST_BUTTONS       (1 << 2)
+#define TEST_HAPTIC        (1 << 3)
+#define TEST_KY023         (1 << 4)
 
 void runTestMenu(uint16_t testMask);
 
