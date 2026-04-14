@@ -872,7 +872,11 @@ function updateToolboxForBoard(boardId) {
   
   categories.forEach(function(category) {
     var requiredBoard = category.getAttribute('data-board');
-    var isMatch = requiredBoard === boardId;
+    var isMatch = false;
+    if (requiredBoard) {
+      var boards = requiredBoard.split(',').map(function(b) { return b.trim(); });
+      isMatch = boards.indexOf(boardId) !== -1;
+    }
     if (!isMatch) {
       category.parentNode.removeChild(category);
     } else {
