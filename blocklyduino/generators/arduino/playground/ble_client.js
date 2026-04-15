@@ -42,8 +42,7 @@ Blockly.Arduino.ble_client_init = function() {
 Blockly.Arduino.ble_client_scan = function() {
   Blockly.Arduino.definitions_['include_ble_client_h'] = '#include "ble_client.h"\n';
   var duration = Blockly.Arduino.valueToCode(this, 'DURATION', Blockly.Arduino.ORDER_ATOMIC) || '5000';
-  var showOled = this.getFieldValue('SHOW_OLED') === 'TRUE';
-  var code = showOled ? 'scanBLEDevicesWithOLED(' + duration + ')' : 'scanBLEDevices(' + duration + ')';
+  var code = 'scanBLEDevices(' + duration + ')';
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 
@@ -78,8 +77,14 @@ Blockly.Arduino.ble_client_write_bytes = function() {
   Blockly.Arduino.definitions_['include_ble_client_h'] = '#include "ble_client.h"\n';
   var uuid = Blockly.Arduino.valueToCode(this, 'UUID', Blockly.Arduino.ORDER_ATOMIC) || '""';
   var value = Blockly.Arduino.valueToCode(this, 'VALUE', Blockly.Arduino.ORDER_ATOMIC) || '{}';
-  var code = 'writeBLEBytes(' + uuid + ', ' + value + ');\n';
-  return code;
+  var returnSuccess = this.getFieldValue('RETURN_SUCCESS') === 'TRUE';
+  if (returnSuccess) {
+    var code = 'writeBLEBytes(' + uuid + ', ' + value + ')';
+    return [code, Blockly.Arduino.ORDER_ATOMIC];
+  } else {
+    var code = 'writeBLEBytes(' + uuid + ', ' + value + ');\n';
+    return code;
+  }
 };
 
 Blockly.Arduino.ble_client_read_string = function() {

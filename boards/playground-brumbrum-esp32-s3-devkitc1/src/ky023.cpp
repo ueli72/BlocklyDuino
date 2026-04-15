@@ -1,73 +1,102 @@
-// Made for playground-brumbrum-esp32-s3-devkitc1
+// Made for esp32-s3-devkitc1
 #include "ky023.h"
-#include "serial.h"
+#include "oled.h"
 
-static int _ky023_xPin = 0;
-static int _ky023_yPin = 0;
-static int _ky023_buttonPin = 0;
+// Static variables to store pin numbers for each joystick
+static int joyLeftXPin = JOY_LEFT_X_PIN_DEFAULT;
+static int joyLeftYPin = JOY_LEFT_Y_PIN_DEFAULT;
+static int joyLeftSwPin = JOY_LEFT_SW_PIN_DEFAULT;
 
-static bool serialInitialized = false;
+static int joyRightXPin = JOY_RIGHT_X_PIN_DEFAULT;
+static int joyRightYPin = JOY_RIGHT_Y_PIN_DEFAULT;
+static int joyRightSwPin = JOY_RIGHT_SW_PIN_DEFAULT;
 
-static void ensureSerialInit() {
-    if (!serialInitialized) {
-        initSerial(115200);
-        serialInitialized = true;
-        serialPrintln("\n[KY023] Serial initialized");
+void initJoyLeft(int xPin, int yPin, int swPin) {
+    joyLeftXPin = xPin;
+    joyLeftYPin = yPin;
+    joyLeftSwPin = swPin;
+    pinMode(xPin, INPUT);
+    pinMode(yPin, INPUT);
+    pinMode(swPin, INPUT_PULLUP);
+}
+
+void initJoyRight(int xPin, int yPin, int swPin) {
+    joyRightXPin = xPin;
+    joyRightYPin = yPin;
+    joyRightSwPin = swPin;
+    pinMode(xPin, INPUT);
+    pinMode(yPin, INPUT);
+    pinMode(swPin, INPUT_PULLUP);
+}
+
+int readJoyLeftX() {
+    return analogRead(joyLeftXPin);
+}
+
+int readJoyLeftY() {
+    return analogRead(joyLeftYPin);
+}
+
+bool isJoyLeftPressed() {
+    return digitalRead(joyLeftSwPin) == LOW;
+}
+
+int readJoyRightX() {
+    return analogRead(joyRightXPin);
+}
+
+int readJoyRightY() {
+    return analogRead(joyRightYPin);
+}
+
+bool isJoyRightPressed() {
+    return digitalRead(joyRightSwPin) == LOW;
+}
+
+void testJoyLeft() {
+    // Show instructions
+    writeToOled("JoyLeft Test\nMove joystick\nPress btn");
+    delay(1000);
+    
+    // Test until button pressed (max 60 seconds = 300 iterations at 200ms)
+    int maxIterations = 300;
+    int iteration = 0;
+    
+    while (!isJoyLeftPressed() && iteration < maxIterations) {
+        int x = readJoyLeftX();
+        int y = readJoyLeftY();
+        
+        writeToOled("X:%d\nY:%d\nBtn:%s", x, y, isJoyLeftPressed() ? "YES" : "no");
+        
+        delay(200);
+        iteration++;
     }
 }
 
-void initKY023(int xPin, int yPin, int buttonPin) {
-    _ky023_xPin = xPin;
-    _ky023_yPin = yPin;
-    _ky023_buttonPin = buttonPin;
+void testJoyRight() {
+    // Show instructions
+    writeToOled("JoyRight Test\nMove joystick\nPress btn");
+    delay(1000);
     
-    pinMode(_ky023_buttonPin, INPUT_PULLUP);
-}
-
-int readKY023X() {
-    int rawValue = analogRead(_ky023_xPin);
-    int mappedValue = map(rawValue, 0, 4095, 0, 255);
-    return mappedValue - 128;
-}
-
-int readKY023Y() {
-    int rawValue = analogRead(_ky023_yPin);
-    int mappedValue = map(rawValue, 0, 4095, 0, 255);
-    return mappedValue - 128;
-}
-
-bool isKY023ButtonPressed() {
-    return digitalRead(_ky023_buttonPin) == LOW;
+    // Test until button pressed (max 60 seconds = 300 iterations at 200ms)
+    int maxIterations = 300;
+    int iteration = 0;
+    
+    while (!isJoyRightPressed() && iteration < maxIterations) {
+        int x = readJoyRightX();
+        int y = readJoyRightY();
+        
+        writeToOled("X:%d\nY:%d\nBtn:%s", x, y, isJoyRightPressed() ? "YES" : "no");
+        
+        delay(200);
+        iteration++;
+    }
 }
 
 void testKY023() {
-    ensureSerialInit();
-    
-    serialPrintln("\n========================================");
-    serialPrintln("       KY023 JOYSTICK TEST");
-    serialPrintln("========================================");
-    serialPrintln("Move joystick and press button...");
-    serialPrintln("Test runs for 10 seconds");
-    serialPrintln("----------------------------------------");
-    
-    for (int i = 0; i < 50; i++) {
-        int x = readKY023X();
-        int y = readKY023Y();
-        bool button = isKY023ButtonPressed();
-        
-        serialPrint("[");
-        serialPrint(i / 5 + 1);
-        serialPrint("/10] X: ");
-        serialPrint(x);
-        serialPrint(" Y: ");
-        serialPrint(y);
-        serialPrint(" Button: ");
-        serialPrintln(button ? "PRESSED" : "released");
-        
-        delay(200);
-    }
-    
-    serialPrintln("----------------------------------------");
-    serialPrintln("KY023 Joystick test complete!");
-    serialPrintln("========================================");
+    initOLED();  // Initialize OLED display for testing
+    testJoyLeft();
+    // No delay between tests
+    testJoyRight();
+    clearOled();
 }

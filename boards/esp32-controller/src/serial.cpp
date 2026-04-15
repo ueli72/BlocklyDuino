@@ -1,5 +1,6 @@
 // Made for playground-brumbrum-esp32-s3-devkitc1
 #include "serial.h"
+#include <vector>
 
 void initSerial(unsigned long baud) {
     Serial.begin(baud);

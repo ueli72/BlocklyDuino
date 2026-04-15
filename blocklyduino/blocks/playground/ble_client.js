@@ -135,9 +135,36 @@ Blockly.Blocks['ble_client_write_bytes'] = {
         .setCheck('Array')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("value (byte array)");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField("return success")
+        .appendField(new Blockly.FieldCheckbox("FALSE", this.setReturnSuccess.bind(this)), "RETURN_SUCCESS");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Write a byte array to a BLE characteristic. UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
+    this.setTooltip('Write a byte array to a BLE characteristic. UUID format: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx. Check "return success" to get a boolean indicating if the write was successful.');
+  },
+  setReturnSuccess: function(checked) {
+    if (checked === "TRUE" || checked === true) {
+      // Switch to value block - must remove statement connections first
+      this.setPreviousStatement(false, null);
+      this.setNextStatement(false, null);
+      this.setOutput(true, 'Boolean');
+    } else {
+      // Switch to statement block - must remove output connection first
+      this.setOutput(false, null);
+      this.setPreviousStatement(true, "general");
+      this.setNextStatement(true, "general");
+    }
+  },
+  mutationToDom: function() {
+    var container = document.createElement('mutation');
+    container.setAttribute('return_success', this.getFieldValue('RETURN_SUCCESS') === 'TRUE');
+    return container;
+  },
+  domToMutation: function(xmlElement) {
+    var returnSuccess = xmlElement.getAttribute('return_success') === 'true';
+    this.setFieldValue(returnSuccess ? 'TRUE' : 'FALSE', 'RETURN_SUCCESS');
+    this.setReturnSuccess(returnSuccess);
   }
 };
 
