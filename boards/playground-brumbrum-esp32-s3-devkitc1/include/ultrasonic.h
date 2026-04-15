@@ -16,4 +16,6 @@ float measureDistance(int sensor);
 
 void testUltrasonicSerial();
 
+void testUltrasonicOLED();
+
 #endif
