@@ -90,13 +90,6 @@ Blockly.Arduino.variable_define = function() {
   return '';
 };
 
-Blockly.Arduino.variable_cast = function() {
-  var type = this.getFieldValue('TYPE');
-  var value = Blockly.Arduino.valueToCode(this, 'VALUE', Blockly.Arduino.ORDER_ATOMIC) || '0';
-  var code = '(' + type + ')(' + value + ')';
-  return [code, Blockly.Arduino.ORDER_CAST];
-};
-
 Blockly.Arduino.variable_increment = function() {
   var name = this.getFieldValue('NAME');
   var operation = this.getFieldValue('OPERATION');

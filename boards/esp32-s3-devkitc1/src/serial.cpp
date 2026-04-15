@@ -1,4 +1,4 @@
-// Made for esp32-s3-devkitc1
+// Made for playground-brumbrum-esp32-s3-devkitc1
 #include "serial.h"
 
 void initSerial(unsigned long baud) {
@@ -27,6 +27,13 @@ void serialPrintln(int value) {
 
 void serialPrintln(float value) {
     Serial.println(value);
+}
+
+void serialPrintArray(const std::vector<String>& arr) {
+    Serial.printf("Array[%d]:\n", arr.size());
+    for (size_t i = 0; i < arr.size(); i++) {
+        Serial.printf("  [%d] %s\n", i, arr[i].c_str());
+    }
 }
 
 String serialReadChar(bool blocking) {
@@ -69,10 +76,4 @@ String serialReadLine() {
 
 int serialAvailable() {
     return Serial.available();
-}
-
-void serialPrintArray(const std::vector<String>& arr) {
-    for (size_t i = 0; i < arr.size(); i++) {
-        Serial.println(arr[i]);
-    }
 }

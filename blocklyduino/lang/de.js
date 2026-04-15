@@ -55,6 +55,7 @@ i18n.registerTranslations('de', {
     "math": "Mathematik",
     "text": "Text",
     "variables": "Variablen",
+    "cast": "Cast",
     "functions": "Funktionen",
     "customCode": "Eigener Code",
     "inputOutput": "Eingabe/Ausgabe",
@@ -116,6 +117,7 @@ i18n.registerTranslations('de', {
     "oledWrite": "Schreiben",
     "oledClear": "Löschen",
     "oledTest": "Test",
+    "oledMenu": "Menü",
     "ledMatrixInit": "Initialisieren",
     "ledMatrixTest": "Regenbogen Test",
     "relaisSet": "Status setzen",
@@ -244,6 +246,10 @@ i18n.registerTranslations('de', {
     "oled": {
       "title": "OLED Display",
       "testMessage": "Dieser Block testet das OLED Display indem 'OLED Test' auf dem Bildschirm angezeigt wird."
+    },
+    "oledMenu": {
+      "title": "OLED Menü",
+      "message": "Zeigt ein scrollbares Menü auf dem OLED Display.\n\nJoystick Y-Achse zum Scrollen hoch/runter. Knopf drücken zum Auswählen.\n\nGibt das ausgewählte Element als String zurück.\n\nBenötigt OLED-Initialisierung und konfigurierte Joystick/Buttons."
     },
     "ledMatrix": {
       "title": "LED Matrix",
@@ -385,6 +391,7 @@ i18n.registerTranslations('de', {
     "oledWrite": "Das OLED muss initialisiert werden, bevor geschrieben werden kann.",
     "oledClear": "Das OLED muss initialisiert werden, bevor es gelöscht werden kann.",
     "oledTest": "Das OLED muss initialisiert werden, bevor der Test durchgeführt werden kann.",
+    "oledMenu": "OLED muss initialisiert werden, bevor das Menü angezeigt werden kann. Joystick/Buttons müssen konfiguriert sein.",
     "dcMotorSet": "DC-Motoren müssen initialisiert werden, bevor die Richtung gesetzt werden kann.",
     "dcMotorStop": "DC-Motoren müssen initialisiert werden, bevor sie gestoppt werden können.",
     "dcMotorTest": "DC-Motoren müssen initialisiert werden, bevor der Test durchgeführt werden kann.",

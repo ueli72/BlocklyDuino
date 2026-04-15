@@ -98,6 +98,11 @@ var BLOCK_INFO = {
     testMessage: 'blockInfo.oled.testMessage',
     includes: ['oled.h']
   },
+  'oled_menu': {
+    title: 'blockInfo.oledMenu.title',
+    message: 'blockInfo.oledMenu.message',
+    includes: ['menu.h', 'oled.h']
+  },
   'led_matrix_init': {
     title: 'blockInfo.ledMatrix.title',
     message: 'blockInfo.ledMatrix.message',
@@ -571,6 +576,10 @@ var BLOCK_DEPENDENCIES = {
   'oled_test': {
     requires: 'oled_init',
     message: 'dependencies.oledTest'
+  },
+  'oled_menu': {
+    requires: 'oled_init',
+    message: 'dependencies.oledMenu'
   },
   'led_matrix_set_pixel': {
     requires: 'led_matrix_init',

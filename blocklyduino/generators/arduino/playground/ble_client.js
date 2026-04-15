@@ -42,7 +42,8 @@ Blockly.Arduino.ble_client_init = function() {
 Blockly.Arduino.ble_client_scan = function() {
   Blockly.Arduino.definitions_['include_ble_client_h'] = '#include "ble_client.h"\n';
   var duration = Blockly.Arduino.valueToCode(this, 'DURATION', Blockly.Arduino.ORDER_ATOMIC) || '5000';
-  var code = 'scanBLEDevices(' + duration + ')';
+  var showOled = this.getFieldValue('SHOW_OLED') === 'TRUE';
+  var code = showOled ? 'scanBLEDevicesWithOLED(' + duration + ')' : 'scanBLEDevices(' + duration + ')';
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 

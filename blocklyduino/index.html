@@ -21,12 +21,13 @@
   <script type="text/javascript" src="blocks/variables.js"></script>
   <script type="text/javascript" src="blocks/constants.js"></script>
   <script type="text/javascript" src="blocks/program_structure.js"></script>
-  <script type="text/javascript" src="blocks/playground/sg90.js"></script>
-  <script type="text/javascript" src="blocks/playground/internal_led.js"></script>
-  <script type="text/javascript" src="blocks/playground/button.js"></script>
-  <script type="text/javascript" src="blocks/playground/ledmatrix.js"></script>
-  <script type="text/javascript" src="blocks/playground/oled.js"></script>
-  <script type="text/javascript" src="blocks/playground/relais.js"></script>
+<script type="text/javascript" src="blocks/playground/sg90.js"></script>
+<script type="text/javascript" src="blocks/playground/internal_led.js"></script>
+<script type="text/javascript" src="blocks/playground/button.js"></script>
+<script type="text/javascript" src="blocks/playground/ledmatrix.js"></script>
+<script type="text/javascript" src="blocks/playground/oled.js"></script>
+<script type="text/javascript" src="blocks/playground/menu.js"></script>
+<script type="text/javascript" src="blocks/playground/relais.js"></script>
   <script type="text/javascript" src="blocks/playground/dc_motor.js"></script>
   <script type="text/javascript" src="blocks/playground/dht11.js"></script>
   <script type="text/javascript" src="blocks/playground/ultrasonic.js"></script>
@@ -41,12 +42,14 @@
   <script type="text/javascript" src="blocks/playground/ky023.js"></script>
   <script type="text/javascript" src="blocks/playground/serial.js"></script>
   <script type="text/javascript" src="blocks/playground/variable.js"></script>
+  <script type="text/javascript" src="blocks/playground/cast.js"></script>
   <script type="text/javascript" src="blocks/playground/global_array.js"></script>
   <script type="text/javascript" src="blocks/playground/custom_code.js"></script>
 <script type="text/javascript" src="blocks/playground_esp32_controller/internal_led.js"></script>
 <script type="text/javascript" src="blocks/playground_esp32_controller/oled.js"></script>
 <script type="text/javascript" src="blocks/playground_esp32_controller/haptic.js"></script>
 <script type="text/javascript" src="blocks/playground_esp32_controller/ky023.js"></script>
+<script type="text/javascript" src="blocks/playground_esp32_controller/menu.js"></script>
 <script type="text/javascript" src="blocks/arduino-uno/button.js"></script>
   <script type="text/javascript" src="generators/arduino.js"></script>
   <script type="text/javascript" src="generators/arduino/base.js"></script>
@@ -58,12 +61,13 @@
   <script type="text/javascript" src="generators/arduino/variables.js"></script>
   <script type="text/javascript" src="generators/arduino/constants.js"></script>
   <script type="text/javascript" src="generators/arduino/program_structure.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/sg90.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/internal_led.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/button.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/ledmatrix.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/oled.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/relais.js"></script>
+<script type="text/javascript" src="generators/arduino/playground/sg90.js"></script>
+<script type="text/javascript" src="generators/arduino/playground/internal_led.js"></script>
+<script type="text/javascript" src="generators/arduino/playground/button.js"></script>
+<script type="text/javascript" src="generators/arduino/playground/ledmatrix.js"></script>
+<script type="text/javascript" src="generators/arduino/playground/oled.js"></script>
+<script type="text/javascript" src="generators/arduino/playground/menu.js"></script>
+<script type="text/javascript" src="generators/arduino/playground/relais.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/dc_motor.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/dht11.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/ultrasonic.js"></script>
@@ -78,10 +82,12 @@
   <script type="text/javascript" src="generators/arduino/playground/ky023.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/serial.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/variable.js"></script>
+  <script type="text/javascript" src="generators/arduino/playground/cast.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/global_array.js"></script>
   <script type="text/javascript" src="generators/arduino/playground/custom_code.js"></script>
 <script type="text/javascript" src="generators/arduino/playground_esp32_controller/internal_led.js"></script>
 <script type="text/javascript" src="generators/arduino/playground_esp32_controller/haptic.js"></script>
+<script type="text/javascript" src="generators/arduino/playground_esp32_controller/menu.js"></script>
 <script type="text/javascript" src="generators/arduino/arduino-uno/button.js"></script>
   <script type="text/javascript" src="msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
@@ -459,6 +465,7 @@ function addToolboxIcons() {
     else if (text === i18n.t('categories.math')) iconClass = 'bi-calculator';
     else if (text === i18n.t('categories.text')) iconClass = 'bi-type';
     else if (text === i18n.t('categories.variables')) iconText = 'x';
+    else if (text === i18n.t('categories.cast')) iconClass = 'bi-arrow-left-right';
     else if (text === i18n.t('categories.functions')) iconText = 'f(x)';
     else if (text === i18n.t('categories.customCode')) iconClass = 'bi-code-slash';
     else if (text === i18n.t('categories.inputOutput')) iconClass = 'bi-arrow-left-right';
@@ -1430,13 +1437,6 @@ function initBlockly() {
       <block type="global_variable"></block>
       <block type="global_variable_get"></block>
       <block type="global_variable_set"></block>
-      <block type="variable_cast">
-        <value name="VALUE">
-          <block type="math_number">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-      </block>
       <block type="variable_increment"></block>
       <block type="variable_compound_set">
         <value name="VALUE">
@@ -1468,6 +1468,22 @@ function initBlockly() {
       </block>
       <block type="global_array_length"></block>
       <block type="global_array_fill"></block>
+    </category>
+    <category name="Cast" data-i18n-name="categories.cast">
+      <block type="variable_cast">
+        <value name="VALUE">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+      </block>
+      <block type="byte_to_array">
+        <value name="BYTE">
+          <block type="math_number">
+            <field name="NUM">0</field>
+          </block>
+        </value>
+      </block>
     </category>
     <category name="Functions" custom="PROCEDURE" data-i18n-name="categories.functions"></category>
     <category name="Custom Code" data-i18n-name="categories.customCode">
@@ -1756,6 +1772,23 @@ function initBlockly() {
         </block>
         <block type="oled_clear"></block>
         <block type="oled_test"></block>
+        <block type="oled_menu">
+          <value name="TITLE">
+            <block type="text">
+              <field name="TEXT">Select</field>
+            </block>
+          </value>
+          <value name="ITEMS">
+            <block type="global_array_get">
+              <field name="NAME">myArray</field>
+              <value name="INDEX">
+                <block type="math_number">
+                  <field name="NUM">0</field>
+                </block>
+              </value>
+            </block>
+          </value>
+        </block>
       </category>
       <category name="Relais" data-i18n-name="categories.relais">
         <block type="relais_set"></block>
@@ -2029,10 +2062,27 @@ function initBlockly() {
              </block>
            </value>
          </block>
-         <block type="oled_clear"></block>
-         <block type="oled_test"></block>
-       </category>
-       <category name="Button" data-i18n-name="categories.button">
+<block type="oled_clear"></block>
+          <block type="oled_test"></block>
+          <block type="oled_menu">
+            <value name="TITLE">
+              <block type="text">
+                <field name="TEXT">Select</field>
+              </block>
+            </value>
+            <value name="ITEMS">
+              <block type="global_array_get">
+                <field name="NAME">myArray</field>
+                <value name="INDEX">
+                  <block type="math_number">
+                    <field name="NUM">0</field>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+        </category>
+        <category name="Button" data-i18n-name="categories.button">
         <block type="button_init"></block>
         <block type="button_read"></block>
         <block type="button_test"></block>

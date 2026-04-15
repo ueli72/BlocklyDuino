@@ -49,8 +49,12 @@ Blockly.Blocks['ble_client_scan'] = {
         .setCheck('Number')
         .setAlign(Blockly.ALIGN_RIGHT)
         .appendField("duration (ms)");
+    this.appendDummyInput()
+        .setAlign(Blockly.ALIGN_RIGHT)
+        .appendField(new Blockly.FieldCheckbox("FALSE"), "SHOW_OLED")
+        .appendField("show on OLED");
     this.setOutput(true, 'Array');
-    this.setTooltip('Scan for nearby BLE devices. Returns an array of device names. Duration in milliseconds (default 5000).');
+    this.setTooltip('Scan for nearby BLE devices. Returns an array of device names. Duration in milliseconds (default 5000). Check "show on OLED" to display scanning animation.');
   }
 };
 

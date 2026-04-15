@@ -168,28 +168,6 @@ Blockly.Blocks['variable_define'] = {
   }
 };
 
-Blockly.Blocks['variable_cast'] = {
-  init: function() {
-    this.setColour(190);
-    this.appendDummyInput()
-        .appendField("Cast to")
-        .appendField(new Blockly.FieldDropdown([
-          ["int", "int"],
-          ["long", "long"],
-          ["float", "float"],
-          ["byte", "byte"],
-          ["bool", "bool"],
-          ["char", "char"]
-        ]), "TYPE");
-    this.appendValueInput("VALUE")
-        .setCheck(null)
-        .appendField("value");
-    this.setOutput(true, null);
-    this.setInputsInline(true);
-    this.setTooltip('Convert a value to a different type.');
-  }
-};
-
 Blockly.Blocks['variable_increment'] = {
   init: function() {
     this.setColour(190);

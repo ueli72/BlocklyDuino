@@ -29,6 +29,13 @@ void serialPrintln(float value) {
     Serial.println(value);
 }
 
+void serialPrintArray(const std::vector<String>& arr) {
+    Serial.printf("Array[%d]:\n", arr.size());
+    for (size_t i = 0; i < arr.size(); i++) {
+        Serial.printf("  [%d] %s\n", i, arr[i].c_str());
+    }
+}
+
 String serialReadChar(bool blocking) {
     if (blocking) {
         while (!Serial.available()) {
