@@ -67,14 +67,25 @@ Blockly.Blocks['base_map'] = {
     this.appendValueInput("NUM", 'Number')
         .appendField("Map ")
         .setCheck('Number');
-    this.appendValueInput("DMAX", 'Number')
-        .appendField("value to [0-")
+    this.appendValueInput("FROM_MIN", 'Number')
+        .appendField("from [")
+        .setCheck('Number');
+    this.appendValueInput("FROM_MAX", 'Number')
+        .appendField("-")
         .setCheck('Number');
     this.appendDummyInput()
-	      .appendField("]");
+        .appendField("]");
+    this.appendValueInput("TO_MIN", 'Number')
+        .appendField("to [")
+        .setCheck('Number');
+    this.appendValueInput("TO_MAX", 'Number')
+        .appendField("-")
+        .setCheck('Number');
+    this.appendDummyInput()
+        .appendField("]");
     this.setInputsInline(true);
     this.setOutput(true);
-    this.setTooltip('Re-maps a number from [0-1024] to another.');
+    this.setTooltip('Re-maps a number from one range to another.');
   }
 };
 

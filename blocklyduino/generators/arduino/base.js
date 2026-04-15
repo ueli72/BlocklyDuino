@@ -33,9 +33,12 @@ Blockly.Arduino.base_delay = function() {
 };
 
 Blockly.Arduino.base_map = function() {
-  var value_num = Blockly.Arduino.valueToCode(this, 'NUM', Blockly.Arduino.ORDER_NONE);
-  var value_dmax = Blockly.Arduino.valueToCode(this, 'DMAX', Blockly.Arduino.ORDER_ATOMIC);
-  var code = 'map(' + value_num + ', 0, 1024, 0, ' + value_dmax + ')';
+  var value_num = Blockly.Arduino.valueToCode(this, 'NUM', Blockly.Arduino.ORDER_NONE) || '0';
+  var value_from_min = Blockly.Arduino.valueToCode(this, 'FROM_MIN', Blockly.Arduino.ORDER_ATOMIC) || '0';
+  var value_from_max = Blockly.Arduino.valueToCode(this, 'FROM_MAX', Blockly.Arduino.ORDER_ATOMIC) || '1024';
+  var value_to_min = Blockly.Arduino.valueToCode(this, 'TO_MIN', Blockly.Arduino.ORDER_ATOMIC) || '0';
+  var value_to_max = Blockly.Arduino.valueToCode(this, 'TO_MAX', Blockly.Arduino.ORDER_ATOMIC) || '255';
+  var code = 'map(' + value_num + ', ' + value_from_min + ', ' + value_from_max + ', ' + value_to_min + ', ' + value_to_max + ')';
   return [code, Blockly.Arduino.ORDER_NONE];
 };
 
