@@ -43,7 +43,6 @@ Blockly.Arduino.ky023_read_x = function() {
   Blockly.Arduino.definitions_['include_ky023_h'] = '#include "ky023.h"\n';
   
   var code = (joystick === 'LEFT') ? 'readJoyLeftX()' : 'readJoyRightX()';
-  code += '  // Read ' + joystick + ' X-axis (0-4095)';
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 
@@ -53,7 +52,6 @@ Blockly.Arduino.ky023_read_y = function() {
   Blockly.Arduino.definitions_['include_ky023_h'] = '#include "ky023.h"\n';
   
   var code = (joystick === 'LEFT') ? 'readJoyLeftY()' : 'readJoyRightY()';
-  code += '  // Read ' + joystick + ' Y-axis (0-4095)';
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 
@@ -63,7 +61,6 @@ Blockly.Arduino.ky023_read_button = function() {
   Blockly.Arduino.definitions_['include_ky023_h'] = '#include "ky023.h"\n';
   
   var code = (joystick === 'LEFT') ? 'isJoyLeftPressed()' : 'isJoyRightPressed()';
-  code += '  // Check if ' + joystick + ' button is pressed (active LOW)';
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
 
