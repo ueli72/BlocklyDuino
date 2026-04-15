@@ -182,7 +182,8 @@ Blockly.Blocks['lists_create_with_container'] = {
     this.setColour(Blockly.Blocks.lists.HUE);
     this.appendDummyInput()
         .appendField(Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TITLE_ADD);
-    this.appendStatementInput('STACK');
+    this.appendStatementInput('STACK')
+        .setCheck('general');
     this.setTooltip(Blockly.Msg.LISTS_CREATE_WITH_CONTAINER_TOOLTIP);
     this.contextMenu = false;
   }

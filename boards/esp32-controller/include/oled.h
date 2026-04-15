@@ -22,6 +22,9 @@ void initOLED();
 // Write text to OLED display (supports printf-style formatting)
 void writeToOled(const char* format, ...);
 
+// Write String to OLED display
+void writeToOled(const String& str);
+
 // Write integer to OLED display
 void writeToOled(int value);
 

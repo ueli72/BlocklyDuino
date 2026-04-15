@@ -31,3 +31,23 @@ Blockly.Arduino.text = function() {
   var code = Blockly.Arduino.quote_(this.getFieldValue('TEXT'));
   return [code, Blockly.Arduino.ORDER_ATOMIC];
 };
+
+Blockly.Arduino.text_join = function() {
+  // Concatenate multiple items into a string.
+  var code = '';
+  var itemCount = this.itemCount_;
+  
+  // Build string concatenation using String() constructor for each item
+  var parts = [];
+  for (var i = 0; i < itemCount; i++) {
+    var itemCode = Blockly.Arduino.valueToCode(this, 'ADD' + i, 
+        Blockly.Arduino.ORDER_NONE) || '""';
+    // Wrap each item with String() to convert any type to string
+    parts.push('String(' + itemCode + ')');
+  }
+  
+  // Join with + operator
+  code = parts.join(' + ');
+  
+  return [code, Blockly.Arduino.ORDER_ADDITIVE];
+};

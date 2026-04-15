@@ -223,7 +223,8 @@ Blockly.Blocks['controls_if_if'] = {
     this.setColour(Blockly.Blocks.logic.HUE);
     this.appendDummyInput()
         .appendField(Blockly.Msg.CONTROLS_IF_IF_TITLE_IF);
-    this.appendStatementInput('STACK');
+    this.appendStatementInput('STACK')
+        .setCheck('general');
     this.setTooltip(Blockly.Msg.CONTROLS_IF_IF_TOOLTIP);
     this.contextMenu = false;
   }
@@ -543,7 +544,8 @@ Blockly.Blocks['controls_switch_switch'] = {
     this.setColour(Blockly.Blocks.logic.HUE);
     this.appendDummyInput()
         .appendField("switch");
-    this.appendStatementInput('STACK');
+    this.appendStatementInput('STACK')
+        .setCheck('general');
     this.setTooltip('Add case or default blocks inside.');
     this.contextMenu = false;
   }

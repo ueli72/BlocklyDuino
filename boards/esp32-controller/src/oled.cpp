@@ -45,6 +45,10 @@ void writeToOled(const char* format, ...) {
   writeToOledInternal(buf);
 }
 
+void writeToOled(const String& str) {
+  writeToOledInternal(str.c_str());
+}
+
 void writeToOled(int value) {
   char buf[256];
   snprintf(buf, sizeof(buf), "%d", value);

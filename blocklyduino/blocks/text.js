@@ -201,7 +201,8 @@ Blockly.Blocks['text_create_join_container'] = {
     this.setColour(Blockly.Blocks.text.HUE);
     this.appendDummyInput()
         .appendField(Blockly.Msg.TEXT_CREATE_JOIN_TITLE_JOIN);
-    this.appendStatementInput('STACK');
+    this.appendStatementInput('STACK')
+        .setCheck('general');
     this.setTooltip(Blockly.Msg.TEXT_CREATE_JOIN_TOOLTIP);
     this.contextMenu = false;
   }

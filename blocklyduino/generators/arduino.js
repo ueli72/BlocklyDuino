@@ -346,12 +346,12 @@ Blockly.Arduino.scrubNakedValue = function(line) {
  * @private
  */
 Blockly.Arduino.quote_ = function(string) {
-  // TODO: This is a quick hack.  Replace with goog.string.quote
-  string = string.replace(/\\/g, '\\\\')
-                 .replace(/\n/g, '\\\n')
+  // Note: We don't escape backslashes so users can type \n, \t, etc.
+  // for escape sequences. If a literal backslash is needed, type \\
+  string = string.replace(/\n/g, '\\\n')
                  .replace(/\$/g, '\\$')
                  .replace(/'/g, '\\\'');
-  return '\"' + string + '\"';
+  return '"' + string + '"';
 };
 
 /**

@@ -427,7 +427,8 @@ Blockly.Blocks['procedures_mutatorcontainer'] = {
     this.setColour(Blockly.Blocks.procedures.HUE);
     this.appendDummyInput()
         .appendField(Blockly.Msg.PROCEDURES_MUTATORCONTAINER_TITLE);
-    this.appendStatementInput('STACK');
+    this.appendStatementInput('STACK')
+        .setCheck('general');
     this.appendDummyInput('STATEMENT_INPUT')
         .appendField(Blockly.Msg.PROCEDURES_ALLOW_STATEMENTS)
         .appendField(new Blockly.FieldCheckbox('TRUE'), 'STATEMENTS');
