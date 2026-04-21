@@ -45,7 +45,8 @@ i18n.registerTranslations('de', {
     "downloadSummary": "Die folgenden Includes werden zu main.cpp hinzugefügt:\n\n{includes}\nMit Download fortfahren?",
     "dependencyWarning": "Die folgenden Abhängigkeiten fehlen:\n\n{dependencies}\nIhr Code funktioniert möglicherweise nicht korrekt. Trotzdem fortfahren?",
     "projectName": "Wie möchten Sie Ihr Projekt nennen?",
-    "fileName": "Wie möchten Sie Ihre Datei nennen?"
+    "fileName": "Wie möchten Sie Ihre Datei nennen?",
+    "switchBoardConfirm": "Das Wechseln des Boards löscht den aktuellen Arbeitsbereich. Alle nicht gespeicherten Änderungen gehen verloren. Fortfahren?"
   },
   "categories": {
     "logic": "Logik",

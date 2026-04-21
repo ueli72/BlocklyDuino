@@ -110,6 +110,83 @@ var ARDUINO_UNO_GENERATOR_SCRIPTS = [
 ];
 var arduinoUnoGeneratorsLoading = null;
 
+// Board-specific block definition scripts
+var PLAYGROUND_BLOCK_SCRIPTS = [
+  'blocks/playground/sg90.js',
+  'blocks/playground/internal_led.js',
+  'blocks/playground/button.js',
+  'blocks/playground/ledmatrix.js',
+  'blocks/playground/oled.js',
+  'blocks/playground/menu.js',
+  'blocks/playground/relais.js',
+  'blocks/playground/dc_motor.js',
+  'blocks/playground/dht11.js',
+  'blocks/playground/ultrasonic.js',
+  'blocks/playground/sdcard.js',
+  'blocks/playground/max98357a.js',
+  'blocks/playground/brightness.js',
+  'blocks/playground/ws2812.js',
+  'blocks/playground/ble_remote.js',
+  'blocks/playground/ble_client.js',
+  'blocks/playground/test_all.js',
+  'blocks/playground/timer.js',
+  'blocks/playground/ky023.js',
+  'blocks/playground/serial.js',
+  'blocks/playground/variable.js',
+  'blocks/playground/cast.js',
+  'blocks/playground/global_array.js',
+  'blocks/playground/custom_code.js'
+];
+
+var BRUMBRUM_BLOCK_SCRIPTS = [
+  'blocks/playground_brumbrum/sg90.js',
+  'blocks/playground_brumbrum/internal_led.js',
+  'blocks/playground_brumbrum/button.js',
+  'blocks/playground_brumbrum/dc_motor.js',
+  'blocks/playground_brumbrum/ultrasonic.js',
+  'blocks/playground_brumbrum/sdcard.js',
+  'blocks/playground_brumbrum/max98357a.js',
+  'blocks/playground_brumbrum/brightness.js',
+  'blocks/playground_brumbrum/ws2812.js',
+  'blocks/playground_brumbrum/ble_remote.js',
+  'blocks/playground_brumbrum/test_all.js',
+  'blocks/playground_brumbrum/timer.js',
+  'blocks/playground_brumbrum/ky023.js',
+  'blocks/playground_brumbrum/serial.js',
+  'blocks/playground_brumbrum/variable.js',
+  'blocks/playground_brumbrum/global_array.js',
+  'blocks/playground_brumbrum/custom_code.js'
+];
+
+var ESP32_CONTROLLER_BLOCK_SCRIPTS = [
+  'blocks/playground_esp32_controller/internal_led.js',
+  'blocks/playground_esp32_controller/oled.js',
+  'blocks/playground_esp32_controller/haptic.js',
+  'blocks/playground_esp32_controller/ky023.js',
+  'blocks/playground_esp32_controller/menu.js',
+  'blocks/playground_esp32_controller/sg90.js',
+  'blocks/playground_esp32_controller/button.js',
+  'blocks/playground_esp32_controller/dc_motor.js',
+  'blocks/playground_esp32_controller/ultrasonic.js',
+  'blocks/playground_esp32_controller/sdcard.js',
+  'blocks/playground_esp32_controller/max98357a.js',
+  'blocks/playground_esp32_controller/brightness.js',
+  'blocks/playground_esp32_controller/ws2812.js',
+  'blocks/playground_esp32_controller/ble_remote.js',
+  'blocks/playground_esp32_controller/test_all.js',
+  'blocks/playground_esp32_controller/timer.js',
+  'blocks/playground_esp32_controller/serial.js',
+  'blocks/playground_esp32_controller/variable.js',
+  'blocks/playground_esp32_controller/global_array.js',
+  'blocks/playground_esp32_controller/custom_code.js'
+];
+
+var ARDUINO_UNO_BLOCK_SCRIPTS = [
+  'blocks/arduino-uno/button.js'
+];
+
+var loadedBlockScripts = {};
+
 var BOARD_INFO = {
   'esp32-s3-devkitc1': {
     name: 'BWS Playground Master',
@@ -454,6 +531,63 @@ function updateGeneratorsForBoard(boardId) {
   } else {
     applyGeneratorSet('master');
   }
+}
+
+/**
+ * Load block definition scripts for a specific board.
+ * This dynamically loads only the block definitions needed for the selected board.
+ */
+var currentBlockLoadingPromise = null;
+
+function getBlockScriptsForBoard(boardId) {
+  switch (boardId) {
+    case 'playground-brumbrum-esp32-s3-devkitc1':
+      return BRUMBRUM_BLOCK_SCRIPTS;
+    case 'esp32-controller':
+      return ESP32_CONTROLLER_BLOCK_SCRIPTS;
+    case 'arduino-uno':
+      return ARDUINO_UNO_BLOCK_SCRIPTS;
+    case 'esp32-s3-devkitc1':
+    default:
+      return PLAYGROUND_BLOCK_SCRIPTS;
+  }
+}
+
+function loadBlocksForBoard(boardId) {
+  var scripts = getBlockScriptsForBoard(boardId);
+  
+  // Filter out already loaded scripts
+  var scriptsToLoad = scripts.filter(function(path) {
+    return !loadedBlockScripts[path];
+  });
+  
+  if (scriptsToLoad.length === 0) {
+    return Promise.resolve();
+  }
+  
+  return loadScriptsSequential(scriptsToLoad).then(function() {
+    scriptsToLoad.forEach(function(path) {
+      loadedBlockScripts[path] = true;
+    });
+  });
+}
+
+function updateBlocksForBoard(boardId) {
+  return loadBlocksForBoard(boardId);
+}
+
+/**
+ * Handle board selector dropdown change.
+ * Called when user selects a different board from the dropdown.
+ */
+function onBoardSelectorChange(boardId) {
+  showConfirmModal(i18n.t('messages.switchBoardConfirm') || 'Switching boards will clear your current workspace. Any unsaved changes will be lost. Continue?', function() {
+    // Clear the workspace
+    Blockly.mainWorkspace.clear();
+    
+    // Select the new board (this loads blocks and generators)
+    selectBoard(boardId);
+  });
 }
 
 function loadScriptsSequential(paths) {
@@ -845,8 +979,16 @@ function selectBoard(boardId) {
     profile['default'] = profile['arduino'];
   }
   
-  updateToolboxForBoard(boardId);
-  updateGeneratorsForBoard(boardId);
+  // Load block definitions first, then update toolbox and generators
+  updateBlocksForBoard(boardId).then(function() {
+    updateToolboxForBoard(boardId);
+    updateGeneratorsForBoard(boardId);
+  }).catch(function(error) {
+    console.error('Failed to load block scripts for board:', boardId, error);
+    // Still try to update toolbox and generators even if block loading fails
+    updateToolboxForBoard(boardId);
+    updateGeneratorsForBoard(boardId);
+  });
   
   var modalEl = document.getElementById('boardSelectionModal');
   var modal = bootstrap.Modal.getInstance(modalEl);
@@ -938,9 +1080,16 @@ function initBoardSelection() {
     } else if (savedBoard === 'arduino-uno') {
       profile['default'] = profile['arduino'];
     }
+    
+    // Load block scripts for saved board, then update toolbox
     window.setTimeout(function() {
-      updateToolboxForBoard(savedBoard);
-    }, 200);
+      updateBlocksForBoard(savedBoard).then(function() {
+        updateToolboxForBoard(savedBoard);
+      }).catch(function(error) {
+        console.error('Failed to load initial block scripts:', error);
+        updateToolboxForBoard(savedBoard);
+      });
+    }, 100);
   } else {
     if (boardSelector) {
       boardSelector.style.display = 'none';

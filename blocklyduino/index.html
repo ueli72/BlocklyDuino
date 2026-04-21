@@ -21,36 +21,7 @@
   <script type="text/javascript" src="blocks/variables.js"></script>
   <script type="text/javascript" src="blocks/constants.js"></script>
   <script type="text/javascript" src="blocks/program_structure.js"></script>
-<script type="text/javascript" src="blocks/playground/sg90.js"></script>
-<script type="text/javascript" src="blocks/playground/internal_led.js"></script>
-<script type="text/javascript" src="blocks/playground/button.js"></script>
-<script type="text/javascript" src="blocks/playground/ledmatrix.js"></script>
-<script type="text/javascript" src="blocks/playground/oled.js"></script>
-<script type="text/javascript" src="blocks/playground/menu.js"></script>
-<script type="text/javascript" src="blocks/playground/relais.js"></script>
-  <script type="text/javascript" src="blocks/playground/dc_motor.js"></script>
-  <script type="text/javascript" src="blocks/playground/dht11.js"></script>
-  <script type="text/javascript" src="blocks/playground/ultrasonic.js"></script>
-  <script type="text/javascript" src="blocks/playground/sdcard.js"></script>
-<script type="text/javascript" src="blocks/playground/max98357a.js"></script>
-  <script type="text/javascript" src="blocks/playground/brightness.js"></script>
-  <script type="text/javascript" src="blocks/playground/ws2812.js"></script>
-  <script type="text/javascript" src="blocks/playground/ble_remote.js"></script>
-  <script type="text/javascript" src="blocks/playground/ble_client.js"></script>
-  <script type="text/javascript" src="blocks/playground/test_all.js"></script>
-  <script type="text/javascript" src="blocks/playground/timer.js"></script>
-  <script type="text/javascript" src="blocks/playground/ky023.js"></script>
-  <script type="text/javascript" src="blocks/playground/serial.js"></script>
-  <script type="text/javascript" src="blocks/playground/variable.js"></script>
-  <script type="text/javascript" src="blocks/playground/cast.js"></script>
-  <script type="text/javascript" src="blocks/playground/global_array.js"></script>
-  <script type="text/javascript" src="blocks/playground/custom_code.js"></script>
-<script type="text/javascript" src="blocks/playground_esp32_controller/internal_led.js"></script>
-<script type="text/javascript" src="blocks/playground_esp32_controller/oled.js"></script>
-<script type="text/javascript" src="blocks/playground_esp32_controller/haptic.js"></script>
-<script type="text/javascript" src="blocks/playground_esp32_controller/ky023.js"></script>
-<script type="text/javascript" src="blocks/playground_esp32_controller/menu.js"></script>
-<script type="text/javascript" src="blocks/arduino-uno/button.js"></script>
+<!-- Board-specific block scripts are loaded dynamically -->
   <script type="text/javascript" src="generators/arduino.js"></script>
   <script type="text/javascript" src="generators/arduino/base.js"></script>
   <script type="text/javascript" src="generators/arduino/control.js"></script>
@@ -61,35 +32,7 @@
   <script type="text/javascript" src="generators/arduino/variables.js"></script>
   <script type="text/javascript" src="generators/arduino/constants.js"></script>
   <script type="text/javascript" src="generators/arduino/program_structure.js"></script>
-<script type="text/javascript" src="generators/arduino/playground/sg90.js"></script>
-<script type="text/javascript" src="generators/arduino/playground/internal_led.js"></script>
-<script type="text/javascript" src="generators/arduino/playground/button.js"></script>
-<script type="text/javascript" src="generators/arduino/playground/ledmatrix.js"></script>
-<script type="text/javascript" src="generators/arduino/playground/oled.js"></script>
-<script type="text/javascript" src="generators/arduino/playground/menu.js"></script>
-<script type="text/javascript" src="generators/arduino/playground/relais.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/dc_motor.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/dht11.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/ultrasonic.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/sdcard.js"></script>
-<script type="text/javascript" src="generators/arduino/playground/max98357a.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/brightness.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/ws2812.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/ble_remote.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/ble_client.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/test_all.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/timer.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/ky023.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/serial.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/variable.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/cast.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/global_array.js"></script>
-  <script type="text/javascript" src="generators/arduino/playground/custom_code.js"></script>
-<script type="text/javascript" src="generators/arduino/playground_esp32_controller/internal_led.js"></script>
-<script type="text/javascript" src="generators/arduino/playground_esp32_controller/haptic.js"></script>
-<script type="text/javascript" src="generators/arduino/playground_esp32_controller/menu.js"></script>
-<script type="text/javascript" src="generators/arduino/playground_esp32_controller/ky023.js"></script>
-<script type="text/javascript" src="generators/arduino/arduino-uno/button.js"></script>
+<!-- Board-specific generator scripts are loaded dynamically -->
   <script type="text/javascript" src="msg/js/en.js"></script>
   <script type="text/javascript" src="Blob.js"></script>
   <script type="text/javascript" src="spin.js"></script>
@@ -1103,7 +1046,7 @@ function initBlockly() {
             <span id="boardName" class="board-name"></span>
             <i class="bi bi-info-circle text-info" style="cursor: pointer;" onclick="togglePinReference()" title="Pin Reference"></i>
           </div>
-          <select class="form-select form-select-sm" id="boardSelector">
+          <select class="form-select form-select-sm" id="boardSelector" onchange="onBoardSelectorChange(this.value)">
             <option value="esp32-s3-devkitc1">BWS Playground Master</option>
             <option value="playground-brumbrum-esp32-s3-devkitc1">Playground BrumBrum (esp32-s3-devkitc1)</option>
             <option value="esp32-controller">ESP32-Controller</option>

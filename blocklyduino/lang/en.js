@@ -45,7 +45,8 @@ i18n.registerTranslations('en', {
     "downloadSummary": "The following includes will be added to main.cpp:\n\n{includes}\nContinue with download?",
     "dependencyWarning": "The following dependencies are missing:\n\n{dependencies}\nYour code may not work correctly. Continue anyway?",
     "projectName": "What would you like to name your project?",
-    "fileName": "What would you like to name your file?"
+    "fileName": "What would you like to name your file?",
+    "switchBoardConfirm": "Switching boards will clear your current workspace. Any unsaved changes will be lost. Continue?"
   },
   "categories": {
     "logic": "Logic",
