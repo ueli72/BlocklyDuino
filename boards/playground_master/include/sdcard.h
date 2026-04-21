@@ -11,8 +11,6 @@
 
 bool initSDCard();
 
-void testSPIConnection();
-
 bool sdWriteFile(const char* path, const char* message);
 
 String sdReadFile(const char* path);
@@ -23,17 +21,7 @@ bool sdDeleteFile(const char* path);
 
 bool sdExists(const char* path);
 
-String readFileFromCard(const char* filename);
-
-void listFilesFromCard();
-
-bool writeFileToCard(const char* filename, const char* content, bool append);
-
-bool writeFileToCard(const char* filename, const char* content);
-
-bool deleteFileFromCard(const char* filename);
-
-void sdListFiles();
+String sdListFiles();
 
 void testSDCard();
 

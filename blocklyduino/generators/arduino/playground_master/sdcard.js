@@ -64,6 +64,12 @@ Blockly.Arduino.sdcard_delete = function() {
   return code;
 };
 
+Blockly.Arduino.sdcard_list = function() {
+  Blockly.Arduino.definitions_['include_sdcard_h'] = '#include "sdcard.h"\n';
+  var code = 'sdListFiles()';
+  return [code, Blockly.Arduino.ORDER_ATOMIC];
+};
+
 Blockly.Arduino.sdcard_test = function() {
   Blockly.Arduino.definitions_['include_sdcard_h'] = '#include "sdcard.h"\n';
   Blockly.Arduino.definitions_['include_oled_h'] = '#include "oled.h"\n';

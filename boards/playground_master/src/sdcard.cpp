@@ -18,7 +18,6 @@
 #endif
 
 static bool sdInitialized = false;
-static bool useManualMode = false;
 static bool isSDHC = false;
 
 #define MAX_AUDIO_FILES 4
@@ -860,41 +859,6 @@ bool writeFileToCard(const char* filename, const char* content) {
   return writeFileToCard(filename, content, false);
 }
 
-void testSPIConnection() {
-  DBG_PRINTLN("=== SPI Connection Test ===");
-  
-  SPI.begin(SD_CLK_PIN, SD_MISO_PIN, SD_MOSI_PIN);
-  SPI.setFrequency(100000);
-  SPI.setDataMode(SPI_MODE0);
-  
-  pinMode(SD_CS_PIN, OUTPUT);
-  digitalWrite(SD_CS_PIN, HIGH);
-  delay(10);
-  
-  digitalWrite(SD_CS_PIN, LOW);
-  delay(1);
-  
-  for (int i = 0; i < 10; i++) SPI.transfer(0xFF);
-  
-  SPI.transfer(0x40);
-  SPI.transfer(0x00);
-  SPI.transfer(0x00);
-  SPI.transfer(0x00);
-  SPI.transfer(0x00);
-  SPI.transfer(0x95);
-  
-  uint8_t response = 0xFF;
-  for (int i = 0; i < 10; i++) {
-    response = SPI.transfer(0xFF);
-    if (response != 0xFF) break;
-  }
-  
-  digitalWrite(SD_CS_PIN, HIGH);
-  
-  DBG_PRINTF("MISO pin: %d, Response: 0x%02X\n", digitalRead(SD_MISO_PIN), response);
-  DBG_PRINTLN("============================");
-}
-
 bool initSDCard() {
   DBG_PRINTLN("\n[SD] === Custom SPI Init (500kHz) ===");
   
@@ -1007,16 +971,26 @@ bool sdExists(const char* path) {
   return SD.exists(path);
 }
 
-void sdListFiles() {
-  if (!sdInitialized) return;
+String sdListFiles() {
+  if (!sdInitialized) return "";
   
   File root = SD.open("/");
-  if (!root) return;
+  if (!root) return "";
   
+  String fileList = "";
   File file = root.openNextFile();
+  bool firstFile = true;
+  
   while (file) {
+    if (!firstFile) {
+      fileList += ",";
+    }
+    fileList += file.name();
+    firstFile = false;
     file = root.openNextFile();
   }
+  
+  return fileList;
 }
 
 void testSDCard() {

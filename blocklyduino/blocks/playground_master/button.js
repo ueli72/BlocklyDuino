@@ -112,7 +112,7 @@ var BLOCKED_IN_ISR = [
   'max98357a_init', 'max98357a_play_tone', 'max98357a_stop', 'max98357a_test',
   'max98357a_play_file', 'max98357a_is_playing', 'max98357a_wait_until_done',
   'oled_init', 'oled_write', 'oled_clear', 'oled_test',
-  'sdcard_init', 'sdcard_write', 'sdcard_read', 'sdcard_append', 'sdcard_exists', 'sdcard_delete', 'sdcard_test',
+  'sdcard_init', 'sdcard_write', 'sdcard_read', 'sdcard_append', 'sdcard_exists', 'sdcard_delete', 'sdcard_list', 'sdcard_test',
   'dht11_init', 'dht11_read_temp', 'dht11_read_humidity', 'dht11_test',
   'ultrasonic_read', 'ultrasonic_test'
 ];

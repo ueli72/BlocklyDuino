@@ -240,6 +240,12 @@ var BLOCK_INFO = {
     warningKey: 'sdcard',
     includes: ['sdcard.h']
   },
+  'sdcard_list': {
+    title: 'blockInfo.sdcard.title',
+    message: 'blockInfo.sdcard.message',
+    warningKey: 'sdcard',
+    includes: ['sdcard.h']
+  },
   'sdcard_test': {
     title: 'blockInfo.sdcard.title',
     message: 'blockInfo.sdcard.message',
@@ -644,6 +650,10 @@ var BLOCK_DEPENDENCIES = {
   'sdcard_delete': {
     requires: 'sdcard_init',
     message: 'dependencies.sdcardDelete'
+  },
+  'sdcard_list': {
+    requires: 'sdcard_init',
+    message: 'dependencies.sdcardList'
   },
   'sdcard_test': {
     requires: 'sdcard_init',

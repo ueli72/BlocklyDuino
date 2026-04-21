@@ -122,6 +122,18 @@ Blockly.Blocks['sdcard_delete'] = {
   }
 };
 
+Blockly.Blocks['sdcard_list'] = {
+  init: function() {
+    this.setColour(190);
+    this.appendDummyInput()
+        .appendField("SD Card")
+        .appendField(new Blockly.FieldImage("media/sdcard.jpg", 64, 64))
+        .appendField("List Files");
+    this.setOutput(true, 'String');
+    this.setTooltip('Get a list of all files on the SD card (comma-separated)');
+  }
+};
+
 Blockly.Blocks['sdcard_test'] = {
   init: function() {
     this.setColour(190);
