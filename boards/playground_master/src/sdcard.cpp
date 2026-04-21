@@ -1,8 +1,9 @@
 // Made for playground_master
 #include "sdcard.h"
 #include "oled.h"
-#include <SPI.h>
+#include <FS.h>
 #include <SD.h>
+#include <SPI.h>
 
 #define SDCARD_DEBUG 0
 
@@ -74,29 +75,29 @@ static uint8_t sendCommand(uint8_t cmd, uint32_t arg) {
 }
 
 static bool readSector(uint32_t sector, uint8_t* buffer) {
-  uint32_t address = isSDHC ? sector : (sector * 512);
+  // MMC/SD card sector read at 1MHz
+  // Use BYTE addressing (sector * 512) for standard MMC cards
+  uint32_t address = sector * 512;
   
-  uint8_t cmdFrame[5] = {
-    0x51,
+  digitalWrite(SD_CS_PIN, LOW);
+  delayMicroseconds(100);
+  
+  // Send CMD17 with proper CRC
+  uint8_t cmd[6] = {
+    0x51,  // CMD17
     (uint8_t)((address >> 24) & 0xFF),
     (uint8_t)((address >> 16) & 0xFF),
     (uint8_t)((address >> 8) & 0xFF),
-    (uint8_t)(address & 0xFF)
+    (uint8_t)(address & 0xFF),
+    0x00   // CRC for CMD17
   };
-  uint8_t crc = crc7(cmdFrame, 5);
-  DBG_PRINTF("CMD17 addr=%lu, CRC=0x%02X\n", address, crc);
+  cmd[5] = crc7(cmd, 5);
   
-  digitalWrite(SD_CS_PIN, HIGH);
-  for (int i = 0; i < 10; i++) SPI.transfer(0xFF);
-  digitalWrite(SD_CS_PIN, LOW);
-  SPI.transfer(0xFF);
-  SPI.transfer(cmdFrame[0]);
-  SPI.transfer(cmdFrame[1]);
-  SPI.transfer(cmdFrame[2]);
-  SPI.transfer(cmdFrame[3]);
-  SPI.transfer(cmdFrame[4]);
-  SPI.transfer(crc);
+  for (int i = 0; i < 6; i++) {
+    SPI.transfer(cmd[i]);
+  }
   
+  // Wait for response R1
   uint8_t r1 = 0xFF;
   for (int i = 0; i < 20; i++) {
     r1 = SPI.transfer(0xFF);
@@ -104,36 +105,46 @@ static bool readSector(uint32_t sector, uint8_t* buffer) {
   }
   
   if (r1 != 0x00) {
-    DBG_PRINTF("CMD17 failed for sector %lu (addr %lu), response: 0x%02X\n", sector, address, r1);
     digitalWrite(SD_CS_PIN, HIGH);
+    DBG_PRINTF("[READ] CMD17 failed, r1=0x%02X\n", r1);
     return false;
   }
   
+  // Flush after response and wait for card
+  for (int i = 0; i < 10; i++) SPI.transfer(0xFF);
+  delayMicroseconds(200);
+  
+  // Wait for data start token 0xFE with longer timeout
   uint8_t token = 0xFF;
-  for (int i = 0; i < 100000; i++) {
+  int timeout = 0;
+  for (int i = 0; i < 5000; i++) {
     token = SPI.transfer(0xFF);
-    if (token != 0xFF) break;
+    if (token == 0xFE) break;
+    delayMicroseconds(10);
+    timeout++;
   }
   
-  if (token == 0x00) {
-    for (int i = 0; i < 100000; i++) {
-      token = SPI.transfer(0xFF);
-      if (token == 0xFE) break;
-    }
-  }
+  DBG_PRINTF("[READ] Waited %d cycles, token=0x%02X\n", timeout, token);
   
   if (token != 0xFE) {
-    DBG_PRINTF("No data token for sector %lu, got: 0x%02X\n", sector, token);
     digitalWrite(SD_CS_PIN, HIGH);
+    DBG_PRINTF("[READ] No data token, got=0x%02X\n", token);
     return false;
   }
   
+  // Read 512 data bytes
   for (int i = 0; i < 512; i++) {
     buffer[i] = SPI.transfer(0xFF);
   }
+  
+  // Read 2 CRC bytes
   SPI.transfer(0xFF);
   SPI.transfer(0xFF);
+  
+  // Deselect and extra clocks
   digitalWrite(SD_CS_PIN, HIGH);
+  for (int i = 0; i < 10; i++) SPI.transfer(0xFF);
+  delayMicroseconds(100);
   
   return true;
 }
@@ -225,63 +236,47 @@ static bool writeSector(uint32_t sector, const uint8_t* buffer) {
 static bool initFatFS() {
   uint8_t buffer[512];
   
-  DBG_PRINTLN("Testing sector reads...");
+  DBG_PRINTLN("[FAT] Testing sector reads...");
   
   for (uint32_t sec = 0; sec <= 10; sec++) {
     if (readSector(sec, buffer)) {
-      DBG_PRINTF("Sector %lu: OK\n", sec);
+      DBG_PRINTF("[FAT] Sector %lu: OK\n", sec);
     } else {
-      DBG_PRINTF("Sector %lu: FAILED\n", sec);
+      DBG_PRINTF("[FAT] Sector %lu: FAILED\n", sec);
       break;
     }
   }
   
+  DBG_PRINTLN("[FAT] Reading MBR (sector 0)...");
   if (!readSector(0, buffer)) {
-    DBG_PRINTLN("Failed to read MBR");
+    DBG_PRINTLN("[FAT] ERROR: Failed to read MBR");
     return false;
   }
   
-  DBG_PRINTLN("MBR read OK, checking partition table...");
-  DBG_PRINTF("MBR signature: %02X %02X\n", buffer[510], buffer[511]);
+  DBG_PRINTLN("[FAT] MBR read OK");
+  DBG_PRINTF("[FAT] MBR signature: 0x%02X 0x%02X\n", buffer[510], buffer[511]);
   
   uint32_t partitionStart = 0;
   if (buffer[510] == 0x55 && buffer[511] == 0xAA) {
     partitionStart = *(uint32_t*)(buffer + 454);
-    DBG_PRINTF("Partition 1 start: %lu (LBA)\n", partitionStart);
-    DBG_PRINTF("Partition 1 type: %02X\n", buffer[450]);
+    DBG_PRINTF("[FAT] Partition 1 start: %lu (LBA)\n", partitionStart);
   }
   
   if (partitionStart == 0) {
-    DBG_PRINTLN("No partition found, trying as superfloppy");
+    DBG_PRINTLN("[FAT] No partition found, trying as superfloppy");
     partitionStart = 0;
   }
   
   delay(100);
   
-  DBG_PRINTF("Reading boot sector at %lu...\n", partitionStart);
+  DBG_PRINTF("[FAT] Reading boot sector at %lu...\n", partitionStart);
   if (!readSector(partitionStart, buffer)) {
-    DBG_PRINTLN("Failed to read boot sector");
-    
-    for (int retry = 0; retry < 5; retry++) {
-      delay(100);
-      DBG_PRINTF("Retry %d...\n", retry + 1);
-      if (readSector(partitionStart, buffer)) {
-        DBG_PRINTLN("Success on retry!");
-        break;
-      }
-    }
-    if (!readSector(partitionStart, buffer)) {
-      return false;
-    }
+    DBG_PRINTLN("[FAT] ERROR: Failed to read boot sector");
+    return false;
   }
   
-  DBG_PRINTLN("Boot sector read OK");
-  DBG_PRINTF("First 32 bytes: ");
-  for (int i = 0; i < 32; i++) {
-    DBG_PRINTF("%02X ", buffer[i]);
-  }
-  DBG_PRINTLN();
-  DBG_PRINTF("Jump instruction: %02X %02X %02X\n", buffer[0], buffer[1], buffer[2]);
+  DBG_PRINTLN("[FAT] Boot sector read OK");
+  DBG_PRINTF("[FAT] Jump instruction: 0x%02X 0x%02X 0x%02X\n", buffer[0], buffer[1], buffer[2]);
   
   bytesPerSector = *(uint16_t*)(buffer + 11);
   sectorsPerCluster = buffer[13];
@@ -292,10 +287,19 @@ static bool initFatFS() {
   uint32_t fatSize32 = *(uint32_t*)(buffer + 36);
   uint32_t rootCluster = *(uint32_t*)(buffer + 44);
   
-  DBG_PRINTF("Bytes per sector: %d\n", bytesPerSector);
-  DBG_PRINTF("Sectors per cluster: %d\n", sectorsPerCluster);
-  DBG_PRINTF("Reserved sectors: %d\n", reservedSectors);
-  DBG_PRINTF("Number of FATs: %d\n", numFATs);
+  DBG_PRINTF("[FAT] Bytes per sector: %d\n", bytesPerSector);
+  DBG_PRINTF("[FAT] Sectors per cluster: %d\n", sectorsPerCluster);
+  DBG_PRINTF("[FAT] Reserved sectors: %d\n", reservedSectors);
+  
+  if (bytesPerSector == 0 || bytesPerSector > 4096) {
+    DBG_PRINTLN("[FAT] ERROR: Invalid bytes per sector");
+    return false;
+  }
+  
+  if (sectorsPerCluster == 0 || sectorsPerCluster > 128) {
+    DBG_PRINTLN("[FAT] ERROR: Invalid sectors per cluster");
+    return false;
+  }
   
   fatSize = fatSize16 ? fatSize16 : fatSize32;
   isFat32 = (fatSize16 == 0);
@@ -305,16 +309,13 @@ static bool initFatFS() {
   
   if (isFat32) {
     rootDirSector = dataStartSector + ((rootCluster - 2) * sectorsPerCluster);
-    DBG_PRINTF("Root cluster: %lu\n", rootCluster);
   } else {
     rootDirSector = fatStartSector + (numFATs * fatSize);
     dataStartSector = rootDirSector + ((rootEntryCount * 32 + bytesPerSector - 1) / bytesPerSector);
   }
   
-  DBG_PRINTF("FAT%s detected\n", isFat32 ? "32" : "16");
-  DBG_PRINTF("FAT start: %lu\n", fatStartSector);
-  DBG_PRINTF("Root dir sector: %lu\n", rootDirSector);
-  DBG_PRINTF("Data start: %lu\n", dataStartSector);
+  DBG_PRINTF("[FAT] FAT%s detected\n", isFat32 ? "32" : "16");
+  DBG_PRINTF("[FAT] FAT start sector: %lu\n", fatStartSector);
   
   return true;
 }
@@ -895,227 +896,63 @@ void testSPIConnection() {
 }
 
 bool initSDCard() {
-  DBG_PRINTLN("\n=== initSDCard Start ===");
-  DBG_PRINTF("Pins - CLK: %d, MISO: %d, MOSI: %d, CS: %d\n", SD_CLK_PIN, SD_MISO_PIN, SD_MOSI_PIN, SD_CS_PIN);
+  DBG_PRINTLN("\n[SD] === Custom SPI Init (500kHz) ===");
   
   SPI.end();
-  delay(2000);
+  delay(100);
   
-  SPI.begin(SD_CLK_PIN, SD_MISO_PIN, SD_MOSI_PIN);
-  SPI.setFrequency(400000);  // slow for init only
-  SPI.setDataMode(SPI_MODE0);
-  SPI.setBitOrder(MSBFIRST);
+  DBG_PRINTLN("[SD] SPI.begin()...");
+  SPI.begin();
+  
+  DBG_PRINTLN("[SD] SPI at 500kHz...");
+  SPI.setFrequency(500000);  // 500kHz - slower
   
   pinMode(SD_CS_PIN, OUTPUT);
   digitalWrite(SD_CS_PIN, HIGH);
-  delay(1000);
   
-  DBG_PRINTLN("Sending init clocks (400)...");
+  // Lots of init clocks
+  DBG_PRINTLN("[SD] Sending init clocks (200)...");
   digitalWrite(SD_CS_PIN, LOW);
-  for (int i = 0; i < 400; i++) {
-    SPI.transfer(0xFF);
-  }
+  for (int i = 0; i < 200; i++) SPI.transfer(0xFF);
   digitalWrite(SD_CS_PIN, HIGH);
-  delay(500);
+  delay(200);
   
-  DBG_PRINTLN("Sending CMD0...");
+  DBG_PRINTLN("[SD] Sending CMD0...");
   digitalWrite(SD_CS_PIN, LOW);
-  SPI.transfer(0x40);
-  SPI.transfer(0x00);
-  SPI.transfer(0x00);
-  SPI.transfer(0x00);
-  SPI.transfer(0x00);
-  SPI.transfer(0x95);
+  delayMicroseconds(100);
+  SPI.transfer(0x40); SPI.transfer(0x00); SPI.transfer(0x00); 
+  SPI.transfer(0x00); SPI.transfer(0x00); SPI.transfer(0x95);
   
   uint8_t r1 = 0xFF;
   for (int i = 0; i < 20; i++) {
     r1 = SPI.transfer(0xFF);
     if (r1 != 0xFF) break;
   }
-  DBG_PRINTF("CMD0 response: 0x%02X\n", r1);
   digitalWrite(SD_CS_PIN, HIGH);
-  for (int i = 0; i < 8; i++) SPI.transfer(0xFF);
+  for (int i = 0; i < 10; i++) SPI.transfer(0xFF);
+  DBG_PRINTF("[SD] CMD0 response: 0x%02X\n", r1);
+  delay(100);
   
-  if (r1 != 0x01) {
-    DBG_PRINTLN("CMD0 unexpected response, retrying...");
-    delay(500);
-    
-    digitalWrite(SD_CS_PIN, LOW);
-    for (int i = 0; i < 100; i++) SPI.transfer(0xFF);
-    SPI.transfer(0x40);
-    SPI.transfer(0x00);
-    SPI.transfer(0x00);
-    SPI.transfer(0x00);
-    SPI.transfer(0x00);
-    SPI.transfer(0x95);
-    
-    r1 = 0xFF;
-    for (int i = 0; i < 20; i++) {
-      r1 = SPI.transfer(0xFF);
-      if (r1 != 0xFF) break;
-    }
-    DBG_PRINTF("CMD0 retry response: 0x%02X\n", r1);
-    digitalWrite(SD_CS_PIN, HIGH);
-    for (int i = 0; i < 8; i++) SPI.transfer(0xFF);
+  // Try to read a sector with retries
+  DBG_PRINTLN("[SD] Testing sector read (with retries)...");
+  uint8_t buffer[512];
+  bool readOk = false;
+  
+  for (int retry = 0; retry < 3 && !readOk; retry++) {
+    DBG_PRINTF("[SD] Read attempt %d...\n", retry + 1);
+    readOk = readSector(0, buffer);
+    if (!readOk) delay(100);
   }
   
-  if (r1 != 0x01) {
-    DBG_PRINTLN("CMD0 failed - card not in idle state");
+  if (readOk) {
+    DBG_PRINTLN("[SD] Sector read OK!");
+    sdInitialized = true;
+    return true;
+  } else {
+    DBG_PRINTLN("[SD] Sector read FAILED after retries");
     sdInitialized = false;
     return false;
   }
-  
-  DBG_PRINTLN("Disabling CRC (CMD59)...");
-  digitalWrite(SD_CS_PIN, LOW);
-  SPI.transfer(0x7F);
-  SPI.transfer(0x00);
-  SPI.transfer(0x00);
-  SPI.transfer(0x00);
-  SPI.transfer(0x00);
-  SPI.transfer(0x95);
-  r1 = 0xFF;
-  for (int i = 0; i < 20; i++) {
-    r1 = SPI.transfer(0xFF);
-    if (r1 != 0xFF) break;
-  }
-  digitalWrite(SD_CS_PIN, HIGH);
-  for (int i = 0; i < 8; i++) SPI.transfer(0xFF);
-  DBG_PRINTF("CMD59 response: 0x%02X\n", r1);
-  
-  DBG_PRINTLN("Trying MMC init (CMD1)...");
-  int attempts = 0;
-  while (attempts < 200) {
-    digitalWrite(SD_CS_PIN, LOW);
-    SPI.transfer(0x41);
-    SPI.transfer(0x00);
-    SPI.transfer(0x00);
-    SPI.transfer(0x00);
-    SPI.transfer(0x00);
-    SPI.transfer(0xF9);
-    
-    r1 = 0xFF;
-    for (int i = 0; i < 20; i++) {
-      r1 = SPI.transfer(0xFF);
-      if (r1 != 0xFF) break;
-    }
-    digitalWrite(SD_CS_PIN, HIGH);
-    for (int i = 0; i < 8; i++) SPI.transfer(0xFF);
-    
-    DBG_PRINTF("CMD1 response: 0x%02X (attempt %d)\n", r1, attempts);
-    
-    if (r1 == 0x00) {
-      DBG_PRINTLN("MMC card initialized!");
-      break;
-    }
-    
-    attempts++;
-    delay(10);
-  }
-  
-  if (r1 == 0x00) {
-    goto success;
-  }
-  
-  DBG_PRINTLN("MMC init failed, trying SD init (ACMD41)...");
-  attempts = 0;
-  while (attempts < 200) {
-    digitalWrite(SD_CS_PIN, LOW);
-    SPI.transfer(0x77);
-    SPI.transfer(0x00);
-    SPI.transfer(0x00);
-    SPI.transfer(0x00);
-    SPI.transfer(0x00);
-    SPI.transfer(0x65);
-    
-    r1 = 0xFF;
-    for (int i = 0; i < 20; i++) {
-      r1 = SPI.transfer(0xFF);
-      if (r1 != 0xFF) break;
-    }
-    digitalWrite(SD_CS_PIN, HIGH);
-    for (int i = 0; i < 8; i++) SPI.transfer(0xFF);
-    
-    if (r1 != 0x01 && r1 != 0x00) {
-      DBG_PRINTF("CMD55 response: 0x%02X\n", r1);
-    }
-    
-    delay(1);
-    
-    digitalWrite(SD_CS_PIN, LOW);
-    SPI.transfer(0x69);
-    SPI.transfer(0x40);
-    SPI.transfer(0x00);
-    SPI.transfer(0x00);
-    SPI.transfer(0x00);
-    SPI.transfer(0x77);
-    
-    r1 = 0xFF;
-    for (int i = 0; i < 20; i++) {
-      r1 = SPI.transfer(0xFF);
-      if (r1 != 0xFF) break;
-    }
-    digitalWrite(SD_CS_PIN, HIGH);
-    for (int i = 0; i < 8; i++) SPI.transfer(0xFF);
-    
-    DBG_PRINTF("ACMD41 response: 0x%02X (attempt %d)\n", r1, attempts);
-    
-    if (r1 == 0x00) {
-      DBG_PRINTLN("SD card initialized!");
-      break;
-    }
-    
-    attempts++;
-    delay(10);
-  }
-  
-  if (r1 != 0x00) {
-    DBG_PRINTF("Init failed, final response: 0x%02X\n", r1);
-    sdInitialized = false;
-    return false;
-  }
-  
-success:
-  {
-    digitalWrite(SD_CS_PIN, LOW);
-    SPI.transfer(0xFF);
-    SPI.transfer(0x7A);
-    SPI.transfer(0x00);
-    SPI.transfer(0x00);
-    SPI.transfer(0x00);
-    SPI.transfer(0x00);
-    SPI.transfer(0x75);
-    
-    r1 = 0xFF;
-    for (int i = 0; i < 20; i++) {
-      r1 = SPI.transfer(0xFF);
-      if (r1 != 0xFF) break;
-    }
-    
-    uint8_t ocr[4] = {0};
-    if (r1 == 0x00) {
-      for (int i = 0; i < 4; i++) {
-        ocr[i] = SPI.transfer(0xFF);
-      }
-    }
-    digitalWrite(SD_CS_PIN, HIGH);
-    for (int i = 0; i < 8; i++) SPI.transfer(0xFF);
-    
-  isSDHC = (ocr[0] & 0x40) != 0;
-  DBG_PRINTF("CMD58 OCR: %02X %02X %02X %02X, SDHC: %s\n", 
-                ocr[0], ocr[1], ocr[2], ocr[3], isSDHC ? "YES" : "NO");
-  
-  DBG_PRINTLN("Forcing SDHC mode (block addressing)...");
-  isSDHC = true;
-  }
-  
-  useManualMode = true;
-  sdInitialized = true;
-
-  // Raise SPI clock to full speed now that card is initialized
-  SPI.setFrequency(4000000);
-
-  DBG_PRINTLN("=== Card OK (manual mode) ===");
-  return true;
 }
 
 bool sdWriteFile(const char* path, const char* message) {
