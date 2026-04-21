@@ -295,8 +295,8 @@ i18n.registerTranslations('de', {
     },
     "testAll": {
       "title": "Alle Testen",
-      "message": "Interaktives Testmenü für alle Komponenten. SW1: Durch Items scrollen, SW2: Ausgewählten Test starten. SW1 1 Sekunde gedrückt halten zum Beenden.",
-      "testMessage": "Dieser Block zeigt ein interaktives Menü auf dem OLED Display an. Wählen Sie mit SW1 und SW2, welche Komponente getestet werden soll."
+      "message": "Interaktives Testmenü über Serial Monitor. WICHTIG: Mit COM-Port verbinden (nicht USB-CDC) bei 115200 Baud. Zahl 1-6 eingeben um Test zu wählen, 0 zum Beenden.",
+      "testMessage": "Dieser Block führt ein interaktives Testmenü über die Serielle Verbindung aus. Wählen Sie die zu testende Komponente durch Eingabe der entsprechenden Zahl (1-6) im Serial Monitor."
     },
     "timer": {
       "title": "Async Timer",

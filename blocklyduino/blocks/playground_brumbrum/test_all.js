@@ -66,6 +66,6 @@ Blockly.Blocks['test_all'] = {
     
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Run interactive test menu for selected components. Use SW1 to navigate (hold to exit) and SW2 to run/back.');
+    this.setTooltip('Run interactive test menu via Serial Monitor. IMPORTANT: Connect to COM port (not USB-CDC) at 115200 baud. Type 1-6 to select tests, 0 to exit.');
   }
 };

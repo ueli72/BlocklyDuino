@@ -15,150 +15,123 @@ static void ensureSerialInit() {
     if (!serialInitialized) {
         initSerial(115200);
         serialInitialized = true;
-        serialPrintln("\n=== BrumBrum Test System ===");
-        serialPrintln("Tests initialized. Use Serial Monitor to view output.");
+        serialPrintln("\n****************************************");
+        serialPrintln("*       BRUMBRUM TEST SYSTEM           *");
+        serialPrintln("****************************************");
+        serialPrintln("*  IMPORTANT: Serial Monitor Required  *");
+        serialPrintln("*                                      *");
+        serialPrintln("*  Connect to COM port (NOT USB-CDC)   *");
+        serialPrintln("*  Baud rate: 115200                   *");
+        serialPrintln("*                                      *");
+        serialPrintln("*  Open Serial Monitor to select     *");
+        serialPrintln("*  tests by entering numbers 1-6     *");
+        serialPrintln("****************************************");
     }
 }
 
-typedef struct {
-    const char* name;
-    uint16_t bit;
-    void (*testFunc)();
-} TestItem;
-
-static void waitForButtonRelease(int pin) {
-    delay(20);
-    while (digitalRead(pin) == LOW) {
-        delay(5);
-    }
-    delay(20);
+void printMenu() {
+    serialPrintln("\n================================");
+    serialPrintln("       BRUMBRUM TEST MENU       ");
+    serialPrintln("================================");
+    serialPrintln("1 - DC Motors");
+    serialPrintln("2 - Ultrasonic");
+    serialPrintln("3 - SD Card");
+    serialPrintln("4 - MAX98357A (Audio)");
+    serialPrintln("5 - Internal LED");
+    serialPrintln("6 - SG90 Servo");
+    serialPrintln("================================");
+    serialPrint("Enter your choice (1-6): ");
 }
 
-static bool readButton(int pin) {
-    return digitalRead(pin) == LOW;
-}
-
-static bool checkHoldExit(int pin, unsigned long holdStart) {
-    while (digitalRead(pin) == LOW) {
-        if (millis() - holdStart >= 1000) {
-            waitForButtonRelease(pin);
-            return true;
-        }
+int readMenuChoice() {
+    while (!Serial.available()) {
         delay(10);
     }
-    return false;
-}
-
-static void testDCMotorsWrapper() {
-    testDCMotors(0x0F);
+    
+    int choice = Serial.parseInt();
+    while (Serial.available()) {
+        Serial.read();
+    }
+    
+    return choice;
 }
 
 void runTestMenu(uint16_t testMask) {
     ensureSerialInit();
     
-    pinMode(SW1_PIN, INPUT_PULLUP);
-    pinMode(SW2_PIN, INPUT_PULLUP);
+    // Filter tests based on mask
+    bool hasTests = false;
+    if (testMask & TEST_DC_MOTOR) hasTests = true;
+    if (testMask & TEST_ULTRASONIC) hasTests = true;
+    if (testMask & TEST_SD_CARD) hasTests = true;
+    if (testMask & TEST_MAX98357A) hasTests = true;
+    if (testMask & TEST_INTERNAL_LED) hasTests = true;
+    if (testMask & TEST_SG90_SERVO) hasTests = true;
     
-    TestItem tests[] = {
-        {"DC Motor", TEST_DC_MOTOR, testDCMotorsWrapper},
-        {"Ultrasonic", TEST_ULTRASONIC, testUltrasonicOLED},
-        {"SD Card", TEST_SD_CARD, testSDCard},
-        {"MAX98357A", TEST_MAX98357A, testMAX98357A},
-        {"Internal LED", TEST_INTERNAL_LED, runLEDInitTest},
-        {"SG90 Servo", TEST_SG90_SERVO, testServos}
-    };
-    
-    int numTests = sizeof(tests) / sizeof(tests[0]);
-    int activeTests[9];
-    int numActive = 0;
-    
-    for (int i = 0; i < numTests; i++) {
-        if (testMask & tests[i].bit) {
-            activeTests[numActive++] = i;
-        }
-    }
-    
-    if (numActive == 0) {
+    if (!hasTests) {
         serialPrintln("\n[ERROR] No tests selected!");
         delay(2000);
         return;
     }
     
-    int selectedIndex = 0;
-    bool running = true;
-    unsigned long sw1HoldStart = 0;
-    bool sw1WasPressed = false;
-    bool menuNeedsRedraw = true;
-    
-    while (running) {
-        if (menuNeedsRedraw) {
-            serialPrintln("\n========================================");
-            serialPrintln("          TEST MENU (Serial)");
-            serialPrintln("========================================");
+    while (true) {
+        printMenu();
+        int choice = readMenuChoice();
+        serialPrintln(choice);
+        
+        if (choice >= 1 && choice <= 6) {
+            bool testSelected = false;
             
-            for (int i = 0; i < numActive; i++) {
-                int testIdx = activeTests[i];
-                if (i == selectedIndex) {
-                    serialPrint(" > ");
-                } else {
-                    serialPrint("   ");
-                }
-                serialPrintln(tests[testIdx].name);
+            if (choice == 1 && (testMask & TEST_DC_MOTOR)) {
+                serialPrintln("\n--- Starting DC Motor Test ---");
+                testDCMotors(0x0F);
+                serialPrintln("--- DC Motor Test Complete ---");
+                testSelected = true;
+            }
+            else if (choice == 2 && (testMask & TEST_ULTRASONIC)) {
+                serialPrintln("\n--- Starting Ultrasonic Test ---");
+                testUltrasonicOLED();
+                serialPrintln("--- Ultrasonic Test Complete ---");
+                testSelected = true;
+            }
+            else if (choice == 3 && (testMask & TEST_SD_CARD)) {
+                serialPrintln("\n--- Starting SD Card Test ---");
+                testSDCard();
+                serialPrintln("--- SD Card Test Complete ---");
+                testSelected = true;
+            }
+            else if (choice == 4 && (testMask & TEST_MAX98357A)) {
+                serialPrintln("\n--- Starting MAX98357A Audio Test ---");
+                testMAX98357A();
+                serialPrintln("--- MAX98357A Audio Test Complete ---");
+                testSelected = true;
+            }
+            else if (choice == 5 && (testMask & TEST_INTERNAL_LED)) {
+                serialPrintln("\n--- Starting Internal LED Test ---");
+                runLEDInitTest();
+                serialPrintln("--- Internal LED Test Complete ---");
+                testSelected = true;
+            }
+            else if (choice == 6 && (testMask & TEST_SG90_SERVO)) {
+                serialPrintln("\n--- Starting SG90 Servo Test ---");
+                testServos();
+                serialPrintln("--- SG90 Servo Test Complete ---");
+                testSelected = true;
             }
             
-            serialPrintln("----------------------------------------");
-            serialPrintln("Controls:");
-            serialPrintln("  SW1 (short): Next test");
-            serialPrintln("  SW1 (hold 1s): Exit menu");
-            serialPrintln("  SW2: Run selected test");
-            serialPrintln("========================================");
-            menuNeedsRedraw = false;
-        }
-        
-        delay(20);
-        
-        if (readButton(SW1_PIN)) {
-            if (!sw1WasPressed) {
-                sw1HoldStart = millis();
-                sw1WasPressed = true;
-                
-                if (checkHoldExit(SW1_PIN, sw1HoldStart)) {
-                    serialPrintln("\n[Exit] Exiting test menu...");
-                    running = false;
-                    continue;
-                }
-                
-                waitForButtonRelease(SW1_PIN);
-                selectedIndex++;
-                if (selectedIndex >= numActive) selectedIndex = 0;
-                menuNeedsRedraw = true;
+            if (!testSelected) {
+                serialPrintln("\n[WARNING] Test not enabled in mask or invalid choice!");
             }
-        } else {
-            sw1WasPressed = false;
+        }
+        else if (choice == 0) {
+            serialPrintln("\n[Exit] Exiting test menu...");
+            break;
+        }
+        else {
+            serialPrintln("\n[ERROR] Invalid choice! Please enter 1-6 (or 0 to exit).");
         }
         
-        if (readButton(SW2_PIN)) {
-            waitForButtonRelease(SW2_PIN);
-            
-            int testIdx = activeTests[selectedIndex];
-            serialPrintln("\n========================================");
-            serialPrint("[RUN] Starting test: ");
-            serialPrintln(tests[testIdx].name);
-            serialPrintln("========================================");
-            delay(500);
-            
-            tests[testIdx].testFunc();
-            
-            serialPrintln("\n[OK] Test complete!");
-            serialPrintln("Press SW2 to return to menu...");
-            
-            while (!readButton(SW2_PIN)) {
-                delay(10);
-            }
-            waitForButtonRelease(SW2_PIN);
-            
-            menuNeedsRedraw = true;
-        }
+        delay(500);
     }
     
     serialPrintln("\n[Exit] Test menu closed.");

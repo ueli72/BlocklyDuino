@@ -122,14 +122,39 @@ function showAlertModal(message) {
 function showBlockInfoModal(title, message) {
   document.activeElement.blur();
   
+  // Clean up any leftover modal state from board selection modal
+  var boardModalEl = document.getElementById('boardSelectionModal');
+  if (boardModalEl) {
+    var boardModalInstance = bootstrap.Modal.getInstance(boardModalEl);
+    if (boardModalInstance) {
+      boardModalInstance.dispose();
+    }
+    boardModalEl.classList.remove('show');
+    boardModalEl.style.display = '';
+    boardModalEl.setAttribute('aria-hidden', 'true');
+    boardModalEl.removeAttribute('aria-modal');
+  }
+  // Remove any lingering backdrops
+  document.querySelectorAll('.modal-backdrop').forEach(function(el) { el.remove(); });
+  document.body.classList.remove('modal-open');
+  document.body.style.overflow = '';
+  document.body.style.paddingRight = '';
+  
   if (typeof addWarning === 'function') {
     addWarning(title, message);
   }
   
   var modalEl = document.getElementById('blockInfoModal');
-  var modal = new bootstrap.Modal(modalEl);
   document.getElementById('blockInfoTitle').textContent = title || 'Block Info';
   document.getElementById('blockInfoMessage').textContent = message;
+  
+  // Dispose any existing instance first
+  var existingModal = bootstrap.Modal.getInstance(modalEl);
+  if (existingModal) {
+    existingModal.dispose();
+  }
+  
+  var modal = new bootstrap.Modal(modalEl);
   
   var cleanup = function() {
     var backdrop = document.querySelector('.modal-backdrop');

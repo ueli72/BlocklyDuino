@@ -295,8 +295,8 @@ i18n.registerTranslations('en', {
     },
     "testAll": {
       "title": "Test All",
-      "message": "Interactive test menu for all components. SW1: Scroll through items, SW2: Run selected test. Hold SW1 for 1 second to exit.",
-      "testMessage": "This block shows an interactive menu on the OLED display. Select which component to test using SW1 and SW2."
+      "message": "Interactive test menu via Serial Monitor. IMPORTANT: Connect to COM port (not USB-CDC) at 115200 baud. Type 1-6 to select tests, 0 to exit.",
+      "testMessage": "This block runs an interactive test menu through Serial connection. Select which component to test by typing the corresponding number (1-6) in the Serial Monitor."
     },
     "timer": {
       "title": "Async Timer",

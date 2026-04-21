@@ -958,9 +958,34 @@ function selectBoard(boardId) {
   // If Blockly is not initialized yet (initial selection from modal), reload page
   // This ensures a completely clean state with no script conflicts
   if (!Blockly.mainWorkspace) {
+    // Clear localStorage and sessionStorage before reloading to ensure clean state
+    if ('localStorage' in window) {
+      delete window.localStorage.arduino;
+    }
+    // Clear sessionStorage to reset block info warnings for fresh project
+    try {
+      if (typeof seenBlocks !== 'undefined') seenBlocks.reset();
+      if (typeof seenPinWarnings !== 'undefined') seenPinWarnings.reset();
+    } catch (e) {}
     window.location.href = window.location.pathname + '?board=' + encodeURIComponent(boardId);
     return;
   }
+  
+  // Clear all blocks from workspace when changing boards
+  if (Blockly.mainWorkspace) {
+    Blockly.mainWorkspace.clear();
+  }
+  
+  // Clear localStorage to prevent restoring incompatible blocks
+  if ('localStorage' in window) {
+    delete window.localStorage.arduino;
+  }
+  
+  // Clear sessionStorage to reset block info warnings for new board
+  try {
+    if (typeof seenBlocks !== 'undefined') seenBlocks.reset();
+    if (typeof seenPinWarnings !== 'undefined') seenPinWarnings.reset();
+  } catch (e) {}
   
   // Otherwise, proceed with dynamic loading (used during initBoardSelection)
   ensureMasterGeneratorSetCaptured();
@@ -1073,6 +1098,28 @@ function initBoardSelection() {
   
   // Validate URL board parameter
   if (boardFromUrl && BOARD_INFO[boardFromUrl]) {
+    // Check if we have saved data
+    if ('localStorage' in window && window.localStorage.arduino) {
+      try {
+        var savedXml = Blockly.Xml.textToDom(window.localStorage.arduino);
+        var savedBoardId = savedXml.getAttribute ? savedXml.getAttribute('board') : null;
+        
+        // Always clear saved workspace when loading via URL (new project)
+        // This ensures a clean slate even when selecting the same board
+        delete window.localStorage.arduino;
+        // Reset block info warning caches (both in-memory and sessionStorage)
+        if (typeof seenBlocks !== 'undefined') seenBlocks.reset();
+        if (typeof seenPinWarnings !== 'undefined') seenPinWarnings.reset();
+      } catch (e) {
+        // If parsing fails, clear corrupted data
+        delete window.localStorage.arduino;
+      }
+    } else {
+      // No localStorage but board in URL - still reset caches
+      if (typeof seenBlocks !== 'undefined') seenBlocks.reset();
+      if (typeof seenPinWarnings !== 'undefined') seenPinWarnings.reset();
+    }
+    
     // Use board from URL and save it
     selectedBoard = boardFromUrl;
     setSelectedBoard(boardFromUrl);
@@ -1123,6 +1170,9 @@ function initBoardSelection() {
       boardSelector.style.display = 'none';
     }
     updateBoardInfoDisplay(savedBoard);
+    // Reset warning caches when loading saved board
+    if (typeof seenBlocks !== 'undefined') seenBlocks.reset();
+    if (typeof seenPinWarnings !== 'undefined') seenPinWarnings.reset();
     
     // Load pin data for saved board
     loadPinDataFile(savedBoard).then(function(pinData) {
@@ -1150,6 +1200,9 @@ function initBoardSelection() {
     if (boardSelector) {
       boardSelector.style.display = 'none';
     }
+    // No board selected - clear warning caches for fresh state
+    if (typeof seenBlocks !== 'undefined') seenBlocks.reset();
+    if (typeof seenPinWarnings !== 'undefined') seenPinWarnings.reset();
     window.setTimeout(showBoardSelectionModal, 300);
   }
 }
@@ -1212,8 +1265,30 @@ function backup_blocks() {
  * Restore code blocks from localStorage.
  */
 function restore_blocks() {
+  // Check if this is a "New Project" load (has board in URL)
+  // If so, don't restore old workspace - start fresh
+  var urlParams = new URLSearchParams(window.location.search);
+  var boardFromUrl = urlParams.get('board');
+  if (boardFromUrl && BOARD_INFO[boardFromUrl]) {
+    // Clear localStorage to ensure fresh start
+    delete window.localStorage.arduino;
+    return;
+  }
+  
   if ('localStorage' in window && window.localStorage.arduino) {
     var xml = Blockly.Xml.textToDom(window.localStorage.arduino);
+    
+    // Check if saved board matches current board
+    var savedBoardId = xml.getAttribute ? xml.getAttribute('board') : null;
+    var currentBoardId = getActiveBoardId();
+    
+    // Only restore if boards match, or if no specific board is currently selected
+    if (savedBoardId && currentBoardId && savedBoardId !== currentBoardId) {
+      // Clear localStorage to prevent incompatible blocks
+      delete window.localStorage.arduino;
+      return;
+    }
+    
     applyBoardSelectionFromXml(xml);
     Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
   }
@@ -1419,6 +1494,10 @@ function discard() {
 function clearWorkspace() {
   clearSelectedBoard();
   Blockly.mainWorkspace.clear();
+  // Clear saved workspace data for "New Project"
+  if ('localStorage' in window && window.localStorage.arduino) {
+    delete window.localStorage.arduino;
+  }
   var boardSelector = document.getElementById('boardSelector');
   if (boardSelector) {
     boardSelector.style.display = 'none';
@@ -1488,7 +1567,10 @@ function setupBlockInfoListener() {
             if (info) {
               var title = i18n.t(info.title);
               var message = i18n.t(info.message);
-              showBlockInfoModal(title, message);
+              // Delay to allow any other modals to close first
+              window.setTimeout(function() {
+                showBlockInfoModal(title, message);
+              }, 100);
             }
           } else {
             seenBlocks.add(block.type);

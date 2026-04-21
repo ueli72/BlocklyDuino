@@ -450,6 +450,13 @@ var BLOCK_INFO = {
     testMessage: 'blockInfo.testAll.testMessage',
     includes: ['test_all.h', 'oled.h', 'buttons.h', 'LEDMatrix.h', 'relais.h', 'dcmotor.h', 'dht11.h', 'ultrasonic.h', 'sdcard.h', 'max98357a.h', 'internalLED.h', 'servos.h']
   },
+  // Brumbrum-specific test_all with Serial Monitor warning
+  'test_all_brumbrum': {
+    title: 'blockInfo.testAll.title',
+    message: 'blockInfo.testAll.message',
+    testMessage: 'blockInfo.testAll.testMessage',
+    includes: ['test_all.h', 'buttons.h', 'dcmotor.h', 'ultrasonic.h', 'sdcard.h', 'max98357a.h', 'internalLED.h', 'servos.h']
+  },
   'ky023_init': {
     title: 'blockInfo.ky023.title',
     message: 'blockInfo.ky023.initMessage',
@@ -852,6 +859,12 @@ var seenBlocks = {
       }
     }
   },
+  reset: function() {
+    this._data = null;
+    try {
+      sessionStorage.removeItem('seenBlocks');
+    } catch (e) {}
+  },
   has: function(blockType) {
     this._init();
     return this._data.indexOf(blockType) !== -1;
@@ -878,6 +891,12 @@ var seenPinWarnings = {
       }
     }
   },
+  reset: function() {
+    this._data = null;
+    try {
+      sessionStorage.removeItem('seenPinWarnings');
+    } catch (e) {}
+  },
   has: function(key) {
     this._init();
     return this._data.indexOf(key) !== -1;
@@ -899,13 +918,13 @@ function getBlockInfo(blockType) {
   var isESP32Controller = false;
   
   if (typeof selectedBoard === 'string') {
-    isBrumbrum = selectedBoard === 'playground-brumbrum-esp32-s3-devkitc1';
-    isESP32Controller = selectedBoard === 'esp32-controller';
+    isBrumbrum = selectedBoard === 'playground_brumbrum';
+    isESP32Controller = selectedBoard === 'playground_controller';
   } else if (typeof localStorage !== 'undefined') {
     try {
       var board = localStorage.getItem('blocklyduino_board');
-      isBrumbrum = board === 'playground-brumbrum-esp32-s3-devkitc1';
-      isESP32Controller = board === 'esp32-controller';
+      isBrumbrum = board === 'playground_brumbrum';
+      isESP32Controller = board === 'playground_controller';
     } catch (e) {}
   }
   
