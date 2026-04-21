@@ -1,22 +1,22 @@
 {
   "boards": [
     {
-      "id": "esp32-s3-devkitc1",
+      "id": "playground_master",
       "name": "BWS Playground Master",
       "profile": "esp32",
-      "directory": "boards/esp32-s3-devkitc1"
+      "directory": "boards/playground_master"
     },
     {
-      "id": "playground-brumbrum-esp32-s3-devkitc1",
-      "name": "Playground BrumBrum (esp32-s3-devkitc1)",
+      "id": "playground_brumbrum",
+      "name": "Playground BrumBrum",
       "profile": "esp32",
-      "directory": "boards/playground-brumbrum-esp32-s3-devkitc1"
+      "directory": "boards/playground_brumbrum"
     },
     {
-      "id": "esp32-controller",
-      "name": "ESP32-Controller",
+      "id": "playground_controller",
+      "name": "Playground Controller",
       "profile": "esp32",
-      "directory": "boards/esp32-controller"
+      "directory": "boards/playground_controller"
     },
     {
       "id": "arduino-uno",

@@ -376,7 +376,7 @@ function addToolboxIcons() {
     var hapticText = i18n.t('categories.haptic');
     var playgroundText = i18n.t('categories.playground');
     var brumbrumText = i18n.t('categories.brumbrum');
-    var esp32ControllerText = i18n.t('categories.esp32Controller');
+    var playgroundControllerText = i18n.t('categories.playgroundController');
     var inputOutputText = i18n.t('categories.inputOutput');
 
     var isSubcategory = text === sg90Text || text === ledText || text === buttonText || text === ledMatrixText || text === oledText || text === relaisText || text === dcMotorText || text === dht11Text || text === ultrasonicText || text === sdcardText || text === max98357aText || text === brightnessText || text === ws2812Text || text === bluetoothLEText || text === bluetoothClientText || text === testAllText || text === ky023Text || text === serialText || text === basicText || text === hapticText;
@@ -387,7 +387,7 @@ function addToolboxIcons() {
     }
 
     // Categories with subcategories - add arrow
-    if (text === playgroundText || text === brumbrumText || text === esp32ControllerText || text === inputOutputText) {
+    if (text === playgroundText || text === brumbrumText || text === playgroundControllerText || text === inputOutputText) {
       var arrow = row.querySelector('.tree-arrow');
       if (!arrow) {
         var rowContainer = row.parentElement;
@@ -459,13 +459,13 @@ function addToolboxIcons() {
 function updateTreeArrows() {
   var playgroundText = i18n.t('categories.playground');
   var brumbrumText = i18n.t('categories.brumbrum');
-  var esp32ControllerText = i18n.t('categories.esp32Controller');
+  var playgroundControllerText = i18n.t('categories.playgroundController');
   var inputOutputText = i18n.t('categories.inputOutput');
 
   var labels = document.querySelectorAll('.blocklyTreeLabel');
   labels.forEach(function(l) {
     var text = l.textContent.trim();
-    if (text === playgroundText || text === brumbrumText || text === esp32ControllerText || text === inputOutputText) {
+    if (text === playgroundText || text === brumbrumText || text === playgroundControllerText || text === inputOutputText) {
       var row = l.closest('.blocklyTreeRow');
       var arrow = row ? row.querySelector('.tree-arrow') : null;
       if (arrow) {
@@ -1047,9 +1047,9 @@ function initBlockly() {
             <i class="bi bi-info-circle text-info" style="cursor: pointer;" onclick="togglePinReference()" title="Pin Reference"></i>
           </div>
           <select class="form-select form-select-sm" id="boardSelector" onchange="onBoardSelectorChange(this.value)">
-            <option value="esp32-s3-devkitc1">BWS Playground Master</option>
-            <option value="playground-brumbrum-esp32-s3-devkitc1">Playground BrumBrum (esp32-s3-devkitc1)</option>
-            <option value="esp32-controller">ESP32-Controller</option>
+            <option value="playground_master">BWS Playground Master</option>
+            <option value="playground_brumbrum">Playground BrumBrum</option>
+            <option value="playground_controller">Playground Controller</option>
             <option value="arduino-uno">Arduino Uno</option>
           </select>
           <div class="btn-group btn-group-sm" role="group">
@@ -1214,29 +1214,29 @@ function initBlockly() {
           <p class="text-muted mb-4" data-i18n="boardSelection.description">Choose your board to start a new project:</p>
           <div class="row g-4">
             <div class="col-md-6 col-lg-4">
-              <div class="card h-100 board-card" data-board="esp32-s3-devkitc1" onclick="selectBoard('esp32-s3-devkitc1')">
+              <div class="card h-100 board-card" data-board="playground_master" onclick="selectBoard('playground_master')">
                 <img src="media/playground.png" class="card-img-top" alt="BWS Playground Master" style="object-fit: contain; height: 200px; padding: 1rem;">
                 <div class="card-body text-center">
                   <h5 class="card-title">BWS Playground Master</h5>
-                  <p class="card-text text-muted" data-i18n="boardSelection.playgroundDesc">Specialized development board by BWS Uster for learning projects.</p>
+                  <p class="card-text text-muted" data-i18n="boardSelection.playgroundMasterDesc">Specialized development board by BWS Uster for learning projects.</p>
                 </div>
               </div>
             </div>
             <div class="col-md-6 col-lg-4">
-              <div class="card h-100 board-card" data-board="playground-brumbrum-esp32-s3-devkitc1" onclick="selectBoard('playground-brumbrum-esp32-s3-devkitc1')">
-                <img src="media/brumbrum.png" class="card-img-top" alt="Playground BrumBrum (esp32-s3-devkitc1)" style="object-fit: contain; height: 200px; padding: 1rem;">
+              <div class="card h-100 board-card" data-board="playground_brumbrum" onclick="selectBoard('playground_brumbrum')">
+                <img src="media/brumbrum.png" class="card-img-top" alt="Playground BrumBrum" style="object-fit: contain; height: 200px; padding: 1rem;">
                 <div class="card-body text-center">
-                  <h5 class="card-title">Playground BrumBrum (esp32-s3-devkitc1)</h5>
-                  <p class="card-text text-muted" data-i18n="boardSelection.brumbrumDesc">Specialized Board of BWS Uster for a RC car.</p>
+                  <h5 class="card-title">Playground BrumBrum</h5>
+                  <p class="card-text text-muted" data-i18n="boardSelection.playgroundBrumbrumDesc">Specialized Board of BWS Uster for a RC car.</p>
                 </div>
               </div>
             </div>
             <div class="col-md-6 col-lg-4">
-              <div class="card h-100 board-card" data-board="esp32-controller" onclick="selectBoard('esp32-controller')">
-                <img src="media/esp32-controller.jpg" class="card-img-top" alt="ESP32-Controller" style="object-fit: contain; height: 200px; padding: 1rem;">
+              <div class="card h-100 board-card" data-board="playground_controller" onclick="selectBoard('playground_controller')">
+                <img src="media/esp32-controller.jpg" class="card-img-top" alt="Playground Controller" style="object-fit: contain; height: 200px; padding: 1rem;">
                 <div class="card-body text-center">
-                  <h5 class="card-title">ESP32-Controller</h5>
-                  <p class="card-text text-muted" data-i18n="boardSelection.esp32ControllerDesc">ESP32 game controller with OLED and joysticks.</p>
+                  <h5 class="card-title">Playground Controller</h5>
+                  <p class="card-text text-muted" data-i18n="boardSelection.playgroundControllerDesc">ESP32 game controller with OLED and joysticks.</p>
                 </div>
               </div>
             </div>
@@ -1522,7 +1522,7 @@ function initBlockly() {
         <block type="serial_available"></block>
         <block type="serial_print_array"></block>
       </category>
-      <category name="KY023 Joystick" data-i18n-name="categories.ky023" data-board-exclude="esp32-controller">
+      <category name="KY023 Joystick" data-i18n-name="categories.ky023" data-board-exclude="playground_controller">
         <block type="ky023_init"></block>
         <block type="ky023_read_x"></block>
         <block type="ky023_read_y"></block>
@@ -1580,7 +1580,7 @@ function initBlockly() {
         <block type="ws2812_off"></block>
         <block type="ws2812_test"></block>
       </category>
-      <category name="Bluetooth LE" data-i18n-name="categories.bluetoothLE" data-board="esp32-s3-devkitc1,playground-brumbrum-esp32-s3-devkitc1,esp32-controller">
+      <category name="Bluetooth LE" data-i18n-name="categories.bluetoothLE" data-board="playground_master,playground_brumbrum,playground_controller">
         <block type="ble_remote_init"></block>
         <block type="ble_remote_on_direction">
           <value name="DIRECTION">
@@ -1670,7 +1670,7 @@ function initBlockly() {
         <block type="ble_client_test"></block>
       </category>
     </category>
-    <category name="Playground" data-i18n-name="categories.playground" data-board="esp32-s3-devkitc1">
+    <category name="Playground" data-i18n-name="categories.playground" data-board="playground_master">
       <category name="SG90 Servo" data-i18n-name="categories.sg90Servo">
         <block type="servo_sg90_init"></block>
         <block type="servo_sg90_move">
@@ -1875,7 +1875,7 @@ function initBlockly() {
         <block type="test_all"></block>
       </category>
     </category>
-      <category name="BrumBrum" data-i18n-name="categories.brumbrum" data-board="playground-brumbrum-esp32-s3-devkitc1">
+      <category name="BrumBrum" data-i18n-name="categories.brumbrum" data-board="playground_brumbrum">
       <category name="SG90 Servo" data-i18n-name="categories.sg90Servo">
         <block type="servo_sg90_init"></block>
         <block type="servo_sg90_move">
@@ -2013,7 +2013,7 @@ function initBlockly() {
         <block type="test_all"></block>
       </category>
     </category>
-      <category name="ESP32-Controller" data-i18n-name="categories.esp32Controller" data-board="esp32-controller">
+      <category name="Playground Controller" data-i18n-name="categories.playgroundController" data-board="playground_controller">
       <category name="Internal LED" data-i18n-name="categories.internalLED">
         <block type="esp32_controller_led_init"></block>
         <block type="esp32_controller_led_set"></block>

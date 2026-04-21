@@ -46,8 +46,8 @@ function getAllServoPins() {
   pins.push(["GPIO38 (Servo2)", "38"]);
   pins.push(["GPIO45 (Servo3)", "45"]);
   // Add all digital pins from profile if available
-  if (typeof getBrumbrumDigitalPinOptions === 'function') {
-    var digitalPins = getBrumbrumDigitalPinOptions();
+  if (typeof getPlaygroundBrumbrumDigitalPinOptions === 'function') {
+    var digitalPins = getPlaygroundBrumbrumDigitalPinOptions();
     // Filter out the servo pins we already added
     digitalPins.forEach(function(pinOption) {
       var pinNum = pinOption[1];

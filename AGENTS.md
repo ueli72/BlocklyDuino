@@ -5,7 +5,7 @@ BlocklyDuino is a visual programming tool for Arduino, using Blockly to generate
 
 ## ⚠️ CRITICAL: Always Run generate_templates.py
 
-**After ANY changes to board source files (`boards/esp32-s3-devkitc1/include/*.h` or `boards/esp32-s3-devkitc1/src/*.cpp`), you MUST run:**
+**After ANY changes to board source files (`boards/playground_master/include/*.h` or `boards/playground_master/src/*.cpp`), you MUST run:**
 
 ```bash
 python3 generate_templates.py
@@ -16,11 +16,11 @@ This regenerates `blocklyduino/templates.js` which is used for project downloads
 ## Key Directories
 
 ### Block Definitions
-- `blocklyduino/blocks/playground/*.js` - Block visual definitions for Playground components
+- `blocklyduino/blocks/playground_master/*.js` - Block visual definitions for Playground components
 - Each component has its own file (e.g., `oled.js`, `sg90.js`, `relais.js`)
 
 ### Code Generators
-- `blocklyduino/generators/arduino/playground/*.js` - Arduino code generation for blocks
+- `blocklyduino/generators/arduino/playground_master/*.js` - Arduino code generation for blocks
 - Must match block definitions
 
 ### Main Application
@@ -31,8 +31,8 @@ This regenerates `blocklyduino/templates.js` which is used for project downloads
 - `blocklyduino/templates.js` - Board templates (auto-generated, DO NOT EDIT)
 
 ### Board Source Files
-- `boards/esp32-s3-devkitc1/include/*.h` - Header files
-- `boards/esp32-s3-devkitc1/src/*.cpp` - Implementation files
+- `boards/playground_master/include/*.h` - Header files
+- `boards/playground_master/src/*.cpp` - Implementation files
 
 ### Media
 - `blocklyduino/media/` - Images for blocks (64x64 recommended)
@@ -149,8 +149,8 @@ var BLOCK_DEPENDENCIES = {
 ```
 
 ### 6. Add Source Files
-- `boards/esp32-s3-devkitc1/include/relais.h`
-- `boards/esp32-s3-devkitc1/src/relais.cpp`
+- `boards/playground_master/include/relais.h`
+- `boards/playground_master/src/relais.cpp`
 
 ### 7. Regenerate Templates
 ```bash

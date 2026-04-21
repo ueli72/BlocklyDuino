@@ -61,7 +61,7 @@ var CURRENT_GENERATOR_SET = null;
 var GENERATOR_SET_TARGET = null;
 var loadedExternalScripts = {};
 var BRUMBRUM_GENERATOR_SCRIPTS = [
-  'generators/arduino/playground_brumbrum/pins_brumbrum.js',
+  'generators/arduino/playground_brumbrum/pins_playground_brumbrum.js',
   'generators/arduino/playground_brumbrum/sg90.js',
   'generators/arduino/playground_brumbrum/internal_led.js',
   'generators/arduino/playground_brumbrum/button.js',
@@ -82,27 +82,27 @@ var BRUMBRUM_GENERATOR_SCRIPTS = [
 ];
 var brumbrumGeneratorsLoading = null;
 
-var ESP32_CONTROLLER_GENERATOR_SCRIPTS = [
-  'generators/arduino/playground_esp32_controller/pins_esp32_controller.js',
-  'generators/arduino/playground_esp32_controller/sg90.js',
-  'generators/arduino/playground_esp32_controller/internal_led.js',
-  'generators/arduino/playground_esp32_controller/button.js',
-  'generators/arduino/playground_esp32_controller/dc_motor.js',
-  'generators/arduino/playground_esp32_controller/ultrasonic.js',
-  'generators/arduino/playground_esp32_controller/sdcard.js',
-  'generators/arduino/playground_esp32_controller/max98357a.js',
-  'generators/arduino/playground_esp32_controller/brightness.js',
-  'generators/arduino/playground_esp32_controller/ws2812.js',
-  'generators/arduino/playground_esp32_controller/ble_remote.js',
-  'generators/arduino/playground_esp32_controller/test_all.js',
-  'generators/arduino/playground_esp32_controller/timer.js',
-  'generators/arduino/playground_esp32_controller/ky023.js',
-  'generators/arduino/playground_esp32_controller/serial.js',
-  'generators/arduino/playground_esp32_controller/variable.js',
-  'generators/arduino/playground_esp32_controller/global_array.js',
-  'generators/arduino/playground_esp32_controller/custom_code.js'
+var PLAYGROUND_CONTROLLER_GENERATOR_SCRIPTS = [
+  'generators/arduino/playground_controller/pins_playground_controller.js',
+  'generators/arduino/playground_controller/sg90.js',
+  'generators/arduino/playground_controller/internal_led.js',
+  'generators/arduino/playground_controller/button.js',
+  'generators/arduino/playground_controller/dc_motor.js',
+  'generators/arduino/playground_controller/ultrasonic.js',
+  'generators/arduino/playground_controller/sdcard.js',
+  'generators/arduino/playground_controller/max98357a.js',
+  'generators/arduino/playground_controller/brightness.js',
+  'generators/arduino/playground_controller/ws2812.js',
+  'generators/arduino/playground_controller/ble_remote.js',
+  'generators/arduino/playground_controller/test_all.js',
+  'generators/arduino/playground_controller/timer.js',
+  'generators/arduino/playground_controller/ky023.js',
+  'generators/arduino/playground_controller/serial.js',
+  'generators/arduino/playground_controller/variable.js',
+  'generators/arduino/playground_controller/global_array.js',
+  'generators/arduino/playground_controller/custom_code.js'
 ];
-var esp32ControllerGeneratorsLoading = null;
+var playgroundControllerGeneratorsLoading = null;
 
 var ARDUINO_UNO_GENERATOR_SCRIPTS = [
   'generators/arduino/arduino-uno/pins_uno.js',
@@ -111,31 +111,31 @@ var ARDUINO_UNO_GENERATOR_SCRIPTS = [
 var arduinoUnoGeneratorsLoading = null;
 
 // Board-specific block definition scripts
-var PLAYGROUND_BLOCK_SCRIPTS = [
-  'blocks/playground/sg90.js',
-  'blocks/playground/internal_led.js',
-  'blocks/playground/button.js',
-  'blocks/playground/ledmatrix.js',
-  'blocks/playground/oled.js',
-  'blocks/playground/menu.js',
-  'blocks/playground/relais.js',
-  'blocks/playground/dc_motor.js',
-  'blocks/playground/dht11.js',
-  'blocks/playground/ultrasonic.js',
-  'blocks/playground/sdcard.js',
-  'blocks/playground/max98357a.js',
-  'blocks/playground/brightness.js',
-  'blocks/playground/ws2812.js',
-  'blocks/playground/ble_remote.js',
-  'blocks/playground/ble_client.js',
-  'blocks/playground/test_all.js',
-  'blocks/playground/timer.js',
-  'blocks/playground/ky023.js',
-  'blocks/playground/serial.js',
-  'blocks/playground/variable.js',
-  'blocks/playground/cast.js',
-  'blocks/playground/global_array.js',
-  'blocks/playground/custom_code.js'
+var PLAYGROUND_MASTER_BLOCK_SCRIPTS = [
+  'blocks/playground_master/sg90.js',
+  'blocks/playground_master/internal_led.js',
+  'blocks/playground_master/button.js',
+  'blocks/playground_master/ledmatrix.js',
+  'blocks/playground_master/oled.js',
+  'blocks/playground_master/menu.js',
+  'blocks/playground_master/relais.js',
+  'blocks/playground_master/dc_motor.js',
+  'blocks/playground_master/dht11.js',
+  'blocks/playground_master/ultrasonic.js',
+  'blocks/playground_master/sdcard.js',
+  'blocks/playground_master/max98357a.js',
+  'blocks/playground_master/brightness.js',
+  'blocks/playground_master/ws2812.js',
+  'blocks/playground_master/ble_remote.js',
+  'blocks/playground_master/ble_client.js',
+  'blocks/playground_master/test_all.js',
+  'blocks/playground_master/timer.js',
+  'blocks/playground_master/ky023.js',
+  'blocks/playground_master/serial.js',
+  'blocks/playground_master/variable.js',
+  'blocks/playground_master/cast.js',
+  'blocks/playground_master/global_array.js',
+  'blocks/playground_master/custom_code.js'
 ];
 
 var BRUMBRUM_BLOCK_SCRIPTS = [
@@ -158,27 +158,27 @@ var BRUMBRUM_BLOCK_SCRIPTS = [
   'blocks/playground_brumbrum/custom_code.js'
 ];
 
-var ESP32_CONTROLLER_BLOCK_SCRIPTS = [
-  'blocks/playground_esp32_controller/internal_led.js',
-  'blocks/playground_esp32_controller/oled.js',
-  'blocks/playground_esp32_controller/haptic.js',
-  'blocks/playground_esp32_controller/ky023.js',
-  'blocks/playground_esp32_controller/menu.js',
-  'blocks/playground_esp32_controller/sg90.js',
-  'blocks/playground_esp32_controller/button.js',
-  'blocks/playground_esp32_controller/dc_motor.js',
-  'blocks/playground_esp32_controller/ultrasonic.js',
-  'blocks/playground_esp32_controller/sdcard.js',
-  'blocks/playground_esp32_controller/max98357a.js',
-  'blocks/playground_esp32_controller/brightness.js',
-  'blocks/playground_esp32_controller/ws2812.js',
-  'blocks/playground_esp32_controller/ble_remote.js',
-  'blocks/playground_esp32_controller/test_all.js',
-  'blocks/playground_esp32_controller/timer.js',
-  'blocks/playground_esp32_controller/serial.js',
-  'blocks/playground_esp32_controller/variable.js',
-  'blocks/playground_esp32_controller/global_array.js',
-  'blocks/playground_esp32_controller/custom_code.js'
+var PLAYGROUND_CONTROLLER_BLOCK_SCRIPTS = [
+  'blocks/playground_controller/internal_led.js',
+  'blocks/playground_controller/oled.js',
+  'blocks/playground_controller/haptic.js',
+  'blocks/playground_controller/ky023.js',
+  'blocks/playground_controller/menu.js',
+  'blocks/playground_controller/sg90.js',
+  'blocks/playground_controller/button.js',
+  'blocks/playground_controller/dc_motor.js',
+  'blocks/playground_controller/ultrasonic.js',
+  'blocks/playground_controller/sdcard.js',
+  'blocks/playground_controller/max98357a.js',
+  'blocks/playground_controller/brightness.js',
+  'blocks/playground_controller/ws2812.js',
+  'blocks/playground_controller/ble_remote.js',
+  'blocks/playground_controller/test_all.js',
+  'blocks/playground_controller/timer.js',
+  'blocks/playground_controller/serial.js',
+  'blocks/playground_controller/variable.js',
+  'blocks/playground_controller/global_array.js',
+  'blocks/playground_controller/custom_code.js'
 ];
 
 var ARDUINO_UNO_BLOCK_SCRIPTS = [
@@ -188,16 +188,16 @@ var ARDUINO_UNO_BLOCK_SCRIPTS = [
 var loadedBlockScripts = {};
 
 var BOARD_INFO = {
-  'esp32-s3-devkitc1': {
+  'playground_master': {
     name: 'BWS Playground Master',
     image: 'media/playground.png'
   },
-  'playground-brumbrum-esp32-s3-devkitc1': {
-    name: 'Playground BrumBrum (esp32-s3-devkitc1)',
+  'playground_brumbrum': {
+    name: 'Playground BrumBrum',
     image: 'media/brumbrum.png'
   },
-  'esp32-controller': {
-    name: 'ESP32-Controller',
+  'playground_controller': {
+    name: 'Playground Controller',
     image: 'media/esp32-controller.jpg'
   },
   'arduino-uno': {
@@ -207,9 +207,9 @@ var BOARD_INFO = {
 };
 
 var PIN_DATA_FILES = {
-  'esp32-s3-devkitc1': 'generators/arduino/playground/pins_playground.js',
-  'playground-brumbrum-esp32-s3-devkitc1': 'generators/arduino/playground_brumbrum/pins_brumbrum.js',
-  'esp32-controller': 'generators/arduino/playground_esp32_controller/pins_esp32_controller.js',
+  'playground_master': 'generators/arduino/playground_master/pins_playground_master.js',
+  'playground_brumbrum': 'generators/arduino/playground_brumbrum/pins_playground_brumbrum.js',
+  'playground_controller': 'generators/arduino/playground_controller/pins_playground_controller.js',
   'arduino-uno': 'generators/arduino/arduino-uno/pins_uno.js'
 };
 
@@ -234,12 +234,12 @@ function loadPinDataFile(boardId) {
     script.onload = function() {
       // The pin data file should set a global variable
       var pinData = null;
-      if (boardId === 'esp32-s3-devkitc1') {
-        pinData = window.PIN_DATA_PLAYGROUND;
-      } else if (boardId === 'playground-brumbrum-esp32-s3-devkitc1') {
-        pinData = window.PIN_DATA_BRUMBRUM;
-      } else if (boardId === 'esp32-controller') {
-        pinData = window.PIN_DATA_ESP32_CONTROLLER;
+      if (boardId === 'playground_master') {
+        pinData = window.PIN_DATA_PLAYGROUND_MASTER;
+      } else if (boardId === 'playground_brumbrum') {
+        pinData = window.PIN_DATA_PLAYGROUND_BRUMBRUM;
+      } else if (boardId === 'playground_controller') {
+        pinData = window.PIN_DATA_PLAYGROUND_CONTROLLER;
       } else if (boardId === 'arduino-uno') {
         pinData = window.PIN_DATA_UNO;
       }
@@ -467,24 +467,20 @@ function ensureBrumbrumGeneratorsLoaded() {
   return brumbrumGeneratorsLoading;
 }
 
-function ensureESP32ControllerGeneratorsLoaded() {
-  ensureMasterGeneratorSetCaptured();
-  if (GENERATOR_SETS.esp32controller) {
-    return Promise.resolve();
+function ensurePlaygroundControllerGeneratorsLoaded() {
+  if (playgroundControllerGeneratorsLoading) {
+    return playgroundControllerGeneratorsLoading;
   }
-  if (esp32ControllerGeneratorsLoading) {
-    return esp32ControllerGeneratorsLoading;
-  }
-
-  esp32ControllerGeneratorsLoading = loadScriptsSequential(ESP32_CONTROLLER_GENERATOR_SCRIPTS).then(function() {
-    captureGeneratorSet('esp32controller');
+  
+  playgroundControllerGeneratorsLoading = loadScriptsSequential(PLAYGROUND_CONTROLLER_GENERATOR_SCRIPTS).then(function() {
+    captureGeneratorSet('playgroundcontroller');
   }).catch(function(error) {
-    console.error('Failed to load ESP32-Controller generator scripts', error);
+    console.error('Failed to load Playground Controller generator scripts', error);
   }).finally(function() {
-    esp32ControllerGeneratorsLoading = null;
+    playgroundControllerGeneratorsLoading = null;
   });
-
-  return esp32ControllerGeneratorsLoading;
+  
+  return playgroundControllerGeneratorsLoading;
 }
 
 function ensureArduinoUnoGeneratorsLoaded() {
@@ -510,16 +506,16 @@ function ensureArduinoUnoGeneratorsLoaded() {
 function updateGeneratorsForBoard(boardId) {
   ensureMasterGeneratorSetCaptured();
   GENERATOR_SET_TARGET = boardId;
-  if (boardId === 'playground-brumbrum-esp32-s3-devkitc1') {
+  if (boardId === 'playground_brumbrum') {
     ensureBrumbrumGeneratorsLoaded().then(function() {
-      if (GENERATOR_SET_TARGET === 'playground-brumbrum-esp32-s3-devkitc1') {
+      if (GENERATOR_SET_TARGET === 'playground_brumbrum') {
         applyGeneratorSet('brumbrum');
       }
     });
-  } else if (boardId === 'esp32-controller') {
-    ensureESP32ControllerGeneratorsLoaded().then(function() {
-      if (GENERATOR_SET_TARGET === 'esp32-controller') {
-        applyGeneratorSet('esp32controller');
+  } else if (boardId === 'playground_controller') {
+    ensurePlaygroundControllerGeneratorsLoaded().then(function() {
+      if (GENERATOR_SET_TARGET === 'playground_controller') {
+        applyGeneratorSet('playgroundcontroller');
       }
     });
   } else if (boardId === 'arduino-uno') {
@@ -541,15 +537,15 @@ var currentBlockLoadingPromise = null;
 
 function getBlockScriptsForBoard(boardId) {
   switch (boardId) {
-    case 'playground-brumbrum-esp32-s3-devkitc1':
+    case 'playground_brumbrum':
       return BRUMBRUM_BLOCK_SCRIPTS;
-    case 'esp32-controller':
-      return ESP32_CONTROLLER_BLOCK_SCRIPTS;
+    case 'playground_controller':
+      return PLAYGROUND_CONTROLLER_BLOCK_SCRIPTS;
     case 'arduino-uno':
       return ARDUINO_UNO_BLOCK_SCRIPTS;
-    case 'esp32-s3-devkitc1':
+    case 'playground_master':
     default:
-      return PLAYGROUND_BLOCK_SCRIPTS;
+      return PLAYGROUND_MASTER_BLOCK_SCRIPTS;
   }
 }
 
@@ -579,14 +575,18 @@ function updateBlocksForBoard(boardId) {
 /**
  * Handle board selector dropdown change.
  * Called when user selects a different board from the dropdown.
+ * Reloads the page to ensure a clean state with the new board.
  */
 function onBoardSelectorChange(boardId) {
   showConfirmModal(i18n.t('messages.switchBoardConfirm') || 'Switching boards will clear your current workspace. Any unsaved changes will be lost. Continue?', function() {
-    // Clear the workspace
-    Blockly.mainWorkspace.clear();
+    // Save current workspace to localStorage before reloading
+    if (Blockly.mainWorkspace) {
+      backup_blocks();
+    }
     
-    // Select the new board (this loads blocks and generators)
-    selectBoard(boardId);
+    // Reload page with new board ID as URL parameter
+    // This ensures a completely clean state
+    window.location.href = window.location.pathname + '?board=' + encodeURIComponent(boardId);
   });
 }
 
@@ -955,6 +955,14 @@ function showBoardSelectionModal() {
 }
 
 function selectBoard(boardId) {
+  // If Blockly is not initialized yet (initial selection from modal), reload page
+  // This ensures a completely clean state with no script conflicts
+  if (!Blockly.mainWorkspace) {
+    window.location.href = window.location.pathname + '?board=' + encodeURIComponent(boardId);
+    return;
+  }
+  
+  // Otherwise, proceed with dynamic loading (used during initBoardSelection)
   ensureMasterGeneratorSetCaptured();
   setSelectedBoard(boardId);
   
@@ -973,7 +981,7 @@ function selectBoard(boardId) {
   
   updateBoardInfoDisplay(boardId);
   
-  if (boardId === 'esp32-s3-devkitc1' || boardId === 'playground-brumbrum-esp32-s3-devkitc1' || boardId === 'esp32-controller') {
+  if (boardId === 'playground_master' || boardId === 'playground_brumbrum' || boardId === 'playground_controller') {
     profile['default'] = profile['esp32'];
   } else if (boardId === 'arduino-uno') {
     profile['default'] = profile['arduino'];
@@ -1057,8 +1065,56 @@ function updateToolboxForBoard(boardId) {
 }
 
 function initBoardSelection() {
-  var savedBoard = getSelectedBoard();
   var boardSelector = document.getElementById('boardSelector');
+  
+  // Check for board parameter in URL (from board switch)
+  var urlParams = new URLSearchParams(window.location.search);
+  var boardFromUrl = urlParams.get('board');
+  
+  // Validate URL board parameter
+  if (boardFromUrl && BOARD_INFO[boardFromUrl]) {
+    // Use board from URL and save it
+    selectedBoard = boardFromUrl;
+    setSelectedBoard(boardFromUrl);
+    
+    // Clean up URL (remove board parameter) but keep the clean state
+    if (window.history.replaceState) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    
+    if (boardSelector) {
+      boardSelector.value = boardFromUrl;
+      boardSelector.style.display = 'none';
+    }
+    updateBoardInfoDisplay(boardFromUrl);
+    
+    // Load pin data for the board
+    loadPinDataFile(boardFromUrl).then(function(pinData) {
+      setCurrentPinData(boardFromUrl);
+    }).catch(function(error) {
+      console.warn('Could not load pin data for board:', error);
+    });
+    
+    if (boardFromUrl === 'playground_master' || boardFromUrl === 'playground_brumbrum' || boardFromUrl === 'playground_controller') {
+      profile['default'] = profile['esp32'];
+    } else if (boardFromUrl === 'arduino-uno') {
+      profile['default'] = profile['arduino'];
+    }
+    
+    // Load block scripts for the board, then update toolbox
+    window.setTimeout(function() {
+      updateBlocksForBoard(boardFromUrl).then(function() {
+        updateToolboxForBoard(boardFromUrl);
+      }).catch(function(error) {
+        console.error('Failed to load initial block scripts:', error);
+        updateToolboxForBoard(boardFromUrl);
+      });
+    }, 100);
+    return;
+  }
+  
+  // Fall back to saved board from localStorage
+  var savedBoard = getSelectedBoard();
   
   if (savedBoard) {
     selectedBoard = savedBoard;
@@ -1075,7 +1131,7 @@ function initBoardSelection() {
       console.warn('Could not load pin data for saved board:', error);
     });
     
-    if (savedBoard === 'esp32-s3-devkitc1' || savedBoard === 'playground-brumbrum-esp32-s3-devkitc1' || savedBoard === 'esp32-controller') {
+    if (savedBoard === 'playground_master' || savedBoard === 'playground_brumbrum' || savedBoard === 'playground_controller') {
       profile['default'] = profile['esp32'];
     } else if (savedBoard === 'arduino-uno') {
       profile['default'] = profile['arduino'];
@@ -1225,7 +1281,7 @@ async function doSaveProject(fileName) {
   }
   var boardId = savedBoard || (boardSelector ? boardSelector.value : null);
   if (!boardId || !BOARD_TEMPLATES[boardId]) {
-    boardId = (boardSelector && boardSelector.value) ? boardSelector.value : 'esp32-s3-devkitc1';
+    boardId = (boardSelector && boardSelector.value) ? boardSelector.value : 'playground_master';
   }
   if (boardSelector && boardSelector.value !== boardId) {
     boardSelector.value = boardId;

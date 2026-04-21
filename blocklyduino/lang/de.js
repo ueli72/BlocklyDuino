@@ -29,9 +29,9 @@ i18n.registerTranslations('de', {
   "boardSelection": {
     "title": "Board auswählen",
     "description": "Wählen Sie Ihr Board, um ein neues Projekt zu starten:",
-    "brumbrumDesc": "Spezialisiertes Board der BWS Uster für ein RC-Auto.",
-    "esp32ControllerDesc": "ESP32 Game Controller mit OLED und Joysticks.",
-    "playgroundDesc": "Spezialisiertes Entwicklungsboard von BWS Uster für Lernprojekte.",
+    "playgroundBrumbrumDesc": "Spezialisiertes Board der BWS Uster für ein RC-Auto.",
+    "playgroundControllerDesc": "ESP32 Game Controller mit OLED und Joysticks.",
+    "playgroundMasterDesc": "Spezialisiertes Entwicklungsboard von BWS Uster für Lernprojekte.",
     "unoDesc": "Klassisches Arduino-Board für einfache Projekte"
   },
   "messages": {
@@ -61,6 +61,7 @@ i18n.registerTranslations('de', {
     "customCode": "Eigener Code",
     "inputOutput": "Eingabe/Ausgabe",
     "brumbrum": "BrumBrum",
+    "playgroundController": "Controller",
     "esp32Controller": "ESP32-Controller",
     "playground": "Playground",
     "sg90Servo": "SG90 Servo",

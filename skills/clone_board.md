@@ -9,8 +9,8 @@ Automate the process of cloning an existing BlocklyDuino board (currently optimi
 - The new board reuses the same firmware sources as the original (no hardware-specific code changes yet).
 
 ## Required Inputs
-1. **Board ID suffix** (machine-readable, kebab case). Example: `playground-brumbrum-esp32-s3-devkitc1`.
-2. **Display name**. Example: `Playground BrumBrum (esp32-s3-devkitc1)`.
+1. **Board ID** (machine-readable, snake_case). Example: `playground_brumbrum`.
+2. **Display name**. Example: `Playground BrumBrum`.
 3. **Image path** (absolute path to PNG/JPG supplied by user).
 4. **Description** to show in board selection modal.
 
@@ -18,7 +18,7 @@ If any input is missing, ask the user for it once.
 
 ## Workflow
 1. **Create board directory**
-   - Duplicate `boards/esp32-s3-devkitc1` into `boards/<new-id>`.
+   - Duplicate `boards/playground_master` into `boards/<new-id>`.
    - Update `pins.json` → `board` field and `name` field to new board ID/name.
    - Replace any textual references to the original marketing name with the new one.
    - Update the new `README.md` header/intro to mention the new board name and description.
@@ -41,7 +41,7 @@ If any input is missing, ask the user for it once.
 5. **Blockly helper data**
    - In `blocklyduino/blockly_helper.js`:
      - Extend `BOARD_INFO` with new board id/name/image.
-     - Extend `PIN_DATA` by deep-cloning the `esp32-s3-devkitc1` block; update board/name strings for tooltips.
+      - Extend `PIN_DATA` by deep-cloning the `playground_master` block; update board/name strings for tooltips.
      - Ensure profile selection logic treats both IDs identically (set default profile to `esp32`).
 
 6. **Board-specific blocks**
