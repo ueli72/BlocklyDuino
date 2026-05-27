@@ -96,6 +96,9 @@ var PLAYGROUND_CONTROLLER_GENERATOR_SCRIPTS = [
   'generators/arduino/playground_controller/ws2812.js',
   'generators/arduino/playground_controller/ble_remote.js',
   'generators/arduino/playground_controller/ble_client.js',
+  'generators/arduino/playground_controller/oled.js',
+  'generators/arduino/playground_controller/haptic.js',
+  'generators/arduino/playground_controller/menu.js',
   'generators/arduino/playground_master/cast.js',
   'generators/arduino/playground_controller/test_all.js',
   'generators/arduino/playground_controller/timer.js',
@@ -112,6 +115,35 @@ var ARDUINO_UNO_GENERATOR_SCRIPTS = [
   'generators/arduino/arduino-uno/button.js'
 ];
 var arduinoUnoGeneratorsLoading = null;
+
+var PLAYGROUND_MASTER_GENERATOR_SCRIPTS = [
+  'generators/arduino/playground_master/pins_playground_master.js',
+  'generators/arduino/playground_master/sg90.js',
+  'generators/arduino/playground_master/internal_led.js',
+  'generators/arduino/playground_master/button.js',
+  'generators/arduino/playground_master/ledmatrix.js',
+  'generators/arduino/playground_master/oled.js',
+  'generators/arduino/playground_master/menu.js',
+  'generators/arduino/playground_master/relais.js',
+  'generators/arduino/playground_master/dc_motor.js',
+  'generators/arduino/playground_master/dht11.js',
+  'generators/arduino/playground_master/ultrasonic.js',
+  'generators/arduino/playground_master/sdcard.js',
+  'generators/arduino/playground_master/max98357a.js',
+  'generators/arduino/playground_master/brightness.js',
+  'generators/arduino/playground_master/ws2812.js',
+  'generators/arduino/playground_master/ble_remote.js',
+  'generators/arduino/playground_master/ble_client.js',
+  'generators/arduino/playground_master/test_all.js',
+  'generators/arduino/playground_master/timer.js',
+  'generators/arduino/playground_master/ky023.js',
+  'generators/arduino/playground_master/serial.js',
+  'generators/arduino/playground_master/variable.js',
+  'generators/arduino/playground_master/cast.js',
+  'generators/arduino/playground_master/global_array.js',
+  'generators/arduino/playground_master/custom_code.js'
+];
+var masterGeneratorsLoading = null;
 
 // Board-specific block definition scripts
 var PLAYGROUND_MASTER_BLOCK_SCRIPTS = [
@@ -509,6 +541,25 @@ function ensureArduinoUnoGeneratorsLoaded() {
   return arduinoUnoGeneratorsLoading;
 }
 
+function ensureMasterGeneratorsLoaded() {
+  if (masterGeneratorsLoading) {
+    return masterGeneratorsLoading;
+  }
+
+  // Remove existing master set so it gets re-captured with full generators
+  delete GENERATOR_SETS.master;
+
+  masterGeneratorsLoading = loadScriptsSequential(PLAYGROUND_MASTER_GENERATOR_SCRIPTS).then(function() {
+    captureGeneratorSet('master');
+  }).catch(function(error) {
+    console.error('Failed to load Playground Master generator scripts', error);
+  }).finally(function() {
+    masterGeneratorsLoading = null;
+  });
+
+  return masterGeneratorsLoading;
+}
+
 function updateGeneratorsForBoard(boardId) {
   ensureMasterGeneratorSetCaptured();
   GENERATOR_SET_TARGET = boardId;
@@ -531,7 +582,11 @@ function updateGeneratorsForBoard(boardId) {
       }
     });
   } else {
-    applyGeneratorSet('master');
+    ensureMasterGeneratorsLoaded().then(function() {
+      if (GENERATOR_SET_TARGET === boardId) {
+        applyGeneratorSet('master');
+      }
+    });
   }
 }
 
