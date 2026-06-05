@@ -17,7 +17,10 @@
 // Number of servos
 #define NUM_SERVOS 3
 
-// Function to initialize servos
+// Function to initialize a specific servo
+void initializeServo(int servoNum, int pin);
+
+// Function to initialize all servos (backward compatibility)
 void initializeServos();
 
 // Function to set servo angle

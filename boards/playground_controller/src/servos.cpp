@@ -17,6 +17,28 @@ static void ensureSerialInit() {
     }
 }
 
+void initializeServo(int servoNum, int pin) {
+  switch (servoNum) {
+    case 1:
+      if (!servo1.attached()) {
+        servo1.attach(pin);
+      }
+      break;
+    case 2:
+      if (!servo2.attached()) {
+        servo2.attach(pin);
+      }
+      break;
+    case 3:
+      if (!servo3.attached()) {
+        servo3.attach(pin);
+      }
+      break;
+    default:
+      break;
+  }
+}
+
 void initializeServos() {
   servo1.attach(SERVO1_PIN);
   servo2.attach(SERVO2_PIN);
