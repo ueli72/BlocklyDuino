@@ -1450,7 +1450,7 @@ async function doSaveProject(fileName) {
   // Always add src/main.cpp with generated code
   var newMain = '#include <Arduino.h>\n';
   // Add includes for servo and LED if used
-  if (arduinoCode.includes('initializeServos') || arduinoCode.includes('setServoAngle') || arduinoCode.includes('readServoAngle') || arduinoCode.includes('testServoSweep')) {
+  if (arduinoCode.includes('initializeServo') || arduinoCode.includes('setServoAngle') || arduinoCode.includes('readServoAngle') || arduinoCode.includes('testServoSweep')) {
     newMain += '#include "servos.h"\n';
   }
   if (arduinoCode.includes('initializeLED') || arduinoCode.includes('setLED') || arduinoCode.includes('turnOffLED') || arduinoCode.includes('runLEDInitTest')) {
