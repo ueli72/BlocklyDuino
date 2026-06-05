@@ -69,7 +69,7 @@ function showConfirmModal(message, onConfirm) {
   var okBtn = document.getElementById('confirmModalOk');
   
   var handleOk = function() {
-    document.activeElement.blur();
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     if (modalEl && document.body.contains(modalEl)) {
       modal.hide();
     }
@@ -88,7 +88,7 @@ function showConfirmModal(message, onConfirm) {
   };
   
   modalEl.addEventListener('hide.bs.modal', function() {
-    document.activeElement.blur();
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
   }, { once: true });
   
   okBtn.addEventListener('click', handleOk);
@@ -120,7 +120,7 @@ function showAlertModal(message) {
 }
 
 function showBlockInfoModal(title, message) {
-  document.activeElement.blur();
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
   
   // Clean up any leftover modal state from board selection modal
   var boardModalEl = document.getElementById('boardSelectionModal');
@@ -145,8 +145,12 @@ function showBlockInfoModal(title, message) {
   }
   
   var modalEl = document.getElementById('blockInfoModal');
-  document.getElementById('blockInfoTitle').textContent = title || 'Block Info';
-  document.getElementById('blockInfoMessage').textContent = message;
+  if (!modalEl) return;
+  
+  var titleEl = document.getElementById('blockInfoTitle');
+  var messageEl = document.getElementById('blockInfoMessage');
+  if (titleEl) titleEl.textContent = title || 'Block Info';
+  if (messageEl) messageEl.textContent = message;
   
   // Dispose any existing instance first
   var existingModal = bootstrap.Modal.getInstance(modalEl);
@@ -163,11 +167,13 @@ function showBlockInfoModal(title, message) {
     document.body.style.overflow = '';
     document.body.style.paddingRight = '';
     modalEl.removeEventListener('hidden.bs.modal', cleanup);
-    modal.dispose();
+    if (bootstrap.Modal.getInstance(modalEl)) {
+      modal.dispose();
+    }
   };
   
   modalEl.addEventListener('hide.bs.modal', function() {
-    document.activeElement.blur();
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
   }, { once: true });
   
   modalEl.addEventListener('hidden.bs.modal', cleanup);
@@ -176,7 +182,7 @@ function showBlockInfoModal(title, message) {
 }
 
 function showBlockWarningModal(message, onContinue) {
-  document.activeElement.blur();
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
   var modalEl = document.getElementById('blockWarningModal');
   var modal = new bootstrap.Modal(modalEl);
   document.getElementById('blockWarningMessage').textContent = message;
@@ -184,7 +190,7 @@ function showBlockWarningModal(message, onContinue) {
   var okBtn = document.getElementById('blockWarningOk');
   
   var handleOk = function() {
-    document.activeElement.blur();
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     if (modalEl && document.body.contains(modalEl)) {
       modal.hide();
     }
@@ -203,7 +209,7 @@ function showBlockWarningModal(message, onContinue) {
   };
   
   modalEl.addEventListener('hide.bs.modal', function() {
-    document.activeElement.blur();
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
   }, { once: true });
   
   okBtn.addEventListener('click', handleOk);
@@ -229,7 +235,7 @@ function showPromptModal(message, defaultValue, onConfirm) {
   
   var handleOk = function() {
     var value = input.value;
-    document.activeElement.blur();
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     if (modalEl && document.body.contains(modalEl)) {
       modal.hide();
     }
@@ -255,7 +261,7 @@ function showPromptModal(message, defaultValue, onConfirm) {
   };
   
   modalEl.addEventListener('hide.bs.modal', function() {
-    document.activeElement.blur();
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
   }, { once: true });
   
   okBtn.addEventListener('click', handleOk);
@@ -350,7 +356,16 @@ function renderContent() {
   } else if (content.id == 'content_arduino') {
     //content.innerHTML = Blockly.Arduino.workspaceToCode();
     var arduinoTextarea = document.getElementById('content_arduino');
-    arduinoTextarea.value = Blockly.Arduino.workspaceToCode(Blockly.mainWorkspace);
+    if (typeof Blockly === 'undefined' || !Blockly.Arduino) {
+      arduinoTextarea.value = '// Arduino generator not loaded yet. Please wait...';
+    } else {
+      try {
+        arduinoTextarea.value = Blockly.Arduino.workspaceToCode(Blockly.mainWorkspace);
+      } catch (e) {
+        arduinoTextarea.value = '// Error generating code: ' + (e.message || e) + '\n// Generator functions may not be fully loaded for this board yet.';
+        console.error('Code generation error:', e);
+      }
+    }
     arduinoTextarea.focus();
   }
 }

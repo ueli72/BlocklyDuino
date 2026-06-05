@@ -472,6 +472,7 @@ function applyGeneratorSet(name) {
     Blockly.Arduino[key] = set[key];
   });
   CURRENT_GENERATOR_SET = name;
+  renderContent();
 }
 
 function ensureMasterGeneratorSetCaptured() {
@@ -1209,13 +1210,15 @@ function initBoardSelection() {
       profile['default'] = profile['arduino'];
     }
     
-    // Load block scripts for the board, then update toolbox
+    // Load block scripts for the board, then update toolbox and generators
     window.setTimeout(function() {
       updateBlocksForBoard(boardFromUrl).then(function() {
         updateToolboxForBoard(boardFromUrl);
+        updateGeneratorsForBoard(boardFromUrl);
       }).catch(function(error) {
         console.error('Failed to load initial block scripts:', error);
         updateToolboxForBoard(boardFromUrl);
+        updateGeneratorsForBoard(boardFromUrl);
       });
     }, 100);
     return;
@@ -1248,13 +1251,15 @@ function initBoardSelection() {
       profile['default'] = profile['arduino'];
     }
     
-    // Load block scripts for saved board, then update toolbox
+    // Load block scripts for saved board, then update toolbox and generators
     window.setTimeout(function() {
       updateBlocksForBoard(savedBoard).then(function() {
         updateToolboxForBoard(savedBoard);
+        updateGeneratorsForBoard(savedBoard);
       }).catch(function(error) {
         console.error('Failed to load initial block scripts:', error);
         updateToolboxForBoard(savedBoard);
+        updateGeneratorsForBoard(savedBoard);
       });
     }, 100);
   } else {
@@ -1351,7 +1356,14 @@ function restore_blocks() {
     }
     
     applyBoardSelectionFromXml(xml);
-    Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+    try {
+      Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+    } catch (e) {
+      // Block definitions may not be loaded yet; clear stale data
+      console.warn('Could not restore blocks from localStorage:', e);
+      delete window.localStorage.arduino;
+      Blockly.mainWorkspace.clear();
+    }
   }
 }
 
@@ -1533,6 +1545,7 @@ function load(event) {
 function loadXmlToWorkspace(xml) {
   applyBoardSelectionFromXml(xml);
   Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+  renderContent();
 }
 
 /**
