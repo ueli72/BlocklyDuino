@@ -4,19 +4,22 @@
 
 #include <Arduino.h>
 
-// JoyLeft pin definitions
-#define JOY_LEFT_X_PIN    1
-#define JOY_LEFT_Y_PIN    2
-#define JOY_LEFT_SW_PIN   0
+// Default pin assignments (can be overridden via init functions)
+#define JOY_LEFT_X_PIN_DEFAULT    1
+#define JOY_LEFT_Y_PIN_DEFAULT    2
+#define JOY_LEFT_SW_PIN_DEFAULT   0
 
-// JoyRight pin definitions
-#define JOY_RIGHT_X_PIN   4
-#define JOY_RIGHT_Y_PIN   3
-#define JOY_RIGHT_SW_PIN  10
+#define JOY_RIGHT_X_PIN_DEFAULT   4
+#define JOY_RIGHT_Y_PIN_DEFAULT   10
+#define JOY_RIGHT_SW_PIN_DEFAULT  3
 
-// Initialization functions
-void initJoyLeft();
-void initJoyRight();
+// Initialization functions with selectable pins
+void initJoyLeft(int xPin = JOY_LEFT_X_PIN_DEFAULT, 
+                 int yPin = JOY_LEFT_Y_PIN_DEFAULT, 
+                 int swPin = JOY_LEFT_SW_PIN_DEFAULT);
+void initJoyRight(int xPin = JOY_RIGHT_X_PIN_DEFAULT, 
+                  int yPin = JOY_RIGHT_Y_PIN_DEFAULT, 
+                  int swPin = JOY_RIGHT_SW_PIN_DEFAULT);
 
 // JoyLeft read functions
 int readJoyLeftX();

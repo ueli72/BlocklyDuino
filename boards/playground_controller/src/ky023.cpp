@@ -2,40 +2,55 @@
 #include "ky023.h"
 #include "oled.h"
 
-void initJoyLeft() {
-    pinMode(JOY_LEFT_X_PIN, INPUT);
-    pinMode(JOY_LEFT_Y_PIN, INPUT);
-    pinMode(JOY_LEFT_SW_PIN, INPUT_PULLUP);
+// Static variables to store pin numbers for each joystick
+static int joyLeftXPin = JOY_LEFT_X_PIN_DEFAULT;
+static int joyLeftYPin = JOY_LEFT_Y_PIN_DEFAULT;
+static int joyLeftSwPin = JOY_LEFT_SW_PIN_DEFAULT;
+
+static int joyRightXPin = JOY_RIGHT_X_PIN_DEFAULT;
+static int joyRightYPin = JOY_RIGHT_Y_PIN_DEFAULT;
+static int joyRightSwPin = JOY_RIGHT_SW_PIN_DEFAULT;
+
+void initJoyLeft(int xPin, int yPin, int swPin) {
+    joyLeftXPin = xPin;
+    joyLeftYPin = yPin;
+    joyLeftSwPin = swPin;
+    pinMode(xPin, INPUT);
+    pinMode(yPin, INPUT);
+    pinMode(swPin, INPUT_PULLUP);
 }
 
-void initJoyRight() {
-    pinMode(JOY_RIGHT_X_PIN, INPUT);
-    pinMode(JOY_RIGHT_Y_PIN, INPUT);
-    pinMode(JOY_RIGHT_SW_PIN, INPUT_PULLUP);
+void initJoyRight(int xPin, int yPin, int swPin) {
+    joyRightXPin = xPin;
+    joyRightYPin = yPin;
+    joyRightSwPin = swPin;
+    pinMode(xPin, INPUT);
+    pinMode(yPin, INPUT);
+    pinMode(swPin, INPUT_PULLUP);
 }
 
 int readJoyLeftX() {
-    return analogRead(JOY_LEFT_X_PIN);
+    return analogRead(joyLeftXPin);
 }
 
 int readJoyLeftY() {
-    return analogRead(JOY_LEFT_Y_PIN);
+    return analogRead(joyLeftYPin);
 }
 
 bool isJoyLeftPressed() {
-    return digitalRead(JOY_LEFT_SW_PIN) == LOW;
+    return digitalRead(joyLeftSwPin) == LOW;
 }
 
 int readJoyRightX() {
-    return analogRead(JOY_RIGHT_X_PIN);
+    return analogRead(joyRightXPin);
 }
 
 int readJoyRightY() {
-    return analogRead(JOY_RIGHT_Y_PIN);
+    return analogRead(joyRightYPin);
 }
 
 bool isJoyRightPressed() {
-    return digitalRead(JOY_RIGHT_SW_PIN) == LOW;
+    return digitalRead(joyRightSwPin) == LOW;
 }
 
 void testJoyLeft() {

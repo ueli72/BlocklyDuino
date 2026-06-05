@@ -18,7 +18,7 @@
  */
 
 /**
- * @fileoverview KY023 Dual Joystick Module blocks for esp32-controller.
+ * @fileoverview KY023 Dual Joystick Module blocks for playground_controller.
  */
 'use strict';
 
@@ -31,20 +31,59 @@ var KY023_JOYSTICK_OPTIONS = [
   ["JoyRight", "RIGHT"]
 ];
 
+// Available pins for playground_controller (ESP32-C3)
+var KY023_ANALOG_PINS = {
+  'playground_controller': [
+    ["GPIO0", "0"],
+    ["GPIO1", "1"],
+    ["GPIO2", "2"],
+    ["GPIO3", "3"],
+    ["GPIO4", "4"],
+    ["GPIO7", "7"],
+    ["GPIO8", "8"],
+    ["GPIO10", "10"],
+    ["GPIO20", "20"],
+    ["GPIO21", "21"]
+  ]
+};
+
+KY023_ANALOG_PINS['esp32-controller'] = KY023_ANALOG_PINS['playground_controller'];
+
+function getKY023ControllerPins() {
+  var boardId = window.currentBoardId || 'playground_controller';
+  return KY023_ANALOG_PINS[boardId] || KY023_ANALOG_PINS['playground_controller'];
+}
+
 Blockly.Blocks['ky023_init'] = {
   init: function() {
     this.setColour(30);
     this.appendDummyInput()
         .appendField("KY023 Joystick")
         .appendField(new Blockly.FieldImage("media/ky023jm.png", 64, 64))
-        .appendField("Initialize")
+        .appendField("Initialize");
+    // JoyLeft section
+    this.appendDummyInput()
         .appendField(new Blockly.FieldCheckbox("TRUE"), "INIT_LEFT")
         .appendField("JoyLeft")
+        .appendField("X:")
+        .appendField(new Blockly.FieldDropdown(getKY023ControllerPins), "LEFT_X_PIN")
+        .appendField("Y:")
+        .appendField(new Blockly.FieldDropdown(getKY023ControllerPins), "LEFT_Y_PIN")
+        .appendField("Btn:")
+        .appendField(new Blockly.FieldDropdown(getKY023ControllerPins), "LEFT_BTN_PIN");
+    // JoyRight section
+    this.appendDummyInput()
         .appendField(new Blockly.FieldCheckbox("TRUE"), "INIT_RIGHT")
-        .appendField("JoyRight");
+        .appendField("JoyRight")
+        .appendField("X:")
+        .appendField(new Blockly.FieldDropdown(getKY023ControllerPins), "RIGHT_X_PIN")
+        .appendField("Y:")
+        .appendField(new Blockly.FieldDropdown(getKY023ControllerPins), "RIGHT_Y_PIN")
+        .appendField("Btn:")
+        .appendField(new Blockly.FieldDropdown(getKY023ControllerPins), "RIGHT_BTN_PIN");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Initialize KY023 dual joystick module. JoyLeft: X=GPIO1, Y=GPIO2, SW=GPIO0. JoyRight: X=GPIO4, Y=GPIO10, SW=GPIO3');
+    this.setTooltip('Initialize KY023 dual joystick module with selectable pins. Defaults: JoyLeft (X=GPIO1, Y=GPIO2, Btn=GPIO0), JoyRight (X=GPIO4, Y=GPIO10, Btn=GPIO3)');
   }
 };
 
@@ -96,6 +135,6 @@ Blockly.Blocks['ky023_test'] = {
         .appendField("Test");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Test both joysticks by reading and printing values to Serial for 10 seconds each.');
+    this.setTooltip('Test both joysticks by reading values and displaying on OLED.');
   }
 };

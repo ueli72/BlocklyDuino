@@ -17,7 +17,7 @@
  */
 
 /**
- * @fileoverview Generating Arduino for KY023 Dual Joystick blocks.
+ * @fileoverview Generating Arduino for KY023 Dual Joystick blocks with selectable pins.
  */
 'use strict';
 
@@ -25,14 +25,22 @@ Blockly.Arduino.ky023_init = function() {
   var init_left = this.getFieldValue('INIT_LEFT') === 'TRUE';
   var init_right = this.getFieldValue('INIT_RIGHT') === 'TRUE';
   
+  var left_x = this.getFieldValue('LEFT_X_PIN');
+  var left_y = this.getFieldValue('LEFT_Y_PIN');
+  var left_btn = this.getFieldValue('LEFT_BTN_PIN');
+  
+  var right_x = this.getFieldValue('RIGHT_X_PIN');
+  var right_y = this.getFieldValue('RIGHT_Y_PIN');
+  var right_btn = this.getFieldValue('RIGHT_BTN_PIN');
+  
   Blockly.Arduino.definitions_['include_ky023_h'] = '#include "ky023.h"\n';
   
   var code = '';
   if (init_left) {
-    code += 'initJoyLeft();  // Initialize JoyLeft: X=GPIO1, Y=GPIO2, SW=GPIO0\n';
+    code += 'initJoyLeft(' + left_x + ', ' + left_y + ', ' + left_btn + ');  // JoyLeft: X=' + left_x + ', Y=' + left_y + ', SW=' + left_btn + '\n';
   }
   if (init_right) {
-    code += 'initJoyRight();  // Initialize JoyRight: X=GPIO4, Y=GPIO10, SW=GPIO3\n';
+    code += 'initJoyRight(' + right_x + ', ' + right_y + ', ' + right_btn + ');  // JoyRight: X=' + right_x + ', Y=' + right_y + ', SW=' + right_btn + '\n';
   }
   return code;
 };

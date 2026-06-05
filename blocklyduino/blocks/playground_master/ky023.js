@@ -34,6 +34,7 @@ var KY023_JOYSTICK_OPTIONS = [
 // Available analog pins for esp32-s3-devkitc1
 var KY023_ANALOG_PINS = {
   'esp32-s3-devkitc1': [
+    ["GPIO0", "0"],
     ["GPIO1", "1"],
     ["GPIO2", "2"],
     ["GPIO3", "3"],
