@@ -16,8 +16,8 @@
 // OLED object (extern for use in generated code)
 extern U8G2_SSD1306_72X40_ER_F_HW_I2C u8g2;
 
-// Initialize OLED display
-void initOLED();
+// Initialize OLED display (optional rotation: U8G2_R0, U8G2_R1, U8G2_R2, U8G2_R3, U8G2_MIRROR)
+void initOLED(const u8g2_cb_t* rotation = U8G2_R0);
 
 // Write text to OLED display (supports printf-style formatting)
 void writeToOled(const char* format, ...);

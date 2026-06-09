@@ -5,8 +5,9 @@
 
 U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, OLED_SCL_PIN, OLED_SDA_PIN, U8X8_PIN_NONE);
 
-void initOLED() {
+void initOLED(const u8g2_cb_t* rotation) {
   u8g2.begin();
+  u8g2.setDisplayRotation(rotation);
   u8g2.enableUTF8Print();
   u8g2.setFont(u8g2_font_5x8_tr);
   clearOled();

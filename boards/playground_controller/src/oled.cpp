@@ -6,8 +6,9 @@
 // 0.42" OLED 72x40 SSD1306 on I2C GPIO5/6
 U8G2_SSD1306_72X40_ER_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE, OLED_SCL_PIN, OLED_SDA_PIN);
 
-void initOLED() {
+void initOLED(const u8g2_cb_t* rotation) {
   u8g2.begin();
+  u8g2.setDisplayRotation(rotation);
   u8g2.enableUTF8Print();
   u8g2.setFont(u8g2_font_ncenB08_tr);
   u8g2.setContrast(255);

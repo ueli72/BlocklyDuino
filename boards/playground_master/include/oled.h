@@ -11,8 +11,8 @@
 #define OLED_SCL_PIN 9
 #define OLED_ADDRESS 0x78
 
-// Initialize OLED display
-void initOLED();
+// Initialize OLED display (optional rotation: U8G2_R0, U8G2_R1, U8G2_R2, U8G2_R3, U8G2_MIRROR)
+void initOLED(const u8g2_cb_t* rotation = U8G2_R0);
 
 // Write text to OLED display (supports printf-style formatting)
 void writeToOled(const char* format, ...);

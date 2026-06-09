@@ -24,8 +24,9 @@
 'use strict';
 
 Blockly.Arduino.oled_init = function() {
+  var dropdown_rotation = this.getFieldValue('ROTATION');
   Blockly.Arduino.definitions_['include_oled_h'] = '#include "oled.h"\n';
-  var code = 'initOLED();\n';
+  var code = 'initOLED(' + dropdown_rotation + ');\n';
   return code;
 };
 

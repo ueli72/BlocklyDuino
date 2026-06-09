@@ -1779,7 +1779,9 @@ function initBlockly() {
         <block type="led_matrix_test"></block>
       </category>
       <category name="OLED Display" data-i18n-name="categories.oled">
-        <block type="oled_init"></block>
+        <block type="oled_init">
+          <field name="ROTATION">U8G2_R0</field>
+        </block>
         <block type="oled_write">
           <value name="TEXT">
             <block type="text">
@@ -2061,7 +2063,9 @@ function initBlockly() {
         <block type="esp32_controller_led_set"></block>
       </category>
        <category name="OLED Display" data-i18n-name="categories.oled">
-         <block type="oled_init"></block>
+         <block type="oled_init">
+           <field name="ROTATION">U8G2_R0</field>
+         </block>
          <block type="oled_write">
            <value name="TEXT">
              <block type="text">

@@ -113,9 +113,16 @@ Blockly.Blocks['ky023_init'] = {
         .appendField(new Blockly.FieldDropdown(getKY023AnalogPins), "RIGHT_Y_PIN")
         .appendField("Btn:")
         .appendField(new Blockly.FieldDropdown(getKY023AnalogPins), "RIGHT_BTN_PIN");
+    // Set default pin values matching ky023.h defaults
+    this.setFieldValue('1', 'LEFT_X_PIN');
+    this.setFieldValue('2', 'LEFT_Y_PIN');
+    this.setFieldValue('0', 'LEFT_BTN_PIN');
+    this.setFieldValue('4', 'RIGHT_X_PIN');
+    this.setFieldValue('3', 'RIGHT_Y_PIN');
+    this.setFieldValue('10', 'RIGHT_BTN_PIN');
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Initialize KY023 dual joystick module with selectable pins. Defaults: JoyLeft (X=1, Y=2, Btn=0), JoyRight (X=4, Y=3, Btn=10)');
+    this.setTooltip('Initialize KY023 dual joystick module with selectable pins. Defaults: JoyLeft (X=GPIO1, Y=GPIO2, Btn=GPIO0), JoyRight (X=GPIO4, Y=GPIO3, Btn=GPIO10)');
   }
 };
 

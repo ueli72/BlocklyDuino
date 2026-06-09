@@ -31,10 +31,17 @@ Blockly.Blocks['oled_init'] = {
     this.appendDummyInput()
         .appendField("OLED Display")
         .appendField(new Blockly.FieldImage("media/oled.png", 64, 64))
-        .appendField("Initialize");
+        .appendField("Initialize")
+        .appendField(new Blockly.FieldDropdown([
+          ["0°", "U8G2_R0"],
+          ["90°", "U8G2_R1"],
+          ["180°", "U8G2_R2"],
+          ["270°", "U8G2_R3"],
+          ["Mirror", "U8G2_MIRROR"]
+        ]), "ROTATION");
     this.setPreviousStatement(true, "general");
     this.setNextStatement(true, "general");
-    this.setTooltip('Initialize the OLED display');
+    this.setTooltip('Initialize the OLED display with optional rotation');
   }
 };
 
